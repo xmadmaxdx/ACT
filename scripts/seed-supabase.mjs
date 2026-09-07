@@ -5,7 +5,7 @@
  *   npm run seed                                push everything
  *   node scripts/seed-supabase.mjs -p -3        push last 3 passages only
  *   node scripts/seed-supabase.mjs -p -1        push last passage only
- *
+ * 
  * Flags:
  *   -p / --passages   only passage tests (ids like ENGLISH-P1)
  *   -N / --last=N     only the last N of the selection (e.g. -3, -1)
