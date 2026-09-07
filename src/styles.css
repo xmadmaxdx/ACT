@@ -1467,8 +1467,10 @@ button {
   background: #fff;
   border-right: 2px solid var(--line);
   box-shadow: 8px 0 32px rgba(0, 0, 0, 0.12);
-  padding: 22px 20px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
   animation: drawer-in 0.25s ease;
 }
 
@@ -1484,11 +1486,8 @@ button {
 }
 
 .ov-top {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+  flex: none;
   background: #fff;
-  margin: -22px -20px 0;
   padding: 18px 20px 12px;
   border-bottom: 2px solid var(--line);
 }
@@ -1560,10 +1559,12 @@ button {
 }
 
 .ov-list {
+  flex: 1;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 12px;
+  padding: 12px 20px;
 }
 
 .ov-row {
@@ -2066,12 +2067,10 @@ button {
 }
 
 .ov-finish {
-  position: sticky;
-  bottom: 0;
+  flex: none;
   background: #fff;
   border-top: 2px solid var(--line);
-  padding: 12px 0 4px;
-  margin-top: 10px;
+  padding: 12px 20px 16px;
 }
 
 .finish-btn {
