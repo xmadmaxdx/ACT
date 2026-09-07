@@ -1,0 +1,165 @@
+{
+  "section": "english",
+  "tests": [
+    {
+      "id": "ENGLISH-P1",
+      "title": "The Seed Vault of Svalbard",
+      "total": 10,
+      "timeMinutes": 7,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "The Seed Vault of Svalbard",
+          "paras": [
+            [
+              { "t": "On a frozen island halfway between Norway and the North Pole, a concrete wedge juts from a mountainside. Inside the mountain lies the Svalbard Global Seed Vault, a facility that " },
+              { "u": 1, "t": "stores, and preserves, more than one million seed samples" },
+              { "t": " from crops around the world. " },
+              { "u": 2, "t": "Conceived as a backup drive for global agriculture," },
+              { "t": " the vault guards crop diversity against war, disaster, and neglect." }
+            ],
+            [
+              { "t": "The vault's location was chosen with care. Svalbard's permafrost keeps the seeds frozen " },
+              { "u": 3, "t": "even when the electricity goes out and the generators stop." },
+              { "t": " The islands are remote enough to discourage casual visitors, yet they are governed by a stable democracy. In 2015, researchers made the first withdrawal from the vault, sending seeds " },
+              { "u": 4, "t": "to reestablish a gene bank that had been housed in Aleppo, Syria." },
+              { "t": " " },
+              { "box": "A" }
+            ],
+            [
+              { "t": "Each arriving sample is sealed in a moisture-proof pouch and shelved in one of three chilly halls. " },
+              { "u": 5, "t": "The seeds themselves remain the property of the depositors, and Norway claims no ownership over them." },
+              { "t": " Despite the vault's nickname — the “doomsday vault” — " },
+              { "u": 6, "t": "its managers say the vault is more about hope than about the end of the world." },
+              { "t": " " },
+              { "box": "B" }
+            ],
+            [
+              { "t": "Still, the vault has faced challenges. In 2017, meltwater from unusually warm weather " },
+              { "u": 7, "t": "breached the entrance tunnel, it prompted" },
+              { "t": " engineers to waterproof the passage. " },
+              { "box": "C" },
+              { "t": " No seeds were harmed, but the incident reminded the world that even a fortress in the Arctic " },
+              { "u": 8, "t": "can't escape a changing climate." },
+              { "t": " " },
+              { "box": "D" }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "stores and preserves more than one million seed samples", "stores, and preserves more than, one million seed samples", "stores and preserves, more than one million seed samples"], "answer": "B", "explain": "“Stores and preserves” is a compound verb, which takes no comma, and “more than one million” needs none either. Every comma in A, C, and D wrongly splits the verb or the quantity." },
+        { "n": 2, "p": "p1", "tag": "Modifiers/Sentence Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "Conceiving it as a backup drive for global agriculture,", "It conceived as a backup drive for global agriculture,", "Having been conceived as a backup drive for global agriculture and"], "answer": "A", "explain": "The opening participle “conceived” correctly modifies “the vault.” B dangles (a vault cannot conceive); C is missing its helping verb; D leaves the phrase with no main clause to attach to." },
+        { "n": 3, "p": "p1", "tag": "Concision/Redundancy", "stem": "Which choice is least redundant in context?", "options": ["No Change", "even if the power fails.", "even when the electrical power goes out.", "even if the power fails and stops working."], "answer": "B", "explain": "“Even if the power fails” says it once. A and C restate the outage in extra words; D repeats “fails” as “stops working.”" },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to explain why the first withdrawal mattered. Which choice best accomplishes that goal?", "options": ["No Change", "to test whether decade-old seeds could still sprout.", "to celebrate the vault's tenth anniversary.", "to count how many samples the vault holds."], "answer": "A", "explain": "Reestablishing a destroyed gene bank shows the vault fulfilling its purpose in the real world. B narrows it to an experiment, C invents an anniversary, and D reduces it to an inventory count." },
+        { "n": 5, "p": "p1", "tag": "Rhetoric: Add/Delete", "stem": "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?", "options": ["Kept, because it describes how seeds are packaged for storage.", "Kept, because it clarifies who owns the deposited seeds.", "Deleted, because it repeats information about Norway's climate.", "Deleted, because it lists countries that deposited seeds."], "answer": "B", "explain": "The sentence settles ownership — depositors keep it, Norway claims none — which nothing else states. A describes the previous sentence, while C and D misread the content entirely." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Tone", "stem": "Which choice most effectively maintains the essay's formal tone?", "options": ["No Change", "its managers swear the vault is about hope, not doom.", "its managers maintain that the facility embodies optimism rather than disaster.", "its managers say the vault gives hope vibes instead of doom stuff."], "answer": "C", "explain": "“Maintain,” “embodies,” and “rather than” match the essay's formal register. A is wordy and casual, while B and D use slang (“swear,” “doom,” “vibes”)." },
+        { "n": 7, "p": "p1", "tag": "Sentence Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "breached the entrance tunnel, prompting", "breached the entrance tunnel, and prompting", "breached the entrance tunnel; prompting"], "answer": "B", "explain": "The original joins two independent clauses with a comma — a splice. “Prompting” turns the second half into a participial phrase; C is ungrammatical and D strands a fragment after the semicolon." },
+        { "n": 8, "p": "p1", "tag": "Rhetoric: Tone/Diction", "stem": "Which choice maintains the essay's formal tone while stating the consequence?", "options": ["No Change", "is not immune to a changing climate.", "has no shelter from a changing climate.", "cannot hide from a changing climate."], "answer": "B", "explain": "“Immune to” is the precise formal idiom. A leans on a contraction and casual phrasing, while C and D are colloquial." },
+        { "n": 9, "p": "p1", "tag": "Rhetoric: Placement", "stem": "The writer wants to add the following sentence to the essay: *News of the breach traveled around the world within days.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 2.", "Point B in Paragraph 3.", "Point C in Paragraph 4.", "Point D in Paragraph 4."], "answer": "C", "explain": "The news belongs immediately after the breach is described at Point C. Points A and B come before the incident, and Point D follows the closing reflection on climate." },
+        { "n": 10, "p": "p1", "point": "D", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *Schoolchildren in Longyearbyen sometimes tour the vault's entrance.* Should the writer make this addition?", "options": ["Yes, because it shows that local residents take pride in the vault.", "Yes, because it proves the vault welcomes visitors of all ages.", "No, because it shifts focus from the vault's global mission to local tourism.", "No, because it fails to name the children's school."], "answer": "C", "explain": "The essay closes on the vault's global purpose and climate vulnerability; a local-tour detail pulls away from that mission. A overreads pride, B overclaims access, and D faults a missing detail that was never needed." }
+      ]
+    },
+    {
+      "id": "ENGLISH-P2",
+      "title": "The Murmuration of Starlings",
+      "total": 5,
+      "timeMinutes": 3.5,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "The Murmuration of Starlings",
+          "paras": [
+            [
+              { "t": "On autumn evenings over Rome, the sky begins to boil. Thousands of starlings wheel and dive in a single rippling cloud, a performance scientists call a murmuration. " },
+              { "u": 1, "t": "No single bird leads the flock, and the birds react to their neighbors with astonishing speed." }
+            ],
+            [
+              { "t": "Each bird tracks about seven neighbors, adjusting its course in fractions of a second. The result is a shape that " },
+              { "u": 2, "t": "looks like it was choreographed, it shifts too fast for any choreographer to plan." },
+              { "t": " Watching a murmuration " },
+              { "u": 3, "t": "is pretty cool because the birds make awesome shapes." }
+            ],
+            [
+              { "t": "Biologists believe the displays " },
+              { "u": 4, "t": "confuse predators such as falcons," },
+              { "t": " which struggle to track one bird among thousands. Rome's starlings gather above the city's warm rooftops each winter, " },
+              { "u": 5, "t": "drawn by the heat rising from the streets below." },
+              { "t": " At dawn they scatter to feed in the countryside, returning each evening to perform again." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to explain how the flock stays coordinated. Which choice best accomplishes that goal?", "options": ["No Change", "Each bird simply follows the one directly in front of it.", "The birds take turns leading for a few seconds each.", "Scientists steer the flock with recorded calls."], "answer": "A", "explain": "No leader plus fast neighbor-reactions is exactly the decentralized coordination the passage describes. B and C invent leadership schemes the sentence denies, and D invents human control." },
+        { "n": 2, "p": "p1", "tag": "Sentence Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "looks choreographed, shifting too fast for any choreographer to plan.", "looks like choreography, and shifting too fast for any choreographer to plan.", "they look choreographed, shifting too fast for anyone to plan."], "answer": "B", "explain": "The original is a comma splice. “Shifting” makes the second half a participial phrase attached to the shape; C is ungrammatical after “and,” and D gives “they” no clear antecedent." },
+        { "n": 3, "p": "p1", "tag": "Rhetoric: Tone", "stem": "Which choice most effectively maintains the essay's tone?", "options": ["No Change", "is captivating, as the flock sculpts fleeting shapes.", "is nice since the birds fly around a lot.", "is fun because the shapes are sick."], "answer": "B", "explain": "“Captivating” and “sculpts” match the essay's elevated register. A is chatty, C is flat, and D is slang." },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to state the leading theory about the murmuration's function. Which choice best accomplishes that goal?", "options": ["No Change", "entertain tourists visiting Rome.", "help the birds find food after sunset.", "signal bedtime to young birds."], "answer": "A", "explain": "Predator confusion is the theory biologists actually propose here. Tourism, feeding, and bedtime signals appear nowhere in the passage." },
+        { "n": 5, "p": "p1", "tag": "Rhetoric: Revision/Diction", "stem": "The writer is considering revising the underlined portion to *lured by the city's deceptive glow.* Should the writer make this revision?", "options": ["Yes, because the revision adds vivid language suited to the evening scene.", "Yes, because the revision explains why the starlings leave at dawn.", "No, because “lured” and “deceptive” wrongly imply the warmth is a trap.", "No, because the original fails to mention the rooftops."], "answer": "C", "explain": "“Lured” and “deceptive” smuggle in menace the passage never suggests; the neutral “drawn” fits the plain description. A praises vividness that distorts meaning, B answers the wrong question, and D faults a detail already present." }
+      ]
+    },
+    {
+      "id": "ENGLISH-P3",
+      "title": "The History of Cartography",
+      "total": 10,
+      "timeMinutes": 7,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "The History of Cartography",
+          "paras": [
+            [
+              { "t": "On a wall in a library in Istanbul, a thirteenth-century map shows the world as a circle, with Jerusalem at its center. " },
+              { "u": 1, "t": "This mappa mundi, like most medieval European maps, was less a tool for navigation than a diagram of theological geography." },
+              { "t": " " },
+              { "box": "A" },
+              { "t": " Maps of that era arranged continents to reflect religious narratives rather than physical distances." }
+            ],
+            [
+              { "t": "The modern idea of a map as a scaled representation of terrain emerged during the Renaissance. " },
+              { "u": 2, "t": "In 1569, the Flemish geographer Gerardus Mercator published a world map that " },
+              { "t": "distorted landmasses near the poles so that compass bearings could be drawn as straight lines. " },
+              { "box": "B" },
+              { "t": " " },
+              { "u": 3, "t": "Sailors valued the projection, it simplified navigation by turning curved routes into straight bearings." }
+            ],
+            [
+              { "t": "By the eighteenth century, governments began funding systematic surveys to define borders and tax territories. " },
+              { "u": 4, "t": "The French cartographer César-François Cassini spent four decades mapping France at a consistent scale." },
+              { "t": " " },
+              { "u": 5, "t": "His teams produced the first topographic map of an entire country." },
+              { "t": " " },
+              { "box": "C" },
+              { "t": " Such efforts required surveyors, mathematicians, and engravers to work together in the field for years." }
+            ],
+            [
+              { "t": "Today, satellite imagery and geographic information systems have replaced hand-drawn surveys, yet the core challenge remains the same: " },
+              { "u": 6, "t": "representing a curved surface on a flat page without losing essential information." },
+              { "t": " " },
+              { "u": 8, "t": "Digital maps update in real time, but they still rely on the same projection principles Mercator codified centuries ago." },
+              { "t": " " },
+              { "u": 9, "t": "The ethics of mapping have also evolved, however, challenges remain." },
+              { "t": " " },
+              { "box": "D" },
+              { "t": " " },
+              { "u": 10, "t": "For example, indigenous communities now press for sacred sites to be removed from public maps." },
+              { "t": " As technology advances, cartographers must balance accuracy with responsibility." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "This mappa mundi, like most medieval European maps was, less a tool for navigation than a diagram of theological geography.", "This mappa mundi like most medieval European maps, was less a tool for navigation than a diagram of theological geography.", "This mappa mundi like most medieval European maps was, less a tool for navigation than a diagram of theological geography."], "answer": "A", "explain": "The aside \"like most medieval European maps\" is non-essential and must be closed off by paired commas. B shifts the second comma to the wrong spot, C and D remove the first comma, and D strips both — each lets the aside bleed into the main clause." },
+        { "n": 2, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to identify Mercator and introduce his achievement in language consistent with the essay's formal tone. Which choice best accomplishes that goal?", "options": ["No Change", "In 1569, Gerardus Mercator, a map guy from Flanders, published a world map that", "In 1569, the mapmaker Gerardus Mercator, who came from what is now Belgium, published a world map that", "In 1569, the famous Flemish geographer Gerardus Mercator published a world map that"], "answer": "A", "explain": "\"The Flemish geographer\" states Mercator's nationality and profession in the essay's formal register. B's slang, C's wordy detour, and D's unsupported \"famous\" all weaken the introduction." },
+        { "n": 3, "p": "p1", "tag": "Sentence Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "Sailors valued the projection; it simplified navigation by turning curved routes into straight bearings.", "Sailors valued the projection it simplified navigation by turning curved routes into straight bearings.", "Sailors, valuing the projection, it simplified navigation by turning curved routes into straight bearings."], "answer": "B", "explain": "The two complete clauses must be joined by a semicolon, as in B. A splices them with a comma alone, C fuses them with no punctuation, and D strands \"valuing the projection\" so it appears to modify \"it\" instead of \"sailors.\"" },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Add/Delete", "stem": "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?", "options": ["Kept, because it names a concrete example of the government-funded surveys introduced in this paragraph.", "Kept, because it proves that France produced better maps than any other country.", "Deleted, because the essay should concentrate on Mercator's projection, not on later mapmakers.", "Deleted, because Cassini's project was funded privately rather than by the government."], "answer": "A", "explain": "Cassini's four-decade survey is exactly the kind of systematic, government-funded mapping the paragraph introduces. B overstates the comparison, C ignores that the essay is tracing cartography's broader history, and D contradicts the sentence's clear statement of government funding." },
+        { "n": 5, "p": "p1", "tag": "Knowledge: Diction", "stem": "Which choice most precisely describes what Cassini's project accomplished while maintaining the essay's formal tone?", "options": ["No Change", "His teams made a really accurate map of the whole country.", "His teams created a drawing of France.", "His teams produced the first topographic map of an entire country, showing all its mountains and valleys."], "answer": "A", "explain": "\"Topographic map of an entire country\" is the precise, formal phrasing. B slips into casual language, C loses the technical meaning of \"topographic,\" and D restates what \"topographic\" already conveys." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to state the enduring challenge that modern mapmakers still face. Which choice best accomplishes that goal?", "options": ["No Change", "drawing a map that shows every road, river, and boundary on Earth at once.", "making maps that will look perfect to anyone who sees them.", "representing a curved surface on a flat page completely and perfectly, preserving all information without any loss whatsoever."], "answer": "A", "explain": "A states the problem precisely: projecting a curved globe onto a flat page without losing essential data. B misstates the challenge, C is vague and informal, and D pads the idea with redundant emphasis." },
+        { "n": 7, "p": "p1", "point": "D", "tag": "Rhetoric: Placement", "stem": "The writer wants to add the following sentence to the essay: *With every advance, the question of what maps should show grows more complicated.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "D", "explain": "Point D follows the statement that map ethics have grown complicated, and the added sentence's general reflection is then illustrated by the sacred-sites example that follows. Points A, B, and C all occur before that ethical discussion exists." },
+        { "n": 8, "p": "p1", "tag": "Rhetoric: Cohesion", "stem": "Which choice most effectively connects the sentence to the essay's earlier discussion of Mercator's projection?", "options": ["No Change", "Digital maps update in real time, but they still rely on the same basic principles of mapmaking.", "Digital maps update in real time, so they have left Mercator's principles behind.", "Digital maps update in real time, but they still rely on the projection principles that Mercator codified back in 1569."], "answer": "A", "explain": "\"Still rely on the same projection principles Mercator codified\" ties today's digital maps back to the sixteenth-century projection described in Paragraph 2. B severs that link, C reverses the passage's meaning, and D repeats the date with a casual \"back in.\"" },
+        { "n": 9, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "The ethics of mapping have also evolved; however, challenges remain.", "The ethics of mapping have also evolved however, challenges remain.", "The ethics of mapping have also evolved, however challenges remain."], "answer": "B", "explain": "\"However\" is a conjunctive adverb joining two complete clauses, so a semicolon must separate them, as in B. A splices the clauses with commas alone, C fuses them with no punctuation, and D strands \"however\" without the comma it requires." },
+        { "n": 10, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *Some parks now display both indigenous and colonial place names on their maps.* Should the writer make this addition?", "options": ["Yes, because it offers a concrete example of the ethical balancing the paragraph describes.", "Yes, because it proves that all governments now respect indigenous traditions.", "No, because it introduces parks, a topic unrelated to mapmaking.", "No, because it contradicts the claim that mapping has become more ethical."], "answer": "A", "explain": "The added sentence illustrates how modern maps balance indigenous and colonial place names — precisely the ethical complexity the paragraph introduces. B overgeneralizes to \"all governments,\" C ignores that parks appear on maps, and D misreads the example as contradicting ethical progress." }
+      ]
+    }
+  ]
+}

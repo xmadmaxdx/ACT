@@ -1,0 +1,281 @@
+{
+  "section": "english",
+  "tests": [
+    {
+      "id": "ENGLISH-1",
+      "title": "English Only · Test 1",
+      "total": 50,
+      "timeMinutes": 35,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "Passage I — Alex Atala and Brazilian Cuisine",
+          "paras": [
+            [
+              { "u": 1, "t": "At first," },
+              { "t": " Brazilian chef Alex Atala opened his restaurant in São Paulo in 1999, people told him he would never succeed. In a country where European cuisine was held in the highest regard, they said, no one would patronize a restaurant serving Brazilian food. Atala, whose restaurant has consistently ranked among the world's best, has long disproven the naysayers. Using traditional Brazilian " },
+              { "u": 2, "t": "ingredients, such as, manioc root" },
+              { "t": " and even ants—in innovative ways, he has " },
+              { "u": 3, "t": "thrilled" },
+              { "t": " diners from around the world." }
+            ],
+            [
+              { "u": 4, "t": "Still, Atala felt he could do more for his country and its cuisine." },
+              { "t": " In 2012, he founded Instituto Atá to help promote lesser-known ingredients, particularly those of the Amazon basin, while working to protect Brazil's biodiversity. Hearts of palm, for example, were typically harvested from Brazil's wild juçara palms in an unsustainable way. Needing eight years to mature, the " },
+              { "u": 5, "t": "tree dies once its" },
+              { "t": " large heart is removed. Atala began persuading producers to cultivate Amazonian pupunha palms, which grow clusters of stems, each with a small heart. Careful harvesting ensures that the tree will " },
+              { "u": 6, "t": "live to yield" },
+              { "t": " more hearts, resulting in environmentally friendly production." }
+            ],
+            [
+              { "t": "Atala prioritizes his working relationships with Amazonian tribes. Utilizing their historical " },
+              { "u": 7, "t": "know-how they have," },
+              { "t": " he aims to bolster tribe members' livelihoods while exposing a wider audience to Brazilian ingredients. For instance, Baniwa women have farmed distinctly flavorful chili peppers for " },
+              { "u": 8, "t": "centuries that use" },
+              { "t": " indigenous agricultural techniques, to create a seasoning called pimenta jiquitaia. Partnering with Instituto Atá " },
+              { "u": 9, "t": "have enabled" },
+              { "t": " these women from a remote rain forest region to scale up production and market their product globally." }
+            ],
+            [
+              { "t": "Expanding awareness of the rich diversity of Brazil's native ingredients, Atala continues to lead in " },
+              { "u": 10, "t": "deciphering" },
+              { "t": " the country's food culture. With his characteristic passion and intensity, the renowned chef seeks to inspire Brazilians to rediscover the connections between culture, nature, and food." }
+            ]
+          ]
+        },
+        {
+          "id": "p2",
+          "title": "Passage II — Rediscovering Hrosvitha",
+          "paras": [
+            [
+              { "t": "Hrosvitha, a medieval " },
+              { "u": 11, "t": "author and dramatist—is" },
+              { "t": " one of the earliest known European women playwrights. Although little is known about her life, scholars agree Hrosvitha was born to a noble family around 935 CE. As a relation of Holy Roman Emperor Otto I, she most likely spent her early years as part of his court. Later, sometime before 959 CE, she entered " },
+              { "u": 12, "t": "the abbey at Gandersheim, it was well known" },
+              { "t": " as a significant center of learning." }
+            ],
+            [
+              { "t": "Hrosvitha entered Gandersheim as a canoness rather than a nun. Her title did not require a vow of poverty, but Hrosvitha did take the abbey's customary vow of chastity, which absolved her of an obligation to marry. This circumstance " },
+              { "u": 13, "t": "made it okay for her to keep" },
+              { "t": " her financial status without incurring responsibilities to a husband and children. " },
+              { "u": 14, "t": "Nevertheless," },
+              { "t": " Hrosvitha had a greater level of independence—she could acquire property, receive guests, employ servants, and visit the royal court—than most women of her time." }
+            ],
+            [
+              { "t": "Hrosvitha produced at least eight narrative religious poems, two historical epics " },
+              { "u": 15, "t": "(about the court of Otto I and" },
+              { "t": " Gandersheim), and six comedy-dramas. It is for these dramas that she is best known today." }
+            ]
+          ]
+        },
+        {
+          "id": "p3",
+          "title": "Passage III — A Musical Detour",
+          "paras": [
+            [
+              { "box": "1" },
+              { "t": " Every night while driving home from a hectic day at work, my three-year-old twins quarreling in the backseat, I take a short detour. I turn off the gridlocked " },
+              { "u": 16, "t": "highway, onto a stretch of Route 66 that is," },
+              { "t": " surrounded by arid New Mexico hills. When we're nearly three miles into our detour, I roll down the windows. Looking pointedly " },
+              { "u": 17, "t": "into the rearview mirror, windows rolled down," },
+              { "t": " I say something about not throwing anything out of the car, but neither boy is listening. I check my speed. " },
+              { "box": "A" },
+              { "t": " Carefully, I steer toward the fog line. “Here it is, boys!” I yell at the backseat, the passenger-side tires finding the rumble strips etched into the asphalt." }
+            ],
+            [
+              { "box": "2" },
+              { "t": " Normal rumble strips create that loud, grating noise when you drive over them—" },
+              { "u": 18, "t": "like a built-in alarm for drivers who drift too close to the road's edge." },
+              { "t": " These strips are different. The boys abruptly stop their squalling as the car begins to vibrate. Then, instead of that jolting warning noise, we hear the distinct strain of the song “America the Beautiful.” " },
+              { "box": "B" },
+              { "t": " The road is playing us a song." }
+            ],
+            [
+              { "box": "3" },
+              { "t": " I've been taking this detour out of Albuquerque for two years, ever since these musical rumble strips " },
+              { "u": 19, "t": "were installed." },
+              { "t": " City planners wanted to find out whether the novelty of hearing a snippet of song would give drivers an incentive to obey the speed limit; the tune is only recognizable if they're going a reasonable forty-five miles per hour. Whether this strategy works, I don't know. " },
+              { "box": "C" },
+              { "t": " For me, this brief musical interlude is a charming curiosity, a welcome interruption in my work-week slog. Even though constant traffic has worn down the musical rumble strips and warped the sound of some of the notes, " },
+              { "u": 20, "t": "there are currently no plans to restore the strips." }
+            ],
+            [
+              { "box": "4" },
+              { "t": " After the last one of the notes " },
+              { "u": 21, "t": "fades" },
+              { "t": " into the darkening sky, I glance back at the boys, " },
+              { "u": 22, "t": "who have" },
+              { "t": " been lulled by the wonder of the song. " },
+              { "box": "D" },
+              { "t": " I stop worrying about work, about how many toy cars might have gotten lost between there and home. " },
+              { "u": 23, "t": "Until then," },
+              { "t": " I feel like everything is going to be just fine. " },
+              { "box": "24" }
+            ]
+          ]
+        },
+        {
+          "id": "p4",
+          "title": "Passage IV — The Case for Visible Storage",
+          "paras": [
+            [
+              { "box": "1" },
+              { "t": " Public museums exist for two main reasons: to educate the public and provide stewardship " },
+              { "u": 26, "t": "(legal and ethical management, care, documentation, and use)" },
+              { "t": " of their collections. Unfortunately, due to space constraints, a typical museum only exhibits about ten percent of the items in its collection; the other ninety percent remains in storage. " },
+              { "u": 27, "t": "When displaying" },
+              { "t": " such a small portion of artifacts severely limits public access and therefore public education. Furthermore, maintaining such a large number of artifacts in storage while acquiring additional items makes finding enough suitable storage space difficult, especially for delicate items. " },
+              { "box": "A" }
+            ],
+            [
+              { "box": "2" },
+              { "t": " To remain true to the goals of education and stewardship, museums should dedicate public access space to visible storage. " },
+              { "box": "B" },
+              { "t": " Also known as open storage, visible " },
+              { "u": 28, "t": "storage provides" },
+              { "t": " ways to display many items in small or irregular spaces, allowing more artifacts to be on exhibit. " },
+              { "box": "C" }
+            ],
+            [
+              { "box": "3" },
+              { "t": " In a traditional museum display, each artifact is labeled and positioned at eye level with plenty of space " },
+              { "u": 29, "t": "between it" },
+              { "t": " and the other objects. " },
+              { "u": 30, "t": "Subsequently," },
+              { "t": " artifacts in visible storage spaces are placed close together and are often displayed from floor to ceiling with few labels. Areas of a museum that cannot house a traditional display, therefore, might be ideal for a visible storage display. Ceramic pottery " },
+              { "u": 31, "t": "where it" },
+              { "t": " might otherwise be positioned in individual glass cases might be lined up on shelves behind a glass wall. An antique fork and spoon fastened to a large informational board might instead be part of an entire set of silverware arranged under glass in pull-out cabinet drawers. " },
+              { "box": "D" }
+            ],
+            [
+              { "box": "4" },
+              { "t": " While some artifacts can never be displayed " },
+              { "box": "32" },
+              { "t": ", many pieces that " },
+              { "u": 33, "t": "can—and should—" },
+              { "t": " be viewed are not. " },
+              { "u": 34, "t": "Whereas" },
+              { "t": " a museum designates areas for visible storage, it uses space efficiently, providing safe displays for artifacts and allowing visitors greater access to independently study the works that make the museum unique." }
+            ]
+          ]
+        },
+        {
+          "id": "p5",
+          "title": "Passage V — The Sociable Weavers' Complex Nest",
+          "paras": [
+            [
+              { "t": "In the sparse yet relatively green environment of the Kalahari Desert, birds known as sociable weavers build their enormous nests atop the desert's signature camelthorn trees. Slung across the branches, each nest—which can measure up to thirteen feet wide and seven feet thick—is a sprawling community home to hundreds of birds. " },
+              { "box": "36" }
+            ],
+            [
+              { "t": "A weaver nest does not resemble a common bowl-like bird nest. Although the weavers use typical materials such as sticks, grass, and feathers to construct their nests, the nests look more like " },
+              { "u": 37, "t": "disorganized piles." },
+              { "t": " Built within each nest are as many as one hundred four-to-six-inch-wide chambers. A bird enters a chamber by flying to the underside of the nest, " },
+              { "u": 38, "t": "it squeezes" },
+              { "t": " through a one-inch-wide entrance hole, and continuing up a passageway to a chamber. In each chamber, up to five of the sparrow-sized birds can huddle " },
+              { "u": 39, "t": "as a group together when the Kalahari nights get cold." }
+            ],
+            [
+              { "t": "The multi-chamber construction of the weaver nest has drawn comparisons to that of an apartment building. Indeed, the nests exemplify communal living " },
+              { "u": 40, "t": "at there" },
+              { "t": " most effective. Each one houses multiple generations of birds, all of whom work together to maintain their home." }
+            ]
+          ]
+        },
+        {
+          "id": "p6",
+          "title": "Passage VI — The Artful Stitch of Paj Ntaub",
+          "paras": [
+            [
+              { "t": "She depicts flowers with layers of petals, intricate spirals and rosettes, teardrops bending within circles, and " },
+              { "u": 41, "t": "dizzying mazes of lines—" },
+              { "t": " embroidering them in vibrant reds, blues, pinks, yellows, and greens on fabric of delicate silk or cotton. Pang Xiong Sirirathasuk Sikoun is a master of paj ntaub, or “flower cloth” embroidery, the most difficult of the " },
+              { "u": 42, "t": "century's-oldest" },
+              { "t": " Hmong needlework arts." }
+            ],
+            [
+              { "u": 43, "t": "Paj ntaub is increasingly made in lighter, softer shades today." },
+              { "t": " She's been creating stitched textiles since she was a young woman living in northern Laos. For the past several decades, she's been designing paj ntaub in Philadelphia, Pennsylvania, where she also teaches her craft." }
+            ],
+            [
+              { "t": "Flower cloth " },
+              { "u": 44, "t": "(commonly as a shirt, dress, coat, or collar)" },
+              { "t": " is made to be worn as clothing and, depending on the amount of needlework on the piece, is designed either for everyday wear or for a special occasion." }
+            ],
+            [
+              { "t": "With pattern names such as “elephant's foot” and “snail house” and images of animals framed by geometric designs, " },
+              { "u": 45, "t": "paj ntaub patterns are versatile." },
+              { "t": " What distinguishes paj ntaub from other Hmong needlework arts are the artist's use of tiny, tight stitches and several complex techniques. One technique is reverse " },
+              { "u": 46, "t": "appliqué, in which" },
+              { "t": " shapes are cut out from, rather than added on top of, the embroidered fabric. Another is elaborate overstitching: thousands of layered stitches are applied to " },
+              { "u": 47, "t": "its surface." }
+            ],
+            [
+              { "t": "Pang Xiong regrets that most people she knows today wear only " },
+              { "u": 48, "t": "regular" },
+              { "t": " clothes. When she was growing up in Laos, she explains, she had few items of clothing, but each garment she owned was handcrafted paj ntaub." }
+            ],
+            [
+              { "u": 49, "t": "However," },
+              { "t": " she still wears flower cloth every day and would like to inspire others to do so. Pang Xiong teaches paj ntaub in art museums—including at the Smithsonian Institution, where some of her textiles are on permanent display—and in community settings around Philadelphia. " },
+              { "box": "50" },
+              { "t": " Pang Xiong is showing a new generation the joys of paj ntaub and beautiful handcrafted clothing." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Sentence Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "Years ago,", "When", "Delete the underlined portion."], "answer": "C", "explain": "The opening “At first, Brazilian chef … people told him” lacks a subordinator. “When” turns the first part into a dependent clause: “When Atala opened …, people told him.” “Years ago” leaves it a fragment." },
+        { "n": 2, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "ingredients—such as manioc root", "ingredients such as—manioc root", "ingredients such as, manioc root,"], "answer": "B", "explain": "The dashes already set off the inserted list, so the list must read “ingredients—such as manioc root … and even ants—in innovative ways.” Option B matches the dash structure; C and D misplace the punctuation." },
+        { "n": 3, "p": "p1", "tag": "Rhetoric: Tone/Purpose", "stem": "The writer wants to emphasize the positive experience diners have had at Atala's restaurant. Which choice best accomplishes that goal?", "options": ["No Change", "mystified", "shocked", "startled"], "answer": "A", "explain": "The goal is to emphasize a *positive* dining experience. “Thrilled” is positive; “mystified,” “shocked,” and “startled” are all negative or neutral." },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Transition", "stem": "Given that all the choices are accurate, which one provides the best transition from the preceding paragraph to this paragraph?", "options": ["No Change", "Atala is known for sometimes incorporating fragrances into his dishes as well.", "In fact, Atala's culinary training took place in classic European restaurants.", "Atala's obvious affection for his homeland is said to be infectious."], "answer": "D", "explain": "The passage moves from his restaurant success to his work for Brazil. “Atala's obvious affection for his homeland is said to be infectious” bridges the two paragraphs and motivates the transition to Instituto Atá." },
+        { "n": 5, "p": "p1", "tag": "Pronoun/Apostrophe", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "tree dies once their", "trees die once its", "tree dies once it's"], "answer": "A", "explain": "“The tree dies once its large heart is removed” — “tree” is singular, and “its” is the correct possessive (no apostrophe). “It's” means “it is,” which is wrong here." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Tone", "stem": "Which choice most effectively maintains the essay's tone?", "options": ["No Change", "pull through and spawn", "continue to churn out", "keep doling out"], "answer": "A", "explain": "“Live to yield more hearts” is formal and consistent with the essay's register. “Churn out,” “doling out,” and “pull through and spawn” are too casual and colloquial." },
+        { "n": 7, "p": "p1", "tag": "Concision/Redundancy", "stem": "Which choice is least redundant in context?", "options": ["No Change", "knowledge that tribe members know about local plants,", "knowledge of local plants in the area,", "knowledge of local plants,"], "answer": "D", "explain": "“Know-how they have” is redundant. “Knowledge of local plants” removes the redundancy and the modifier confusion; B and C add unnecessary restatement." },
+        { "n": 8, "p": "p1", "tag": "Modifiers/Rhetoric", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "centuries, which use", "centuries who use", "centuries, using"], "answer": "D", "explain": "The peppers themselves do not “use” techniques — the women do. “Centuries, using indigenous agricultural techniques” correctly attaches the action to the farmers." },
+        { "n": 9, "p": "p1", "tag": "Subject–Verb Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "has enabled", "are enabling", "enable"], "answer": "B", "explain": "The subject is the singular gerund phrase “Partnering with Instituto Atá,” so the verb must be singular: “has enabled.” (“Women” sits in a prepositional phrase and is not the subject.)" },
+        { "n": 10, "p": "p1", "tag": "Precise Diction", "stem": "Which choice is clearest and most precise in context?", "options": ["No Change", "transforming", "dislocating", "contorting"], "answer": "A", "explain": "“Deciphering” (interpreting) the food culture is precise here. “Transforming,” “dislocating,” and “contorting” imply an unwanted distortion." },
+        { "n": 11, "p": "p2", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "author and dramatist,", "author, and dramatist", "author and dramatist"], "answer": "B", "explain": "“Hrosvitha, a medieval author and dramatist, is one of the earliest …” — the appositive must be set off by a comma after it. The em-dash in the original leaves the “is” orphaned." },
+        { "n": 12, "p": "p2", "tag": "Sentence Structure/Comma Splice", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "Gandersheim and, historically, this abbey was", "Gandersheim, it was an abbey", "Gandersheim, an abbey"], "answer": "D", "explain": "The original joins two independent clauses with a comma — a comma splice. “She entered the abbey at Gandersheim, an abbey well known as a significant center of learning” makes “an abbey” an appositive, eliminating the splice." },
+        { "n": 13, "p": "p2", "tag": "Rhetoric: Tone", "stem": "Which choice most effectively maintains the essay's tone?", "options": ["No Change", "permitted her to hang on to", "allowed her to retain", "let her keep up"], "answer": "C", "explain": "The register is formal historical prose. “Allowed her to retain” is the formal, precise phrasing. “Okay for her to keep,” “hang on to,” and “keep up” are too casual." },
+        { "n": 14, "p": "p2", "tag": "Rhetoric: Transition", "stem": "Which transition word or phrase is most logical in context?", "options": ["No Change", "On the other hand,", "As a result,", "In contrast,"], "answer": "A", "explain": "“Nevertheless” signals a contrast: despite the restriction (vow of chastity), she enjoyed greater independence than most women. B and D restate the same contrast; C (causation) is wrong because no cause–effect link is intended." },
+        { "n": 15, "p": "p2", "tag": "Precise Diction/Clarity", "stem": "Which choice best helps indicate that each historical epic covered different subject matter?", "options": ["No Change", "(each focused on the court of Otto I and", "(focusing on the court of Otto I as well as", "(one about the court of Otto I, the other about"], "answer": "D", "explain": "The goal is to show each epic covered *different* subject matter. Only “(one about the court of Otto I, the other about Gandersheim)” clearly separates the two subjects; the others ambiguously combine them." },
+        { "n": 16, "p": "p3", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "highway onto a stretch of Route 66, that is,", "highway onto a stretch, of Route 66 that is", "highway onto a stretch of Route 66 that is"], "answer": "D", "explain": "“I turn off the gridlocked highway onto a stretch of Route 66 that is surrounded by arid New Mexico hills.” The commas in the original interrupt the flow; D removes the misplaced commas." },
+        { "n": 17, "p": "p3", "tag": "Concision/Redundancy", "stem": "Which choice is least redundant in context?", "options": ["No Change", "into the rearview mirror, three miles into our detour,", "behind me by looking into the rearview mirror,", "into the rearview mirror,"], "answer": "D", "explain": "“Windows rolled down” was already stated earlier in the sentence. “Into the rearview mirror” alone is the least redundant." },
+        { "n": 18, "p": "p3", "tag": "Rhetoric: Add/Delete", "stem": "If the writer were to delete the underlined portion (adjusting the punctuation as needed), the paragraph would primarily lose:", "options": ["information that indicates how prevalent rumble strips are on roadways.", "a detail that reveals the narrator's opinion of distracted drivers.", "information that clarifies a primary function of rumble strips.", "a detail that indicates what the rumble strips look like."], "answer": "C", "explain": "The deleted phrase explains what rumble strips *do* — warn drivers. Removing it loses that function-clarifying information. It does not address prevalence, the narrator's opinion, or appearance." },
+        { "n": 19, "p": "p3", "tag": "Concision/Redundancy", "stem": "Which choice is least redundant in context?", "options": ["No Change", "were implemented just outside Albuquerque.", "that play music were put in.", "were added a couple years ago."], "answer": "A", "explain": "“Were installed” is concise and adds no redundancy. B, C, and D restate information already given (Albuquerque location, music, timing)." },
+        { "n": 20, "p": "p3", "tag": "Rhetoric: Purpose/Transition", "stem": "Given that all the choices are accurate, which one most effectively leads into the rest of the essay?", "options": ["No Change", "lots of other drivers, not just me, still make this detour to hear the tune.", "sometimes drivers will turn around and drive over the strips again.", "this detour on our drive home never fails to buoy my spirits."], "answer": "D", "explain": "The essay turns personal at the end (riding the music, feeling better about work and home). “This detour on our drive home never fails to buoy my spirits” leads directly into that personal, reflective close. The others introduce other drivers and dilute the narrator's focus." },
+        { "n": 21, "p": "p3", "tag": "Subject–Verb Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "have disappeared", "disappear", "fade"], "answer": "A", "explain": "The subject is “the last one” (singular), so the verb “fades” is correct. “Fade,” “disappear,” and “have disappeared” are plural or mismatched." },
+        { "n": 22, "p": "p3", "tag": "Pronoun Case", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "whom have", "they have", "whose"], "answer": "A", "explain": "“The boys, who have been lulled” — “who” is the subject of the clause (they have been lulled), not “whom” (object). “Whose” and “they have” do not fit." },
+        { "n": 23, "p": "p3", "tag": "Rhetoric: Transition", "stem": "Which transition word or phrase is most logical in context?", "options": ["No Change", "Now and then,", "For now,", "Later,"], "answer": "C", "explain": "“For now, I feel like everything is going to be just fine” conveys a present, momentary calm. “Until then,” “Now and then,” and “Later” do not fit the reflective present moment." },
+        { "n": 24, "p": "p3", "point": "24", "tag": "Rhetoric: Add/Delete", "stem": "At this point, the writer is considering adding the following accurate sentence: *I hear there is another musical road in the US, somewhere in California.* Should the writer make this addition?", "options": ["Yes, because it makes clear that the narrator has plans to travel on other musical roads.", "Yes, because it indicates that the musical road in New Mexico is not unique.", "No, because it draws the focus away from the New Mexico musical road and its effect on the narrator.", "No, because it fails to provide specific details about the construction of the musical road in California."], "answer": "C", "explain": "Adding a fact about a California road would shift focus away from the New Mexico road and its personal effect on the narrator. The correct “No” reason is that it draws focus away — not the construction-detail reason in D." },
+        { "n": 25, "p": "p3", "tag": "Rhetoric: Placement", "stem": "*Question 25 asks about the preceding passage as a whole.* The writer wants to add the following sentence to the essay: *It is marvelously quiet.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "A", "explain": "“It is marvelously quiet” fits Point A in Paragraph 1, where the narrator describes the calm detour before the music begins. Points B, C, and D come after the music or once the reflective mood has begun." },
+        { "n": 26, "p": "p4", "tag": "Rhetoric: Add/Delete", "stem": "If the writer were to delete the underlined portion, the essay would primarily lose a:", "options": ["suggestion that not all public museums provide proper stewardship for their artifacts.", "clarification of what public museum stewardship entails.", "list of reasons for educating the public on stewardship.", "description of the daily tasks performed by curators."], "answer": "B", "explain": "The parenthetical defines what stewardship entails (management, care, documentation, use). Deleting it loses that clarification. It is not a suggestion about museums failing, a reason list, or a curator job description." },
+        { "n": 27, "p": "p4", "tag": "Sentence Structure/Fragment", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "With the display of", "While displaying", "Displaying"], "answer": "D", "explain": "The original “When displaying … severely limits” is a fragment (missing its subject). “Displaying such a small portion of artifacts severely limits” turns it into a proper sentence with a gerund subject." },
+        { "n": 28, "p": "p4", "tag": "Grammar", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "storage makes providing", "storage, which provides", "storage, providing"], "answer": "A", "explain": "“Also known as open storage, visible storage provides ways to display many items …” is grammatically complete. B, C, and D create an error (awkward verb phrase or comma issue)." },
+        { "n": 29, "p": "p4", "tag": "Pronoun Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "between them", "among them", "among it"], "answer": "A", "explain": "“Each artifact is labeled and positioned … with plenty of space between it and the other objects” — “it” correctly refers to the singular “each artifact.” The plural pronouns in B and C do not match; D is wrong." },
+        { "n": 30, "p": "p4", "tag": "Rhetoric: Transition", "stem": "Which transition word is most logical in context?", "options": ["No Change", "Conversely,", "Namely,", "Granted,"], "answer": "B", "explain": "The previous sentence describes the traditional display; this one contrasts with visible storage (close together, few labels). “Conversely” signals that contrast." },
+        { "n": 31, "p": "p4", "tag": "Word Choice/Relative Pronoun", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "that which", "that", "Delete the underlined portion."], "answer": "C", "explain": "“Ceramic pottery that might otherwise be positioned in individual glass cases might be lined up …” — “that” correctly introduces the restrictive clause. “Where” is wrong for an object; “that which” and deletion are awkward." },
+        { "n": 32, "p": "p4", "point": "32", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following parenthetical phrase: *(whether because of light sensitivity or the request of a donor)* Given that the information is accurate, should the writer make this addition here?", "options": ["Yes, because it gives specific examples to help explain why some objects can never be displayed in a museum.", "Yes, because it offers specific examples of items that require special storage.", "No, because it detracts from the paragraph's focus on the ideal museum layout.", "No, because it diminishes the role museums play in educating the public."], "answer": "A", "explain": "The parenthetical gives specific, relevant examples (light sensitivity, donor request) explaining *why* some things can never be displayed. B misstates it as examples of special-storage *items*; C and D misread the focus." },
+        { "n": 33, "p": "p4", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "can and should—", "can, and should", "can and, should"], "answer": "A", "explain": "“Many pieces that can—and should—be viewed” correctly uses a matching pair of em-dashes. B drops the closing dash; C and D mix commas with dashes, violating consistency." },
+        { "n": 34, "p": "p4", "tag": "Rhetoric: Transition/Word Choice", "stem": "Which choice is clearest and most precise in context?", "options": ["No Change", "Although", "When", "Since"], "answer": "C", "explain": "“When a museum designates areas for visible storage, it uses space efficiently” states a condition and its result. “Whereas” and “Although” imply concession; “Since” links vaguely without the condition–result clarity." },
+        { "n": 35, "p": "p4", "tag": "Rhetoric: Placement", "stem": "*Question 35 asks about the preceding passage as a whole.* The writer wants to add the following sentence to the essay: *This potentially compromises stewardship.* For the sake of logic and cohesion, the sentence should be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 2.", "Point D in Paragraph 3."], "answer": "A", "explain": "“This potentially compromises stewardship” belongs at Point A in Paragraph 1, right after the discussion of storage problems (space limits, only 10% displayed). Points B, C, and D shift away from that first-paragraph claim." },
+        { "n": 36, "p": "p5", "point": "36", "tag": "Rhetoric: Add/Delete", "stem": "If the writer were to delete the phrase “which can measure up to thirteen feet wide and seven feet thick” from the preceding sentence (adjusting the punctuation as needed), the sentence would primarily lose:", "options": ["specific information that illustrates the minimum height at which the weavers begin building their nests.", "specific information that underscores the enormousness of the weavers' nests.", "details that clarify how the weavers are able to survive in the Kalahari Desert.", "details that explain how the weavers' nests differ from other birds' nests."], "answer": "B", "explain": "The phrase gives the nests' size (thirteen feet wide, seven feet thick), which underscores their enormousness. The other options misstate what the phrase conveys." },
+        { "n": 37, "p": "p5", "tag": "Rhetoric: Tone/Style", "stem": "The writer wants to emphasize the unusual appearance of the weavers' nests by using playful language to evoke a specific image. Which choice best accomplishes this goal?", "options": ["No Change", "carelessly plunked-down haystacks.", "collections of disparate items.", "large knots."], "answer": "B", "explain": "The goal is playful language evoking a specific image. “Carelessly plunked-down haystacks” vividly and playfully captures the sprawling, messy look. A, C, and D are neutral rather than playful." },
+        { "n": 38, "p": "p5", "tag": "Parallelism/Sentence Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "then squeezes", "squeezing", "to squeeze"], "answer": "C", "explain": "The original is a comma splice (“… the nest, it squeezes”). The intended parallel list is “flying …, squeezing …, and continuing …” — “squeezing” matches “flying” and “continuing.”" },
+        { "n": 39, "p": "p5", "tag": "Concision/Redundancy", "stem": "Which choice is least redundant in context?", "options": ["No Change", "all together, staying warm when the temperature drops and gets colder at night.", "and stay warm when temperatures plummet at night and it's cold.", "for warmth during the cold Kalahari nights."], "answer": "D", "explain": "“As a group together” is redundant. “For warmth during the cold Kalahari nights” is the concise, complete fix. B and C still contain redundancy or overstatement." },
+        { "n": 40, "p": "p5", "tag": "Apostrophe/Pronoun", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "when its at it's", "at it's", "at its"], "answer": "D", "explain": "“The nests exemplify communal living at its most effective” — “its” is the correct possessive (no apostrophe). A keeps the misspelled “there”; B and C use “it's” (it is), which is wrong." },
+        { "n": 41, "p": "p6", "tag": "Rhetoric: Style/Pattern", "stem": "Which choice best maintains the stylistic pattern of descriptions established earlier in the sentence?", "options": ["No Change", "something with a dizzying effect—", "mazes that she creates—", "so many lines—"], "answer": "A", "explain": "The sentence lists noun phrases (“flowers with layers …, intricate spirals …, teardrops …, and dizzying mazes of lines”). “Dizzying mazes of lines” matches the noun-phrase pattern; B, C, and D break it." },
+        { "n": 42, "p": "p6", "tag": "Apostrophe/Word Formation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "centuries-old", "centuries'-old", "century's-old"], "answer": "B", "explain": "“Centuries-old” is a compound adjective — no apostrophe. “Century's-old,” “centuries'-old,” and “century's-oldest” are all malformed." },
+        { "n": 43, "p": "p6", "tag": "Rhetoric: Add/Delete", "stem": "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?", "options": ["Kept, because it compares Pang Xiong's embroidery style with that of modern paj ntaub.", "Kept, because it places the subject of the essay in a modern context.", "Deleted, because it detracts from the paragraph's focus on the various styles of ancient Hmong needlework arts.", "Deleted, because it adds a detail that is irrelevant to the paragraph's introduction of Pang Xiong's connection to paj ntaub."], "answer": "B", "explain": "The sentence about modern paj ntaub should be *kept* because it places the subject in a modern context (it shows the tradition is alive today). A misstates the comparison; C and D incorrectly call it irrelevant." },
+        { "n": 44, "p": "p6", "tag": "Rhetoric: Placement", "stem": "The best placement for the underlined portion would be:", "options": ["where it is now.", "after the word *made*.", "after the word *clothing*.", "after the word *needlework*."], "answer": "C", "explain": "“Flower cloth … is made to be worn as clothing …” — the parenthetical “(commonly as a shirt, dress, coat, or collar)” best fits right after “clothing,” since it specifies the examples of clothing. It is awkward where it currently sits." },
+        { "n": 45, "p": "p6", "tag": "Rhetoric: Purpose", "stem": "Which choice most clearly builds on the information provided earlier in the sentence about a common theme in paj ntaub patterns and images?", "options": ["No Change", "only a master artist is able to create paj ntaub clothing for special occasions.", "paj ntaub patterns are extraordinarily colorful.", "paj ntaub celebrates the natural world."], "answer": "D", "explain": "The sentence lists pattern names (“elephant's foot,” “snail house”) and images of animals framed by geometric designs — a nature theme. “Paj ntaub celebrates the natural world” builds on that theme. A, B, and C do not connect to the animal and nature imagery." },
+        { "n": 46, "p": "p6", "tag": "Relative Pronoun/Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "appliqué which", "appliqué and", "appliqué,"], "answer": "A", "explain": "“Reverse appliqué, in which shapes are cut out” — “in which” is the correct relative phrase and needs the comma. B loses the comma; C and D change the meaning." },
+        { "n": 47, "p": "p6", "tag": "Pronoun Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "the surface of the fabric.", "the surface of it.", "their surface."], "answer": "A", "explain": "“Thousands of layered stitches are applied to its surface” — “its” correctly refers to the paj ntaub (singular). “Their surface” (D) mismatches number; B and C introduce ambiguous reference." },
+        { "n": 48, "p": "p6", "tag": "Rhetoric: Revision/Diction", "stem": "The writer is considering revising the underlined portion to the following: *mass-produced* Should the writer make this revision?", "options": ["Yes, because the revision creates a clearer contrast between the homogeneous styles of clothing that are popular today and the handcrafted paj ntaub.", "Yes, because the revision emphasizes Pang Xiong's desire for her handcrafted paj ntaub to be sold on a large scale in stores.", "No, because the original word reinforces the idea that although paj ntaub clothing can be used for everyday wear, it should be saved for special occasions.", "No, because the original word more specifically describes the type of clothing Pang Xiong disapproves of."], "answer": "A", "explain": "The revision to “mass-produced” should be made, because it creates a clear contrast between today's homogeneous, mass-produced clothing and Pang Xiong's handcrafted paj ntaub. B misreads her desire; C and D misread the original “regular.”" },
+        { "n": 49, "p": "p6", "tag": "Rhetoric: Transition", "stem": "Which transition word or phrase, if any, is most logical in context?", "options": ["No Change", "For example, she", "Besides, she", "She"], "answer": "A", "explain": "“However” correctly signals a contrast: she regrets that others wear only “regular” clothes, yet *she* still wears flower cloth daily. “For example” and “Besides” do not fit the contrast; “She” drops the needed transition." },
+        { "n": 50, "p": "p6", "point": "50", "tag": "Rhetoric: Purpose/Conclusion", "stem": "Which of the following true statements, if added here, would best build on the ideas presented in this paragraph and connect to the final sentence of the essay?", "options": ["She loves when people, no matter what their ethnicity, wear traditional clothing every day.", "She often teaches paj ntaub to Hmong adults her age who want to learn new techniques.", "Recently, she worked with nine young Hmong women in a formal apprenticeship.", "One of her own favorite pieces tells the story of her family."], "answer": "C", "explain": "The final sentence says Pang Xiong “is showing a new generation the joys of paj ntaub.” Option C (working with nine young Hmong women in an apprenticeship) directly builds on that idea of teaching a new generation. The others do not connect to the final sentence." }
+      ]
+    }
+  ]
+}
