@@ -18,8 +18,10 @@ function optText(opt) {
 /* Passage spans: {t} plain text, {u, t} tested underline keyed by
    question number, {box} reference point. The active question's span
    lights up; boxed points light up when the active question anchors
-   to them via its "point" field. */
+   to them via its "point" field — except Placement questions, which
+   must never light a box (the lit box would give away the answer). */
 function renderSpans(spans, q) {
+  const isPlacement = /placement/i.test(q.tag || "");
   return spans.map((s, i) => {
     if (s.u !== undefined) {
       const active = s.u === q.n;
@@ -31,7 +33,7 @@ function renderSpans(spans, q) {
       );
     }
     if (s.box !== undefined) {
-      const active = q.point === s.box;
+      const active = !isPlacement && q.point === s.box;
       return (
         <span key={i} className={active ? "box-ref active" : "box-ref"}>
           [{s.box}]

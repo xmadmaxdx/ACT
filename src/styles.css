@@ -1277,6 +1277,31 @@ button {
   opacity: 0.35;
 }
 
+.loader-error-box {
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 26px;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.loader-error-title {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
+.loader-error-msg {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  word-break: break-word;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .loader-logo {
     animation: none;

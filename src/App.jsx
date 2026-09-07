@@ -7,8 +7,8 @@ import Footer from "./components/Footer.jsx";
 import Practice from "./components/Practice.jsx";
 import TestScreen from "./components/TestScreen.jsx";
 import Results from "./components/Results.jsx";
-import Loader from "./components/Loader.jsx";
-import { fetchCatalog, localCatalog } from "./supabase.js";
+import Loader, { LoaderError } from "./components/Loader.jsx";
+import { fetchCatalog } from "./supabase.js";
 import "./styles.css";
 
 function slugFor(skill) {
@@ -36,6 +36,7 @@ export default function App() {
   const [session, setSession] = useState(null);
   const [reviewIndex, setReviewIndex] = useState(null);
   const [catalog, setCatalog] = useState(null);
+  const [loadError, setLoadError] = useState(null);
   const sessionRef = useRef(null);
   sessionRef.current = session;
 
@@ -43,10 +44,12 @@ export default function App() {
     let live = true;
     fetchCatalog()
       .then((tests) => {
-        if (live) setCatalog(tests);
+        if (!live) return;
+        console.info(`ACTprep catalog source: supabase (${tests.length} tests)`);
+        setCatalog(tests);
       })
-      .catch(() => {
-        if (live) setCatalog(localCatalog());
+      .catch((e) => {
+        if (live) setLoadError(e && e.message ? e.message : String(e));
       });
     return () => {
       live = false;
@@ -123,6 +126,10 @@ export default function App() {
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+
+  if (loadError) {
+    return <LoaderError message={loadError} />;
+  }
 
   if (!catalog) {
     return <Loader />;

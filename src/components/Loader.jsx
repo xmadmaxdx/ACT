@@ -10,3 +10,21 @@ export default function Loader() {
     </div>
   );
 }
+
+export function LoaderError({ message }) {
+  return (
+    <div className="loader" role="alert">
+      <div className="loader-logo">
+        <LogoMark />
+      </div>
+      <div className="loader-text">LOADING</div>
+      <div className="loader-error-box">
+        <p className="loader-error-title">Couldn't reach the test database.</p>
+        <p className="loader-error-msg">{message}</p>
+        <button className="btn-primary" type="button" onClick={() => window.location.reload()}>
+          RETRY
+        </button>
+      </div>
+    </div>
+  );
+}
