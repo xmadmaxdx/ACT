@@ -2,7 +2,13 @@
 /* Seeds ACTprep content JSONs into Supabase.
  *
  * Usage (super simple):
- *   npm run seed
+ *   npm run seed                                push everything
+ *   node scripts/seed-supabase.mjs -p -3        push last 3 passages only
+ *   node scripts/seed-supabase.mjs -p -1        push last passage only
+ *
+ * Flags:
+ *   -p / --passages   only passage tests (ids like ENGLISH-P1)
+ *   -N / --last=N     only the last N of the selection (e.g. -3, -1)
  *
  * Env (or flags --url= --key=):
  *   SUPABASE_URL required
@@ -33,12 +39,27 @@ try {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_DIR = join(ROOT, "src", "data");
 
+const rawArgs = process.argv.slice(2);
 const args = Object.fromEntries(
-  process.argv.slice(2).map((a) => {
+  rawArgs.map((a) => {
     const m = /^--([^=]+)=(.*)$/.exec(a);
     return m ? [m[1], m[2]] : [a.replace(/^--/, ""), "1"];
   })
 );
+
+// -p / --passages : only passage tests (ids like ENGLISH-P1)
+// -N / --last=N   : only the last N of the selected set (e.g. -3, -1)
+const passagesOnly = rawArgs.includes("-p") || args.passages !== undefined;
+let lastN = null;
+for (const a of rawArgs) {
+  const m = /^-{1,2}(\d+)$/.exec(a);
+  if (m) lastN = parseInt(m[1], 10);
+}
+if (args.last !== undefined) lastN = parseInt(args.last, 10);
+if (lastN !== null && (!Number.isInteger(lastN) || lastN < 1)) {
+  console.error("Bad count. Use -1, -3, or --last=2.");
+  process.exit(1);
+}
 
 const URL = (args.url || process.env.SUPABASE_URL || "https://wfcrlfnjzuutoagbvgyw.supabase.co").replace(/\/$/, "");
 const KEY = args.key || process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -96,10 +117,18 @@ function validate(test) {
 const files = (await readdir(DATA_DIR)).filter((f) => f.endsWith(".json"));
 if (files.length === 0) throw new Error(`no JSON files in ${DATA_DIR}`);
 
-let totals = { tests: 0, passages: 0, questions: 0 };
+const candidates = [];
 for (const file of files) {
   const doc = JSON.parse(await readFile(join(DATA_DIR, file), "utf8"));
-  for (const test of doc.tests || []) {
+  for (const test of doc.tests || []) candidates.push({ file, section: doc.section, test });
+}
+const selected = (
+  passagesOnly ? candidates.filter(({ test }) => /-P\d+$/.test(test.id || "")) : candidates
+).slice(lastN === null ? 0 : -lastN);
+if (selected.length === 0) throw new Error("nothing selected: no matching tests in the JSON files");
+
+let totals = { tests: 0, passages: 0, questions: 0 };
+for (const { file, section, test } of selected) {
     const problems = validate(test);
     if (problems.length > 0) {
       throw new Error(`${file} :: ${test.id || "?"} invalid:\n - ${problems.join("\n - ")}`);
@@ -110,7 +139,7 @@ for (const file of files) {
       body: [
         {
           id: test.id,
-          section: test.section || doc.section || null,
+          section: test.section || section || null,
           title: test.title,
           total: test.total,
           time_minutes: test.timeMinutes,
@@ -146,7 +175,6 @@ for (const file of files) {
     totals.passages += passages.length;
     totals.questions += questions.length;
     console.log(`ok  ${test.id}: ${passages.length} passages, ${questions.length} questions`);
-  }
 }
 
 console.log(`done: ${totals.tests} tests, ${totals.passages} passages, ${totals.questions} questions`);

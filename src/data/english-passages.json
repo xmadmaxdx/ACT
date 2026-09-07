@@ -220,6 +220,125 @@
         { "n": 9, "p": "p1", "tag": "Pronoun Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "A city that plants trees today gives it's residents decades of shade, cleaner air, and cooler summers.", "A city that plants trees today gives their residents decades of shade, cleaner air, and cooler summers.", "A city that plants trees today gives its' residents decades of shade, cleaner air, and cooler summers."], "answer": "A", "explain": "The antecedent \"city\" is singular, so the possessive pronoun must be the singular \"its.\" B uses the contraction \"it is,\" C uses the plural \"their,\" and D uses \"its',\" which is not a word in English." },
         { "n": 10, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *Volunteers who water young trees through their first two summers dramatically raise survival rates.* Should the writer make this addition?", "options": ["Yes, because it names a specific action that helps the plantings described in the paragraph survive.", "Yes, because it proves that volunteers can replace city funding entirely.", "No, because it shifts focus from street trees to houseplants.", "No, because it suggests young trees need no care at all."], "answer": "A", "explain": "Watering young trees is the concrete follow-through the paragraph's call for plantings and maintenance requires. B overclaims that volunteers can replace funding, C misreads the subject as houseplants, and D reverses the sentence's meaning." }
       ]
+    },
+    {
+      "id": "ENGLISH-P5",
+      "title": "My Grandmother's Dumplings",
+      "total": 10,
+      "timeMinutes": 7,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "My Grandmother's Dumplings",
+          "paras": [
+            [
+              { "t": "Every December, my grandmother " },
+              { "u": 1, "t": "turned her small kitchen into a dumpling factory." },
+              { "t": " By noon, the counters were dusted white with flour, and the radio played carols over the hiss of the kettle. " },
+              { "box": "A" },
+              { "t": " " },
+              { "u": 2, "t": "The air smelled of ginger and scallion, sharp and warm at once." }
+            ],
+            [
+              { "t": "At first, she showed " },
+              { "u": 3, "t": "my sister and I" },
+              { "t": " how to pleat the edges without tearing the wrappers. Mine split open every time. " },
+              { "u": 4, "t": "Later, my sister's sealed shut on the first try." },
+              { "t": " " },
+              { "box": "B" },
+              { "t": " " },
+              { "u": 5, "t": "Grandmother laughed and rolled another wrapper, a fresh one, for me to try again." }
+            ],
+            [
+              { "t": "By midafternoon, my fingers ached, and half my dumplings still resembled small, lumpy envelopes. " },
+              { "u": 6, "t": "The radio had moved on to the news by then." },
+              { "t": " " },
+              { "box": "C" },
+              { "t": " " },
+              { "u": 8, "t": "Still, I kept pleating, and somewhere around the twentieth wrapper my thumbs finally learned the rhythm." }
+            ],
+            [
+              { "u": 9, "t": "Thinking of her every time the ginger hits the hot oil, the scent fills my kitchen with memory." },
+              { "t": " " },
+              { "box": "D" },
+              { "t": " " },
+              { "u": 10, "t": "Some lessons arrive not as instructions but as afternoons." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Verb Tense", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "turns her small kitchen into a dumpling factory.", "had turned her small kitchen into a dumpling factory and will turn it again.", "turning her small kitchen into a dumpling factory."], "answer": "A", "explain": "The memoir is told in the past tense, so the simple past \"turned\" is correct. B shifts into the present, C tangles past perfect with future, and D leaves the sentence with no main verb at all." },
+        { "n": 2, "p": "p1", "tag": "Rhetoric: Imagery", "stem": "Which choice best preserves the narrator's vivid sensory voice?", "options": ["No Change", "The air smelled okay.", "The air had a smell.", "The air smelled of ginger and scallion, which are ingredients."], "answer": "A", "explain": "In a narrative, vivid sensory detail is a strength: \"sharp and warm at once\" lets the reader smell the kitchen. B and C flatten the image into near-nothing, and D turns the image into a flat definition." },
+        { "n": 3, "p": "p1", "tag": "Pronoun Case", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "my sister and me", "my sister and myself", "we"], "answer": "B", "explain": "The pronoun is the object of \"showed,\" so it must take the objective case: \"me.\" A uses the nominative \"I,\" C misuses the reflexive \"myself,\" and D replaces two people with a pronoun that cannot serve as the object here." },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Transitions", "stem": "Which choice most accurately places the sister's success in time, given that both children are practicing in the same afternoon session?", "options": ["No Change", "Meanwhile, my sister's sealed shut on the first try.", "The next year, my sister's sealed shut on the first try.", "Eventually, my sister's sealed shut on the first try."], "answer": "B", "explain": "Her success happens during the same session, so \"meanwhile\" correctly marks simultaneity. \"Later,\" \"the next year,\" and \"eventually\" all falsely push her first-try success into the future — and \"eventually\" contradicts \"the first try.\"" },
+        { "n": 5, "p": "p1", "tag": "Knowledge: Concision", "stem": "Which choice is least redundant in context?", "options": ["No Change", "Grandmother laughed and rolled another wrapper for me to try again.", "Grandmother laughed and rolled another wrapper, a fresh new one, for me to try again.", "Grandmother laughed and rolled another wrapper, which was a wrapper and fresh, for me to try again."], "answer": "B", "explain": "\"Another\" already means one more and fresh, so B says it once. A restates it as \"a fresh one,\" C doubles it as \"a fresh new one,\" and D spells out the redundancy word by word." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Add/Delete", "stem": "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?", "options": ["Kept, because it shows that the afternoon is passing.", "Kept, because it explains the pleating technique.", "Deleted, because it breaks the paragraph's focus on the narrator's practice with an unrelated detail.", "Deleted, because it repeats the description of the flour."], "answer": "C", "explain": "The paragraph is about aching fingers and lumpy envelopes — the narrator's struggle to learn. The radio bulletin adds nothing to that focus, and the time-passing detail is already carried by \"by midafternoon.\" A praises a redundant time marker, B misreads the content, and D misidentifies what the sentence says." },
+        { "n": 7, "p": "p1", "point": "B", "tag": "Rhetoric: Placement", "stem": "The writer wants to add the following sentence to the essay: *My sister still brags that her first dumpling was perfect.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "B", "explain": "Point B sits beside the sibling-contrast moment — her first-try success against the narrator's split wrappers — so the brag completes that scene. Point A comes before the sister even appears, and Points C and D arrive after the scene has moved on to practice and reflection." },
+        { "n": 8, "p": "p1", "tag": "Rhetoric: Elaboration", "stem": "The writer wants to show the narrator's persistence paying off. Which choice best accomplishes that goal?", "options": ["No Change", "Still, I kept pleating, and I ate three dumplings.", "Still, I kept pleating, and my sister left the kitchen.", "Still, I kept pleating, and the radio played another carol."], "answer": "A", "explain": "A delivers the payoff: the thumbs \"finally learned the rhythm\" around the twentieth wrapper. B detours into snacking, C follows the sister out of the scene, and D returns to the radio without resolving the learning arc." },
+        { "n": 9, "p": "p1", "tag": "Modifiers", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "Thinking of her every time the ginger hits the hot oil, I breathe in memory with the scent.", "Thinking of her every time the ginger hits the hot oil, memory is breathed in by me.", "Thinking of her every time the ginger hits the hot oil and the scent fills my kitchen with memory."], "answer": "B", "explain": "An opening participle must modify the subject, and only B supplies \"I\" as the one thinking. In A the scent absurdly does the thinking, in C memory does, and D fuses the participial phrase to a clause with \"and,\" leaving the grammar broken." },
+        { "n": 10, "p": "p1", "tag": "Rhetoric: Conclusion", "stem": "The writer wants an ending that captures the memory's lasting meaning. Which choice best accomplishes that goal?", "options": ["No Change", "Dumplings are a traditional food in many cultures.", "My sister still pleats faster than I do.", "Everyone should learn to cook before college."], "answer": "A", "explain": "A closes the memoir's past-and-present arc with reflection: the lesson was the afternoon itself. B turns encyclopedic, C revives the sibling rivalry on the wrong note, and D preaches advice the essay never set out to give." }
+      ]
+    },
+    {
+      "id": "ENGLISH-P6",
+      "title": "How Honeybees Choose a Home",
+      "total": 10,
+      "timeMinutes": 7,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "How Honeybees Choose a Home",
+          "paras": [
+            [
+              { "t": "When a honeybee colony outgrows its hive, roughly half the bees swarm out with the old queen. Each returning scout reports three pieces of " },
+              { "u": 1, "t": "information: direction, distance, and quality." },
+              { "t": " " },
+              { "box": "A" },
+              { "t": " " },
+              { "u": 2, "t": "The scout advertises her find by dancing: the livelier the waggle dance, the better the site." }
+            ],
+            [
+              { "t": "Advertised sites then compete for supporters. " },
+              { "u": 3, "t": "In experiments, the swarm eventually dances for one site alone, abandoning weaker candidates." },
+              { "t": " " },
+              { "u": 4, "t": "Gradually, weaker dances fade as scouts switch allegiance to stronger ones." },
+              { "t": " " },
+              { "box": "B" },
+              { "t": " A scout inspects a cavity, " },
+              { "u": 5, "t": "measuring its volume, and dances with matching enthusiasm." }
+            ],
+            [
+              { "t": "Biologist Thomas Seeley tested the process by offering swarms five nest boxes of different quality. " },
+              { "u": 6, "t": "He painted the boxes different colors so that scouts could tell them apart." },
+              { "t": " Time after time, the swarm chose the best box. " },
+              { "box": "C" },
+              { "t": " Seeley concluded that no bee is in charge: " },
+              { "u": 8, "t": "the decision emerges from hundreds of independent inspections." }
+            ],
+            [
+              { "t": "The " },
+              { "u": 9, "t": "bees' ability" },
+              { "t": " to choose well without a leader has inspired engineers designing robot swarms. " },
+              { "box": "D" },
+              { "t": " Democracy, it turns out, is older than voting. " },
+              { "u": 10, "t": "Researchers now study whether other social insects decide the same way." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "information; direction, distance, and quality.", "information, direction, distance, and quality.", "information direction, distance, and quality."], "answer": "A", "explain": "The colon correctly follows a complete sentence and introduces the list of three items. A semicolon cannot introduce a list, a comma splices the list into the clause, and no punctuation fuses them together." },
+        { "n": 2, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to explain how scouts communicate the quality of a site. Which choice best accomplishes that goal?", "options": ["No Change", "The scout celebrates her find by dancing happily.", "The scout rests after her long flight.", "The scout dances to entertain the swarm."], "answer": "A", "explain": "A encodes the communication rule precisely: livelier dance means better site. B is vague and casual, C contradicts the reporting behavior, and D misreads the dance as entertainment." },
+        { "n": 3, "p": "p1", "tag": "Rhetoric: Supporting Detail", "stem": "The writer wants to give evidence that competition among sites ends in consensus. Which choice best accomplishes that goal?", "options": ["No Change", "In experiments, the swarm eventually dances beautifully.", "In experiments, the swarm eventually visits every site in person.", "In experiments, the swarm eventually forgets all the sites."], "answer": "A", "explain": "A states the observed outcome — one site alone, weaker candidates abandoned — which is exactly consensus. B praises the dancing, C wrongly sends the whole swarm visiting, and D claims the opposite of the finding." },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Transitions", "stem": "Which choice most logically continues the paragraph's account of a contest unfolding over time?", "options": ["No Change", "However, weaker dances fade as scouts switch allegiance to stronger ones.", "For example, weaker dances fade as scouts switch allegiance to stronger ones.", "Instead, weaker dances fade as scouts switch allegiance to stronger ones."], "answer": "A", "explain": "\"Gradually\" marks the slow shift of support as the contest unfolds. \"However\" and \"instead\" signal a contrast or substitution that is not happening, and \"for example\" wrongly frames the next stage as a mere illustration." },
+        { "n": 5, "p": "p1", "tag": "Parallel Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "measures its volume, and dances with matching enthusiasm.", "to measure its volume, and dances with matching enthusiasm.", "measuring its volume, and to dance with matching enthusiasm."], "answer": "B", "explain": "The three verbs in the series — \"inspects,\" \"measures,\" \"dances\" — must share the same form. A mixes a participle into the series, C mixes an infinitive, and D mixes both." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Add/Delete", "stem": "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?", "options": ["Kept, because it explains how scouts distinguished the boxes in the experiment.", "Kept, because it proves that bees see color.", "Deleted, because it repeats the boxes' dimensions.", "Deleted, because the boxes play no role in the experiment."], "answer": "A", "explain": "The painted colors are the method detail that lets readers trust the result: scouts could tell the boxes apart. B overclaims proof about bee vision, C misreads colors as dimensions, and D denies the boxes' central role." },
+        { "n": 7, "p": "p1", "point": "A", "tag": "Rhetoric: Placement", "stem": "The writer wants to add the following sentence to the essay: *A scout may visit a dozen cavities before dancing for her favorite.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "A", "explain": "Point A sits beside the introduction of scouting and the dance, so the detail about visiting cavities belongs there. Point B covers the debate phase, Point C the experiment, and Point D the closing reflection — all after scouting is established." },
+        { "n": 8, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to state Seeley's finding about leaderless decision-making. Which choice best accomplishes that goal?", "options": ["No Change", "the queen picks the site alone.", "the loudest dancer becomes the leader.", "the scouts vote by secret ballot."], "answer": "A", "explain": "A states the finding exactly: no bee in charge, the choice emerging from many inspections. B contradicts the waiting queen, C invents a leader the passage denies, and D imports a human voting ritual bees do not use." },
+        { "n": 9, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "The bee's ability to choose well without a leader has inspired engineers designing robot swarms.", "The bees's ability to choose well without a leader has inspired engineers designing robot swarms.", "The bees ability to choose well without a leader has inspired engineers designing robot swarms."], "answer": "A", "explain": "The ability belongs to many bees, so the plural possessive \"bees'\" is correct. B makes it one bee's ability, C uses a malformed possessive, and D drops the apostrophe entirely." },
+        { "n": 10, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *Engineers have already tested swarms of small robots that map collapsed buildings.* Should the writer make this addition?", "options": ["Yes, because it gives a concrete example of the robot research the paragraph introduces.", "Yes, because it proves that robots will soon replace honeybees.", "No, because it shifts focus from honeybees to astronomy.", "No, because it denies that engineers study bee behavior."], "answer": "A", "explain": "Mapping robots are the concrete payoff of the bio-inspired engineering the paragraph introduces. B overclaims replacement, C misreads robots as astronomy, and D reverses the sentence's meaning." }
+      ]
     }
   ]
 }
