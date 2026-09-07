@@ -2128,4 +2128,8 @@ button {
   .nav-item > span {
     display: none;
   }
+
+  .test-nav {
+    padding-bottom: 26px;
+  }
 }
