@@ -2093,10 +2093,61 @@ button {
 }
 
 @media (max-width: 700px) {
+  .test-progress {
+    display: none;
+  }
+
+  .test-topbar {
+    flex-wrap: wrap;
+  }
+
+  .test-title {
+    margin-left: auto;
+    order: 1;
+    max-width: 45%;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .test-exit {
+    order: 0;
+  }
+
+  .overview-btn {
+    order: 0;
+  }
+
   .test-timer-wrap {
     position: static;
     transform: none;
     flex: 1 1 100%;
-    order: 5;
+    order: 2;
+    justify-content: center;
+  }
+
+  .skill-grid {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 14px;
+  }
+
+  .skill-card {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    padding: 18px 8px;
+    min-height: 96px;
+  }
+
+  .skill-ghost {
+    display: none;
+  }
+
+  .skill-text {
+    display: none;
+  }
+
+  .skill-icon svg {
+    width: 48px;
+    height: 48px;
   }
 }
