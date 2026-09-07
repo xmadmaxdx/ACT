@@ -78,7 +78,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const elapsedRef = useRef(0);
   const enterRef = useRef(0);
   const prevPassageRef = useRef(null);
+  const prevQRef = useRef(null);
   const pausedRef = useRef(false);
+  /* Mirror of paces state for use inside interval/effects without stale closures. */
+  const pacesRef = useRef((session && session.paces) || {});
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -90,13 +93,27 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   }, []);
 
   useEffect(() => {
-    const pid = questions[Math.min(qIndex, total - 1)]?.p;
+    /* Leaving a question: bank the time spent on it into its pace. */
+    const leavingN = prevQRef.current;
+    if (!review && leavingN !== null && leavingN !== undefined) {
+      const delta = elapsedRef.current - enterRef.current;
+      if (delta > 0) {
+        pacesRef.current = {
+          ...pacesRef.current,
+          [leavingN]: (pacesRef.current[leavingN] || 0) + delta,
+        };
+        setPaces({ ...pacesRef.current });
+      }
+    }
+    const active = questions[Math.min(qIndex, total - 1)];
+    const pid = active?.p;
     if (prevPassageRef.current === null || prevPassageRef.current !== pid) {
       window.scrollTo(0, 0);
     }
     prevPassageRef.current = pid;
+    prevQRef.current = active ? active.n : null;
     enterRef.current = elapsedRef.current;
-  }, [qIndex]);
+  }, [qIndex, total]);
 
   if (!testData) {
     return (
@@ -129,9 +146,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     if (review || paused) return;
     const n = activeQ.n;
     setPicks((p) => ({ ...p, [n]: letter }));
-    setPaces((p) =>
-      p[n] === undefined ? { ...p, [n]: elapsedRef.current - enterRef.current } : p
-    );
   };
 
   const toggleFlag = () => {
@@ -157,6 +171,29 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     if (idx >= 0) setQIndex(idx);
   };
 
+  const commitActivePace = () => {
+    if (review) return { ...pacesRef.current };
+    const n = activeQ.n;
+    const delta = elapsedRef.current - enterRef.current;
+    if (delta > 0) {
+      pacesRef.current = { ...pacesRef.current, [n]: (pacesRef.current[n] || 0) + delta };
+      setPaces({ ...pacesRef.current });
+    }
+    enterRef.current = elapsedRef.current;
+    return { ...pacesRef.current };
+  };
+
+  const handleFinish = () => {
+    const finalPaces = commitActivePace();
+    onFinish({ picks, flags, paces: finalPaces });
+  };
+
+  const livePace = (n) => {
+    if (review || n !== activeQ.n) return paces[n];
+    const running = elapsed - enterRef.current;
+    return (paces[n] || 0) + Math.max(0, running);
+  };
+
   const finishRef = useRef(onFinish);
   finishRef.current = onFinish;
   const snapshotRef = useRef(null);
@@ -166,7 +203,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   useEffect(() => {
     if (timed && remaining === 0 && !autoDoneRef.current) {
       autoDoneRef.current = true;
-      finishRef.current(snapshotRef.current);
+      const activeN = prevQRef.current;
+      const delta = elapsedRef.current - enterRef.current;
+      const finalPaces =
+        activeN !== null && activeN !== undefined && delta > 0
+          ? { ...pacesRef.current, [activeN]: (pacesRef.current[activeN] || 0) + delta }
+          : { ...pacesRef.current };
+      finishRef.current({ ...snapshotRef.current, paces: finalPaces });
     }
   }, [timed, remaining]);
 
@@ -327,7 +370,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 <button
                   className="nav-btn primary"
                   type="button"
-                  onClick={() => onFinish({ picks, flags, paces })}
+                  onClick={handleFinish}
                 >
                   FINISH
                 </button>
@@ -391,7 +434,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                         <span className="ov-dot" aria-hidden="true" />
                         {STATUS_LABEL[st]}
                       </span>
-                      <span className="ov-pace">{formatPace(paces[q.n])}</span>
+                      <span className="ov-pace">{formatPace(livePace(q.n))}</span>
                     </span>
                   </button>
                 );
@@ -407,7 +450,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   type="button"
                   onClick={() => {
                     setOverviewOpen(false);
-                    onFinish({ picks, flags, paces });
+                    handleFinish();
                   }}
                 >
                   FINISH THIS EXAM

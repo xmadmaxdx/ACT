@@ -160,6 +160,66 @@
         { "n": 9, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "The ethics of mapping have also evolved; however, challenges remain.", "The ethics of mapping have also evolved however, challenges remain.", "The ethics of mapping have also evolved, however challenges remain."], "answer": "B", "explain": "\"However\" is a conjunctive adverb joining two complete clauses, so a semicolon must separate them, as in B. A splices the clauses with commas alone, C fuses them with no punctuation, and D strands \"however\" without the comma it requires." },
         { "n": 10, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *Some parks now display both indigenous and colonial place names on their maps.* Should the writer make this addition?", "options": ["Yes, because it offers a concrete example of the ethical balancing the paragraph describes.", "Yes, because it proves that all governments now respect indigenous traditions.", "No, because it introduces parks, a topic unrelated to mapmaking.", "No, because it contradicts the claim that mapping has become more ethical."], "answer": "A", "explain": "The added sentence illustrates how modern maps balance indigenous and colonial place names — precisely the ethical complexity the paragraph introduces. B overgeneralizes to \"all governments,\" C ignores that parks appear on maps, and D misreads the example as contradicting ethical progress." }
       ]
+    },
+    {
+      "id": "ENGLISH-P4",
+      "title": "The Case for Street Trees",
+      "total": 10,
+      "timeMinutes": 7,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "The Case for Street Trees",
+          "paras": [
+            [
+              { "t": "On a July afternoon, one side of Elm Street can feel ten degrees cooler than the other. A row of mature oaks on the shady side " },
+              { "u": 1, "t": "shade the sidewalk and cool the air." },
+              { "t": " " },
+              { "box": "A" },
+              { "t": " " },
+              { "u": 2, "t": "Cities should plant far more street trees, because the benefits of shade, cleaner air, and stormwater control outweigh the costs of planting and care." }
+            ],
+            [
+              { "t": "The evidence for planting is strong. " },
+              { "u": 3, "t": "In one study, shaded streets measured up to nine degrees cooler than bare streets at midday." },
+              { "t": " " },
+              { "u": 4, "t": "Shade is only the beginning, moreover, leaves trap dust and absorb gases." },
+              { "t": " " },
+              { "box": "B" },
+              { "t": " " },
+              { "u": 5, "t": "Trees also slow stormwater, giving drains time to keep up during heavy rain." }
+            ],
+            [
+              { "t": "Critics point to cracked sidewalks and clogged gutters. Roots can buckle pavement, and falling limbs can damage cars. " },
+              { "u": 6, "t": "Yet these problems shrink when cities choose appropriate species and give roots room to grow." },
+              { "t": " " },
+              { "box": "C" },
+              { "t": " " },
+              { "u": 8, "t": "In other words, the costs critics cite are manageable, while the benefits compound every year." }
+            ],
+            [
+              { "t": "The choice is ultimately a practical one. " },
+              { "u": 9, "t": "A city that plants trees today gives its residents decades of shade, cleaner air, and cooler summers." },
+              { "t": " " },
+              { "box": "D" },
+              { "t": " " },
+              { "u": 10, "t": "Neighborhood groups can request plantings, and councils can fund maintenance year after year." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Subject-Verb Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "shades the sidewalk and cools the air.", "shade the sidewalk and cools the air.", "shading the sidewalk and cooling the air."], "answer": "B", "explain": "The subject is the singular noun \"row\" — cross out the prepositional phrase \"of mature oaks on the shady side\" to see it. B gives both verbs the singular form. A and C use the plural \"shade,\" and D leaves the sentence with no main verb at all." },
+        { "n": 2, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to state the essay's central argument in formal language. Which choice best accomplishes that goal?", "options": ["No Change", "Cities should plant a ton more street trees because trees are awesome and concrete stinks.", "Trees are among the oldest living organisms on Earth.", "Cities should plant more oaks on Elm Street."], "answer": "A", "explain": "A states the position plainly — plant far more street trees — and previews the essay's reasons: shade, cleaner air, stormwater control, weighed against costs. B slips into slang, C is true but off-thesis, and D narrows the argument to one species on one street." },
+        { "n": 3, "p": "p1", "tag": "Rhetoric: Supporting Detail", "stem": "The writer wants to support the claim that trees cool streets with concrete evidence. Which choice best accomplishes that goal?", "options": ["No Change", "Trees are especially beautiful in autumn.", "Some pedestrians actually prefer the sunny side of the street.", "Researchers counted every tree on four streets before lunch."], "answer": "A", "explain": "A cites a measured result — nine degrees cooler at midday — that directly proves the cooling claim. B praises autumn looks, C notes a preference that undercuts nothing and proves nothing, and D reports a procedural detail with no finding attached." },
+        { "n": 4, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "Shade is only the beginning; moreover, leaves trap dust and absorb gases.", "Shade is only the beginning moreover leaves trap dust and absorb gases.", "Shade is only the beginning, moreover leaves trap dust and absorb gases."], "answer": "B", "explain": "\"Moreover\" is a conjunctive adverb joining two complete clauses, so it needs a semicolon before it and a comma after it, as in B. A splices the clauses with commas alone, C fuses them with no punctuation, and D drops the comma that must follow \"moreover.\"" },
+        { "n": 5, "p": "p1", "tag": "Rhetoric: Transitions", "stem": "Which choice provides the most logical transition, given that the sentence adds another benefit of street trees?", "options": ["No Change", "Trees however slow stormwater, giving drains time to keep up during heavy rain.", "Trees for example slow stormwater, giving drains time to keep up during heavy rain.", "Trees instead slow stormwater, giving drains time to keep up during heavy rain."], "answer": "A", "explain": "The sentence adds a further benefit, so the additive transition \"also\" is correct. \"However\" and \"instead\" signal contrast or substitution, and \"for example\" signals an illustration — none of which fits a new item in the list of benefits." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Counterargument", "stem": "The writer wants to answer the critics' objections with a practical solution. Which choice best accomplishes that goal?", "options": ["No Change", "Yet trees are much prettier than sidewalks, so critics should look on the bright side.", "Yet critics should stop complaining and let the city do its job.", "Yet sidewalks crack for many reasons, so trees are hardly the problem."], "answer": "A", "explain": "A meets the objections head-on: proper species selection and room for roots shrink the damage critics cite. B answers with an aesthetic opinion, C dismisses the critics rudely, and D deflects blame onto other causes without offering any solution." },
+        { "n": 7, "p": "p1", "point": "B", "tag": "Rhetoric: Placement", "stem": "The writer wants to add the following sentence to the essay: *A single mature oak can intercept thousands of gallons of rainfall each year.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "B", "explain": "Point B sits beside the paragraph's evidence on cooling, air quality, and stormwater — the rainfall statistic belongs with that supporting detail. Point A precedes the evidence, while Points C and D come after the essay has moved on to objections and conclusions." },
+        { "n": 8, "p": "p1", "tag": "Rhetoric: Conclusion", "stem": "Which choice most effectively concludes the paragraph's rebuttal by returning to the essay's central argument?", "options": ["No Change", "In other words, trees are nicer than concrete.", "In other words, the benefits critics cite are manageable, while the costs compound every year.", "In other words, everyone should stop arguing and plant trees."], "answer": "A", "explain": "A restates the thesis in the paragraph's terms — manageable costs against compounding benefits. B is vague and casual, C reverses the meaning by swapping costs and benefits, and D issues an informal command instead of an argument." },
+        { "n": 9, "p": "p1", "tag": "Pronoun Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "A city that plants trees today gives it's residents decades of shade, cleaner air, and cooler summers.", "A city that plants trees today gives their residents decades of shade, cleaner air, and cooler summers.", "A city that plants trees today gives its' residents decades of shade, cleaner air, and cooler summers."], "answer": "A", "explain": "The antecedent \"city\" is singular, so the possessive pronoun must be the singular \"its.\" B uses the contraction \"it is,\" C uses the plural \"their,\" and D uses \"its',\" which is not a word in English." },
+        { "n": 10, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *Volunteers who water young trees through their first two summers dramatically raise survival rates.* Should the writer make this addition?", "options": ["Yes, because it names a specific action that helps the plantings described in the paragraph survive.", "Yes, because it proves that volunteers can replace city funding entirely.", "No, because it shifts focus from street trees to houseplants.", "No, because it suggests young trees need no care at all."], "answer": "A", "explain": "Watering young trees is the concrete follow-through the paragraph's call for plantings and maintenance requires. B overclaims that volunteers can replace funding, C misreads the subject as houseplants, and D reverses the sentence's meaning." }
+      ]
     }
   ]
 }
