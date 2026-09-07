@@ -2125,29 +2125,7 @@ button {
     justify-content: center;
   }
 
-  .skill-grid {
-    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-    gap: 14px;
-  }
-
-  .skill-card {
-    flex-direction: column;
-    justify-content: center;
-    gap: 0;
-    padding: 18px 8px;
-    min-height: 96px;
-  }
-
-  .skill-ghost {
+  .nav-item > span {
     display: none;
-  }
-
-  .skill-text {
-    display: none;
-  }
-
-  .skill-icon svg {
-    width: 48px;
-    height: 48px;
   }
 }
