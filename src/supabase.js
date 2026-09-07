@@ -23,7 +23,7 @@ export async function fetchCatalog() {
     if (t.error) throw t.error;
     if (p.error) throw p.error;
     if (q.error) throw q.error;
-    return { t: t.data || [], p: p.data || [], q: q.data || [] };
+    return { t, p, q };
   })();
   const { t, p, q } = await Promise.race([query, timeout]);
   return (t.data || []).map((test) => ({
