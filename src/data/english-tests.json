@@ -288,34 +288,41 @@
           "title": "Passage I — Kenji Nakamura and the Art of Kintsugi",
           "paras": [
             [
+              { "t": "Morning light falls across shelves crowded with bowls awaiting repair, some shattered in earthquakes, others dropped at weddings. " },
               { "t": "In a Kyoto workshop, restorer Kenji Nakamura holds two halves of a " },
               { "u": 2, "t": "busted" },
               { "t": " tea bowl. " },
               { "u": 1, "t": "Instead of hiding the crack, he" },
-              { "t": " will trace it in gold. This is kintsugi, the Japanese art of mending pottery with lacquer dusted in gold." }
+              { "t": " will trace it in gold. This is kintsugi, the Japanese art of mending pottery with lacquer dusted in gold." },
+              { "t": " The bowl before him once belonged to a tea master in Uji, and its stain of green still marks the inner curve." }
             ],
             [
               { "t": "Urushi lacquer hardens only in humid air. " },
+              { "t": "The sap is tapped from urushi trees in summer, then aged for years before it is fit for a brush. " },
               { "u": 3, "t": "Mixed with gold dust, Nakamura paints the seams." },
               { "t": " " },
               { "u": 4, "t": "Yet the philosophy runs deeper than decoration." },
               { "t": " " },
               { "u": 5, "t": "Kintsugi, which dates to fifteenth-century Japan, treats" },
-              { "t": " breakage as history rather than flaw." }
+              { "t": " breakage as history rather than flaw." },
+              { "t": " Legend traces the craft to a shogun who broke a favorite tea bowl and sent it to China for staples, only to receive it back bound in ugly metal clamps." }
             ],
             [
               { "t": "Nakamura works slowly. He " },
               { "u": 7, "t": "joins together" },
               { "t": " the shards with thin bamboo spatulas, then waits weeks between coats. " },
+              { "t": "Each coat must cure in a damp cabinet, or the lacquer will wrinkle and peel. " },
               { "u": 8, "t": "The careful layering of lacquer, gold, and time produce" },
-              { "t": " a seam stronger than the original clay. A single bowl can require " },
+              { "t": " a seam stronger than the original clay. Apprentices spend their first year grinding pigments and cleaning brushes before they are allowed to touch a seam. A single bowl can require " },
               { "u": 9, "t": "a lot of time." },
               { "t": " When the work is done, the bowl becomes " },
-              { "u": 6, "t": "a way cooler object after getting smashed." }
+              { "u": 6, "t": "a way cooler object after getting smashed." },
+              { "t": " The wait, Nakamura says, is the real repair." }
             ],
             [
               { "u": 10, "t": "Collectors now like" },
-              { "t": " mended pieces above flawless ones. The crack, once a flaw, becomes the biography." }
+              { "t": " mended pieces above flawless ones. The crack, once a flaw, becomes the biography." },
+              { "t": " Museums from Tokyo to New York now display mended bowls beside flawless ones, and students travel to Kyoto to study the craft. Prices at auction have risen with each passing decade." }
             ]
           ]
         },
@@ -347,40 +354,43 @@
           "paras": [
             [
               { "box": "1" },
+              { "t": " The Reunification Express runs the length of Vietnam, from Hanoi to Ho Chi Minh City, in thirty-six hours. " },
               { "t": " Hanoi station at ten at night is all steam and shouting. The platform " },
               { "u": 16, "t": "buzzes" },
-              { "t": " with vendors selling tea and sticky rice. " },
+              { "t": " with vendors selling tea and sticky rice. Porters shouldered canvas duffels, conductors blew sharp whistles, and a boy hawked lottery tickets along the cars. " },
               { "u": 17, "t": "Tea steam curled through air thick with coal smoke and star anise." },
-              { "t": " " },
+              { "t": " I found my sleeper car by its number, climbed the narrow ladder, and claimed the lower berth by the window. " },
               { "box": "A" }
             ],
             [
               { "box": "2" },
               { "t": " My berthmate, a grandmother carrying two baskets of lychees, patted the bunk beside her. She peeled a lychee for me" },
               { "u": 18, "t": ", it burst sweet and cold on my tongue." },
-              { "t": " " },
+              { "t": " Juice ran down my chin, and she laughed until her shoulders shook. " },
               { "u": 19, "t": "She spoke no English, and my Vietnamese consisted of only two words, just hello and thank you." },
-              { "t": " " },
+              { "t": " We traded names through gestures, then sat in comfortable silence as the city lights thinned. Her baskets, I gathered, were bound for her daughter's market stall in Hue. " },
               { "box": "B" }
             ],
             [
               { "box": "3" },
               { "t": " Somewhere past midnight, " },
               { "u": 20, "t": "the train's steady and regular rhythm finally slowed my thoughts." },
+              { "t": " The wheels kept a four-beat measure against the rails, steady as a resting pulse. " },
               { "t": " The villages flashing past the window, each a scatter of lamps, " },
               { "u": 21, "t": "recalls" },
-              { "t": " scenes from films I had never seen. " },
+              { "t": " scenes from films I had never seen. Rice paddies stretched silver under the moon, broken here and there by the dark humps of water buffalo. " },
               { "box": "C" },
               { "t": " " },
-              { "u": 22, "t": "I understood, suddenly, how far a single night could carry a person forward in their life." }
+              { "u": 22, "t": "I understood, suddenly, how far a single night could carry a person forward in their life." },
+              { "t": " Work emails, deadlines, the apartment hunt — all of it receded with the kilometer posts. I had boarded the train wound tight with city noise; somewhere past Ninh Binh, the knot loosened." }
             ],
             [
               { "box": "4" },
               { "t": " " },
               { "u": 23, "t": "By dawn," },
-              { "t": " mist hung over the Perfume River. " },
+              { "t": " mist hung over the Perfume River. Fishermen poled flat boats through the shallows, their lanterns still burning. " },
               { "box": "D" },
-              { "t": " I stepped onto the platform into air smelling of rain and frangipani. " },
+              { "t": " I stepped onto the platform into air smelling of rain and frangipani. The platform loudspeakers crackled announcements I could not understand, and I followed the crowd toward the gate. " },
               { "box": "24" }
             ]
           ]
@@ -391,16 +401,17 @@
           "paras": [
             [
               { "box": "1" },
-              { "t": " At Jefferson Elementary, the best classroom has no roof. " },
+              { "t": " At Jefferson Elementary, the best classroom has no roof. The idea sounds quaint until the test scores arrive. Third-graders water seedlings before the morning bell, and sixth-graders compost lunch scraps at noon. " },
               { "u": 26, "t": "Schools should plant gardens, because growing food teaches science, patience, and responsibility better than any textbook." },
               { "t": " " },
               { "box": "A" },
-              { "t": " Rows of lettuce and sunflowers border the playground blacktop." }
+              { "t": " Rows of lettuce and sunflowers border the playground blacktop. The program began with four raised beds; it now covers half an acre behind the gymnasium." }
             ],
             [
               { "box": "2" },
-              { "t": " The case begins with learning. " },
+              { "t": " The case begins with learning. Teachers tie fractions to seed spacing and biology to pollination. " },
               { "u": 28, "t": "Last spring, students harvested 400 pounds of lettuce for the cafeteria." },
+              { "t": "Cafeteria staff plan menus around the harvest calendar, and food waste has fallen by a third. " },
               { "t": " Students learn patience by " },
               { "u": 27, "t": "digging, planting, and to harvest." },
               { "t": " " },
@@ -409,26 +420,29 @@
               { "box": "B" },
               { "t": " Every school that joins the program receives " },
               { "u": 30, "t": "their" },
-              { "t": " own beds." }
+              { "t": " own beds. A district grant pays for soil, tools, and a part-time garden coordinator." }
             ],
             [
               { "box": "3" },
-              { "t": " Critics call gardens a distraction from tested subjects. Why dig, they ask, when the test is in May? " },
+              { "t": " Critics call gardens a distraction from tested subjects. Why dig, they ask, when the test is in May? Principals worry about instructional minutes, and some parents question muddy shoes. " },
               { "u": 31, "t": "Yet no lesson holds attention like one you can eat." },
+              { "t": "Attendance improves on garden days, and nurses report fewer afternoon stomachaches. " },
               { "t": " " },
               { "box": "C" },
-              { "t": " The work depends on volunteers. " },
+              { "t": " The work depends on volunteers. Grandparents build trellises, teenagers log service hours, and local nurseries donate seedlings. " },
               { "box": "32" }
             ],
             [
               { "box": "4" },
               { "t": " " },
               { "u": 33, "t": "The results speak plainly: higher scores, calmer hallways, fuller plates." },
+              { "t": "Suspensions have dropped, and teachers say focus lasts longer after outdoor lessons. " },
               { "t": " " },
               { "box": "D" },
               { "t": " " },
               { "u": 34, "t": "In short, the garden teaches what no worksheet can." },
-              { "t": " The blacktop classroom is enrolling new students every spring." }
+              { "t": "The model has spread to forty schools across the county. " },
+              { "t": " The blacktop classroom is enrolling new students every spring. Each spring, the waiting list for garden plots grows longer than the one for the soccer team." }
             ]
           ]
         },
@@ -461,35 +475,37 @@
             [
               { "t": "He stretches goatskin over carved lenke wood, tunes it with iron rings and rope, and " },
               { "u": 41, "t": "coaxes speech from a drum." },
-              { "t": " Amara Diallo is a master of the tama, the hourglass talking drum of West Africa." }
+              { "t": " Amara Diallo is a master of the tama, the hourglass talking drum of West Africa. In the Diallo family, drum-making stretches back four generations to his great-grandfather, a griot who played for village ceremonies. He selects each hide by touch, rejecting any skin too thin to hold a tone. His workshop smells of hide glue and shea oil." }
             ],
             [
               { "t": "No drum speaks " },
               { "u": 42, "t": "more clearly than any instrument in the ensemble." },
-              { "t": " Squeezing the ropes bends the pitch; striking the head releases it. " },
-              { "u": 43, "t": "Diallo performs with symphony orchestras and hip-hop artists alike." }
+              { "t": " Squeezing the ropes bends the pitch; striking the head releases it. A skilled player can praise a chief, warn of danger, or tease a friend, all without a single word. Court drummers once carried news between villages faster than any runner. " },
+              { "u": 43, "t": "Diallo performs with symphony orchestras and hip-hop artists alike." },
+              { "t": "Critics who once dismissed the tama as folk craft now review his concerts alongside classical recitals. " },
             ],
             [
               { "t": "He builds drums with shells, goatskin heads, and iron tuning rings " },
               { "u": 44, "t": "(usually carved from a single lenke log)." },
               { "t": " " },
-              { "u": 45, "t": "Because Yoruba is a tonal language, the drum can mimic its rises and falls." }
+              { "u": 45, "t": "Because Yoruba is a tonal language, the drum can mimic its rises and falls." },
+              { "t": "Children learning Yoruba sometimes practice tones on small practice drums before they can read. The drum, players say, simply speaks the language aloud. " },
             ],
             [
-              { "t": "Apprentices begin as children. Years of practice " },
+              { "t": "Apprentices begin as children. A beginner spends months squeezing rope patterns in silence before striking a single note. Years of practice " },
               { "u": 46, "t": "effect" },
               { "t": " the player's fluency. Diallo dislikes hearing his drums called " },
               { "u": 47, "t": "simple" },
               { "t": " instruments. Fame has taken Diallo to concert halls on four continents. " },
               { "u": 48, "t": "Therefore," },
-              { "t": " he still teaches beginners in Bamako each summer." }
+              { "t": " he still teaches beginners in Bamako each summer. His oldest students now teach beginners of their own." }
             ],
             [
               { "t": "Each student carves " },
               { "u": 49, "t": "their" },
               { "t": " first drumstick before touching a drumhead. " },
               { "box": "50" },
-              { "t": " Diallo is passing the drum's language to a new generation." }
+              { "t": " Diallo is passing the drum's language to a new generation. As long as children gather to listen, he says, the drum will never fall silent." }
             ]
           ]
         }

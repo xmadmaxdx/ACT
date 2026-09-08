@@ -3,7 +3,7 @@ import { HomeIcon, DumbbellIcon, BookIcon, BankIcon } from "./icons.jsx";
 const ITEMS = [
   { label: "MY TESTS", Icon: HomeIcon, route: "home" },
   { label: "PRACTICE", Icon: DumbbellIcon, route: "practice" },
-  { label: "TEST INFO", Icon: BookIcon, route: null },
+  { label: "TEST INFO", Icon: BookIcon, route: "info" },
   { label: "INSTITUTIONS", Icon: BankIcon, route: null },
 ];
 

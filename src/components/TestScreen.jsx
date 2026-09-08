@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { mathRich } from "./MathText.jsx";
 
 const LETTERS = ["A", "B", "C", "D"];
 const FILTERS = ["All", "Marked", "Unanswered", "Answered"];
@@ -12,22 +13,34 @@ function rich(text) {
 }
 
 function optText(opt) {
-  return opt === "No Change" ? <strong>No Change</strong> : rich(opt);
+  return opt === "No Change" ? <strong>No Change</strong> : mathRich(opt);
 }
 
-/* Passage spans: {t} plain text, {u, t} tested underline keyed by
-   question number, {box} reference point. The active question's span
-   lights up; boxed points light up when the active question anchors
-   to them via its "point" field — except Placement questions, which
+/* Passage spans: {t} plain text (may include $LaTeX$), {u, t} tested
+   underline keyed by question number, {box} reference point, {fig}
+   embedded SVG figure id resolved from the test's figures map. The active
+   question's span lights up; boxed points light up when the active question
+   anchors to them via its "point" field — except Placement questions, which
    must never light a box (the lit box would give away the answer). */
-function renderSpans(spans, q) {
+function renderSpans(spans, q, figures) {
   const isPlacement = /placement/i.test(q.tag || "");
   return spans.map((s, i) => {
+    if (s.fig !== undefined) {
+      const svg = figures && figures[s.fig];
+      if (!svg) return null;
+      return (
+        <span
+          key={i}
+          className="passage-figure"
+          dangerouslySetInnerHTML={{ __html: svg }}
+        />
+      );
+    }
     if (s.u !== undefined) {
       const active = s.u === q.n;
       return (
         <span key={i} className={active ? "u-mark active" : "u-mark"}>
-          {s.t}
+          {mathRich(s.t)}
           <sup className={active ? "u-sup active" : "u-sup"}>{s.u}</sup>
         </span>
       );
@@ -40,7 +53,7 @@ function renderSpans(spans, q) {
         </span>
       );
     }
-    return <span key={i}>{s.t}</span>;
+    return <span key={i}>{mathRich(s.t)}</span>;
   });
 }
 
@@ -57,9 +70,10 @@ function formatPace(sec) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-export default function TestScreen({ test, session, startIndex, review, findTest, onFinish, onExit }) {
+export default function TestScreen({ test, session, startIndex, review, findTest, customTestData, onFinish, onExit }) {
   const timed = test.mode === "timed" && !review;
-  const testData = findTest(test.id);
+  const testData =
+    customTestData && customTestData.id === test.id ? customTestData : findTest(test.id);
   const questions = testData ? testData.questions : [];
   const total = questions.length;
   const [qIndex, setQIndex] = useState(startIndex || 0);
@@ -279,7 +293,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           <h1 className="passage-title">{passage.title}</h1>
           <div className="passage-text">
             {passage.paras.map((spans, i) => (
-              <p key={`${passage.id}-${i}`}>{renderSpans(spans, activeQ)}</p>
+              <p key={`${passage.id}-${i}`}>{renderSpans(spans, activeQ, testData.figures)}</p>
             ))}
           </div>
         </article>
@@ -290,7 +304,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               <span className="q-badge">{activeQ.n}</span>
               <span className="q-tag">{activeQ.tag}</span>
             </div>
-            <p className="q-stem">{rich(activeQ.stem)}</p>
+            {activeQ.stem ? <p className="q-stem">{mathRich(activeQ.stem)}</p> : null}
             {paused && (
               <p className="paused-note">Paused — answer choices are locked. Tap play to resume.</p>
             )}
@@ -319,7 +333,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 <span className="explain-head">
                   {picked === activeQ.answer ? "Correct" : `Correct answer: ${activeQ.answer}`}
                 </span>
-                <p className="explain-text">{rich(activeQ.explain)}</p>
+                <p className="explain-text">{mathRich(activeQ.explain)}</p>
               </div>
             )}
             <button
@@ -429,7 +443,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   >
                     <span className="ov-q-top">
                       <span className="q-badge sm">{q.n}</span>
-                      <span className="ov-stem">{q.stem.replace(/\*/g, "")}</span>
+                      <span className="ov-stem">{(q.short || q.stem || "").replace(/\*/g, "")}</span>
                     </span>
                     <span className="ov-q-bottom">
                       <span className={`ov-status ${st}`}>

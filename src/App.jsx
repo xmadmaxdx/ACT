@@ -5,6 +5,7 @@ import Hero from "./components/Hero.jsx";
 import ActionCards from "./components/ActionCards.jsx";
 import Footer from "./components/Footer.jsx";
 import Practice from "./components/Practice.jsx";
+import TestInfo from "./components/TestInfo.jsx";
 import TestScreen from "./components/TestScreen.jsx";
 import Results from "./components/Results.jsx";
 import Loader, { LoaderError } from "./components/Loader.jsx";
@@ -20,6 +21,7 @@ function slugFor(skill) {
 function routeFromPath(path) {
   if (path.endsWith("/results")) return "results";
   if (path === "/practice") return "practice";
+  if (path === "/test-info") return "info";
   if (path.startsWith("/practice-test-")) return "test";
   return "home";
 }
@@ -37,8 +39,11 @@ export default function App() {
   const [reviewIndex, setReviewIndex] = useState(null);
   const [catalog, setCatalog] = useState(null);
   const [loadError, setLoadError] = useState(null);
+  const [customTestData, setCustomTestData] = useState(null);
   const sessionRef = useRef(null);
   sessionRef.current = session;
+  const customRef = useRef(null);
+  customRef.current = customTestData;
 
   useEffect(() => {
     let live = true;
@@ -65,6 +70,9 @@ export default function App() {
     if (r === "practice") {
       window.history.pushState({}, "", "/practice");
       setRoute("practice");
+    } else if (r === "info") {
+      window.history.pushState({}, "", "/test-info");
+      setRoute("info");
     } else {
       window.history.pushState({}, "", "/");
       setRoute("home");
@@ -73,6 +81,17 @@ export default function App() {
   }, []);
 
   const startTest = useCallback((skill, mode) => {
+    setSession({ skill, mode, picks: {}, flags: {}, paces: {} });
+    sessionRef.current = { skill, mode, picks: {}, flags: {}, paces: {} };
+    setReviewIndex(null);
+    window.history.pushState({}, "", slugFor(skill));
+    setRoute("test");
+    window.scrollTo(0, 0);
+  }, []);
+
+  const startLessonTest = useCallback((lessonTest, mode) => {
+    const skill = { id: lessonTest.id, title: lessonTest.title, meta: `${lessonTest.total} questions` };
+    setCustomTestData(lessonTest);
     setSession({ skill, mode, picks: {}, flags: {}, paces: {} });
     sessionRef.current = { skill, mode, picks: {}, flags: {}, paces: {} };
     setReviewIndex(null);
@@ -99,7 +118,9 @@ export default function App() {
     (n) => {
       const s = sessionRef.current;
       if (!s) return;
-      const t = findTest(s.skill.id);
+      const custom = customRef.current;
+      const t =
+        custom && custom.id === s.skill.id ? custom : findTest(s.skill.id);
       const idx = t ? t.questions.findIndex((q) => q.n === n) : -1;
       setReviewIndex(idx >= 0 ? idx : 0);
       window.history.pushState({}, "", slugFor(s.skill));
@@ -145,6 +166,7 @@ export default function App() {
         startIndex={reviewIndex || 0}
         review={reviewing}
         findTest={findTest}
+        customTestData={customTestData}
         onFinish={finishTest}
         onExit={() => {
           if (reviewing) {
@@ -161,7 +183,10 @@ export default function App() {
   }
 
   if (route === "results" && session) {
-    const testData = findTest(session.skill.id);
+    const testData =
+      customTestData && customTestData.id === session.skill.id
+        ? customTestData
+        : findTest(session.skill.id);
     if (!testData) {
       navigate("practice");
       return null;
@@ -183,7 +208,9 @@ export default function App() {
       <div className="page">
         <Sidebar active={route} onNavigate={navigate} />
         <main className="content">
-          {route === "practice" ? (
+          {route === "info" ? (
+            <TestInfo onGiveTest={startLessonTest} />
+          ) : route === "practice" ? (
             <Practice
               onStartTest={startTest}
               passageTests={catalog.filter((t) => /-P\d+$/.test(t.id))}

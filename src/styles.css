@@ -596,6 +596,123 @@ button {
   margin-top: 0;
 }
 
+/* ---------- Test info / courses ---------- */
+.muted-text {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.course-card {
+  background: #fff;
+  border: 2px solid var(--card-border);
+  border-bottom-width: 4px;
+  border-radius: var(--radius);
+  padding: 6px 6px 10px;
+}
+
+.course-card.locked {
+  padding: 20px 22px;
+  opacity: 0.75;
+}
+
+.course-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  padding: 14px 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.course-caret {
+  color: var(--blue);
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.course-body {
+  border-top: 2px solid var(--line);
+  padding: 14px 16px 10px;
+}
+
+.course-cta {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.course-cta:disabled {
+  filter: grayscale(1);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.lesson-h {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink-soft);
+  margin: 14px 0 6px;
+}
+
+.lesson-p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+}
+
+.lesson-list {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.lesson-list li {
+  margin-bottom: 6px;
+}
+
+.lesson-math {
+  background: #f4f9ff;
+  border: 2px solid var(--blue-light-border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin: 0 0 12px;
+  overflow-x: auto;
+}
+
+.lesson-figure-wrap {
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.lesson-figure svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.lesson-figure-wrap figcaption {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.passage-figure {
+  display: block;
+  text-align: center;
+  margin: 12px 0 4px;
+}
+
+.passage-figure svg {
+  max-width: 100%;
+  height: auto;
+}
+
 .skill-card {
   display: flex;
   align-items: center;

@@ -1,0 +1,263 @@
+{
+  "subject": "math",
+  "courses": [
+    {
+      "id": "algebra-foundations",
+      "title": "Algebra & Number Sense",
+      "tier": "EVERY TEST",
+      "summary": "Linear relations and units, equations, inequalities, exponents, function notation, systems, and number sense — the highest-frequency ACT math skills.",
+      "timeMinutes": 10,
+      "skills": [
+        { "id": "linear-relations", "title": "Linear Relations & Units", "key": "Match every quantity to its unit rate. Convert mg to g before combining: $120\\text{ mg}=0.12\\text{ g}$. Days equal each total divided by its daily rate, then add." },
+        { "id": "number-properties", "title": "Number Properties & Divisibility", "key": "A number is divisible by 3 exactly when its digit sum is. Bound digit puzzles first: if $A=(B+C)^2 \\le 9$, then $B+C \\le 3$." },
+        { "id": "custom-notation", "title": "Custom Notation", "key": "Treat a defined symbol as an equation. Unpack it, solve for the unknown, then evaluate what is asked — never the intermediate value." },
+        { "id": "solving-equations", "title": "Solving Equations", "key": "Undo operations in reverse order. Whatever you do to one side, do to the other until the variable stands alone." },
+        { "id": "solving-inequalities", "title": "Solving Inequalities", "key": "Solve like an equation — but flip the sign whenever you multiply or divide both sides by a negative." },
+        { "id": "exponents", "title": "Exponents", "key": "Same base multiply: add exponents. Coefficients multiply normally: $(2x^3)(3x^{-1})=6x^2$." },
+        { "id": "function-notation", "title": "Function Notation", "key": "$f(4)$ means replace every $x$ with 4, then compute. Do not add the x's — evaluate the expression." },
+        { "id": "systems", "title": "Systems of Equations", "key": "Add or subtract the equations to kill one variable. Adding $x+y=10$ and $x-y=4$ gives $2x=14$." },
+        { "id": "percentages", "title": "Percentages", "key": "Original = sale price $\\div$ (1 $-$ discount rate). A 20% discount means you paid 80%: $\\text{original}=48 \\div 0.8$." },
+        { "id": "mean", "title": "Mean", "key": "Total = average $\\times$ count. Add the new score to the old total, then divide by the new count." }
+      ],
+      "lesson": [
+        { "h": "The golden rules" },
+        { "p": "Most ACT algebra misses come from rushing, not hard math. Before computing, ask: what are the units, what is the unknown, and what form must the answer take?" },
+        { "list": [
+          "Units first: $120\\text{ mg} = 0.12\\text{ g}$. Never add grams to milligrams.",
+          "Isolate the variable: undo $+,-,\\times,\\div$ in reverse order.",
+          "Inequalities: multiplying or dividing by a negative flips $<$ to $>$.",
+          "Exponents: $(2x^3)(3x^{-1}) = 6x^{3-1} = 6x^2$.",
+          "Notation: $f(4)$ for $f(x)=x^2-3x+2$ gives $16-12+2=6$."
+        ] },
+        { "math": "\\text{original price} = \\frac{\\text{sale price}}{1 - \\text{discount}} = \\frac{48}{0.8} = 60" }
+      ],
+      "figures": {},
+      "problems": [
+        {
+          "n": 1,
+          "tag": "Algebra; Linear Relations",
+          "short": "Daily supplement relation",
+          "statement": "Abe takes a daily supplement of either only protein or only vitamins. His daily intake is $50\\text{ g}$ of protein and $120\\text{ mg}$ of vitamins. After $N$ days, his total protein intake is $P$ grams and his total vitamin intake is $V$ grams. Which equation relates $N$, $P$, and $V$?",
+          "options": ["$N=50P+120V$", "$N=\\frac{P}{50}+\\frac{V}{120}$", "$N=\\frac{P}{50}+\\frac{100V}{12}$", "$N=\\frac{P}{50}+\\frac{5V}{6}$"],
+          "answer": "C",
+          "explain": "Convert first: $120\\text{ mg}=0.12\\text{ g}$. Protein days equal $P/50$ and vitamin days equal $V/0.12=V\\div\\frac{12}{100}=\\frac{100V}{12}$. Add them: $N=\\frac{P}{50}+\\frac{100V}{12}$. B forgets the mg-to-g conversion."
+        },
+        {
+          "n": 2,
+          "tag": "Number Sense; Divisibility",
+          "short": "ABC divisible by 3",
+          "statement": "In the three-digit number $ABC$, where $A$, $B$, and $C$ are digits from 1 to 9, $A$ equals the square of the sum of $B$ and $C$. How many such three-digit numbers are divisible by 3?",
+          "options": ["One", "Two", "Three", "Four"],
+          "answer": "C",
+          "explain": "$A=(B+C)^2\\le 9$ forces $B+C=2$ or $3$. That gives $411$ (digit sum 6), $912$ (sum 12), and $921$ (sum 12) — all divisible by 3. Three numbers."
+        },
+        {
+          "n": 3,
+          "tag": "Algebra; Custom Notation",
+          "short": "Mixed-number notation",
+          "statement": "If the mixed number $Z\\frac{2}{3}$ equals $\\frac{8}{3}$, what is the value of $Z^2-3$?",
+          "options": ["$12$", "$1$", "$32$", "$2$"],
+          "answer": "B",
+          "explain": "$Z+\\frac{2}{3}=\\frac{8}{3}$ gives $Z=2$. Then $Z^2-3=4-3=1$."
+        },
+        {
+          "n": 4,
+          "tag": "Arithmetic; Percentages",
+          "short": "Original price",
+          "statement": "A jacket costs $48$ dollars after a 20% discount. What was the original price in dollars?",
+          "options": ["$56$", "$58$", "$60$", "$64$"],
+          "answer": "C",
+          "explain": "You paid 80% of the original: $\\text{original}=48\\div 0.8=60$."
+        },
+        {
+          "n": 5,
+          "tag": "Algebra; Equations",
+          "short": "Linear equation",
+          "statement": "If $3(x-2)+5=2x+1$, what is the value of $x$?",
+          "options": ["$1$", "$2$", "$3$", "$4$"],
+          "answer": "B",
+          "explain": "$3x-6+5=2x+1$ simplifies to $3x-1=2x+1$, so $x=2$."
+        },
+        {
+          "n": 6,
+          "tag": "Algebra; Inequalities",
+          "short": "Inequality sign flip",
+          "statement": "Which of the following is the solution set of $-2x+7<13$?",
+          "options": ["$x<-3$", "$x>-3$", "$x<3$", "$x>3$"],
+          "answer": "B",
+          "explain": "$-2x<6$. Dividing by $-2$ flips the sign: $x>-3$."
+        },
+        {
+          "n": 7,
+          "tag": "Algebra; Exponents",
+          "short": "Exponent product",
+          "statement": "For all $x\\neq 0$, $(2x^3)(3x^{-1})$ equals:",
+          "options": ["$5x^2$", "$6x^2$", "$6x^4$", "$5x^4$"],
+          "answer": "B",
+          "explain": "Multiply coefficients ($2\\cdot 3=6$) and add exponents ($3+(-1)=2$): $6x^2$."
+        },
+        {
+          "n": 8,
+          "tag": "Algebra; Functions",
+          "short": "Function notation",
+          "statement": "If $f(x)=x^2-3x+2$, what is $f(4)$?",
+          "options": ["$4$", "$6$", "$8$", "$10$"],
+          "answer": "B",
+          "explain": "Substitute 4 for every $x$: $16-12+2=6$."
+        },
+        {
+          "n": 9,
+          "tag": "Algebra; Systems",
+          "short": "System of equations",
+          "statement": "If $x+y=10$ and $x-y=4$, what is the value of $y$?",
+          "options": ["$2$", "$3$", "$4$", "$5$"],
+          "answer": "B",
+          "explain": "Subtract the equations: $2y=6$, so $y=3$ (and $x=7$)."
+        },
+        {
+          "n": 10,
+          "tag": "Statistics; Mean",
+          "short": "Mean with new score",
+          "statement": "The average of five test scores is $84$. If a sixth score of $96$ is added, what is the new average?",
+          "options": ["$84$", "$85$", "$86$", "$88$"],
+          "answer": "C",
+          "explain": "Old total is $5\\cdot 84=420$. New total $420+96=516$ over 6 tests: $516\\div 6=86$."
+        }
+      ]
+    },
+    {
+      "id": "geometry-trigonometry",
+      "title": "Geometry & Trigonometry",
+      "tier": "EVERY TEST",
+      "summary": "Right triangles, SOHCAHTOA, radian measure, circles, slope, area, and similarity — diagram questions reward labeling before computing.",
+      "timeMinutes": 10,
+      "skills": [
+        { "id": "special-triangles", "title": "Special Right Triangles", "key": "30-60-90 sides are $x$, $x\\sqrt{3}$, $2x$ with the hypotenuse opposite 90°. Read which side is longest first." },
+        { "id": "sohcahtoa", "title": "SOHCAHTOA", "key": "$\\sin=\\frac{opp}{hyp}$, $\\cos=\\frac{adj}{hyp}$, $\\tan=\\frac{opp}{adj}$ — right triangles only." },
+        { "id": "radians", "title": "Radians & Degrees", "key": "$180^\\circ=\\pi$ radians. Convert degrees before combining with radian terms." },
+        { "id": "circles", "title": "Circles", "key": "$(x-h)^2+(y-k)^2=r^2$ has center $(h,k)$ and radius $r$ — watch the signs." },
+        { "id": "slope", "title": "Slope & Perpendiculars", "key": "Perpendicular slopes are opposite reciprocals: $\\frac{3}{4}$ becomes $-\\frac{4}{3}$." },
+        { "id": "area", "title": "Area", "key": "Trapezoid: $\\frac{1}{2}(b_1+b_2)h$. Arc length: $\\frac{\\theta}{360^\\circ}\\cdot 2\\pi r$." },
+        { "id": "pythagoras", "title": "Pythagorean Theorem", "key": "$a^2+b^2=c^2$. Memorize 3-4-5, 5-12-13, 8-15-17 and their multiples." },
+        { "id": "midpoint", "title": "Midpoint", "key": "Average the x-values and average the y-values: $\\left(\\frac{x_1+x_2}{2},\\frac{y_1+y_2}{2}\\right)$." },
+        { "id": "similar-triangles", "title": "Similar Triangles", "key": "Same shape, scaled sides. Set a proportion: person over shadow equals tree over shadow." }
+      ],
+      "lesson": [
+        { "h": "Label before you compute" },
+        { "p": "On every diagram question, write the known sides, angles, and what is asked directly on the figure. Half of geometry errors are bookkeeping errors." },
+        { "list": [
+          "30-60-90: short leg $x$, long leg $x\\sqrt{3}$, hypotenuse $2x$.",
+          "SOHCAHTOA: $\\tan(\\theta)=\\frac{\\text{opposite}}{\\text{adjacent}}$.",
+          "Convert first: $180^\\circ=\\pi$, so $\\frac{8\\pi}{3}-\\pi=\\frac{5\\pi}{3}$.",
+          "Circle $(x+2)^2+(y-5)^2=36$ has center $(-2,5)$ and radius $6$."
+        ] },
+        { "figure": "garden-triangle", "caption": "Reference: 30-60-90 triangle with hypotenuse 8 m." }
+      ],
+      "figures": {
+        "garden-triangle": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 230 170\" role=\"img\" aria-label=\"Right triangle with 30 degree angle and hypotenuse 8 meters\"><polygon points=\"40,52 40,140 192.5,140\" fill=\"#eef7ff\" stroke=\"#1cb0f6\" stroke-width=\"3\" stroke-linejoin=\"round\"/><polyline points=\"40,130 50,130 50,140\" fill=\"none\" stroke=\"#3c3c3c\" stroke-width=\"2\"/><polyline points=\"172.5,140 172.8,136.5 173.7,133.2 175.2,130\" fill=\"none\" stroke=\"#ff9600\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"130\" y=\"88\" text-anchor=\"middle\" font-family=\"Nunito, sans-serif\" font-size=\"13\" font-weight=\"700\" fill=\"#3c3c3c\">8 m</text><text x=\"32\" y=\"99\" text-anchor=\"end\" font-family=\"Nunito, sans-serif\" font-size=\"13\" font-weight=\"700\" fill=\"#3c3c3c\">4 m</text><text x=\"116\" y=\"154\" text-anchor=\"middle\" font-family=\"Nunito, sans-serif\" font-size=\"13\" font-weight=\"700\" fill=\"#3c3c3c\">4√3 m</text><text x=\"167\" y=\"133\" text-anchor=\"middle\" font-family=\"Nunito, sans-serif\" font-size=\"13\" font-weight=\"700\" fill=\"#b25e09\">30°</text></svg>"
+      },
+      "problems": [
+        {
+          "n": 1,
+          "tag": "Geometry; Trigonometry",
+          "short": "Radian expression",
+          "statement": "Which of the following equals $\\frac{7\\pi}{4}+\\frac{4\\pi}{3}-\\frac{5\\pi}{12}-180^\\circ$?",
+          "options": ["$\\frac{5\\pi}{4}$", "$\\frac{5\\pi}{3}$", "$240^\\circ$", "$450^\\circ$"],
+          "answer": "B",
+          "explain": "Combine over 12: $\\frac{21\\pi+16\\pi-5\\pi}{12}=\\frac{32\\pi}{12}=\\frac{8\\pi}{3}$. Since $180^\\circ=\\pi$, subtract: $\\frac{8\\pi}{3}-\\pi=\\frac{5\\pi}{3}$."
+        },
+        {
+          "n": 2,
+          "tag": "Geometry; Triangles",
+          "short": "Garden perimeter",
+          "statement": "Matt has a garden in the shape of a right triangle with one acute angle $30^\\circ$. The longest side is $8\\text{ m}$. What is the perimeter of the garden?",
+          "figure": "garden-triangle",
+          "options": ["$4\\sqrt{3}\\text{ m}$", "$8+4\\sqrt{3}\\text{ m}$", "$12+\\sqrt{3}\\text{ m}$", "$12+4\\sqrt{3}\\text{ m}$"],
+          "answer": "D",
+          "explain": "The hypotenuse is $8$, so the short leg is $4$ and the long leg is $4\\sqrt{3}$. Perimeter: $8+4+4\\sqrt{3}=12+4\\sqrt{3}$ m."
+        },
+        {
+          "n": 3,
+          "tag": "Trigonometry; SOHCAHTOA",
+          "short": "Opposite side",
+          "statement": "In a right triangle, one acute angle measures $35^\\circ$ and the side adjacent to it is $10$. Which is closest to the opposite side?",
+          "options": ["$5.7$", "$7.0$", "$8.2$", "$12.2$"],
+          "answer": "B",
+          "explain": "$\\tan(35^\\circ)=\\frac{\\text{opp}}{10}$, and $\\tan(35^\\circ)\\approx 0.700$, so the opposite side is about $7.0$."
+        },
+        {
+          "n": 4,
+          "tag": "Coordinate Geometry; Slope",
+          "short": "Perpendicular slope",
+          "statement": "A line has slope $\\frac{3}{4}$. What is the slope of a line perpendicular to it?",
+          "options": ["$\\frac{4}{3}$", "$-\\frac{3}{4}$", "$-\\frac{4}{3}$", "$\\frac{3}{4}$"],
+          "answer": "C",
+          "explain": "Perpendicular slopes are opposite reciprocals: flip $\\frac{3}{4}$ and negate to get $-\\frac{4}{3}$."
+        },
+        {
+          "n": 5,
+          "tag": "Geometry; Circles",
+          "short": "Circle center",
+          "statement": "What is the center of the circle $(x+2)^2+(y-5)^2=36$?",
+          "options": ["$(2,-5)$", "$(-2,5)$", "$(2,5)$", "$(-2,-5)$"],
+          "answer": "B",
+          "explain": "Standard form $(x-h)^2+(y-k)^2=r^2$ has center $(h,k)$. Here $h=-2$ and $k=5$, with radius $6$."
+        },
+        {
+          "n": 6,
+          "tag": "Geometry; Area",
+          "short": "Trapezoid area",
+          "statement": "A trapezoid has bases $6$ and $10$ and height $4$. What is its area?",
+          "options": ["$28$", "$30$", "$32$", "$40$"],
+          "answer": "C",
+          "explain": "$\\frac{1}{2}(6+10)\\cdot 4=\\frac{1}{2}\\cdot 16\\cdot 4=32$."
+        },
+        {
+          "n": 7,
+          "tag": "Geometry; Circles",
+          "short": "Arc length",
+          "statement": "In a circle of radius $9$, what is the length of the arc cut off by an $80^\\circ$ central angle?",
+          "options": ["$2\\pi$", "$4\\pi$", "$8\\pi$", "$12\\pi$"],
+          "answer": "B",
+          "explain": "$\\frac{80}{360}\\cdot 2\\pi(9)=\\frac{2}{9}\\cdot 18\\pi=4\\pi$."
+        },
+        {
+          "n": 8,
+          "tag": "Geometry; Pythagorean",
+          "short": "Missing leg",
+          "statement": "A right triangle has one leg $6$ and hypotenuse $10$. What is the other leg?",
+          "options": ["$8$", "$9$", "$10$", "$12$"],
+          "answer": "A",
+          "explain": "$6^2+b^2=10^2$ gives $b^2=64$, so $b=8$ (a scaled 3-4-5 triple)."
+        },
+        {
+          "n": 9,
+          "tag": "Coordinate Geometry; Midpoint",
+          "short": "Midpoint",
+          "statement": "What is the midpoint of the segment joining $(2,8)$ and $(6,2)$?",
+          "options": ["$(4,5)$", "$(3,6)$", "$(4,6)$", "$(5,4)$"],
+          "answer": "A",
+          "explain": "Average each coordinate: $\\left(\\frac{2+6}{2},\\frac{8+2}{2}\\right)=(4,5)$."
+        },
+        {
+          "n": 10,
+          "tag": "Geometry; Similarity",
+          "short": "Shadow proportion",
+          "statement": "A $6$-foot person casts a $9$-foot shadow. At the same time, a tree casts a $27$-foot shadow. How tall is the tree, in feet?",
+          "options": ["$12$", "$15$", "$18$", "$21$"],
+          "answer": "C",
+          "explain": "Similar triangles: $\\frac{6}{9}=\\frac{h}{27}$, so $h=6\\cdot 3=18$."
+        }
+      ]
+    }
+  ],
+  "roadmap": [
+    { "title": "Functions & Quadratics", "tier": "EVERY TEST" },
+    { "title": "Statistics & Probability", "tier": "EVERY TEST" },
+    { "title": "Lines, Systems & Polynomials", "tier": "MOST TESTS" },
+    { "title": "Sequences, Ratios & Rates", "tier": "COMMON" },
+    { "title": "Matrices, Conics & 3D Geometry", "tier": "COMMON" },
+    { "title": "Advanced Trig & Polygons", "tier": "COMMON" },
+    { "title": "Combinatorics, Logs & Rational Expressions", "tier": "SOMETIMES" }
+  ]
+}
