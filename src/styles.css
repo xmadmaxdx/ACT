@@ -702,6 +702,128 @@ button {
   margin-top: 6px;
 }
 
+/* ---------- Course page ---------- */
+.course-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink-soft);
+  margin: 10px 0 4px;
+}
+
+.course-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+
+.course-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 230px;
+  gap: 22px;
+  margin-top: 16px;
+  align-items: start;
+}
+
+.toc {
+  position: sticky;
+  top: 90px;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.toc-title {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0 0 6px;
+}
+
+.toc-link {
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.toc-link:hover {
+  background: #f4f9ff;
+  color: var(--blue);
+}
+
+.scroll-anchor {
+  scroll-margin-top: 90px;
+}
+
+.embed-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 4px 0 16px;
+}
+
+.embed-q {
+  background: #fbfdff;
+  border: 2px solid var(--blue-light-border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.embed-q-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.embed-check {
+  margin-top: 12px;
+  padding: 10px 28px;
+  font-size: 13px;
+}
+
+.embed-check:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 860px) {
+  .course-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .toc {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    max-height: none;
+  }
+
+  .toc-title {
+    display: none;
+  }
+
+  .toc-link {
+    white-space: nowrap;
+  }
+}
+
 .passage-figure {
   display: block;
   text-align: center;

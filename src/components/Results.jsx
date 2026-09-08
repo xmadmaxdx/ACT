@@ -42,6 +42,9 @@ export default function Results({ session, testData, onGo, onRetake, onExit }) {
     : 0;
   const missed = qs.filter((q) => picks[q.n] !== q.answer);
   const accuracy = Math.round((correct / qs.length) * 100);
+  const section = (testData.section || "english").toLowerCase();
+  const subj = section.charAt(0).toUpperCase() + section.slice(1);
+  const others = ["English", "Math", "Reading"].filter((s) => s.toLowerCase() !== section);
 
   return (
     <div className="results">
@@ -49,11 +52,11 @@ export default function Results({ session, testData, onGo, onRetake, onExit }) {
         <section className="results-hero rise d1">
           <ScoreRing value={comp} />
           <div className="results-hero-text">
-            <p className="results-kicker">Projected Composite · English only</p>
+            <p className="results-kicker">Projected Composite · {subj} only</p>
             <h1 className="results-title">You scored {correct} of {qs.length}</h1>
             <p className="results-sub">
-              English scaled score {eng} · Accuracy {accuracy}% · Average pace {formatPace(avgPace)} per
-              question. Add Math and Reading for an official composite.
+              {subj} scaled score {eng} · Accuracy {accuracy}% · Average pace {formatPace(avgPace)} per
+              question. {others.length > 0 ? `Add ${others.join(" and ")} for an official composite.` : "All sections complete."}
             </p>
           </div>
         </section>
@@ -61,7 +64,7 @@ export default function Results({ session, testData, onGo, onRetake, onExit }) {
         <section className="stat-grid rise d2">
           <div className="stat-card">
             <span className="stat-value">{eng}</span>
-            <span className="stat-label">English / 36</span>
+            <span className="stat-label">{subj} / 36</span>
           </div>
           <div className="stat-card">
             <span className="stat-value">{correct}/{qs.length}</span>

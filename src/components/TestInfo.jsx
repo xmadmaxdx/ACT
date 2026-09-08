@@ -2,9 +2,90 @@ import { useEffect, useState } from "react";
 import ModeModal from "./ModeModal.jsx";
 import MathText from "./MathText.jsx";
 
-function Blocks({ blocks, figures }) {
+function PracticeEmbed({ problem, figures }) {
+  const [pick, setPick] = useState(null);
+  const [checked, setChecked] = useState(false);
+  if (!problem) return null;
+  const correct = pick === problem.answer;
+  return (
+    <div className="embed-q">
+      <div className="embed-q-head">
+        <span className="q-badge sm">Q{problem.n}</span>
+        <span className="q-tag">{problem.tag}</span>
+      </div>
+      <p className="lesson-p"><MathText text={problem.statement} /></p>
+      {problem.figure && figures && figures[problem.figure] && (
+        <span className="lesson-figure" dangerouslySetInnerHTML={{ __html: figures[problem.figure] }} />
+      )}
+      <div className="q-options">
+        {problem.options.map((opt, i) => {
+          const letter = ["A", "B", "C", "D"][i];
+          const cls = ["q-option"];
+          if (pick === letter) cls.push("selected");
+          if (checked && letter === problem.answer) cls.push("correct");
+          if (checked && pick === letter && letter !== problem.answer) cls.push("wrong");
+          return (
+            <button
+              key={letter}
+              type="button"
+              className={cls.join(" ")}
+              disabled={checked}
+              onClick={() => setPick(letter)}
+            >
+              <span className="q-letter">{letter}</span>
+              <span className="q-text"><MathText text={opt} /></span>
+            </button>
+          );
+        })}
+      </div>
+      {!checked ? (
+        <button
+          type="button"
+          className="btn-primary embed-check"
+          disabled={!pick}
+          onClick={() => setChecked(true)}
+        >
+          CHECK
+        </button>
+      ) : (
+        <div className={correct ? "explain ok" : "explain no"}>
+          <span className="explain-head">
+            {correct ? "Correct" : `Correct answer: ${problem.answer}`}
+          </span>
+          <p className="explain-text"><MathText text={problem.explain} /></p>
+          <button
+            type="button"
+            className="flag-btn"
+            onClick={() => {
+              setPick(null);
+              setChecked(false);
+            }}
+          >
+            <span>Try again</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Blocks({ blocks, course }) {
+  const figures = (course && course.figures) || {};
+  const byNum = {};
+  ((course && course.problems) || []).forEach((p) => {
+    byNum[p.n] = p;
+  });
   return (blocks || []).map((b, i) => {
-    if (b.h) return <h4 key={i} className="lesson-h">{b.h}</h4>;
+    if (b.h) return <h4 key={i} id={b.id} className="lesson-h scroll-anchor">{b.h}</h4>;
+    if (b.practice) {
+      return (
+        <div key={i} className="embed-group">
+          {b.practice.map((n) => (
+            <PracticeEmbed key={n} problem={byNum[n]} figures={figures} />
+          ))}
+        </div>
+      );
+    }
     if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
     if (b.list) {
       return (
@@ -30,10 +111,11 @@ function Blocks({ blocks, figures }) {
   });
 }
 
-function lessonTest(course) {
+function lessonTest(course, subject) {
   return {
     id: `MATH-LESSON-${course.id}`,
     title: course.title,
+    section: subject || "math",
     total: course.problems.length,
     timeMinutes: course.timeMinutes || course.problems.length,
     figures: course.figures || {},
@@ -61,6 +143,74 @@ function lessonTest(course) {
       explain: prob.explain,
     })),
   };
+}
+
+function CoursePage({ course, subject, onBack, onSelect }) {
+  const ready = (course.problems || []).length > 0;
+  const toc = (course.lesson || []).filter((b) => b.h && b.id);
+  const go = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const payload = {
+    id: `MATH-LESSON-${course.id}`,
+    title: course.title,
+    meta: `${course.problems.length} questions · ${course.timeMinutes || course.problems.length} min`,
+    course,
+    subject,
+  };
+  return (
+    <div className="rise d3">
+      <button type="button" className="flag-btn" onClick={onBack}>
+        <span>← All courses</span>
+      </button>
+      <h3 className="course-title">{course.title}</h3>
+      <p className="muted-text">
+        {course.tier} · {course.problems.length} practice problems · {course.timeMinutes || course.problems.length} min test
+      </p>
+      <button
+        type="button"
+        className="btn-primary course-cta"
+        disabled={!ready}
+        onClick={() => ready && onSelect(payload)}
+      >
+        {ready ? "GIVE TEST" : "COMING SOON"}
+      </button>
+      <div className="course-layout">
+        <div className="course-main">
+          <p className="lesson-p">{course.summary}</p>
+          <h4 className="lesson-h scroll-anchor" id="skills">Skills in this course</h4>
+          <ul className="lesson-list">
+            {(course.skills || []).map((s) => (
+              <li key={s.id}>
+                <strong>{s.title}:</strong> <MathText text={s.key} />
+              </li>
+            ))}
+          </ul>
+          <Blocks blocks={course.lesson} course={course} />
+          <button
+            type="button"
+            className="btn-primary course-cta"
+            disabled={!ready}
+            onClick={() => ready && onSelect(payload)}
+          >
+            {ready ? "GIVE TEST" : "COMING SOON"}
+          </button>
+        </div>
+        <aside className="toc" aria-label="Course contents">
+          <p className="toc-title">Contents</p>
+          <button type="button" className="toc-link" onClick={() => go("skills")}>
+            Skills
+          </button>
+          {toc.map((b) => (
+            <button key={b.id} type="button" className="toc-link" onClick={() => go(b.id)}>
+              {b.h}
+            </button>
+          ))}
+        </aside>
+      </div>
+    </div>
+  );
 }
 
 export default function TestInfo({ onGiveTest }) {
@@ -107,6 +257,7 @@ export default function TestInfo({ onGiveTest }) {
   const courses = (data.math && data.math.courses) || [];
   const roadmap = (data.math && data.math.roadmap) || [];
   const englishCount = ((data.english && data.english.lessons) || []).length;
+  const openCourse = courses.find((c) => c.id === openId) || null;
 
   return (
     <div>
@@ -115,63 +266,47 @@ export default function TestInfo({ onGiveTest }) {
         Skill courses with lessons and 10-problem practice sets. A course loads only when you open this page.
       </p>
 
-      <h3 className="group-title rise d3">Math courses</h3>
-      <div className="skill-grid rise d3">
-        {courses.map((course) => {
-          const open = openId === course.id;
-          const ready = (course.problems || []).length > 0;
-          return (
-            <div key={course.id} className="course-card">
-              <button
-                type="button"
-                className="course-head"
-                onClick={() => setOpenId(open ? null : course.id)}
-                aria-expanded={open}
-              >
-                <span className="skill-text">
-                  <span className="skill-title">{course.title}</span>
-                  <span className="skill-meta">
-                    {course.tier} · {(course.problems || []).length} practice problems
+      {!openCourse ? (
+        <>
+          <h3 className="group-title rise d3">Math courses</h3>
+          <div className="skill-grid rise d3">
+            {courses.map((course) => {
+              const ready = (course.problems || []).length > 0;
+              return (
+                <button
+                  key={course.id}
+                  type="button"
+                  className="course-card course-link"
+                  onClick={() => {
+                    setOpenId(course.id);
+                    window.scrollTo(0, 0);
+                  }}
+                >
+                  <span className="skill-text">
+                    <span className="skill-title">{course.title}</span>
+                    <span className="skill-meta">
+                      {course.tier} · {(course.problems || []).length} practice problems{ready ? "" : " · soon"}
+                    </span>
                   </span>
-                </span>
-                <span className="course-caret" aria-hidden="true">{open ? "▾" : "▸"}</span>
-              </button>
-              {open && (
-                <div className="course-body">
-                  <p className="lesson-p">{course.summary}</p>
-                  <h4 className="lesson-h">Skills in this course</h4>
-                  <ul className="lesson-list">
-                    {(course.skills || []).map((s) => (
-                      <li key={s.id}>
-                        <strong>{s.title}:</strong> <MathText text={s.key} />
-                      </li>
-                    ))}
-                  </ul>
-                  <Blocks blocks={course.lesson} figures={course.figures} />
-                  <button
-                    type="button"
-                    className="btn-primary course-cta"
-                    disabled={!ready}
-                    onClick={() =>
-                      ready &&
-                      setSelected({
-                        id: `MATH-LESSON-${course.id}`,
-                        title: course.title,
-                        meta: `${course.problems.length} questions · ${course.timeMinutes || course.problems.length} min`,
-                        course,
-                      })
-                    }
-                  >
-                    {ready ? "GIVE TEST" : "COMING SOON"}
-                  </button>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                  <span className="course-caret" aria-hidden="true">▸</span>
+                </button>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <CoursePage
+          course={openCourse}
+          subject={(data.math && data.math.subject) || "math"}
+          onBack={() => {
+            setOpenId(null);
+            window.scrollTo(0, 0);
+          }}
+          onSelect={(sel) => setSelected(sel)}
+        />
+      )}
 
-      {roadmap.length > 0 && (
+      {!openCourse && roadmap.length > 0 && (
         <>
           <h3 className="group-title">Roadmap</h3>
           <div className="skill-grid">
@@ -187,16 +322,20 @@ export default function TestInfo({ onGiveTest }) {
         </>
       )}
 
-      <h3 className="group-title">English lessons</h3>
-      <p className="muted-text">
-        {englishCount === 0 ? "English lessons are coming soon." : `${englishCount} lessons available.`}
-      </p>
+      {!openCourse && (
+        <>
+          <h3 className="group-title">English lessons</h3>
+          <p className="muted-text">
+            {englishCount === 0 ? "English lessons are coming soon." : `${englishCount} lessons available.`}
+          </p>
+        </>
+      )}
 
       {selected && (
         <ModeModal
           skill={selected}
           onClose={() => setSelected(null)}
-          onStart={(mode) => onGiveTest(lessonTest(selected.course), mode)}
+          onStart={(mode) => onGiveTest(lessonTest(selected.course, selected.subject), mode)}
         />
       )}
     </div>

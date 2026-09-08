@@ -331,19 +331,21 @@
           "title": "Passage II — The Axolotl's Second Chance",
           "paras": [
             [
-              { "t": "In the canals of Xochimilco, near Mexico City, swims an animal that refuses to grow up. The axolotl, a salamander " },
+              { "t": "In the canals of Xochimilco, near Mexico City, swims an animal that refuses to grow up. Named after an Aztec deity, the axolotl fascinated naturalists from the first specimens that reached Europe in the nineteenth century. The axolotl, a salamander " },
               { "u": 11, "t": "that keeps its juvenile gills throughout its adult life," },
               { "t": " can regrow entire limbs, jaws, and even " },
-              { "u": 12, "t": "parts of it's heart." }
+              { "u": 12, "t": "parts of it's heart." },
+              { "t": " Unlike most salamanders, it never undergoes full metamorphosis, keeping its feathery external gills for life. " }
             ],
             [
               { "t": "Researchers " },
               { "u": 13, "t": "whom" },
-              { "t": " study regeneration prize the axolotl above mice and zebrafish. " },
-              { "u": 14, "t": "A severed limb regrows in weeks, complete with bone, muscle, and nerves." }
+              { "t": " study regeneration prize the axolotl above mice and zebrafish, whose wounds simply scar over. " },
+              { "u": 14, "t": "A severed limb regrows in weeks, complete with bone, muscle, and nerves." },
+              { "t": " The regrown limb is not a scar but a working copy, down to the last toe. Scientists hope its secrets will one day help human medicine. " }
             ],
             [
-              { "t": "In the wild, the axolotl is critically endangered. " },
+              { "t": "In the wild, the axolotl is critically endangered. Once abundant across the lakes of the Valley of Mexico, it now survives in a single network of canals. Conservationists breed them in captivity while fighting to clean the remaining water. " },
               { "u": 15, "t": "Pollution and invasive tilapia have shrunk its canals to a fraction of their former range." }
             ]
           ]
@@ -451,20 +453,23 @@
           "title": "Passage V — The Crows of Sendai",
           "paras": [
             [
-              { "t": "At intersections in Sendai, Japan, carrion crows have learned to eat what the traffic cracks open. A crow drops a walnut into the crosswalk and waits on a lamppost while cars do the crushing. " },
+              { "t": "At intersections in Sendai, Japan, carrion crows have learned to eat what the traffic cracks open. Commuters barely glance up anymore; the routine is older than most of the cars. The birds learned the sequence — drop, wait, collect — within a single decade of observation. A crow drops a walnut into the crosswalk and waits on a lamppost while cars do the crushing. " },
               { "u": 37, "t": "It swoops down during the red light to collect the kernel." },
-              { "t": " Each nut, positioned at the lane's edge where tires pass most often, cracks cleanly. " },
+              { "t": " Each nut, positioned at the lane's edge where tires pass most often, cracks cleanly. Crows that misjudge the timing lose both nut and nerve. " },
               { "box": "36" }
             ],
             [
               { "u": 38, "t": "Young crows learn the routine by watching elders, not by instinct alone." },
+              { "t": "Fledglings practice with pebbles before graduating to walnuts. An elder will sometimes demonstrate twice when a juvenile fumbles. " },
               { "t": " Neither the horns nor the waiting " },
               { "u": 39, "t": "seem" },
-              { "t": " to bother them." }
+              { "t": " to bother them." },
+              { "t": " Rush hour, researchers note, is their most productive shift. " }
             ],
             [
-              { "t": "Biologists rank the feat with tool use. " },
-              { "u": 40, "t": "A crow that cannot crack a nut goes hungry, but a crow that reads a traffic light eats." }
+              { "t": "Biologists rank the feat with tool use. It requires planning, patience, and reading a human machine — the traffic signal. " },
+              { "u": 40, "t": "A crow that cannot crack a nut goes hungry, but a crow that reads a traffic light eats." },
+              { "t": " Other city birds watch, but so far only the crows collect. " }
             ]
           ]
         },
@@ -482,14 +487,14 @@
               { "u": 42, "t": "more clearly than any instrument in the ensemble." },
               { "t": " Squeezing the ropes bends the pitch; striking the head releases it. A skilled player can praise a chief, warn of danger, or tease a friend, all without a single word. Court drummers once carried news between villages faster than any runner. " },
               { "u": 43, "t": "Diallo performs with symphony orchestras and hip-hop artists alike." },
-              { "t": "Critics who once dismissed the tama as folk craft now review his concerts alongside classical recitals. " },
+              { "t": "Critics who once dismissed the tama as folk craft now review his concerts alongside classical recitals. " }
             ],
             [
               { "t": "He builds drums with shells, goatskin heads, and iron tuning rings " },
               { "u": 44, "t": "(usually carved from a single lenke log)." },
               { "t": " " },
               { "u": 45, "t": "Because Yoruba is a tonal language, the drum can mimic its rises and falls." },
-              { "t": "Children learning Yoruba sometimes practice tones on small practice drums before they can read. The drum, players say, simply speaks the language aloud. " },
+              { "t": "Children learning Yoruba sometimes practice tones on small practice drums before they can read. The drum, players say, simply speaks the language aloud. " }
             ],
             [
               { "t": "Apprentices begin as children. A beginner spends months squeezing rope patterns in silence before striking a single note. Years of practice " },

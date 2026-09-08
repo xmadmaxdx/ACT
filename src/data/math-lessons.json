@@ -20,16 +20,76 @@
         { "id": "mean", "title": "Mean", "key": "Total = average $\\times$ count. Add the new score to the old total, then divide by the new count." }
       ],
       "lesson": [
-        { "h": "The golden rules" },
-        { "p": "Most ACT algebra misses come from rushing, not hard math. Before computing, ask: what are the units, what is the unknown, and what form must the answer take?" },
+        { "h": "1. Units & Linear Relations", "id": "units-rates" },
+        { "p": "Every quantity has a unit. The number-one algebra trap is mixing them — milligrams with grams, minutes with hours, percent with decimals. Convert first, combine second." },
         { "list": [
-          "Units first: $120\\text{ mg} = 0.12\\text{ g}$. Never add grams to milligrams.",
-          "Isolate the variable: undo $+,-,\\times,\\div$ in reverse order.",
-          "Inequalities: multiplying or dividing by a negative flips $<$ to $>$.",
-          "Exponents: $(2x^3)(3x^{-1}) = 6x^{3-1} = 6x^2$.",
-          "Notation: $f(4)$ for $f(x)=x^2-3x+2$ gives $16-12+2=6$."
+          "Convert first: $120\\text{ mg} = 0.12\\text{ g}$. Never add grams to milligrams.",
+          "Days (or trips, or batches) equal each total divided by its rate, then add.",
+          "Read what each letter stands for before touching the options."
         ] },
-        { "math": "\\text{original price} = \\frac{\\text{sale price}}{1 - \\text{discount}} = \\frac{48}{0.8} = 60" }
+        { "math": "N = \\frac{P}{50} + \\frac{V}{0.12} = \\frac{P}{50} + \\frac{100V}{12}" },
+        { "practice": [1] },
+        { "h": "2. Number Sense & Divisibility", "id": "number-sense" },
+        { "p": "Divisibility by 3 looks only at the digit sum — never do the division. For digit puzzles, bound the possibilities first: a squared digit sum above 9 is impossible, so only a few cases survive." },
+        { "list": [
+          "Divisible by 3 if and only if the digit sum is divisible by 3.",
+          "If $A=(B+C)^2\\le 9$, then $B+C$ is 2 or 3 — at most three cases to check.",
+          "List every surviving case ($411$, $912$, $921$) and test each one."
+        ] },
+        { "practice": [2] },
+        { "h": "3. Notation & Functions", "id": "notation-functions" },
+        { "p": "A defined symbol is an equation in costume. Unpack it, solve for the unknown, then answer exactly what is asked — often not the unknown itself. Function notation works the same way: substitute, then compute." },
+        { "list": [
+          "$Z+\\frac{2}{3}=\\frac{8}{3}$ gives $Z=2$; then $Z^2-3=4-3=1$.",
+          "$f(4)$ means replace every $x$ with 4: $16-12+2=6$.",
+          "Never compute the intermediate value and stop — re-read the final ask."
+        ] },
+        { "practice": [3, 8] },
+        { "h": "4. Equations & Inequalities", "id": "equations-inequalities" },
+        { "p": "Isolate the variable by undoing operations in reverse order. Inequalities behave identically — with one exception that the test loves." },
+        { "list": [
+          "$3x-1=2x+1$ gives $x=2$: collect variables left, constants right.",
+          "Multiplying or dividing by a negative flips $<$ to $>$: $-2x<6$ means $x>-3$.",
+          "Adding or subtracting never flips the sign — only $\\times$ and $\\div$ by negatives."
+        ] },
+        { "math": "3x-1=2x+1 \\Rightarrow x=2 \\qquad -2x<6 \\Rightarrow x>-3" },
+        { "practice": [5, 6] },
+        { "h": "5. Exponents", "id": "exponents" },
+        { "p": "Multiply coefficients normally; combine exponents by rule. Same base, multiplying: add. Power to a power: multiply. Negative exponent: flip." },
+        { "list": [
+          "$(2x^3)(3x^{-1}) = 6x^{3-1} = 6x^2$.",
+          "$x^{-1}=\\frac{1}{x}$ and $x^0=1$ (for $x\\neq 0$).",
+          "Never add coefficients to exponents — $2x^3$ times $3x$ is not $5x^4$."
+        ] },
+        { "practice": [7] },
+        { "h": "6. Systems of Equations", "id": "systems" },
+        { "p": "Add or subtract whole equations to assassinate one variable. If the question asks for $y$, eliminate $x$ and stop — do not solve the full system." },
+        { "list": [
+          "$(x+y)+(x-y)=10+4$ gives $2x=14$, while subtracting gives $2y=6$.",
+          "Pick the operation that kills the variable you don't need.",
+          "Always plug back into the simplest equation to check."
+        ] },
+        { "math": "x+y=10,\\ x-y=4 \\Rightarrow 2y=6 \\Rightarrow y=3" },
+        { "practice": [9] },
+        { "h": "7. Percent & Mean", "id": "percent-mean" },
+        { "p": "Percent problems run backward: a 20% discount means 80% was paid. Mean problems run through the total: average times count, adjust, divide again." },
+        { "list": [
+          "$\\text{original}=48\\div 0.8=60$: divide by what you actually paid.",
+          "$\\text{total}=\\text{average}\\times\\text{count}$: $5\\cdot 84=420$, then $\\frac{420+96}{6}=86$.",
+          "20% off then 10% off is not 30% off — apply changes one at a time."
+        ] },
+        { "practice": [4, 10] },
+        { "h": "8. Formula Sheet — memorize these", "id": "formula-sheet" },
+        { "list": [
+          "Units: convert before combining; $N=\\frac{P}{50}+\\frac{100V}{12}$.",
+          "Divisibility by 3: digit sum divisible by 3.",
+          "Functions: $f(a)$ means substitute $a$ everywhere.",
+          "Linear solve: reverse-order undo; inequality flips only on $\\times/\\div$ by negatives.",
+          "Exponents: $x^m\\cdot x^n=x^{m+n}$, $(x^m)^n=x^{mn}$, $x^{-n}=\\frac{1}{x^n}$.",
+          "Systems: add/subtract equations to eliminate one variable.",
+          "Percent: $\\text{original}=\\text{sale}\\div(1-\\text{rate})$.",
+          "Mean: $\\text{total}=\\text{avg}\\times n$; new $\\text{avg}=\\frac{\\text{old total}+\\text{new}}{n+1}$."
+        ] }
       ],
       "figures": {},
       "problems": [
