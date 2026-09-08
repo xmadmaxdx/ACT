@@ -276,6 +276,276 @@
         { "n": 49, "p": "p6", "tag": "Rhetoric: Transition", "stem": "Which transition word or phrase, if any, is most logical in context?", "options": ["No Change", "For example, she", "Besides, she", "She"], "answer": "A", "explain": "“However” correctly signals a contrast: she regrets that others wear only “regular” clothes, yet *she* still wears flower cloth daily. “For example” and “Besides” do not fit the contrast; “She” drops the needed transition." },
         { "n": 50, "p": "p6", "point": "50", "tag": "Rhetoric: Purpose/Conclusion", "stem": "Which of the following true statements, if added here, would best build on the ideas presented in this paragraph and connect to the final sentence of the essay?", "options": ["She loves when people, no matter what their ethnicity, wear traditional clothing every day.", "She often teaches paj ntaub to Hmong adults her age who want to learn new techniques.", "Recently, she worked with nine young Hmong women in a formal apprenticeship.", "One of her own favorite pieces tells the story of her family."], "answer": "C", "explain": "The final sentence says Pang Xiong “is showing a new generation the joys of paj ntaub.” Option C (working with nine young Hmong women in an apprenticeship) directly builds on that idea of teaching a new generation. The others do not connect to the final sentence." }
       ]
+    },
+    {
+      "id": "ENGLISH-2",
+      "title": "English Only · Test 2",
+      "total": 50,
+      "timeMinutes": 35,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "Passage I — Kenji Nakamura and the Art of Kintsugi",
+          "paras": [
+            [
+              { "t": "In a Kyoto workshop, restorer Kenji Nakamura holds two halves of a " },
+              { "u": 2, "t": "busted" },
+              { "t": " tea bowl. " },
+              { "u": 1, "t": "Instead of hiding the crack, he" },
+              { "t": " will trace it in gold. This is kintsugi, the Japanese art of mending pottery with lacquer dusted in gold." }
+            ],
+            [
+              { "t": "Urushi lacquer hardens only in humid air. " },
+              { "u": 3, "t": "Mixed with gold dust, Nakamura paints the seams." },
+              { "t": " " },
+              { "u": 4, "t": "Yet the philosophy runs deeper than decoration." },
+              { "t": " " },
+              { "u": 5, "t": "Kintsugi, which dates to fifteenth-century Japan, treats" },
+              { "t": " breakage as history rather than flaw." }
+            ],
+            [
+              { "t": "Nakamura works slowly. He " },
+              { "u": 7, "t": "joins together" },
+              { "t": " the shards with thin bamboo spatulas, then waits weeks between coats. " },
+              { "u": 8, "t": "The careful layering of lacquer, gold, and time produce" },
+              { "t": " a seam stronger than the original clay. A single bowl can require " },
+              { "u": 9, "t": "a lot of time." },
+              { "t": " When the work is done, the bowl becomes " },
+              { "u": 6, "t": "a way cooler object after getting smashed." }
+            ],
+            [
+              { "u": 10, "t": "Collectors now like" },
+              { "t": " mended pieces above flawless ones. The crack, once a flaw, becomes the biography." }
+            ]
+          ]
+        },
+        {
+          "id": "p2",
+          "title": "Passage II — The Axolotl's Second Chance",
+          "paras": [
+            [
+              { "t": "In the canals of Xochimilco, near Mexico City, swims an animal that refuses to grow up. The axolotl, a salamander " },
+              { "u": 11, "t": "that keeps its juvenile gills throughout its adult life," },
+              { "t": " can regrow entire limbs, jaws, and even " },
+              { "u": 12, "t": "parts of it's heart." }
+            ],
+            [
+              { "t": "Researchers " },
+              { "u": 13, "t": "whom" },
+              { "t": " study regeneration prize the axolotl above mice and zebrafish. " },
+              { "u": 14, "t": "A severed limb regrows in weeks, complete with bone, muscle, and nerves." }
+            ],
+            [
+              { "t": "In the wild, the axolotl is critically endangered. " },
+              { "u": 15, "t": "Pollution and invasive tilapia have shrunk its canals to a fraction of their former range." }
+            ]
+          ]
+        },
+        {
+          "id": "p3",
+          "title": "Passage III — Night Train to Hue",
+          "paras": [
+            [
+              { "box": "1" },
+              { "t": " Hanoi station at ten at night is all steam and shouting. The platform " },
+              { "u": 16, "t": "buzzes" },
+              { "t": " with vendors selling tea and sticky rice. " },
+              { "u": 17, "t": "Tea steam curled through air thick with coal smoke and star anise." },
+              { "t": " " },
+              { "box": "A" }
+            ],
+            [
+              { "box": "2" },
+              { "t": " My berthmate, a grandmother carrying two baskets of lychees, patted the bunk beside her. She peeled a lychee for me" },
+              { "u": 18, "t": ", it burst sweet and cold on my tongue." },
+              { "t": " " },
+              { "u": 19, "t": "She spoke no English, and my Vietnamese consisted of only two words, just hello and thank you." },
+              { "t": " " },
+              { "box": "B" }
+            ],
+            [
+              { "box": "3" },
+              { "t": " Somewhere past midnight, " },
+              { "u": 20, "t": "the train's steady and regular rhythm finally slowed my thoughts." },
+              { "t": " The villages flashing past the window, each a scatter of lamps, " },
+              { "u": 21, "t": "recalls" },
+              { "t": " scenes from films I had never seen. " },
+              { "box": "C" },
+              { "t": " " },
+              { "u": 22, "t": "I understood, suddenly, how far a single night could carry a person forward in their life." }
+            ],
+            [
+              { "box": "4" },
+              { "t": " " },
+              { "u": 23, "t": "By dawn," },
+              { "t": " mist hung over the Perfume River. " },
+              { "box": "D" },
+              { "t": " I stepped onto the platform into air smelling of rain and frangipani. " },
+              { "box": "24" }
+            ]
+          ]
+        },
+        {
+          "id": "p4",
+          "title": "Passage IV — The Case for School Gardens",
+          "paras": [
+            [
+              { "box": "1" },
+              { "t": " At Jefferson Elementary, the best classroom has no roof. " },
+              { "u": 26, "t": "Schools should plant gardens, because growing food teaches science, patience, and responsibility better than any textbook." },
+              { "t": " " },
+              { "box": "A" },
+              { "t": " Rows of lettuce and sunflowers border the playground blacktop." }
+            ],
+            [
+              { "box": "2" },
+              { "t": " The case begins with learning. " },
+              { "u": 28, "t": "Last spring, students harvested 400 pounds of lettuce for the cafeteria." },
+              { "t": " Students learn patience by " },
+              { "u": 27, "t": "digging, planting, and to harvest." },
+              { "t": " " },
+              { "u": 29, "t": "However, test scores rose in every participating grade." },
+              { "t": " " },
+              { "box": "B" },
+              { "t": " Every school that joins the program receives " },
+              { "u": 30, "t": "their" },
+              { "t": " own beds." }
+            ],
+            [
+              { "box": "3" },
+              { "t": " Critics call gardens a distraction from tested subjects. Why dig, they ask, when the test is in May? " },
+              { "u": 31, "t": "Yet no lesson holds attention like one you can eat." },
+              { "t": " " },
+              { "box": "C" },
+              { "t": " The work depends on volunteers. " },
+              { "box": "32" }
+            ],
+            [
+              { "box": "4" },
+              { "t": " " },
+              { "u": 33, "t": "The results speak plainly: higher scores, calmer hallways, fuller plates." },
+              { "t": " " },
+              { "box": "D" },
+              { "t": " " },
+              { "u": 34, "t": "In short, the garden teaches what no worksheet can." },
+              { "t": " The blacktop classroom is enrolling new students every spring." }
+            ]
+          ]
+        },
+        {
+          "id": "p5",
+          "title": "Passage V — The Crows of Sendai",
+          "paras": [
+            [
+              { "t": "At intersections in Sendai, Japan, carrion crows have learned to eat what the traffic cracks open. A crow drops a walnut into the crosswalk and waits on a lamppost while cars do the crushing. " },
+              { "u": 37, "t": "It swoops down during the red light to collect the kernel." },
+              { "t": " Each nut, positioned at the lane's edge where tires pass most often, cracks cleanly. " },
+              { "box": "36" }
+            ],
+            [
+              { "u": 38, "t": "Young crows learn the routine by watching elders, not by instinct alone." },
+              { "t": " Neither the horns nor the waiting " },
+              { "u": 39, "t": "seem" },
+              { "t": " to bother them." }
+            ],
+            [
+              { "t": "Biologists rank the feat with tool use. " },
+              { "u": 40, "t": "A crow that cannot crack a nut goes hungry, but a crow that reads a traffic light eats." }
+            ]
+          ]
+        },
+        {
+          "id": "p6",
+          "title": "Passage VI — Amara Diallo and the Talking Drums",
+          "paras": [
+            [
+              { "t": "He stretches goatskin over carved lenke wood, tunes it with iron rings and rope, and " },
+              { "u": 41, "t": "coaxes speech from a drum." },
+              { "t": " Amara Diallo is a master of the tama, the hourglass talking drum of West Africa." }
+            ],
+            [
+              { "t": "No drum speaks " },
+              { "u": 42, "t": "more clearly than any instrument in the ensemble." },
+              { "t": " Squeezing the ropes bends the pitch; striking the head releases it. " },
+              { "u": 43, "t": "Diallo performs with symphony orchestras and hip-hop artists alike." }
+            ],
+            [
+              { "t": "He builds drums with shells, goatskin heads, and iron tuning rings " },
+              { "u": 44, "t": "(usually carved from a single lenke log)." },
+              { "t": " " },
+              { "u": 45, "t": "Because Yoruba is a tonal language, the drum can mimic its rises and falls." }
+            ],
+            [
+              { "t": "Apprentices begin as children. Years of practice " },
+              { "u": 46, "t": "effect" },
+              { "t": " the player's fluency. Diallo dislikes hearing his drums called " },
+              { "u": 47, "t": "simple" },
+              { "t": " instruments. Fame has taken Diallo to concert halls on four continents. " },
+              { "u": 48, "t": "Therefore," },
+              { "t": " he still teaches beginners in Bamako each summer." }
+            ],
+            [
+              { "t": "Each student carves " },
+              { "u": 49, "t": "their" },
+              { "t": " first drumstick before touching a drumhead. " },
+              { "box": "50" },
+              { "t": " Diallo is passing the drum's language to a new generation." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Sentence Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "Hiding the crack instead, he", "He hides the crack, he", "Delete the underlined portion."], "answer": "A", "explain": "The opening contrast — hiding versus tracing in gold — must stay intact. B reverses the meaning into hiding, C splices two clauses with a comma, and D deletes the contrast the sentence is built on." },
+        { "n": 2, "p": "p1", "tag": "Rhetoric: Tone/Diction", "stem": "The writer wants to describe the bowl precisely while maintaining the essay's formal tone. Which choice best accomplishes that goal?", "options": ["No Change", "shattered.", "broken.", "destroyed."], "answer": "B", "explain": "\"Shattered\" precisely means broken into fragments, fitting a bowl in two halves. \"Busted\" is slang, \"broken\" is vaguer, and \"destroyed\" overstates damage to a bowl about to be repaired." },
+        { "n": 3, "p": "p1", "tag": "Modifiers", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "Mixed with gold dust, Nakamura, painting the seams,", "Painting the seams, Nakamura mixes the gold dust.", "Mixed with gold dust, the seams are painted by Nakamura."], "answer": "D", "explain": "The opener describes the lacquer on the seams, so the subject must be the seams — only D supplies it. A attaches the mixture to the man, C is grammatical but reverses the process by mixing after painting begins, and B leaves the sentence without a main verb." },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Transition", "stem": "Given that all the choices are accurate, which one provides the best transition from technique to meaning?", "options": ["No Change", "The tools are expensive.", "Gold is a valuable metal.", "Nakamura works quickly."], "answer": "A", "explain": "The paragraph moves from lacquer technique to the philosophy behind it, and \"yet the philosophy runs deeper\" bridges exactly that shift. B and C state true but unbridging facts, and D contradicts the weeks-long curing the essay establishes." },
+        { "n": 5, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "that dates to fifteenth-century Japan, treats", "which dates to fifteenth-century Japan treats", "dating to fifteenth-century Japan treats"], "answer": "A", "explain": "The history is non-essential — there is one kintsugi — so it needs \"which\" with paired commas. \"That\" cannot take a comma, and C and D drop the closing comma the aside requires." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Tone", "stem": "Which choice most effectively maintains the essay's formal tone?", "options": ["No Change", "a cooler bowl than before.", "more precious for having been broken.", "pretty neat after breaking."], "answer": "C", "explain": "\"More precious for having been broken\" states the wabi-sabi idea in the essay's formal register. The original leans on slang (\"way cooler,\" \"smashed\"), and B and D stay casual." },
+        { "n": 7, "p": "p1", "tag": "Concision/Redundancy", "stem": "Which choice is least redundant in context?", "options": ["No Change", "joins", "joins together with each other", "unites together"], "answer": "B", "explain": "\"Join\" already means to bring together, so B says it once. A restates it, C triples it, and D swaps in a synonym without removing the restatement." },
+        { "n": 8, "p": "p1", "tag": "Subject–Verb Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "are producing", "have produced", "produces"], "answer": "D", "explain": "The subject is the singular \"layering\" — cross out \"of lacquer, gold, and time\" — so the verb must be \"produces.\" A, B, and C all give plural or mismatched verbs to a singular subject." },
+        { "n": 9, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to give a concrete sense of the patience the craft requires. Which choice best accomplishes that goal?", "options": ["No Change", "a quick afternoon.", "a month of drying between coats.", "an enjoyable hobby."], "answer": "C", "explain": "A month of drying between coats quantifies the patience; \"a lot of time\" and \"an enjoyable hobby\" stay vague, and \"a quick afternoon\" contradicts the slow process." },
+        { "n": 10, "p": "p1", "tag": "Rhetoric: Diction", "stem": "The writer wants a closing verb that captures cherishing, not merely purchasing. Which choice best accomplishes that goal?", "options": ["No Change", "treasure", "hoard", "buy"], "answer": "B", "explain": "\"Treasure\" means to cherish, which is the essay's whole point about mended bowls. \"Like\" is too weak for the closing claim, \"hoard\" turns cherishing sinister, and \"buy\" shrinks the idea to commerce." },
+        { "n": 11, "p": "p2", "tag": "Rhetoric: Purpose", "stem": "The writer wants to introduce the axolotl's defining trait. Which choice best accomplishes that goal?", "options": ["No Change", "that lives in water.", "that never grows old.", "that refuses to eat."], "answer": "A", "explain": "Keeping juvenile gills into adulthood — neoteny — is the trait the essay is about. B says nothing distinctive, C twists neoteny into agelessness, and D invents a refusal to eat." },
+        { "n": 12, "p": "p2", "tag": "Pronoun/Apostrophe", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "parts of its heart.", "parts of their hearts.", "parts of its' heart."], "answer": "B", "explain": "The animal is singular, so the possessive must be \"its\" with no apostrophe. \"It's\" means \"it is,\" \"their\" mismatches the singular animal, and \"its'\" is not a word." },
+        { "n": 13, "p": "p2", "tag": "Pronoun Case", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "which study", "whose study", "who study"], "answer": "D", "explain": "The pronoun performs the verb \"study,\" so the subject form \"who\" is required. \"Whom\" is the objective case, \"which\" is for things rather than researchers, and \"whose\" is possessive." },
+        { "n": 14, "p": "p2", "tag": "Rhetoric: Supporting Detail", "stem": "The writer wants to state the remarkable fact behind the axolotl's fame. Which choice best accomplishes that goal?", "options": ["A severed limb vanishes forever.", "No Change", "A severed limb regrows in seconds.", "A severed limb regrows only in winter."], "answer": "B", "explain": "Weeks-long regrowth complete with bone, muscle, and nerves is the measured marvel. A contradicts it, C compresses weeks into seconds, and D invents a seasonal condition." },
+        { "n": 15, "p": "p2", "tag": "Rhetoric: Purpose", "stem": "The writer wants to state the wild axolotl's threat concretely. Which choice best accomplishes that goal?", "options": ["The axolotl is doing fine.", "Canals are wet.", "No Change", "Invasive tilapia have improved the canals."], "answer": "C", "explain": "Pollution plus invasive tilapia shrinking the canals names the concrete threat. A contradicts the endangered status, B states a vacuous fact, and D reverses the tilapia's harm into help." },
+        { "n": 16, "p": "p3", "tag": "Verb Tense", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "buzzed", "had buzzed and will buzz", "buzzing"], "answer": "B", "explain": "The memoir is told in the past tense, so the simple past \"buzzed\" is required. A shifts into the present, C tangles past perfect with future, and D leaves the clause with no main verb." },
+        { "n": 17, "p": "p3", "tag": "Rhetoric: Imagery", "stem": "The writer wants to open with a vivid sensory portrait of the station. Which choice best accomplishes that goal?", "options": ["No Change", "The air existed.", "The station was big.", "Tea steam, coal smoke, and star anise were present."], "answer": "A", "explain": "Tea steam curling through coal smoke and star anise lets the reader smell the platform. B states a vacuous fact, C stays flat, and D lists the same ingredients while killing the image." },
+        { "n": 18, "p": "p3", "tag": "Sentence Structure/Comma Splice", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", " it burst sweet and cold on my tongue.", ", bursting sweet and cold on my tongue.", "; it burst sweet and cold on my tongue."], "answer": "D", "explain": "Two complete clauses need a semicolon between them, as in D. A splices them with a comma, B fuses them with no punctuation, and C strands \"bursting\" so it appears the narrator bursts." },
+        { "n": 19, "p": "p3", "tag": "Concision/Redundancy", "stem": "Which choice is least redundant in context?", "options": ["No Change", "She spoke no English, and my Vietnamese consisted of only two words, just hello and thank you and nothing else.", "She spoke no English, and my Vietnamese consisted of two words: hello and thank you.", "She spoke no English, and my Vietnamese consisted of hello and thank you words."], "answer": "C", "explain": "\"Only\" and \"just\" restate each other, so C says it once with a clean colon. B triples the restatement, and D mangles the phrasing into nonsense." },
+        { "n": 20, "p": "p3", "tag": "Knowledge: Concision", "stem": "Which choice is least redundant in context?", "options": ["No Change", "the train's steady rhythm finally slowed my thoughts.", "the train's steady and regular rhythm finally slowed my thoughts right down.", "the train finally slowed."], "answer": "B", "explain": "\"Steady\" and \"regular\" say the same thing, so B keeps one. C pads the restatement further, and D drops the reflection the sentence exists to deliver." },
+        { "n": 21, "p": "p3", "tag": "Subject–Verb Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "are recalling", "recalling", "recall"], "answer": "D", "explain": "The subject is the plural \"villages\" — \"each a scatter of lamps\" is only a parenthetical — so the verb must be \"recall.\" A follows the singular \"each,\" B breaks the past-tense frame, and C leaves no main verb." },
+        { "n": 22, "p": "p3", "tag": "Rhetoric: Elaboration", "stem": "The writer wants to state the midnight realization as compactly as possible. Which choice best accomplishes that goal?", "options": ["No Change", "I understood, suddenly, how far one night could carry a person.", "I understood, suddenly, how trains have engines.", "I understood, suddenly, how late it was."], "answer": "B", "explain": "B keeps the realization and cuts the padding (\"single,\" \"forward in their life\"). C states a mechanical vacuity, and D flattens the moment into clock-watching." },
+        { "n": 23, "p": "p3", "tag": "Rhetoric: Transition", "stem": "Which transition word or phrase is most logical in context?", "options": ["No Change", "Nevertheless, mist hung over the Perfume River.", "For example, mist hung over the Perfume River.", "Instead, mist hung over the Perfume River."], "answer": "A", "explain": "\"By dawn\" correctly advances the clock from midnight to arrival. \"Nevertheless\" and \"instead\" signal contrasts that never come, and \"for example\" frames an arrival as an illustration." },
+        { "n": 24, "p": "p3", "point": "24", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following accurate sentence: *My berthmate pressed a bag of lychees into my hands as I stepped onto the platform.* Should the writer make this addition?", "options": ["Yes, because it completes the berthmate's farewell at the arrival moment.", "Yes, because it proves that lychees grow in Hue.", "No, because it shifts focus to train mechanics.", "No, because it denies the berthmate existed."], "answer": "A", "explain": "The pressed bag of lychees closes the berthmate thread exactly where she leaves the story. B overclaims Hue agriculture, C misreads farewell as mechanics, and D reverses two paragraphs of her company." },
+        { "n": 25, "p": "p3", "tag": "Rhetoric: Placement", "stem": "*Question 25 asks about the preceding passage as a whole.* The writer wants to add the following sentence to the essay: *I have never slept so well.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "C", "explain": "The sleep claim belongs with the midnight reflection, where the rhythm slows the narrator's thoughts. Point A is departure bustle, Point B the berthmate scene, and Point D the dawn arrival." },
+        { "n": 26, "p": "p4", "tag": "Rhetoric: Purpose", "stem": "The writer wants to state the essay's central argument in formal language. Which choice best accomplishes that goal?", "options": ["No Change", "Schools should plant a ton of gardens because dirt is awesome.", "Vegetables contain vitamins.", "Jefferson Elementary should plant one tomato."], "answer": "A", "explain": "A states the position plainly and previews the essay's case: science, patience, and responsibility, better than any textbook. B slips into slang, C is true but off-thesis, and D narrows a national argument to one tomato." },
+        { "n": 27, "p": "p4", "tag": "Parallel Structure", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "digging, planting, and harvesting.", "to dig, to plant, and to harvest.", "dig, plant, and to harvest."], "answer": "B", "explain": "After \"by,\" the series needs matching gerunds: digging, planting, harvesting. A mixes in an infinitive, C's infinitives cannot follow \"by,\" and D mixes bare verbs with an infinitive." },
+        { "n": 28, "p": "p4", "tag": "Rhetoric: Supporting Detail", "stem": "The writer wants to show the garden's cafeteria impact with concrete evidence. Which choice best accomplishes that goal?", "options": ["Last spring, students napped in the garden.", "Last spring, the garden flooded.", "Last spring, students harvested four lettuce leaves.", "No Change"], "answer": "D", "explain": "Four hundred pounds of cafeteria lettuce proves impact directly. A naps through the point, B floods it, and C shrinks the harvest to a garnish." },
+        { "n": 29, "p": "p4", "tag": "Rhetoric: Transition", "stem": "Which transition word or phrase is most logical in context?", "options": ["No Change", "As a result, test scores rose in every participating grade.", "For example, test scores rose in every participating grade.", "Instead, test scores rose in every participating grade."], "answer": "B", "explain": "Rising scores are presented as a result of the garden program, so \"as a result\" is required. \"However\" and \"instead\" signal contrasts that never come, and \"for example\" misframes a result as an illustration." },
+        { "n": 30, "p": "p4", "tag": "Pronoun Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "there", "they're", "its"], "answer": "D", "explain": "The antecedent is the singular \"every school,\" so the possessive must be \"its.\" \"Their\" mismatches the singular, \"there\" names a place, and \"they're\" means \"they are.\"" },
+        { "n": 31, "p": "p4", "tag": "Rhetoric: Counterargument", "stem": "The writer wants to answer the critics by naming what only a garden can teach. Which choice best accomplishes that goal?", "options": ["Yet gardens are prettier than classrooms.", "Yet critics should visit a farm.", "No Change", "Yet tests matter more than tomatoes."], "answer": "C", "explain": "An edible lesson answers the distraction charge head-on: attention you can eat. A retreats to prettiness, B dismisses the critics rudely, and D surrenders to the testing regime." },
+        { "n": 32, "p": "p4", "point": "32", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following accurate sentence: *Retired neighbors teach composting on Saturdays.* Should the writer make this addition?", "options": ["Yes, because it names the community help the volunteer work depends on.", "Yes, because it proves that every retiree gardens.", "No, because it shifts focus to school athletics.", "No, because it denies that volunteers matter."], "answer": "A", "explain": "Saturday compost lessons are the concrete community help the paragraph's volunteer work requires. B overgeneralizes to every retiree, C misreads compost as athletics, and D reverses the sentence into denial." },
+        { "n": 33, "p": "p4", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "The results speak plainly; higher scores, calmer hallways, fuller plates.", "The results speak plainly, higher scores, calmer hallways, fuller plates.", "The results speak plainly higher scores, calmer hallways, fuller plates."], "answer": "A", "explain": "The colon correctly follows a complete sentence and introduces the elaborating list. A semicolon cannot introduce a list, a comma splices it into the clause, and no punctuation fuses them together." },
+        { "n": 34, "p": "p4", "tag": "Rhetoric: Conclusion", "stem": "Which choice most effectively concludes the paragraph by returning to the essay's central contrast?", "options": ["In short, worksheets are useless.", "In short, gardens replace teachers.", "In short, test scores are everything.", "No Change"], "answer": "D", "explain": "The garden-versus-worksheet contrast restates the thesis in the paragraph's own terms. A overclaims worksheets' worthlessness, B replaces teachers the essay never dismisses, and C crowns the testing regime the essay argues against." },
+        { "n": 35, "p": "p4", "tag": "Rhetoric: Placement", "stem": "*Question 35 asks about the preceding passage as a whole.* The writer wants to add the following sentence to the essay: *A waiting list of parent volunteers grows every semester.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "C", "explain": "The volunteer detail joins the community paragraph, where the work depends on volunteers. Point A introduces the thesis, Point B presents evidence and results, and Point D closes on outcomes." },
+        { "n": 36, "p": "p5", "point": "36", "tag": "Rhetoric: Add/Delete", "stem": "If the writer were to delete the phrase “where tires pass most often” from the preceding sentence (adjusting the punctuation as needed), the sentence would primarily lose:", "options": ["specific information that explains why the lane's edge cracks nuts reliably.", "specific information that gives the walnut's weight in grams.", "details that prove crows invented the crosswalk.", "details that describe the lamppost's height."], "answer": "A", "explain": "The phrase locates the nuts where tires pass most often — the reason the edge cracks them reliably. B invents a weight, C credits crows with inventing crosswalks, and D looks up at the wrong object." },
+        { "n": 37, "p": "p5", "tag": "Rhetoric: Purpose", "stem": "The writer wants to state the crow's learned safety rule. Which choice best accomplishes that goal?", "options": ["It swoops down into speeding traffic to collect the kernel.", "It flies south for the winter.", "No Change", "It drops another walnut immediately."], "answer": "C", "explain": "Waiting for the red light is the learned rule that keeps the crow alive. A reverses it into suicide, B migrates out of the story, and D scrambles the drop-wait-collect sequence." },
+        { "n": 38, "p": "p5", "tag": "Rhetoric: Purpose", "stem": "The writer wants to state how young crows acquire the routine. Which choice best accomplishes that goal?", "options": ["Young crows hatch knowing the full routine.", "No Change", "Young crows ignore other crows.", "Young crows prefer lampposts to trees."], "answer": "B", "explain": "Watching elders — not instinct alone — is the essay's learning mechanism. A hatches them pre-trained, C cuts the teachers out, and D compares furniture irrelevantly." },
+        { "n": 39, "p": "p5", "tag": "Subject–Verb Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "seems", "are seeming", "seem to"], "answer": "B", "explain": "With \"neither/nor,\" the verb agrees with the nearer subject: the singular \"waiting\" needs \"seems.\" The plural \"horns\" lures readers toward A, while C and D break the construction entirely." },
+        { "n": 40, "p": "p5", "tag": "Rhetoric: Conclusion", "stem": "Which choice most effectively closes the passage on the essay's central irony?", "options": ["Traffic lights exist to feed crows.", "Nuts are healthier than insects.", "Crows dislike walnuts.", "No Change"], "answer": "D", "explain": "A crow reading a traffic light to eat is the irony the whole passage earns. A reverses the lights' purpose, B compares diets irrelevantly, and C contradicts three paragraphs of walnut-cracking." },
+        { "n": 41, "p": "p6", "tag": "Rhetoric: Style", "stem": "The writer wants to open with the craft's marvel in vivid language. Which choice best accomplishes that goal?", "options": ["No Change", "hits a drum.", "makes noise.", "assembles furniture."], "answer": "A", "explain": "\"Coaxes speech from a drum\" states the talking-drum marvel the whole essay explores. B and C flatten it to vacant thumping, and D mistakes the drum for furniture." },
+        { "n": 42, "p": "p6", "tag": "Logical Comparison", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["more clearer than any instrument in the ensemble.", "most clearly than any instrument in the ensemble.", "No Change", "more clearly than any other instrument in the ensemble."], "answer": "D", "explain": "The drum must be excluded from its own comparison with \"other.\" A doubles the comparative, B mixes a superlative with \"than,\" and C compares the drum to itself." },
+        { "n": 43, "p": "p6", "tag": "Rhetoric: Add/Delete", "stem": "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?", "options": ["Kept, because it proves orchestras replace griots.", "Deleted, because it detracts from ancient styles.", "Kept, because it places the tradition in a modern context.", "Deleted, because it is irrelevant to drumming."], "answer": "C", "explain": "Symphonies and hip-hop show the tradition alive today — the modern context the essay needs. A overclaims replacement, while B and D wrongly call living proof irrelevant." },
+        { "n": 44, "p": "p6", "tag": "Rhetoric: Placement", "stem": "The best placement for the underlined portion would be:", "options": ["where it is now.", "after the word *shells*.", "after the word *drums*.", "after the word *heads*."], "answer": "B", "explain": "Only the shells are carved from a log, so the parenthetical belongs after \"shells.\" Where it sits now it attaches to the iron rings, after \"drums\" it stays ambiguous, and after \"heads\" it claims goatskin is carved." },
+        { "n": 45, "p": "p6", "tag": "Rhetoric: Purpose", "stem": "The writer wants to explain why the drum can mimic speech. Which choice best accomplishes that goal?", "options": ["the drum is loud.", "drummers memorize speeches.", "Yoruba has no words.", "No Change"], "answer": "D", "explain": "Tonal rises and falls are the mechanism the sentence must state. A offers volume without meaning, B invents memorized speeches, and C denies the language words it plainly has." },
+        { "n": 46, "p": "p6", "tag": "Word Choice", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "affect", "effecting", "effects"], "answer": "A", "explain": "As a verb, \"effect\" means to bring about — years of practice bring about fluency — so \"effect\" is correct. \"Affect\" means merely to influence, C leaves no main verb, and D shifts into the present tense." },
+        { "n": 47, "p": "p6", "tag": "Rhetoric: Revision/Diction", "stem": "The writer is considering revising the underlined portion to the following: *primitive* Should the writer make this revision?", "options": ["Yes, because “primitive” praises the drums' age.", "Yes, because “simple” is grammatically incorrect.", "No, because “primitive” insults a tradition the essay honors.", "No, because the drums are electronic."], "answer": "C", "explain": "“Primitive” insults the mastery the essay celebrates; the revision must be refused. A misreads insult as praise, B invents a grammar error, and D hallucinates electronics." },
+        { "n": 48, "p": "p6", "tag": "Rhetoric: Transition", "stem": "Which transition word or phrase is most logical in context?", "options": ["No Change", "For example,", "Meanwhile,", "However,"], "answer": "D", "explain": "Global fame against village teaching is a contrast, so \"however\" is required. \"Therefore\" claims the teaching results from the fame, \"for example\" misframes it as illustration, and \"meanwhile\" claims simultaneity the sentence never establishes." },
+        { "n": 49, "p": "p6", "tag": "Pronoun Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "its", "his or her", "there"], "answer": "C", "explain": "The antecedent is the singular \"each student,\" so the pronoun must be \"his or her.\" \"Their\" mismatches the singular, \"its\" is for things rather than students, and \"there\" names a place." },
+        { "n": 50, "p": "p6", "point": "50", "tag": "Rhetoric: Purpose/Conclusion", "stem": "Which of the following true statements, if added here, would best build on the ideas presented in this paragraph and connect to the final sentence of the essay?", "options": ["Last year, twelve of his students performed at the national arts festival, proving festivals replace lessons.", "Last year, twelve kora players performed at the national arts festival.", "Last year, twelve of his students performed at the national arts festival.", "Last year, Diallo stopped teaching entirely."], "answer": "C", "explain": "Twelve students on a festival stage show the new generation carrying the drum's language forward. A overclaims replacement, B swaps in the wrong instrument, and D reverses a lifetime of teaching." }
+      ]
     }
   ]
 }

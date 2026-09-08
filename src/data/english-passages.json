@@ -401,6 +401,169 @@
         { "n": 9, "p": "p1", "tag": "Adjective vs Adverb", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "more effective than", "most effectively than", "effectively than"], "answer": "A", "explain": "The adverb \"effectively\" must modify the verb \"serve,\" and comparing two groups needs the comparative \"more\" with \"than.\" B uses the adjective form, C mixes a superlative with \"than,\" and D drops the required \"more.\"" },
         { "n": 10, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *One branch that restored evening hours saw attendance double within a year.* Should the writer make this addition?", "options": ["Yes, because it gives concrete evidence that evening hours draw readers.", "Yes, because it proves that every budget problem has been solved.", "No, because it shifts focus from libraries to museums.", "No, because it denies that hours affect attendance."], "answer": "A", "explain": "Doubled attendance is the concrete payoff the paragraph's call to protect hours requires. B overclaims a universal budget fix, C misreads branches as museums, and D reverses the sentence's meaning." }
       ]
+    },
+    {
+      "id": "ENGLISH-P8",
+      "title": "The First Ride",
+      "total": 5,
+      "timeMinutes": 3.5,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "The First Ride",
+          "paras": [
+            [
+              { "t": "The bicycle was older than I was, a rust-flecked hand-me-down from my cousin. My father spent a Saturday morning tightening its brakes and pumping its " },
+              { "u": 1, "t": "brand new tires." },
+              { "t": " " },
+              { "box": "A" },
+              { "t": " " },
+              { "u": 2, "t": "He promised he would not let go until I said so." }
+            ],
+            [
+              { "t": "I wobbled down the driveway with his hand firm on the seat. " },
+              { "u": 3, "t": "At the curb, he let go without telling me." },
+              { "t": " " },
+              { "box": "B" },
+              { "t": " " },
+              { "u": 4, "t": "I rode another fifty feet before I realized I was riding alone and by myself." }
+            ],
+            [
+              { "t": "Now I ride to work most mornings. " },
+              { "u": 5, "t": "I still remember the exact moment the sidewalk stopped shaking beneath me." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "brand-new tires.", "brand, new tires.", "brandnew tires."], "answer": "B", "explain": "A compound adjective before a noun takes a hyphen, so \"brand-new tires\" is correct. A leaves the two words unjoined, C wrongly splits them with a comma, and D fuses them into a nonword." },
+        { "n": 2, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to show the father's reassurance before the lesson begins. Which choice best accomplishes that goal?", "options": ["No Change", "He promised nothing and walked away.", "He promised the bike was expensive.", "He promised I would win a race."], "answer": "A", "explain": "A promise not to let go is exactly the reassurance a nervous beginner needs. B contradicts it, C frets about cost instead of comfort, and D invents a race the essay never mentions." },
+        { "n": 3, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to mark the story's turning point, when the lesson truly starts. Which choice best accomplishes that goal?", "options": ["No Change", "At the curb, we stopped for lunch.", "At the curb, he held on tighter.", "At the curb, the bike broke in half."], "answer": "A", "explain": "The secret release is the moment the narrator rides alone — the turn the whole story builds toward. B stalls the action, C reverses the release, and D invents a disaster." },
+        { "n": 4, "p": "p1", "tag": "Knowledge: Concision", "stem": "Which choice is least redundant in context?", "options": ["No Change", "I rode another fifty feet before I realized I was riding alone.", "I rode another fifty feet before I realized I was riding alone and by myself and solo.", "I rode another fifty feet before I realized I was riding alone by myself."], "answer": "B", "explain": "\"Alone\" already means by oneself, so B says it once. A restates it as \"by myself,\" C triples it, and D keeps the restatement while dropping only the \"and.\"" },
+        { "n": 5, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *My father still keeps that bicycle in his garage.* Should the writer make this addition?", "options": ["Yes, because the kept bicycle anchors the memory's lasting meaning.", "Yes, because it proves that all fathers keep old bicycles.", "No, because it shifts focus from the bicycle to the cousin.", "No, because it denies that the narrator learned to ride."], "answer": "A", "explain": "The bicycle in the garage closes the past-and-present arc: the lesson still lives with them. B overgeneralizes to all fathers, C misreads the subject as the cousin, and D reverses what the essay shows." }
+      ]
+    },
+    {
+      "id": "ENGLISH-P9",
+      "title": "Why Lighthouses Wear Stripes",
+      "total": 10,
+      "timeMinutes": 7,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "Why Lighthouses Wear Stripes",
+          "paras": [
+            [
+              { "t": "From the deck of a ferry, the tower looks painted for decoration: brick red bands circling white stone. " },
+              { "u": 1, "t": "Those stripes are not decoration but identification — each pattern, called a daymark, tells sailors exactly which lighthouse they see." },
+              { "t": " " },
+              { "box": "A" },
+              { "t": " Each of the towers " },
+              { "u": 2, "t": "have" },
+              { "t": " its own pattern, registered on charts like a signature." }
+            ],
+            [
+              { "t": "The stripes mattered because the light itself traveled astonishing distances. In 1822, Augustin Fresnel arranged glass prisms into a lens that " },
+              { "u": 3, "t": "bent one lamp's glow into a beam visible twenty miles out to sea." },
+              { "t": " Harbor records claim the new beam burned brighter than " },
+              { "u": 5, "t": "any lighthouse on the coast." },
+              { "t": " " },
+              { "box": "B" },
+              { "t": " The beam solved clear nights. " },
+              { "u": 4, "t": "Therefore, fog remained the real enemy, and towers grew horns that moaned through the murk." }
+            ],
+            [
+              { "t": "Keepers climbed the stairs each dusk, polished the prisms, and logged the weather. " },
+              { "u": 6, "t": "The logbooks recorded wind, passing ships, and the oil remaining in the lamps." },
+              { "t": " " },
+              { "box": "C" },
+              { "t": " " },
+              { "u": 8, "t": "Their careful records now let historians reconstruct storms no instrument measured." },
+              { "t": " Then sensors and timers took over the midnight watch." }
+            ],
+            [
+              { "t": "One by one, the lamps were wired to sensors, and the keepers packed their kits. Automation " },
+              { "u": 9, "t": "effected" },
+              { "t": " the keepers' departure within a generation. " },
+              { "box": "D" },
+              { "t": " The striped towers remain, flashing for ships that now steer by satellite. " },
+              { "u": 10, "t": "Volunteers repaint the stripes each spring, keeping every daymark legible." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to introduce the function of the stripes. Which choice best accomplishes that goal?", "options": ["No Change", "Those stripes are not decoration but paint, which sailors admire.", "Those stripes are not decoration but identification — each pattern explains how the lamp works.", "Those stripes are not decoration but art, which beautifies the coast."], "answer": "A", "explain": "A states the function precisely: each daymark pattern identifies its lighthouse. B keeps the wording but drops the identifying function, C misattributes the lamp's mechanics to the paint, and D substitutes aesthetics for identification." },
+        { "n": 2, "p": "p1", "tag": "Subject-Verb Agreement", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "has", "are having", "have had"], "answer": "B", "explain": "The subject is the singular \"each\" — cross out \"of the towers\" to see it — so the verb must be \"has.\" The nearby plural \"towers\" lures readers toward A, while C and D break the simple past-tense frame." },
+        { "n": 3, "p": "p1", "tag": "Rhetoric: Supporting Detail", "stem": "The writer wants to give the measurable feat behind the Fresnel lens's fame. Which choice best accomplishes that goal?", "options": ["No Change", "bent one lamp's glow into a pretty pattern.", "replaced every lighthouse keeper within a year.", "burned brighter than the sun."], "answer": "A", "explain": "A supplies the concrete measurement — one lamp, twenty miles — that proves the lens's power. B keeps the lens but trades the measurement for decoration, C invents instant history, and D overshoots into absurdity." },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Transitions", "stem": "Which choice most logically links the fog sentence to the beam's success in the preceding sentence?", "options": ["No Change", "However, fog remained the real enemy, and towers grew horns that moaned through the murk.", "In fact, fog remained the real enemy, and towers grew horns that moaned through the murk.", "For instance, fog remained the real enemy, and towers grew horns that moaned through the murk."], "answer": "A", "explain": "The foghorns resulted from the beam's limitation, so the cause-effect \"therefore\" is required. \"However\" signals a contrast that never comes, \"in fact\" merely emphasizes, and \"for instance\" wrongly frames a consequence as an example." },
+        { "n": 5, "p": "p1", "tag": "Logical Comparison", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "any other lighthouse on the coast.", "any lighthouses on the coast.", "any other lighthouses on the coast."], "answer": "B", "explain": "The beam's own tower must be excluded from the comparison with \"other,\" and the singular subject needs the singular \"lighthouse.\" A compares the tower to itself, C keeps that flaw while breaking number agreement, and D pairs \"other\" with a plural that the singular subject cannot take." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Add/Delete", "stem": "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?", "options": ["Kept, because it gives the keepers' routine concrete detail found nowhere else.", "Kept, because it proves that logbooks outsold novels.", "Deleted, because it repeats the stair-climbing detail.", "Deleted, because weather records belong in Paragraph 2."], "answer": "A", "explain": "Wind, ships, and remaining oil are the specific contents of the routine the paragraph introduces — detail nothing else supplies. B invents a publishing triumph, C mistakes new contents for repetition, and D banishes relevant routine detail to the optics paragraph." },
+        { "n": 7, "p": "p1", "tag": "Rhetoric: Placement", "stem": "The writer wants to add the following sentence to the essay: *The last staffed lighthouse in the United States was automated in 1998.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "C", "explain": "Point C sits where the keepers' era gives way to sensors and timers, so the final automation date caps that handoff. Points A and B precede the keepers' story, and Point D arrives after the essay has moved on to legacy and preservation." },
+        { "n": 8, "p": "p1", "tag": "Rhetoric: Elaboration", "stem": "The writer wants to state the lasting value of the keepers' records. Which choice best accomplishes that goal?", "options": ["No Change", "Their careful records now line the shelves of the gift shop.", "Their careful records now prove that keepers disliked the work.", "Their careful records now repeat what the instruments already show."], "answer": "A", "explain": "A gives the records their payoff: reconstructing unmeasured storms for historians. B shelves them as souvenirs, C invents an attitude toward the work, and D contradicts the point by claiming instruments already captured it all." },
+        { "n": 9, "p": "p1", "tag": "Word Choice", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "affected", "effecting", "effects"], "answer": "A", "explain": "As a verb, \"effect\" means to bring about — automation brought about the departure — so \"effected\" is correct. \"Affected\" means merely to influence, C leaves the sentence with no main verb, and D shifts into the present tense." },
+        { "n": 10, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *One tower's volunteers even match the original 1873 paint recipe.* Should the writer make this addition?", "options": ["Yes, because it extends the preservation work with a specific example.", "Yes, because it proves that every tower uses the 1873 recipe.", "No, because it shifts focus to Fresnel's biography.", "No, because it suggests the stripes no longer matter."], "answer": "A", "explain": "The 1873 recipe is a concrete instance of the repainting preservation the sentence describes. B overgeneralizes one tower to every tower, C misreads paint as biography, and D reverses the sentence into neglect." }
+      ]
+    },
+    {
+      "id": "ENGLISH-P10",
+      "title": "The Salmon's Journey Home",
+      "total": 10,
+      "timeMinutes": 7,
+      "passages": [
+        {
+          "id": "p1",
+          "title": "The Salmon's Journey Home",
+          "paras": [
+            [
+              { "u": 1, "t": "Every year, millions of salmon leave the ocean to swim upstream to the streams where they hatched." },
+              { "t": " The young smolt " },
+              { "u": 2, "t": "drifts downstream, and grows" },
+              { "t": " in the estuary. " },
+              { "box": "A" },
+              { "t": " Years later, grown heavy with ocean food, the adults turn homeward." }
+            ],
+            [
+              { "t": "The ocean hides all landmarks. " },
+              { "u": 4, "t": "Yet each fish carries a map written in scent." },
+              { "t": " As juveniles, they imprint on their home stream's chemical signature. When researchers plugged the nostrils of migrating salmon, " },
+              { "u": 3, "t": "the fish could no longer find their home streams." },
+              { "t": " " },
+              { "box": "B" },
+              { "t": " Returning adults seek " },
+              { "u": 5, "t": "cold, clear water; gravel beds free of silt; and shade that keeps the stream cool." }
+            ],
+            [
+              { "t": "The homeward run is a gauntlet. Dams block many rivers, though ladders and lifts now bypass some barriers. " },
+              { "u": 6, "t": "Hatcheries raise millions of fry each year to supplement wild runs." },
+              { "t": " " },
+              { "box": "C" },
+              { "t": " " },
+              { "u": 8, "t": "Still, hatchery fish survive the ocean at lower rates, so wild streams remain the backbone of every run." }
+            ],
+            [
+              { "t": "Most Pacific salmon spawn once and die. Their bodies feed the forest as bears and eagles scatter the remains. To follow individuals, researchers " },
+              { "u": 9, "t": "who" },
+              { "t": " clip a tiny fin from each fry have learned how few complete the trip. " },
+              { "box": "D" },
+              { "t": " " },
+              { "u": 10, "t": "The run endures where cold water, open passage, and patience meet." }
+            ]
+          ]
+        }
+      ],
+      "questions": [
+        { "n": 1, "p": "p1", "tag": "Rhetoric: Purpose", "stem": "The writer wants to open with the journey's scale and destination. Which choice best accomplishes that goal?", "options": ["No Change", "Salmon are fish that live in water.", "Every year, millions of salmon leave the ocean to swim to the deepest trenches.", "Every year, millions of salmon leave the ocean to swim upstream to spawn and die."], "answer": "A", "explain": "A gives scale and destination together: millions of fish, upstream, back to their hatching streams. B says nothing at all, C reverses the direction into the deep ocean, and D drags the essay's ending into its first sentence." },
+        { "n": 2, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "drifts downstream and grows", "drifts downstream; and grows", "drifts downstream and, grows"], "answer": "B", "explain": "One subject performing two verbs takes no comma before the \"and\" — it is a compound predicate, not two sentences. The comma in A, the semicolon in C, and the stray comma in D all wrongly split the verbs." },
+        { "n": 3, "p": "p1", "tag": "Rhetoric: Supporting Detail", "stem": "The writer wants to give the experiment's result as evidence for smell navigation. Which choice best accomplishes that goal?", "options": ["No Change", "the fish still found their home streams by sight.", "the fish immediately died.", "the fish chose different streams."], "answer": "A", "explain": "A reports the finding that proves the point: without smell, no homecoming. B contradicts the result by crediting sight, C overclaims instant death, and D invents stream-switching the study never showed." },
+        { "n": 4, "p": "p1", "tag": "Rhetoric: Transitions", "stem": "Which choice most logically contrasts the scent map with the landmark-less ocean?", "options": ["No Change", "Likewise, each fish carries a map written in scent.", "In fact, each fish carries a map written in scent.", "Therefore, each fish carries a map written in scent."], "answer": "A", "explain": "\"Yet\" marks the contrast between an ocean with no landmarks and a fish carrying its own map. \"Likewise\" claims a similarity that is not there, \"in fact\" merely emphasizes, and \"therefore\" presents the map as caused by the ocean rather than as its counterpoint." },
+        { "n": 5, "p": "p1", "tag": "Punctuation", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "cold, clear water, gravel beds free of silt, and shade that keeps the stream cool.", "cold: clear water: gravel beds free of silt: and shade that keeps the stream cool.", "cold clear water gravel beds free of silt and shade that keeps the stream cool."], "answer": "A", "explain": "The first item contains its own comma (\"cold, clear water\"), so semicolons must separate the three items. B blurs the boundaries into one long comma string, C misuses colons, and D removes every boundary at once." },
+        { "n": 6, "p": "p1", "tag": "Rhetoric: Add/Delete", "stem": "The writer is considering deleting the underlined sentence. Should the sentence be kept or deleted?", "options": ["Kept, because it names the human effort to sustain runs amid the obstacles.", "Kept, because it proves that hatchery fish outswim wild fish.", "Deleted, because it repeats the dam detail.", "Deleted, because hatcheries belong in Paragraph 1."], "answer": "A", "explain": "Millions of hatchery fry are the paragraph's human counterweight to dams and gauntlets — effort found nowhere else. B overclaims a contest the sentence never runs, C mistakes new content for repetition, and D banishes relevant obstacle-era detail to the life-cycle paragraph." },
+        { "n": 7, "p": "p1", "tag": "Rhetoric: Placement", "stem": "The writer wants to add the following sentence to the essay: *Dams without fish ladders can end a run in a single season.* The sentence would most logically be placed at:", "options": ["Point A in Paragraph 1.", "Point B in Paragraph 2.", "Point C in Paragraph 3.", "Point D in Paragraph 4."], "answer": "C", "explain": "Point C sits amid dams, ladders, and hatcheries, so the stark dam warning belongs there. Point A covers the life cycle, Point B the navigation science, and Point D the closing cycle — none of which discusses barriers." },
+        { "n": 8, "p": "p1", "tag": "Rhetoric: Conclusion", "stem": "Which choice most effectively concludes the obstacles paragraph by affirming wild streams' value?", "options": ["No Change", "Still, hatchery fish survive the ocean at lower rates, so wild streams remain a nice place for picnics.", "Still, hatcheries should replace every stream.", "Still, the ocean remains full of water."], "answer": "A", "explain": "A closes the hatchery comparison where it must: wild streams remain the backbone. B trivializes that verdict into picnics, C contradicts it by replacing streams, and D fills the slot with a vacuous ocean fact." },
+        { "n": 9, "p": "p1", "tag": "Pronoun Case", "stem": "Which choice makes the sentence most grammatically acceptable?", "options": ["No Change", "whom", "which", "whose"], "answer": "A", "explain": "The pronoun performs the verb \"clip,\" so the subject form \"who\" is required. \"Whom\" is the objective case, \"which\" is for things rather than researchers, and \"whose\" is possessive." },
+        { "n": 10, "p": "p1", "tag": "Rhetoric: Add Detail", "stem": "At this point, the writer is considering adding the following sentence: *One restored creek saw its first spawning pair return after eleven empty years.* Should the writer make this addition?", "options": ["Yes, because it gives a concrete payoff for the patience the closing invokes.", "Yes, because it proves that every creek recovers in eleven years.", "No, because it shifts focus to ocean fishing.", "No, because it denies that runs can return."], "answer": "A", "explain": "Eleven empty years ending in a spawning pair is the living proof of the closing line's cold water, open passage, and patience. B overgeneralizes one creek to every creek, C misreads the subject as ocean fishing, and D reverses a return into a denial." }
+      ]
     }
   ]
 }
