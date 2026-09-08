@@ -69,11 +69,35 @@ function PracticeEmbed({ problem, figures }) {
   );
 }
 
+function ExampleEmbed({ example, figures }) {
+  if (!example) return null;
+  return (
+    <div className="example-q">
+      <div className="embed-q-head">
+        <span className="q-badge sm">Ex {example.n}</span>
+        <span className="q-tag">{example.tag}</span>
+      </div>
+      <p className="lesson-p"><MathText text={example.statement} /></p>
+      {example.figure && figures && figures[example.figure] && (
+        <span className="lesson-figure" dangerouslySetInnerHTML={{ __html: figures[example.figure] }} />
+      )}
+      <div className="example-discuss">
+        <span className="explain-head">Walkthrough</span>
+        <p className="explain-text"><MathText text={example.discuss} /></p>
+      </div>
+    </div>
+  );
+}
+
 function Blocks({ blocks, course }) {
   const figures = (course && course.figures) || {};
   const byNum = {};
   ((course && course.problems) || []).forEach((p) => {
     byNum[p.n] = p;
+  });
+  const exByNum = {};
+  ((course && course.examples) || []).forEach((e) => {
+    exByNum[e.n] = e;
   });
   return (blocks || []).map((b, i) => {
     if (b.h) return <h4 key={i} id={b.id} className="lesson-h scroll-anchor">{b.h}</h4>;
@@ -85,6 +109,9 @@ function Blocks({ blocks, course }) {
           ))}
         </div>
       );
+    }
+    if (b.example !== undefined) {
+      return <ExampleEmbed key={i} example={exByNum[b.example]} figures={figures} />;
     }
     if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
     if (b.list) {
@@ -213,10 +240,17 @@ function CoursePage({ course, subject, onBack, onSelect }) {
   );
 }
 
-export default function TestInfo({ onGiveTest }) {
+export default function TestInfo({ onGiveTest, onCourseOpen }) {
   const [data, setData] = useState(null);
   const [openId, setOpenId] = useState(null);
   const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    if (onCourseOpen) onCourseOpen(openId !== null);
+    return () => {
+      if (onCourseOpen) onCourseOpen(false);
+    };
+  }, [openId, onCourseOpen]);
 
   useEffect(() => {
     let live = true;
@@ -255,7 +289,6 @@ export default function TestInfo({ onGiveTest }) {
   }
 
   const courses = (data.math && data.math.courses) || [];
-  const roadmap = (data.math && data.math.roadmap) || [];
   const englishCount = ((data.english && data.english.lessons) || []).length;
   const openCourse = courses.find((c) => c.id === openId) || null;
 
@@ -304,22 +337,6 @@ export default function TestInfo({ onGiveTest }) {
           }}
           onSelect={(sel) => setSelected(sel)}
         />
-      )}
-
-      {!openCourse && roadmap.length > 0 && (
-        <>
-          <h3 className="group-title">Roadmap</h3>
-          <div className="skill-grid">
-            {roadmap.map((r) => (
-              <div key={r.title} className="course-card locked">
-                <span className="skill-text">
-                  <span className="skill-title">{r.title}</span>
-                  <span className="skill-meta">{r.tier} · coming soon</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        </>
       )}
 
       {!openCourse && (

@@ -40,6 +40,7 @@ export default function App() {
   const [catalog, setCatalog] = useState(null);
   const [loadError, setLoadError] = useState(null);
   const [customTestData, setCustomTestData] = useState(null);
+  const [infoCourseOpen, setInfoCourseOpen] = useState(false);
   const sessionRef = useRef(null);
   sessionRef.current = session;
   const customRef = useRef(null);
@@ -67,6 +68,7 @@ export default function App() {
   );
 
   const navigate = useCallback((r) => {
+    setInfoCourseOpen(false);
     if (r === "practice") {
       window.history.pushState({}, "", "/practice");
       setRoute("practice");
@@ -205,11 +207,13 @@ export default function App() {
   return (
     <>
       <Header />
-      <div className="page">
-        <Sidebar active={route} onNavigate={navigate} />
+      <div className={route === "info" && infoCourseOpen ? "page full" : "page"}>
+        {!(route === "info" && infoCourseOpen) && (
+          <Sidebar active={route} onNavigate={navigate} />
+        )}
         <main className="content">
           {route === "info" ? (
-            <TestInfo onGiveTest={startLessonTest} />
+            <TestInfo onGiveTest={startLessonTest} onCourseOpen={setInfoCourseOpen} />
           ) : route === "practice" ? (
             <Practice
               onStartTest={startTest}

@@ -719,6 +719,14 @@ button {
   text-align: left;
 }
 
+.page.full {
+  grid-template-columns: 1fr;
+}
+
+.page.full .content {
+  max-width: 1020px;
+}
+
 .course-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 230px;
@@ -801,6 +809,27 @@ button {
 .embed-check:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* ---------- Worked examples ---------- */
+.example-q {
+  background: #fffdf5;
+  border: 2px solid #f0d48a;
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 4px 0 14px;
+}
+
+.example-discuss {
+  margin-top: 12px;
+  background: #f0f9df;
+  border: 2px solid #bfe37a;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.example-discuss .explain-head {
+  color: var(--green-dark);
 }
 
 @media (max-width: 860px) {

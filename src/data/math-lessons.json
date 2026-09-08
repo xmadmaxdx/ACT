@@ -309,15 +309,236 @@
           "explain": "Similar triangles: $\\frac{6}{9}=\\frac{h}{27}$, so $h=6\\cdot 3=18$."
         }
       ]
+    },
+    {
+      "id": "probability",
+      "title": "Probability",
+      "tier": "EVERY TEST",
+      "summary": "Every probability theory the ACT tests — basic chance, complements, AND/OR rules, expected value, Venn diagrams, counting, permutations, and combinations — taught through 27 worked examples that grow harder as you go, plus a distinct 10-question practice set.",
+      "timeMinutes": 10,
+      "skills": [
+        { "id": "basic-probability", "title": "Basic Probability", "key": "$P=\\frac{\\text{favorable}}{\\text{total}}$. Count what you want, count everything, divide." },
+        { "id": "complement", "title": "Complements", "key": "$P(\\text{not }A)=1-P(A)$. When a question says “at least one,” compute one minus the opposite." },
+        { "id": "and-rule", "title": "AND Rule", "key": "Independent events multiply: $P(A\\text{ and }B)=P(A)\\cdot P(B)$. Without replacement, update the fractions as you go." },
+        { "id": "or-rule", "title": "OR Rule", "key": "Mutually exclusive: add. General case: $P(A\\cup B)=P(A)+P(B)-P(A\\cap B)$ — subtract the overlap once." },
+        { "id": "expected-value", "title": "Expected Value", "key": "Multiply each outcome by its probability and add: $E=x_1P_1+x_2P_2+\\cdots$." },
+        { "id": "venn", "title": "Venn Diagrams", "key": "Overlap means BOTH. Only-A equals A minus the overlap. Neither equals the total minus everybody counted." },
+        { "id": "counting", "title": "Counting Principle", "key": "Choices multiply: $m\\times n\\times\\cdots$. Digits, outfits, codes — same idea." },
+        { "id": "perm-comb", "title": "Permutations & Combinations", "key": "Order matters: permute ($n\\cdot(n-1)\\cdots$). Order irrelevant: combine (divide by the arrangements, $r!$)." }
+      ],
+      "lesson": [
+        { "h": "1. Basic Probability", "id": "prob-basics" },
+        { "p": "Probability is a fraction: what you want over everything possible. Every harder rule below is just this fraction applied cleverly." },
+        { "list": [
+          "$P(\\text{event})=\\frac{\\text{favorable outcomes}}{\\text{total outcomes}}$.",
+          "Simplify at the end, not the start — $\\frac{4}{10}$ is easier to spot as $\\frac{2}{5}$ after computing.",
+          "Probabilities always sit between 0 and 1; use that to kill absurd options."
+        ] },
+        { "math": "P(\\text{event}) = \\frac{\\text{favorable}}{\\text{total}}" },
+        { "example": 1 },
+        { "example": 2 },
+        { "example": 3 },
+        { "example": 4 },
+        { "h": "2. The Complement Trick", "id": "prob-complement" },
+        { "p": "“At least one” is a signal flare: do not enumerate the good cases. Compute one minus the single bad case." },
+        { "list": [
+          "$P(\\text{not }A)=1-P(A)$.",
+          "“At least one head” in 2 flips: $1-P(TT)=1-\\frac{1}{4}=\\frac{3}{4}$.",
+          "“Wrong answer” on a 5-option guess: $\\frac{4}{5}$ — the complement of $\\frac{1}{5}$."
+        ] },
+        { "example": 5 },
+        { "example": 6 },
+        { "example": 7 },
+        { "h": "3. AND / OR Rules", "id": "prob-and-or" },
+        { "p": "AND narrows (multiply, number shrinks). OR widens (add, number grows) — but never count the overlap twice." },
+        { "list": [
+          "Independent AND: $P(A)\\cdot P(B)$. No replacement across draws: update each fraction.",
+          "Mutually exclusive OR: just add, e.g. $0.4+0.25=0.65$.",
+          "General OR: $P(A\\cup B)=P(A)+P(B)-P(A\\cap B)$."
+        ] },
+        { "example": 8 },
+        { "example": 9 },
+        { "example": 10 },
+        { "example": 11 },
+        { "example": 12 },
+        { "h": "4. Expected Value & Venn Diagrams", "id": "prob-expected-venn" },
+        { "p": "Expected value is a weighted average: each outcome times its probability, summed. Venn diagrams are the same OR rule drawn as circles." },
+        { "list": [
+          "$E=x_1P_1+x_2P_2+\\cdots$. Losses enter with a minus sign.",
+          "Only-A = A − overlap. Neither = total − everybody counted.",
+          "Read the diagram before computing: shade what is asked."
+        ] },
+        { "figure": "venn-two", "caption": "Two-set Venn: the overlap counts for both." },
+        { "example": 13 },
+        { "example": 14 },
+        { "example": 15 },
+        { "example": 16 },
+        { "h": "5. Counting Principle", "id": "prob-counting" },
+        { "p": "When stages are independent, multiply the number of choices at each stage. Repetition allowed means the same count repeats." },
+        { "list": [
+          "Outfits: $4\\text{ shirts}\\times 3\\text{ pants}=12$.",
+          "Codes with repetition: $10^4=10{,}000$ for a 4-digit PIN.",
+          "Mixed alphabets multiply: $26^2\\cdot 10^3=676{,}000$ plates."
+        ] },
+        { "example": 17 },
+        { "example": 18 },
+        { "example": 19 },
+        { "h": "6. Permutations & Combinations", "id": "prob-perm-comb" },
+        { "p": "Ask one question first: does order matter? Medals and passwords — yes, permute. Committees and hands — no, combine by dividing out the $r!$ arrangements." },
+        { "list": [
+          "Permutation: $5\\cdot 4\\cdot 3=60$ ways to award gold, silver, bronze to 5 runners.",
+          "Combination: $C(8,3)=\\frac{8\\cdot 7\\cdot 6}{3\\cdot 2\\cdot 1}=56$ committees.",
+          "No-replacement draws chain fractions: $\\frac{4}{52}\\cdot\\frac{3}{51}=\\frac{1}{221}$."
+        ] },
+        { "example": 20 },
+        { "example": 21 },
+        { "example": 22 },
+        { "example": 23 },
+        { "example": 24 },
+        { "h": "7. Mixed Challenge Set", "id": "prob-mixed" },
+        { "p": "Hard ACT probability stacks two rules: a complement around an AND, an expectation with a twist, or a Venn with three numbers to untangle. Solve inside-out." },
+        { "example": 25 },
+        { "example": 26 },
+        { "example": 27 },
+        { "h": "8. Cheatsheet — memorize these", "id": "prob-cheatsheet" },
+        { "list": [
+          "Basic: $P=\\frac{\\text{favorable}}{\\text{total}}$, always between 0 and 1.",
+          "Complement: $P(\\text{not }A)=1-P(A)$; “at least one” $=1-P(\\text{none})$.",
+          "AND (independent): multiply. Without replacement: update fractions each draw.",
+          "OR (exclusive): add. OR (general): $P(A)+P(B)-P(\\text{both})$.",
+          "Expected value: $\\sum x_iP_i$; losses are negative.",
+          "Venn: overlap = both; only-A = A − overlap; neither = total − union.",
+          "Counting: multiply choices stage by stage; repetition repeats the count.",
+          "Permutations (order matters): $n(n-1)\\cdots$. Combinations: divide by $r!$.",
+          "Dice/coins: list the sample space when small ($2^3=8$ for 3 flips).",
+          "Sanity: probabilities $>1$ or $<0$ mean a setup error — recheck."
+        ] }
+      ],
+      "figures": {
+        "venn-two": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 220 150\" role=\"img\" aria-label=\"Two overlapping circles labeled A and B\"><circle cx=\"85\" cy=\"75\" r=\"45\" fill=\"#ddf4ff\" fill-opacity=\"0.7\" stroke=\"#1cb0f6\" stroke-width=\"3\"/><circle cx=\"135\" cy=\"75\" r=\"45\" fill=\"#ddf4ff\" fill-opacity=\"0.7\" stroke=\"#1cb0f6\" stroke-width=\"3\"/><text x=\"55\" y=\"79\" text-anchor=\"middle\" font-family=\"Nunito, sans-serif\" font-size=\"15\" font-weight=\"800\" fill=\"#3c3c3c\">A</text><text x=\"165\" y=\"79\" text-anchor=\"middle\" font-family=\"Nunito, sans-serif\" font-size=\"15\" font-weight=\"800\" fill=\"#3c3c3c\">B</text><text x=\"110\" y=\"72\" text-anchor=\"middle\" font-family=\"Nunito, sans-serif\" font-size=\"10\" font-weight=\"800\" fill=\"#1899d6\">both</text></svg>"
+      },
+      "examples": [
+        { "n": 1, "tag": "Probability; Basics", "statement": "A bag holds 5 red and 3 blue marbles. One marble is drawn at random. What is $P(\\text{red})$?", "discuss": "Favorable is 5 red; total is $5+3=8$. So $P=\\frac{5}{8}$. Always count the total first." },
+        { "n": 2, "tag": "Probability; Basics", "statement": "A fair die is rolled once. What is the probability of rolling a number greater than 4?", "discuss": "Numbers greater than 4 are 5 and 6 — 2 favorable out of 6 faces: $\\frac{2}{6}=\\frac{1}{3}$. Simplify only at the end." },
+        { "n": 3, "tag": "Probability; Basics", "statement": "A spinner has 8 equal sectors, 3 shaded. What is $P(\\text{shaded})$?", "discuss": "$\\frac{3}{8}$. “Equal sectors” is the license to use favorable-over-total — without it, you cannot." },
+        { "n": 4, "tag": "Probability; Basics", "statement": "From the letters of MATH, one is picked at random. What is the probability it is a vowel?", "discuss": "Letters are M, A, T, H — one vowel out of four: $\\frac{1}{4}$. Small sample spaces can be listed by hand." },
+        { "n": 5, "tag": "Probability; Complement", "statement": "If $P(\\text{rain})=0.3$, what is $P(\\text{no rain})$?", "discuss": "Either it rains or it does not, so $P(\\text{no rain})=1-0.3=0.7$. Complements always sum to 1." },
+        { "n": 6, "tag": "Probability; Complement", "statement": "Guessing on a 5-option question, what is the probability of being wrong?", "discuss": "$P(\\text{right})=\\frac{1}{5}$, so $P(\\text{wrong})=1-\\frac{1}{5}=\\frac{4}{5}$. Wrong answers are just the complement." },
+        { "n": 7, "tag": "Probability; Complement", "statement": "A bag has 4 green and 6 yellow marbles. One draw: what is $P(\\text{not green})$?", "discuss": "Direct count gives $\\frac{6}{10}=\\frac{3}{5}$; complement agrees: $1-\\frac{4}{10}=\\frac{3}{5}$. Two roads, same answer — use either to check." },
+        { "n": 8, "tag": "Probability; AND", "statement": "Events A and B are independent with $P(A)=\\frac{1}{2}$ and $P(B)=\\frac{1}{3}$. What is $P(A\\text{ and }B)$?", "discuss": "Independent AND means multiply: $\\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}$. “Independent” is doing real work — without it, do not multiply blindly." },
+        { "n": 9, "tag": "Probability; OR", "statement": "A and B cannot both happen, with $P(A)=0.4$ and $P(B)=0.25$. What is $P(A\\text{ or }B)$?", "discuss": "“Cannot both happen” means mutually exclusive, so just add: $0.4+0.25=0.65$. Nothing to subtract." },
+        { "n": 10, "tag": "Probability; OR", "statement": "In a class of 30, 18 take math, 15 take science, and 8 take both. If one student is picked, what is $P(\\text{math or science})$?", "discuss": "General OR subtracts the double-counted overlap: $\\frac{18+15-8}{30}=\\frac{25}{30}=\\frac{5}{6}$. Forgetting the 8 is the classic trap." },
+        { "n": 11, "tag": "Probability; OR", "statement": "A die roll: what is $P(\\text{even or greater than 4})$?", "discuss": "Evens are 2, 4, 6; greater than 4 are 5, 6. Union is 2, 4, 5, 6 — four faces: $\\frac{4}{6}=\\frac{2}{3}$. The 6 sits in both sets, counted once." },
+        { "n": 12, "tag": "Probability; AND", "statement": "A bag has 3 red and 2 blue marbles. Two draws with replacement: what is $P(\\text{red then blue})$?", "discuss": "“With replacement” resets the bag, so multiply unchanged fractions: $\\frac{3}{5}\\cdot\\frac{2}{5}=\\frac{6}{25}$. Order matters here — red-then-blue is one specific sequence." },
+        { "n": 13, "tag": "Probability; Expected Value", "statement": "A game pays $10$ with probability $\\frac{1}{6}$ and $0$ otherwise. What is the expected payout?", "discuss": "Weight each outcome: $10\\cdot\\frac{1}{6}+0\\cdot\\frac{5}{6}=\\frac{10}{6}\\approx\\$1.67$. Expected value is a long-run average, not a possible single payout." },
+        { "n": 14, "tag": "Probability; Venn", "statement": "Of 100 people, 60 drink coffee, 50 drink tea, and 30 drink both. How many drink neither?", "discuss": "Union is $60+50-30=80$; neither is $100-80=20$. (Only-coffee is 30, only-tea is 20 — handy checks.)" },
+        { "n": 15, "tag": "Probability; Expected Value", "statement": "A quiz gives $+5$ per correct answer (probability $0.8$) and $-2$ per wrong answer. What is the expected score per question?", "discuss": "Losses enter negative: $5(0.8)+(-2)(0.2)=4-0.4=3.6$. Dropping the minus sign is the standard miss." },
+        { "n": 16, "tag": "Probability; Expected Value", "statement": "A raffle sells 200 tickets for a $100$ prize; you hold 5. What is the expected value of your tickets?", "discuss": "Win probability is $\\frac{5}{200}$; $\\frac{5}{200}\\cdot 100=\\$2.50$. Compare against the ticket price to judge the deal." },
+        { "n": 17, "tag": "Probability; Counting", "statement": "A closet has 4 shirts and 3 pants. How many shirt-pants outfits are possible?", "discuss": "Independent stages multiply: $4\\times 3=12$. Each shirt pairs with every pant." },
+        { "n": 18, "tag": "Probability; Counting", "statement": "A plate has 2 letters (26 each) followed by 3 digits (10 each). How many plates are possible?", "discuss": "$26\\cdot 26\\cdot 10\\cdot 10\\cdot 10=26^2\\cdot 10^3=676{,}000$. Same digit or letter may repeat unless told otherwise." },
+        { "n": 19, "tag": "Probability; Counting", "statement": "How many 4-digit PINs are possible if digits may repeat?", "discuss": "$10\\cdot 10\\cdot 10\\cdot 10=10^4=10{,}000$. “May repeat” keeps every stage at 10." },
+        { "n": 20, "tag": "Probability; Permutations", "statement": "Five runners compete for gold, silver, and bronze (no ties). How many outcomes?", "discuss": "Medals make order matter: $5\\cdot 4\\cdot 3=60$. Filling positions one by one is the permutation move." },
+        { "n": 21, "tag": "Probability; Combinations", "statement": "How many 3-person committees can be chosen from 8 people?", "discuss": "Order is irrelevant, so divide out the $3!=6$ arrangements: $\\frac{8\\cdot 7\\cdot 6}{6}=56$. Committee = combination." },
+        { "n": 22, "tag": "Probability; Permutations", "statement": "How many 4-digit PINs use distinct digits chosen from 6 available digits?", "discuss": "Positions matter and digits cannot repeat: $6\\cdot 5\\cdot 4\\cdot 3=360$. Contrast with Example 19, where repetition was allowed." },
+        { "n": 23, "tag": "Probability; AND", "statement": "Two cards are drawn without replacement. What is $P(\\text{both aces})$?", "discuss": "Update the fractions after the first draw: $\\frac{4}{52}\\cdot\\frac{3}{51}=\\frac{12}{2652}=\\frac{1}{221}$. Forgetting to shrink 52 to 51 is the trap." },
+        { "n": 24, "tag": "Probability; Complement", "statement": "Three fair coins are flipped. What is $P(\\text{at least one head})$?", "discuss": "Eight equally likely outcomes, only TTT fails: $1-\\frac{1}{8}=\\frac{7}{8}$. Listing HHH, HHT, … confirms the single bad case." },
+        { "n": 25, "tag": "Probability; AND", "statement": "A bag has 5 red and 3 blue marbles. Two draws without replacement: what is $P(\\text{both red})$?", "discuss": "Chain with shrinking totals: $\\frac{5}{8}\\cdot\\frac{4}{7}=\\frac{20}{56}=\\frac{5}{14}$. Both the numerator and denominator move." },
+        { "n": 26, "tag": "Probability; Expected Value", "statement": "A 10-question quiz is guessed blindly (5 options each, $+1$ per correct, $0$ otherwise). What is the expected total, and what is $P(\\text{all wrong})$?", "discuss": "Per question $E=\\frac{1}{5}$, so ten give $10\\cdot\\frac{1}{5}=2$ points. All wrong needs ten straight misses: $\\left(\\frac{4}{5}\\right)^{10}\\approx 0.107$." },
+        { "n": 27, "tag": "Probability; Venn", "statement": "Of 50 students, 30 are in band, 25 in choir, and 12 in both. How many are in band only, choir only, and neither?", "discuss": "Band only: $30-12=18$. Choir only: $25-12=13$. Union: $18+13+12=43$, so neither is $50-43=7$. Three numbers, one subtraction each." }
+      ],
+      "problems": [
+        {
+          "n": 1,
+          "tag": "Probability; Basics",
+          "short": "White marble",
+          "statement": "A jar holds 6 black and 4 white marbles. One is drawn at random. What is $P(\\text{white})$?",
+          "options": ["$\\frac{1}{5}$", "$\\frac{2}{5}$", "$\\frac{3}{5}$", "$\\frac{2}{3}$"],
+          "answer": "B",
+          "explain": "4 white out of $6+4=10$ total: $\\frac{4}{10}=\\frac{2}{5}$."
+        },
+        {
+          "n": 2,
+          "tag": "Probability; Complement",
+          "short": "Working part",
+          "statement": "A factory finds $4\\%$ of parts defective. If one part is picked, what is the probability it works?",
+          "options": ["$0.04$", "$0.4$", "$0.96$", "$1.04$"],
+          "answer": "C",
+          "explain": "Working is the complement of defective: $1-0.04=0.96$."
+        },
+        {
+          "n": 3,
+          "tag": "Probability; AND",
+          "short": "Coin and die",
+          "statement": "A coin is flipped and a die is rolled. What is $P(\\text{heads and a 6})$?",
+          "options": ["$\\frac{1}{6}$", "$\\frac{1}{12}$", "$\\frac{1}{3}$", "$\\frac{2}{3}$"],
+          "answer": "B",
+          "explain": "Independent events multiply: $\\frac{1}{2}\\cdot\\frac{1}{6}=\\frac{1}{12}$."
+        },
+        {
+          "n": 4,
+          "tag": "Probability; OR",
+          "short": "Red or blue sector",
+          "statement": "A spinner has 10 equal sectors: 3 red, 2 blue, 5 green. What is $P(\\text{red or blue})$?",
+          "options": ["$\\frac{1}{5}$", "$\\frac{3}{10}$", "$\\frac{1}{2}$", "$\\frac{7}{10}$"],
+          "answer": "C",
+          "explain": "Colors are mutually exclusive, so add: $\\frac{3}{10}+\\frac{2}{10}=\\frac{5}{10}=\\frac{1}{2}$."
+        },
+        {
+          "n": 5,
+          "tag": "Probability; OR",
+          "short": "Heart or king",
+          "statement": "One card is drawn from a standard 52-card deck. What is $P(\\text{heart or king})$?",
+          "options": ["$\\frac{4}{13}$", "$\\frac{1}{4}$", "$\\frac{17}{52}$", "$\\frac{1}{13}$"],
+          "answer": "A",
+          "explain": "13 hearts plus 4 kings, minus the king of hearts counted twice: $\\frac{13+4-1}{52}=\\frac{16}{52}=\\frac{4}{13}$."
+        },
+        {
+          "n": 6,
+          "tag": "Probability; Expected Value",
+          "short": "Game expectation",
+          "statement": "A game pays $\\$5$ with probability $0.2$ and loses $\\$1$ otherwise. What is the expected net gain per play?",
+          "options": ["$\\$0.20$", "$\\$1.00$", "$-\\$0.20$", "$\\$1.80$"],
+          "answer": "A",
+          "explain": "$5(0.2)+(-1)(0.8)=1-0.8=0.2$, so $\\$0.20$ per play."
+        },
+        {
+          "n": 7,
+          "tag": "Probability; Counting",
+          "short": "Meal combinations",
+          "statement": "A restaurant offers 2 soups, 5 mains, and 3 desserts. How many different three-course meals are possible?",
+          "options": ["$10$", "$15$", "$30$", "$60$"],
+          "answer": "C",
+          "explain": "Multiply the independent stages: $2\\cdot 5\\cdot 3=30$."
+        },
+        {
+          "n": 8,
+          "tag": "Probability; Permutations",
+          "short": "Book arrangements",
+          "statement": "In how many orders can 4 different books be arranged on a shelf?",
+          "options": ["$12$", "$16$", "$24$", "$36$"],
+          "answer": "C",
+          "explain": "Order matters: $4\\cdot 3\\cdot 2\\cdot 1=24$."
+        },
+        {
+          "n": 9,
+          "tag": "Probability; Combinations",
+          "short": "Choose two",
+          "statement": "In how many ways can 2 students be chosen from 6 for a project?",
+          "options": ["$12$", "$15$", "$30$", "$36$"],
+          "answer": "B",
+          "explain": "Order is irrelevant: $\\frac{6\\cdot 5}{2}=15$."
+        },
+        {
+          "n": 10,
+          "tag": "Probability; AND",
+          "short": "Two officers",
+          "statement": "A club has 7 men and 5 women. Two different officers are chosen at random. What is the probability both are women?",
+          "options": ["$\\frac{5}{33}$", "$\\frac{5}{12}$", "$\\frac{25}{144}$", "$\\frac{1}{3}$"],
+          "answer": "A",
+          "explain": "Without replacement: $\\frac{5}{12}\\cdot\\frac{4}{11}=\\frac{20}{132}=\\frac{5}{33}$."
+        }
+      ]
     }
   ],
-  "roadmap": [
-    { "title": "Functions & Quadratics", "tier": "EVERY TEST" },
-    { "title": "Statistics & Probability", "tier": "EVERY TEST" },
-    { "title": "Lines, Systems & Polynomials", "tier": "MOST TESTS" },
-    { "title": "Sequences, Ratios & Rates", "tier": "COMMON" },
-    { "title": "Matrices, Conics & 3D Geometry", "tier": "COMMON" },
-    { "title": "Advanced Trig & Polygons", "tier": "COMMON" },
-    { "title": "Combinatorics, Logs & Rational Expressions", "tier": "SOMETIMES" }
-  ]
+  "roadmap": [],
 }
