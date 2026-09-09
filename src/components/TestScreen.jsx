@@ -608,7 +608,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         ) : (
           <>
         <article className="passage">
-          <h1 className="passage-title">{passage.title}</h1>
+          {!merged && <h1 className="passage-title">{passage.title}</h1>}
           <div className="passage-text">
             {passage.paras.map((spans, i) => (
               <p key={`${passage.id}-${i}`}>{renderSpans(spans, activeQ, testData.figures)}</p>
