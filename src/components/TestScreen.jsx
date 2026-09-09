@@ -74,57 +74,93 @@ const DESMOS_KEY =
   (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_DESMOS_API_KEY) ||
   "c6f78eb83b074ebcac28827b8e5ebea2";
 
+let desmosPromise = null;
+
+function loadDesmos() {
+  if (typeof window !== "undefined" && window.Desmos) return Promise.resolve();
+  if (!desmosPromise) {
+    desmosPromise = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = `https://www.desmos.com/api/v1.12/calculator.js?apiKey=${DESMOS_KEY}`;
+      s.async = true;
+      s.onload = () => {
+        if (window.Desmos) resolve();
+        else {
+          desmosPromise = null;
+          reject(new Error("Desmos API loaded but unavailable"));
+        }
+      };
+      s.onerror = () => {
+        desmosPromise = null;
+        reject(new Error("Desmos script failed to load"));
+      };
+      document.head.appendChild(s);
+    });
+  }
+  return desmosPromise;
+}
+
+export function preloadDesmos() {
+  loadDesmos().catch(() => {});
+}
+
 function DesmosCalc({ mode }) {
   const elRef = useRef(null);
   const calcRef = useRef(null);
-  const [failed, setFailed] = useState(false);
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
     let cancelled = false;
-    const src = `https://www.desmos.com/api/v1.12/calculator.js?apiKey=${DESMOS_KEY}`;
-    const load = () =>
-      new Promise((resolve, reject) => {
-        if (window.Desmos) {
-          resolve();
-          return;
-        }
-        const s = document.createElement("script");
-        s.src = src;
-        s.async = true;
-        s.onload = resolve;
-        s.onerror = reject;
-        document.head.appendChild(s);
+    setStatus("loading");
+    const settledLayout = () =>
+      new Promise((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
       });
-    load()
+    loadDesmos()
+      .then(() => settledLayout())
       .then(() => {
-        if (cancelled || !elRef.current || !window.Desmos) return;
-        try {
-          calcRef.current =
-            mode === "scientific"
-              ? window.Desmos.ScientificCalculator(elRef.current)
-              : window.Desmos.GraphingCalculator(elRef.current);
-        } catch (e) {
-          if (!cancelled) setFailed(true);
+        if (cancelled || !elRef.current || !window.Desmos) {
+          throw new Error("unavailable");
         }
+        calcRef.current =
+          mode === "scientific"
+            ? window.Desmos.ScientificCalculator(elRef.current)
+            : window.Desmos.GraphingCalculator(elRef.current);
+        if (!cancelled) setStatus("ready");
       })
       .catch(() => {
-        if (!cancelled) setFailed(true);
+        if (!cancelled) setStatus("error");
       });
     return () => {
       cancelled = true;
-      try {
-        calcRef.current && calcRef.current.destroy();
-      } catch (e) {
-        void e;
-      }
+      const c = calcRef.current;
       calcRef.current = null;
+      if (c) {
+        try {
+          c.destroy();
+        } catch {
+          // eslint-disable-next-line no-empty
+        }
+      }
     };
   }, [mode]);
 
-  if (failed) {
-    return <p className="muted-text">Calculator failed to load. Check your connection and reopen it.</p>;
-  }
-  return <div className="desmos-box" ref={elRef} />;
+  return (
+    <div className="desmos-wrap">
+      <div className="desmos-box" ref={elRef} />
+      {status === "loading" && (
+        <div className="desmos-loading" role="status">
+          <span className="desmos-spinner" aria-hidden="true" />
+          <span>Loading calculator…</span>
+        </div>
+      )}
+      {status === "error" && (
+        <div className="desmos-loading" role="alert">
+          <span>Couldn't load the calculator. Check your connection, close it, and reopen.</span>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function TestScreen({ test, session, startIndex, review, findTest, customTestData, onFinish, onExit }) {
