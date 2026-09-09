@@ -104,7 +104,7 @@ export function preloadDesmos() {
   loadDesmos().catch(() => {});
 }
 
-function DesmosCalc({ mode }) {
+function DesmosCalc({ mode, apiRef, initialState, onSnapshot }) {
   const elRef = useRef(null);
   const calcRef = useRef(null);
   const [status, setStatus] = useState("loading");
@@ -122,10 +122,17 @@ function DesmosCalc({ mode }) {
         if (cancelled || !elRef.current || !window.Desmos) {
           throw new Error("unavailable");
         }
-        calcRef.current =
+        const api =
           mode === "scientific"
             ? window.Desmos.ScientificCalculator(elRef.current)
             : window.Desmos.GraphingCalculator(elRef.current);
+        calcRef.current = api;
+        if (apiRef) apiRef.current = api;
+        try {
+          if (initialState) api.setState(initialState);
+        } catch (err) {
+          window.console.debug("desmos initial state skipped", err);
+        }
         if (!cancelled) setStatus("ready");
       })
       .catch(() => {
@@ -135,7 +142,17 @@ function DesmosCalc({ mode }) {
       cancelled = true;
       const c = calcRef.current;
       calcRef.current = null;
-      if (c && typeof c.destroy === "function") c.destroy();
+      if (apiRef) apiRef.current = null;
+      if (c) {
+        if (onSnapshot) {
+          try {
+            onSnapshot(c.getState());
+          } catch (err) {
+            window.console.debug("desmos snapshot skipped", err);
+          }
+        }
+        if (typeof c.destroy === "function") c.destroy();
+      }
     };
   }, [mode]);
 
@@ -187,6 +204,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const enterRef = useRef(0);
   const prevPassageRef = useRef(null);
   const bodyRef = useRef(null);
+  const calcApiRef = useRef(null);
+  const desmosStates = useRef({});
+  const desmosQRef = useRef(null);
   const prevQRef = useRef(null);
   const pausedRef = useRef(false);
   const introDoneRef = useRef(false);
@@ -230,6 +250,29 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     prevQRef.current = active ? active.n : null;
     enterRef.current = elapsedRef.current;
   }, [qIndex, total]);
+
+  useEffect(() => {
+    const api = calcApiRef.current;
+    const cur = questions[Math.min(qIndex, total - 1)];
+    const curN = cur ? cur.n : null;
+    if (api && desmosQRef.current !== null && desmosQRef.current !== curN) {
+      try {
+        desmosStates.current[desmosQRef.current] = api.getState();
+      } catch (err) {
+        window.console.debug("desmos save skipped", err);
+      }
+    }
+    if (api && curN !== null) {
+      try {
+        const saved = desmosStates.current[curN];
+        if (saved) api.setState(saved);
+        else api.setBlank();
+      } catch (err) {
+        window.console.debug("desmos restore skipped", err);
+      }
+    }
+    desmosQRef.current = curN;
+  }, [qIndex]);
 
   if (!testData) {
     return (
@@ -322,7 +365,24 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     window.addEventListener("pointerup", up);
   };
 
-  const resetCalc = () => setCalcW(440);
+  const openCalc = () => {
+    const body = bodyRef.current;
+    if (body) {
+      const w = body.getBoundingClientRect().width;
+      setCalcW(Math.min(Math.max(Math.round(w * 0.6), 300), Math.floor(w * 0.7)));
+    }
+    setCalcOpen(true);
+  };
+
+  const resetCalc = () => {
+    const body = bodyRef.current;
+    if (body) {
+      const w = body.getBoundingClientRect().width;
+      setCalcW(Math.min(Math.max(Math.round(w * 0.6), 300), Math.floor(w * 0.7)));
+    } else {
+      setCalcW(440);
+    }
+  };
 
   const commitActivePace = () => {
     if (review) return { ...pacesRef.current };
@@ -422,7 +482,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             className={calcOpen ? "calc-btn on" : "calc-btn"}
             type="button"
             aria-label={calcOpen ? "Close calculator" : "Open calculator"}
-            onClick={() => setCalcOpen((v) => !v)}
+            onClick={() => (calcOpen ? setCalcOpen(false) : openCalc())}
           >
             <svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true">
               <rect x="2.5" y="1.5" width="12" height="14" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
@@ -585,7 +645,14 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 ✕
               </button>
             </div>
-            <DesmosCalc mode={calcMode} />
+            <DesmosCalc
+              mode={calcMode}
+              apiRef={calcApiRef}
+              initialState={desmosStates.current[desmosQRef.current]}
+              onSnapshot={(s) => {
+                if (desmosQRef.current !== null) desmosStates.current[desmosQRef.current] = s;
+              }}
+            />
           </section>
         )}
           </>

@@ -2468,7 +2468,10 @@ button {
   border: 2px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
-  min-height: 480px;
+  position: sticky;
+  top: 84px;
+  height: calc(100vh - 100px);
+  min-height: 440px;
 }
 
 .calc-head {
@@ -2510,12 +2513,12 @@ button {
   position: relative;
   flex: 1;
   display: flex;
-  min-height: 460px;
+  min-height: 0;
 }
 
 .desmos-box {
   flex: 1;
-  min-height: 460px;
+  min-height: 0;
 }
 
 .desmos-loading {
@@ -2567,6 +2570,8 @@ button {
   .calc-panel {
     width: 100% !important;
     min-height: 420px;
+    position: static;
+    height: auto;
   }
 
   .desmos-wrap {

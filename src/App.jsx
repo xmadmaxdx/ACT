@@ -176,14 +176,7 @@ export default function App() {
         customTestData={customTestData}
         onFinish={finishTest}
         onExit={() => {
-          if (reviewing) {
-            window.history.pushState({}, "", `${slugFor(session.skill)}/results`);
-            setReviewIndex(null);
-            setRoute("results");
-          } else {
-            navigate("practice");
-          }
-          window.scrollTo(0, 0);
+          window.history.back();
         }}
       />
     );
