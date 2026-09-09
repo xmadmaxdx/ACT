@@ -135,13 +135,7 @@ function DesmosCalc({ mode }) {
       cancelled = true;
       const c = calcRef.current;
       calcRef.current = null;
-      if (c) {
-        try {
-          c.destroy();
-        } catch {
-          // eslint-disable-next-line no-empty
-        }
-      }
+      if (c && typeof c.destroy === "function") c.destroy();
     };
   }, [mode]);
 
@@ -207,6 +201,11 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       setElapsed(elapsedRef.current);
     }, 1000);
     return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const mathTest = /^MATH-/i.test(test.id) || ((testData && testData.section) || "").toLowerCase() === "math";
+    if (mathTest) preloadDesmos();
   }, []);
 
   useEffect(() => {

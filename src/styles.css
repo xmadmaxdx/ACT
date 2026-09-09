@@ -2506,9 +2506,47 @@ button {
   border-color: var(--blue-light-border);
 }
 
+.desmos-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-height: 460px;
+}
+
 .desmos-box {
   flex: 1;
   min-height: 460px;
+}
+
+.desmos-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+  padding: 20px;
+  text-align: center;
+}
+
+.desmos-spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 3px solid var(--blue-light-border);
+  border-top-color: var(--blue);
+  animation: desmos-spin 0.9s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes desmos-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 980px) {
