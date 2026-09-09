@@ -49,3 +49,58 @@ export async function fetchCatalog() {
       })),
   }));
 }
+
+/* Skill section: courses with skills, lesson blocks, figures, worked
+   examples, and practice problems — assembled into the same shape the
+   lesson JSON files use, so the viewer code is unchanged. */
+export async function fetchLessons() {
+  if (!URL || !KEY) throw new Error("Supabase env missing at build (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY)");
+  const sb = createClient(URL, KEY);
+  const [c, s, b, f, e, q] = await Promise.all([
+    sb.from("act_courses").select("*"),
+    sb.from("act_course_skills").select("*").order("position"),
+    sb.from("act_lesson_blocks").select("*").order("position"),
+    sb.from("act_course_figures").select("*"),
+    sb.from("act_lesson_examples").select("*").order("n"),
+    sb.from("act_lesson_problems").select("*").order("n"),
+  ]);
+  for (const [resp, name] of [[c, "courses"], [s, "skills"], [b, "blocks"], [f, "figures"], [e, "examples"], [q, "problems"]]) {
+    if (resp.error) throw new Error(`lessons/${name}: ${resp.error.message}`);
+  }
+  const courses = (c.data || []).map((course) => ({
+    id: course.id,
+    subject: course.subject,
+    title: course.title,
+    tier: course.tier,
+    summary: course.summary,
+    timeMinutes: Number(course.time_minutes),
+    skills: (s.data || [])
+      .filter((r) => r.course_id === course.id)
+      .map((r) => ({ id: r.skill_id, title: r.title, key: r.key })),
+    lesson: (b.data || [])
+      .filter((r) => r.course_id === course.id)
+      .map((r) => r.block),
+    figures: Object.fromEntries(
+      (f.data || []).filter((r) => r.course_id === course.id).map((r) => [r.fig_id, r.svg])
+    ),
+    examples: (e.data || [])
+      .filter((r) => r.course_id === course.id)
+      .map((r) => ({ n: r.n, tag: r.tag, statement: r.statement, figure: r.figure, discuss: r.discuss })),
+    problems: (q.data || [])
+      .filter((r) => r.course_id === course.id)
+      .map((r) => ({
+        n: r.n,
+        tag: r.tag,
+        short: r.short,
+        statement: r.statement,
+        figure: r.figure,
+        options: r.options,
+        answer: r.answer,
+        explain: r.explain,
+      })),
+  }));
+  return {
+    math: { subject: "math", courses: courses.filter((t) => t.subject === "math") },
+    english: { subject: "english", lessons: [] },
+  };
+}

@@ -256,11 +256,14 @@ export default function TestInfo({ onGiveTest, onCourseOpen }) {
     let live = true;
     (async () => {
       try {
-        const [math, eng] = await Promise.all([
-          import("../data/math-lessons.json"),
-          import("../data/english-lessons.json"),
-        ]);
-        if (live) setData({ math: math.default || math, english: eng.default || eng });
+        const { fetchLessons } = await import("../supabase.js");
+        const lessons = await fetchLessons();
+        if (live) {
+          console.info(
+            `ACTprep lessons source: supabase (${lessons.math.courses.length} courses)`
+          );
+          setData(lessons);
+        }
       } catch (e) {
         if (live) setData({ error: String((e && e.message) || e) });
       }
