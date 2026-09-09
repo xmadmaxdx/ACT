@@ -509,52 +509,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             </button>
           </section>
 
-          <div className="test-nav">
-            <div className="test-nav-inner">
-              <button
-                className="nav-btn"
-                type="button"
-                disabled={qIndex === 0}
-                onClick={() => setQIndex(qIndex - 1)}
-              >
-                BACK
-              </button>
-              <span className="nav-count">
-                {qIndex + 1} of {total}
-              </span>
-              {review ? (
-                <>
-                  <button
-                    className="nav-btn primary"
-                    type="button"
-                    disabled={qIndex === total - 1}
-                    onClick={() => setQIndex(qIndex + 1)}
-                  >
-                    NEXT
-                  </button>
-                  <button className="nav-btn" type="button" onClick={onExit}>
-                    RESULT
-                  </button>
-                </>
-              ) : !onIntro && qIndex === total - 1 ? (
-                <button
-                  className="nav-btn primary"
-                  type="button"
-                  onClick={handleFinish}
-                >
-                  FINISH
-                </button>
-              ) : (
-                <button
-                  className="nav-btn primary"
-                  type="button"
-                  onClick={onIntro ? completeIntro : () => setQIndex(qIndex + 1)}
-                >
-                  NEXT
-                </button>
-              )}
-            </div>
-          </div>
         </aside>
         {calcOpen && showCalc && (
           <div
@@ -601,6 +555,53 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         )}
           </>
         )}
+      </div>
+
+      <div className="test-nav">
+        <div className="test-nav-inner">
+          <button
+            className="nav-btn"
+            type="button"
+            disabled={qIndex === 0}
+            onClick={() => setQIndex(qIndex - 1)}
+          >
+            BACK
+          </button>
+          <span className="nav-count">
+            {onIntro ? "Intro" : `${qIndex + 1} of ${total}`}
+          </span>
+          {review ? (
+            <>
+              <button
+                className="nav-btn primary"
+                type="button"
+                disabled={qIndex === total - 1}
+                onClick={() => setQIndex(qIndex + 1)}
+              >
+                NEXT
+              </button>
+              <button className="nav-btn" type="button" onClick={onExit}>
+                RESULT
+              </button>
+            </>
+          ) : !onIntro && qIndex === total - 1 ? (
+            <button
+              className="nav-btn primary"
+              type="button"
+              onClick={handleFinish}
+            >
+              FINISH
+            </button>
+          ) : (
+            <button
+              className="nav-btn primary"
+              type="button"
+              onClick={onIntro ? completeIntro : () => setQIndex(qIndex + 1)}
+            >
+              NEXT
+            </button>
+          )}
+        </div>
       </div>
 
       {overviewOpen && (
