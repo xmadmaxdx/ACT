@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { mathRich } from "./MathText.jsx";
+import MathText, { mathRich } from "./MathText.jsx";
 
 const LETTERS = ["A", "B", "C", "D"];
 const FILTERS = ["All", "Marked", "Unanswered", "Answered"];
@@ -76,6 +76,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     customTestData && customTestData.id === test.id ? customTestData : findTest(test.id);
   const questions = testData ? testData.questions : [];
   const total = questions.length;
+  const needIntro = !review && !!(testData && testData.intro);
+  const [introDone, setIntroDone] = useState(false);
   const [qIndex, setQIndex] = useState(startIndex || 0);
   const [picks, setPicks] = useState((session && session.picks) || {});
   const [flags, setFlags] = useState((session && session.flags) || {});
@@ -96,12 +98,14 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const prevPassageRef = useRef(null);
   const prevQRef = useRef(null);
   const pausedRef = useRef(false);
+  const introDoneRef = useRef(false);
   /* Mirror of paces state for use inside interval/effects without stale closures. */
   const pacesRef = useRef((session && session.paces) || {});
 
   useEffect(() => {
     const id = setInterval(() => {
       if (pausedRef.current) return;
+      if (needIntro && !introDoneRef.current) return;
       elapsedRef.current += 1;
       setElapsed(elapsedRef.current);
     }, 1000);
@@ -228,6 +232,47 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       finishRef.current({ ...snapshotRef.current, paces: finalPaces });
     }
   }, [timed, remaining]);
+
+  if (needIntro && !introDone) {
+    const intro = testData.intro;
+    return (
+      <div className="test">
+        <div className="intro-wrap">
+          <div className="intro-card">
+            <p className="results-kicker">Before you start</p>
+            <h1 className="intro-title">{intro.heading || testData.title}</h1>
+            <div className="intro-blocks">
+              {(intro.blocks || []).map((b, i) => {
+                if (b.h) return <h4 key={i} className="lesson-h">{b.h}</h4>;
+                if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
+                if (b.list) {
+                  return (
+                    <ul key={i} className="lesson-list">
+                      {b.list.map((t, j) => (
+                        <li key={j}><MathText text={t} /></li>
+                      ))}
+                    </ul>
+                  );
+                }
+                return <p key={i} className="lesson-p"><MathText text={b.p || ""} /></p>;
+              })}
+            </div>
+            <button
+              type="button"
+              className="btn-primary intro-cta"
+              onClick={() => {
+                setIntroDone(true);
+                introDoneRef.current = true;
+                window.scrollTo(0, 0);
+              }}
+            >
+              NEXT
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="test">

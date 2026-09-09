@@ -104,3 +104,53 @@ export async function fetchLessons() {
     english: { subject: "english", lessons: [] },
   };
 }
+
+/* Chapters view: chapters with minis (theory slide + questions), ordered
+   by the trailing number in each id (ch1..ch10, MATH-MINI-1-1…). */
+const tailNum = (id) => {
+  const m = /(\d+)(?!.*\d)/.exec(String(id));
+  return m ? parseInt(m[1], 10) : 0;
+};
+
+export async function fetchChapters() {
+  if (!URL || !KEY) throw new Error("Supabase env missing at build (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY)");
+  const sb = createClient(URL, KEY);
+  const [c, m, q] = await Promise.all([
+    sb.from("act_chapters").select("*"),
+    sb.from("act_minis").select("*"),
+    sb.from("act_mini_questions").select("*").order("n"),
+  ]);
+  for (const [resp, name] of [[c, "chapters"], [m, "minis"], [q, "mini_questions"]]) {
+    if (resp.error) throw new Error(`chapters/${name}: ${resp.error.message}`);
+  }
+  const chapters = (c.data || [])
+    .slice()
+    .sort((a, b) => tailNum(a.id) - tailNum(b.id))
+    .map((chapter) => ({
+      id: chapter.id,
+      title: chapter.title,
+      subtitle: chapter.subtitle,
+      minis: (m.data || [])
+        .filter((r) => r.chapter_id === chapter.id)
+        .sort((a, b) => tailNum(a.id) - tailNum(b.id) || String(a.id).localeCompare(String(b.id)))
+        .map((r) => ({
+          id: r.id,
+          title: r.title,
+          done: r.done,
+          timeMinutes: Number(r.time_minutes),
+          theory: r.theory,
+          questions: (q.data || [])
+            .filter((x) => x.mini_id === r.id)
+            .map((x) => ({
+              n: x.n,
+              tag: x.tag,
+              short: x.short,
+              statement: x.statement,
+              options: x.options,
+              answer: x.answer,
+              explain: x.explain,
+            })),
+        })),
+    }));
+  return { subject: "math", chapters };
+}

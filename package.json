@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "seed": "node scripts/seed-supabase.mjs",
-    "seed:lessons": "node scripts/seed-lessons.mjs"
+    "seed:lessons": "node scripts/seed-lessons.mjs",
+    "seed:chapters": "node scripts/seed-chapters.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

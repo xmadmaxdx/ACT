@@ -5,6 +5,7 @@ import Hero from "./components/Hero.jsx";
 import ActionCards from "./components/ActionCards.jsx";
 import Footer from "./components/Footer.jsx";
 import Practice from "./components/Practice.jsx";
+import Chapters from "./components/Chapters.jsx";
 import TestInfo from "./components/TestInfo.jsx";
 import TestScreen from "./components/TestScreen.jsx";
 import Results from "./components/Results.jsx";
@@ -22,6 +23,7 @@ function routeFromPath(path) {
   if (path.endsWith("/results")) return "results";
   if (path === "/practice") return "practice";
   if (path === "/test-info") return "info";
+  if (path === "/chapters") return "chapters";
   if (path.startsWith("/practice-test-")) return "test";
   return "home";
 }
@@ -75,6 +77,9 @@ export default function App() {
     } else if (r === "info") {
       window.history.pushState({}, "", "/test-info");
       setRoute("info");
+    } else if (r === "chapters") {
+      window.history.pushState({}, "", "/chapters");
+      setRoute("chapters");
     } else {
       window.history.pushState({}, "", "/");
       setRoute("home");
@@ -212,7 +217,9 @@ export default function App() {
           <Sidebar active={route} onNavigate={navigate} />
         )}
         <main className="content">
-          {route === "info" ? (
+          {route === "chapters" ? (
+            <Chapters onStartMini={startLessonTest} />
+          ) : route === "info" ? (
             <TestInfo onGiveTest={startLessonTest} onCourseOpen={setInfoCourseOpen} />
           ) : route === "practice" ? (
             <Practice

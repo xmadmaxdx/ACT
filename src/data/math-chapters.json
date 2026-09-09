@@ -1,0 +1,218 @@
+{
+  "subject": "math",
+  "chapters": [
+    {
+      "id": "ch1",
+      "title": "Essential Skills",
+      "subtitle": "Percent, Ratio, Rates, Averages",
+      "minis": [
+        {
+          "id": "MATH-MINI-1-1",
+          "title": "Percent / Percent Change",
+          "done": true,
+          "timeMinutes": 10,
+          "theory": {
+            "heading": "Read this before you start",
+            "blocks": [
+              { "p": "Percent means per hundred. Every percent question is one of three moves: find a part, find the whole, or find the change. Write the move down before computing." },
+              { "list": [
+                "Part: $\\text{part} = \\frac{\\text{percent}}{100} \\times \\text{whole}$.",
+                "Whole: $\\text{whole} = \\text{part} \\div \\frac{\\text{percent}}{100}$.",
+                "Change: $\\frac{\\text{new}-\\text{old}}{\\text{old}}\\times 100\\%$.",
+                "Successive percents multiply as decimals: 20% off then 10% off is $0.8\\times 0.9=0.72$, not 30% off.",
+                "Area and volume scale by the product of the side factors: $0.7\\times 1.15=0.805$, so $19.5\\%$ smaller."
+              ] },
+              { "math": "\\text{final} = \\text{original} \\times (1 \\pm r) \\qquad \\text{change\\%} = \\frac{\\text{new}-\\text{old}}{\\text{old}} \\times 100\\%" }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Percent",
+              "short": "Coat sale price",
+              "statement": "A department store marks a winter coat, originally priced at $120$, down by $25\\%$ for its end-of-season sale. An additional loyalty coupon cannot be combined with sale prices. What does a customer pay for the coat at the sale price?",
+              "options": ["$84$", "$90$", "$96$", "$100$"],
+              "answer": "B",
+              "explain": "A 25% discount means paying 75%: $120\\times 0.75=90$."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Percent",
+              "short": "Survey percent",
+              "statement": "A school newspaper surveys 183 students about the new lunch menu. Of those surveyed, 47 say they prefer the new menu. To the nearest $1\\%$, what percent of surveyed students prefer the new menu?",
+              "options": ["$24\\%$", "$25\\%$", "$26\\%$", "$27\\%$"],
+              "answer": "C",
+              "explain": "$\\frac{47}{183}\\times 100\\%\\approx 25.7\\%$, which rounds to $26\\%$."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Percent",
+              "short": "Resized garden area",
+              "statement": "A rectangular garden is redesigned so its length becomes $70\\%$ of the original length and its width becomes $115\\%$ of the original width. By what percent is the new area smaller than the original area?",
+              "options": ["$15\\%$", "$19.5\\%$", "$25\\%$", "$45\\%$"],
+              "answer": "B",
+              "explain": "Area scales by $0.70\\times 1.15=0.805$, so the new area is $80.5\\%$ of the old — $19.5\\%$ smaller."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Percent",
+              "short": "Successive discounts",
+              "statement": "An electronics store advertises a laptop originally priced at $200$. At checkout, a $20\\%$ coupon is applied first, and then a $10\\%$ storewide promotion is applied to the reduced price. What is the final price?",
+              "options": ["$140$", "$144$", "$150$", "$160$"],
+              "answer": "B",
+              "explain": "Apply one at a time: $200\\times 0.8=160$, then $160\\times 0.9=144$. Stacked discounts never simply add."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Percent",
+              "short": "Salary raise percent",
+              "statement": "After her annual review, Priya's salary increases from $52{,}000$ dollars to $58{,}900$ dollars. To the nearest tenth of a percent, what was the percent increase?",
+              "options": ["$11.7\\%$", "$12.5\\%$", "$13.3\\%$", "$15.0\\%$"],
+              "answer": "C",
+              "explain": "$\\frac{58{,}900-52{,}000}{52{,}000}=\\frac{6{,}900}{52{,}000}\\approx 0.1327$, or $13.3\\%$."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Percent",
+              "short": "Bill with tax and tip",
+              "statement": "A restaurant bill totals $64$ dollars before tax. The local sales tax is $8\\%$, and the diners leave an $18\\%$ tip calculated on the pre-tax bill. What is the total amount paid, including tax and tip?",
+              "options": ["$79.36$", "$80.64$", "$81.92$", "$83.20$"],
+              "answer": "B",
+              "explain": "Tax is $64\\times 0.08=5.12$ and tip is $64\\times 0.18=11.52$. Total: $64+5.12+11.52=80.64$."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Percent",
+              "short": "Tiered commission",
+              "statement": "A salesperson earns $6\\%$ commission on the first $50{,}000$ dollars of sales and $9\\%$ on any amount above that. If her total sales for the month are $80{,}000$ dollars, how much commission does she earn?",
+              "options": ["$4{,}800$", "$5{,}400$", "$5{,}700$", "$7{,}200$"],
+              "answer": "C",
+              "explain": "$0.06(50{,}000)+0.09(30{,}000)=3{,}000+2{,}700=5{,}700$. Split the tiers before multiplying."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Percent",
+              "short": "Down then up",
+              "statement": "A town's population of $12{,}000$ falls by $15\\%$ one year and then rises by $15\\%$ the next year. What is the population after the two changes?",
+              "options": ["$12{,}000$", "$11{,}850$", "$11{,}730$", "$11{,}400$"],
+              "answer": "C",
+              "explain": "$12{,}000\\times 0.85\\times 1.15=12{,}000\\times 0.9775=11{,}730$. Equal percent moves do not cancel — the base changes."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Percent",
+              "short": "Diluted solution",
+              "statement": "A chemist has $40$ liters of a $15\\%$ acid solution. She adds $10$ liters of pure water. What percent of the new mixture is acid?",
+              "options": ["$10\\%$", "$12\\%$", "$13.5\\%$", "$15\\%$"],
+              "answer": "B",
+              "explain": "Acid stays $0.15(40)=6$ liters while volume becomes $50$ liters: $\\frac{6}{50}=12\\%$."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Percent",
+              "short": "Reverse a raise",
+              "statement": "After receiving a $12\\%$ raise, an employee now earns $61{,}600$ dollars. What was the salary before the raise?",
+              "options": ["$52{,}800$", "$54{,}400$", "$55{,}000$", "$56{,}500$"],
+              "answer": "C",
+              "explain": "Divide by what was paid: $61{,}600\\div 1.12=55{,}000$. Never subtract $12\\%$ of the new salary."
+            }
+          ]
+        },
+        { "id": "MATH-MINI-1-2", "title": "Ratio / Proportion", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-1-3", "title": "Rate-Distance-Work / Unit Conversion", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-1-4", "title": "Mean / Weighted Average / Money Models", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch2",
+      "title": "Number & Quantity",
+      "subtitle": "Exponents, Radicals, Complex, Matrices, Vectors",
+      "minis": [
+        { "id": "MATH-MINI-2-1", "title": "Exponents / Scientific Notation", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-2-2", "title": "Radicals / Roots", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-2-3", "title": "Number Theory / Absolute Value", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-2-4", "title": "Complex Numbers", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-2-5", "title": "Matrices", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-2-6", "title": "Vectors", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch3",
+      "title": "Linear Algebra",
+      "subtitle": "Equations, Inequalities, Systems",
+      "minis": [
+        { "id": "MATH-MINI-3-1", "title": "Linear Equations", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-3-2", "title": "Inequalities / Absolute Equations", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-3-3", "title": "Systems 2x2", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch4",
+      "title": "Quadratics, Polynomials, Rationals, Sequences",
+      "subtitle": "Quadratics, Polynomials, Sequences",
+      "minis": [
+        { "id": "MATH-MINI-4-1", "title": "Quadratics", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-4-2", "title": "Polynomials / Rational / Radical Equations", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-4-3", "title": "Sequences / Exponential", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch5",
+      "title": "Functions",
+      "subtitle": "Notation, Composite, Transform, Log",
+      "minis": [
+        { "id": "MATH-MINI-5-1", "title": "Notation / Evaluation / Domain", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-5-2", "title": "Composite / Inverse", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-5-3", "title": "Transformations / Graphs", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-5-4", "title": "Exponential / Log", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch6",
+      "title": "Coordinate Geometry",
+      "subtitle": "Distance, Slope, Parabolas, Circles",
+      "minis": [
+        { "id": "MATH-MINI-6-1", "title": "Distance / Midpoint", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-6-2", "title": "Slope / Lines", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-6-3", "title": "Parabolas / Circles", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch7",
+      "title": "Plane Geometry",
+      "subtitle": "Triangles, Right Triangles, Polygons",
+      "minis": [
+        { "id": "MATH-MINI-7-1", "title": "Lines / Angles / Triangles", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-7-2", "title": "Right Triangles / Special", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-7-3", "title": "Polygons / Circles", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch8",
+      "title": "Solid Geometry",
+      "subtitle": "Volume, Surface Area",
+      "minis": [
+        { "id": "MATH-MINI-8-1", "title": "Volume / Surface", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch9",
+      "title": "Trigonometry",
+      "subtitle": "SOHCAHTOA, Radians, Laws",
+      "minis": [
+        { "id": "MATH-MINI-9-1", "title": "SOHCAHTOA / Identities", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-9-2", "title": "Radians / Unit Circle / Graphs / Laws", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    },
+    {
+      "id": "ch10",
+      "title": "Stats, Probability, Counting, Modeling",
+      "subtitle": "Center, Chance, Data",
+      "minis": [
+        { "id": "MATH-MINI-10-1", "title": "Mean / Median / Mode / Range / SD", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-10-2", "title": "Probability / Counting", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        { "id": "MATH-MINI-10-3", "title": "Data / Expected / Modeling Diagrams", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+      ]
+    }
+  ]
+}

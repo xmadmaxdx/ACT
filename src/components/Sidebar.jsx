@@ -1,9 +1,19 @@
 import { HomeIcon, DumbbellIcon, BookIcon, BankIcon } from "./icons.jsx";
 
+function ChaptersIcon() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+      <rect x="4" y="4" width="22" height="22" rx="4" fill="#ddf4ff" stroke="#1cb0f6" strokeWidth="2.2" />
+      <path d="M10 11h10M10 15h10M10 19h6" stroke="#1cb0f6" strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const ITEMS = [
   { label: "MY TESTS", Icon: HomeIcon, route: "home" },
   { label: "PRACTICE", Icon: DumbbellIcon, route: "practice" },
-  { label: "TEST INFO", Icon: BookIcon, route: "info" },
+  { label: "COURSES", Icon: BookIcon, route: "info" },
+  { label: "CHAPTERS", Icon: ChaptersIcon, route: "chapters" },
   { label: "INSTITUTIONS", Icon: BankIcon, route: null },
 ];
 

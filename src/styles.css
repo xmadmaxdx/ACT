@@ -811,6 +811,85 @@ button {
   cursor: not-allowed;
 }
 
+/* ---------- Chapters ---------- */
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+.mini-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: #fbfdff;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mini-row:hover {
+  border-color: var(--blue-light-border);
+  background: var(--blue-light-bg);
+}
+
+.mini-row.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mini-title {
+  font-size: 15px;
+}
+
+/* ---------- Theory intro slide ---------- */
+.intro-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 30px 22px 110px;
+}
+
+.intro-card {
+  width: 100%;
+  max-width: 720px;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 34px 36px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.intro-title {
+  margin: 0 0 16px;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
+.intro-blocks {
+  margin-bottom: 22px;
+}
+
+.intro-cta {
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .intro-card {
+    padding: 24px 20px;
+  }
+
+  .intro-title {
+    font-size: 22px;
+  }
+}
+
 /* ---------- Worked examples ---------- */
 .example-q {
   background: #fffdf5;
