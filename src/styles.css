@@ -2569,6 +2569,10 @@ button {
     min-height: 420px;
   }
 
+  .desmos-wrap {
+    min-height: 400px;
+  }
+
   .desmos-box {
     min-height: 400px;
   }
