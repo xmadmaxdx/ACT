@@ -2430,6 +2430,20 @@ button {
   margin: 0 8px;
 }
 
+.merged-divider {
+  border: none;
+  border-top: 2px solid var(--line);
+  margin: 20px 0 18px;
+}
+
+.merged-stem p {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17.5px;
+  line-height: 1.85;
+  color: #333;
+  margin: 0 0 14px;
+}
+
 .test-body.calc-open > .calc-panel {
   grid-column: 3;
   grid-row: 1 / 3;

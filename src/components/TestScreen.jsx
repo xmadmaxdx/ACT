@@ -174,6 +174,74 @@ function DesmosCalc({ mode, apiRef, initialState, onSnapshot }) {
   );
 }
 
+function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag }) {
+  return (
+    <>
+      <div className="q-head">
+        <span className="q-badge">{q.n}</span>
+        <span className="q-tag">{q.tag}</span>
+      </div>
+      {q.stem ? (
+        serifStem ? (
+          <div className="passage-text merged-stem">
+            <p>{mathRich(q.stem)}</p>
+          </div>
+        ) : (
+          <p className="q-stem">{mathRich(q.stem)}</p>
+        )
+      ) : null}
+      {paused && (
+        <p className="paused-note">Paused — answer choices are locked. Tap play to resume.</p>
+      )}
+      <div className={paused ? "q-options locked" : "q-options"}>
+        {q.options.map((opt, i) => {
+          const letter = LETTERS[i];
+          const cls = ["q-option"];
+          if (picked === letter) cls.push("selected");
+          if (showAnswers && letter === q.answer) cls.push("correct");
+          if (showAnswers && picked === letter && letter !== q.answer) cls.push("wrong");
+          return (
+            <button
+              key={letter}
+              type="button"
+              className={cls.join(" ")}
+              onClick={() => onPick(letter)}
+            >
+              <span className="q-letter">{letter}</span>
+              <span className="q-text">{optText(opt)}</span>
+            </button>
+          );
+        })}
+      </div>
+      {showAnswers && (
+        <div className={picked === q.answer ? "explain ok" : "explain no"}>
+          <span className="explain-head">
+            {picked === q.answer ? "Correct" : `Correct answer: ${q.answer}`}
+          </span>
+          <p className="explain-text">{mathRich(q.explain)}</p>
+        </div>
+      )}
+      <button
+        type="button"
+        className={flagged ? "flag-btn on" : "flag-btn"}
+        onClick={onToggleFlag}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M3.5 14.5v-12M3.5 3c3-2 5.5 2 9 0v7c-3.5 2-6-2-9 0"
+            fill={flagged ? "currentColor" : "none"}
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span>{flagged ? "Flagged for review" : "Flag this question"}</span>
+      </button>
+    </>
+  );
+}
+
 export default function TestScreen({ test, session, startIndex, review, findTest, customTestData, onFinish, onExit }) {
   const timed = test.mode === "timed" && !review;
   const testData =
@@ -326,6 +394,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   });
 
   const showCalc = /^MATH-/i.test(test.id) || (testData.section || "").toLowerCase() === "math";
+  const merged = calcOpen && showCalc;
 
   const goTo = (n) => {
     const idx = questions.findIndex((q) => q.n === n);
@@ -545,66 +614,40 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               <p key={`${passage.id}-${i}`}>{renderSpans(spans, activeQ, testData.figures)}</p>
             ))}
           </div>
+          {merged && (
+            <>
+              <hr className="merged-divider" />
+              <QBits
+                q={activeQ}
+                picked={picked}
+                showAnswers={showAnswers}
+                paused={paused}
+                flagged={flagged}
+                serifStem
+                onPick={pick}
+                onToggleFlag={toggleFlag}
+              />
+            </>
+          )}
         </article>
 
+        {!merged && (
         <aside className="question-panel">
           <section className="q-card" aria-label={`Question ${activeQ.n}`}>
-            <div className="q-head">
-              <span className="q-badge">{activeQ.n}</span>
-              <span className="q-tag">{activeQ.tag}</span>
-            </div>
-            {activeQ.stem ? <p className="q-stem">{mathRich(activeQ.stem)}</p> : null}
-            {paused && (
-              <p className="paused-note">Paused — answer choices are locked. Tap play to resume.</p>
-            )}
-            <div className={paused ? "q-options locked" : "q-options"}>
-              {activeQ.options.map((opt, i) => {
-                const letter = LETTERS[i];
-                const cls = ["q-option"];
-                if (picked === letter) cls.push("selected");
-                if (showAnswers && letter === activeQ.answer) cls.push("correct");
-                if (showAnswers && picked === letter && letter !== activeQ.answer) cls.push("wrong");
-                return (
-                  <button
-                    key={letter}
-                    type="button"
-                    className={cls.join(" ")}
-                    onClick={() => pick(letter)}
-                  >
-                    <span className="q-letter">{letter}</span>
-                    <span className="q-text">{optText(opt)}</span>
-                  </button>
-                );
-              })}
-            </div>
-            {showAnswers && (
-              <div className={picked === activeQ.answer ? "explain ok" : "explain no"}>
-                <span className="explain-head">
-                  {picked === activeQ.answer ? "Correct" : `Correct answer: ${activeQ.answer}`}
-                </span>
-                <p className="explain-text">{mathRich(activeQ.explain)}</p>
-              </div>
-            )}
-            <button
-              type="button"
-              className={flagged ? "flag-btn on" : "flag-btn"}
-              onClick={toggleFlag}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-                <path
-                  d="M3.5 14.5v-12M3.5 3c3-2 5.5 2 9 0v7c-3.5 2-6-2-9 0"
-                  fill={flagged ? "currentColor" : "none"}
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span>{flagged ? "Flagged for review" : "Flag this question"}</span>
-            </button>
+            <QBits
+              q={activeQ}
+              picked={picked}
+              showAnswers={showAnswers}
+              paused={paused}
+              flagged={flagged}
+              serifStem={false}
+              onPick={pick}
+              onToggleFlag={toggleFlag}
+            />
           </section>
 
         </aside>
+        )}
         {calcOpen && showCalc && (
           <div
             className="calc-divider"
@@ -787,7 +830,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 </button>
               </div>
             )}
-          </aside>
+        </aside>
+        )}
         </div>
       )}
     </div>
