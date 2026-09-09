@@ -70,6 +70,63 @@ function formatPace(sec) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
+const DESMOS_KEY =
+  (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_DESMOS_API_KEY) ||
+  "c6f78eb83b074ebcac28827b8e5ebea2";
+
+function DesmosCalc({ mode }) {
+  const elRef = useRef(null);
+  const calcRef = useRef(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const src = `https://www.desmos.com/api/v1.12/calculator.js?apiKey=${DESMOS_KEY}`;
+    const load = () =>
+      new Promise((resolve, reject) => {
+        if (window.Desmos) {
+          resolve();
+          return;
+        }
+        const s = document.createElement("script");
+        s.src = src;
+        s.async = true;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    load()
+      .then(() => {
+        if (cancelled || !elRef.current || !window.Desmos) return;
+        try {
+          calcRef.current =
+            mode === "scientific"
+              ? window.Desmos.ScientificCalculator(elRef.current)
+              : window.Desmos.GraphingCalculator(elRef.current);
+        } catch (e) {
+          if (!cancelled) setFailed(true);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setFailed(true);
+      });
+    return () => {
+      cancelled = true;
+      try {
+        calcRef.current && calcRef.current.destroy();
+      } catch (e) {
+        void e;
+      }
+      calcRef.current = null;
+    };
+  }, [mode]);
+
+  if (failed) {
+    return <p className="muted-text">Calculator failed to load. Check your connection and reopen it.</p>;
+  }
+  return <div className="desmos-box" ref={elRef} />;
+}
+
 export default function TestScreen({ test, session, startIndex, review, findTest, customTestData, onFinish, onExit }) {
   const timed = test.mode === "timed" && !review;
   const testData =
@@ -86,6 +143,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [overviewOpen, setOverviewOpen] = useState(false);
   const [ovFilter, setOvFilter] = useState("All");
   const [paused, setPaused] = useState(false);
+  const [calcOpen, setCalcOpen] = useState(false);
+  const [calcMode, setCalcMode] = useState("graph");
+  const [calcW, setCalcW] = useState(440);
 
   const togglePause = () => {
     setPaused((p) => {
@@ -96,6 +156,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const elapsedRef = useRef(0);
   const enterRef = useRef(0);
   const prevPassageRef = useRef(null);
+  const bodyRef = useRef(null);
   const prevQRef = useRef(null);
   const pausedRef = useRef(false);
   const introDoneRef = useRef(false);
@@ -186,10 +247,47 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     return statusOf(q.n) === "unanswered";
   });
 
+  const showCalc = /^MATH-/i.test(test.id) || (testData.section || "").toLowerCase() === "math";
+
   const goTo = (n) => {
     const idx = questions.findIndex((q) => q.n === n);
     if (idx >= 0) setQIndex(idx);
+    if (needIntro && !introDoneRef.current) {
+      setIntroDone(true);
+      introDoneRef.current = true;
+    }
   };
+
+  const goToIntro = () => {
+    setIntroDone(false);
+    introDoneRef.current = false;
+    window.scrollTo(0, 0);
+  };
+
+  const completeIntro = () => {
+    setIntroDone(true);
+    introDoneRef.current = true;
+    window.scrollTo(0, 0);
+  };
+
+  const startDrag = (e) => {
+    e.preventDefault();
+    const move = (ev) => {
+      const body = bodyRef.current;
+      if (!body) return;
+      const rect = body.getBoundingClientRect();
+      const w = Math.round(rect.right - ev.clientX - 12);
+      setCalcW(Math.min(Math.max(w, 300), Math.floor(rect.width * 0.7)));
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
+
+  const resetCalc = () => setCalcW(440);
 
   const commitActivePace = () => {
     if (review) return { ...pacesRef.current };
@@ -233,46 +331,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     }
   }, [timed, remaining]);
 
-  if (needIntro && !introDone) {
-    const intro = testData.intro;
-    return (
-      <div className="test">
-        <div className="intro-wrap">
-          <div className="intro-card">
-            <p className="results-kicker">Before you start</p>
-            <h1 className="intro-title">{intro.heading || testData.title}</h1>
-            <div className="intro-blocks">
-              {(intro.blocks || []).map((b, i) => {
-                if (b.h) return <h4 key={i} className="lesson-h">{b.h}</h4>;
-                if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
-                if (b.list) {
-                  return (
-                    <ul key={i} className="lesson-list">
-                      {b.list.map((t, j) => (
-                        <li key={j}><MathText text={t} /></li>
-                      ))}
-                    </ul>
-                  );
-                }
-                return <p key={i} className="lesson-p"><MathText text={b.p || ""} /></p>;
-              })}
-            </div>
-            <button
-              type="button"
-              className="btn-primary intro-cta"
-              onClick={() => {
-                setIntroDone(true);
-                introDoneRef.current = true;
-                window.scrollTo(0, 0);
-              }}
-            >
-              NEXT
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const onIntro = needIntro && !introDone;
+  const intro = (testData && testData.intro) || null;
 
   return (
     <div className="test">
@@ -294,6 +354,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         </div>
         {timed && (
           <div className="test-timer-wrap">
+            {!onIntro && (
             <button
               className="pause-btn"
               type="button"
@@ -311,6 +372,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 </svg>
               )}
             </button>
+            )}
             <div className={expired ? "test-timer danger" : paused ? "test-timer paused" : "test-timer"}>
               <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
@@ -319,6 +381,28 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               <span>{formatClock(remaining)}</span>
             </div>
           </div>
+        )}
+        {showCalc && (
+          <button
+            className={calcOpen ? "calc-btn on" : "calc-btn"}
+            type="button"
+            aria-label={calcOpen ? "Close calculator" : "Open calculator"}
+            onClick={() => setCalcOpen((v) => !v)}
+          >
+            <svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true">
+              <rect x="2.5" y="1.5" width="12" height="14" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+              <rect x="5.5" y="4" width="6" height="2.6" rx="1" fill="currentColor" />
+              <g fill="currentColor">
+                <circle cx="6.2" cy="9.5" r="1" />
+                <circle cx="8.5" cy="9.5" r="1" />
+                <circle cx="10.8" cy="9.5" r="1" />
+                <circle cx="6.2" cy="12" r="1" />
+                <circle cx="8.5" cy="12" r="1" />
+                <circle cx="10.8" cy="12" r="1" />
+              </g>
+            </svg>
+            <span>Calculator</span>
+          </button>
         )}
         <div className="test-progress">
           <span className="test-progress-label">
@@ -333,7 +417,32 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         </div>
       </header>
 
-      <div className="test-body">
+      <div className={calcOpen && showCalc ? "test-body calc-open" : "test-body"} ref={bodyRef}>
+        {onIntro ? (
+          <div className="intro-step">
+            <div className="intro-card">
+              <p className="results-kicker">Before you start</p>
+              <h1 className="intro-title">{(intro && intro.heading) || testData.title}</h1>
+              <div className="intro-blocks">
+                {((intro && intro.blocks) || []).map((b, i) => {
+                  if (b.h) return <h4 key={i} className="lesson-h">{b.h}</h4>;
+                  if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
+                  if (b.list) {
+                    return (
+                      <ul key={i} className="lesson-list">
+                        {b.list.map((t, j) => (
+                          <li key={j}><MathText text={t} /></li>
+                        ))}
+                      </ul>
+                    );
+                  }
+                  return <p key={i} className="lesson-p"><MathText text={b.p || ""} /></p>;
+                })}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
         <article className="passage">
           <h1 className="passage-title">{passage.title}</h1>
           <div className="passage-text">
@@ -427,7 +536,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                     RESULT
                   </button>
                 </>
-              ) : qIndex === total - 1 ? (
+              ) : !onIntro && qIndex === total - 1 ? (
                 <button
                   className="nav-btn primary"
                   type="button"
@@ -439,7 +548,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 <button
                   className="nav-btn primary"
                   type="button"
-                  onClick={() => setQIndex(qIndex + 1)}
+                  onClick={onIntro ? completeIntro : () => setQIndex(qIndex + 1)}
                 >
                   NEXT
                 </button>
@@ -447,6 +556,51 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             </div>
           </div>
         </aside>
+        {calcOpen && showCalc && (
+          <div
+            className="calc-divider"
+            onPointerDown={startDrag}
+            onDoubleClick={resetCalc}
+            title="Drag to resize (double-click to reset)"
+          />
+        )}
+        {calcOpen && showCalc && (
+          <section className="calc-panel" style={{ width: calcW }} aria-label="Calculator">
+            <div className="calc-head">
+              <div className="calc-tabs" role="tablist" aria-label="Calculator type">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={calcMode === "graph"}
+                  className={calcMode === "graph" ? "calc-tab active" : "calc-tab"}
+                  onClick={() => setCalcMode("graph")}
+                >
+                  Graph
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={calcMode === "scientific"}
+                  className={calcMode === "scientific" ? "calc-tab active" : "calc-tab"}
+                  onClick={() => setCalcMode("scientific")}
+                >
+                  Scientific
+                </button>
+              </div>
+              <button
+                type="button"
+                className="modal-close"
+                aria-label="Close calculator"
+                onClick={() => setCalcOpen(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <DesmosCalc mode={calcMode} />
+          </section>
+        )}
+          </>
+        )}
       </div>
 
       {overviewOpen && (
@@ -477,6 +631,18 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               </div>
             </div>
             <div className="ov-list">
+              {testData.intro && ovFilter === "All" && (
+                <button
+                  type="button"
+                  className={onIntro ? "ov-row current" : "ov-row"}
+                  onClick={goToIntro}
+                >
+                  <span className="ov-q-top">
+                    <span className="q-tag">INTRO</span>
+                    <span className="ov-stem">Start here — read the note slide</span>
+                  </span>
+                </button>
+              )}
               {visibleQs.map((q) => {
                 const st = statusOf(q.n);
                 return (

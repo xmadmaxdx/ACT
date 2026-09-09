@@ -2357,6 +2357,157 @@ button {
   }
 }
 
+/* ---------- Intro step (inside test screen) ---------- */
+.intro-step {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- Calculator ---------- */
+.calc-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 10px;
+  padding: 7px 14px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.calc-btn:hover {
+  background: #f7f7f7;
+}
+
+.calc-btn.on {
+  color: var(--blue);
+  border-color: var(--blue-light-border);
+  background: var(--blue-light-bg);
+}
+
+.test-body.calc-open {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.test-body.calc-open > article.passage {
+  flex: 1.25;
+  min-width: 0;
+}
+
+.test-body.calc-open > aside.question-panel {
+  flex: 1;
+  min-width: 280px;
+}
+
+.calc-divider {
+  flex: none;
+  width: 12px;
+  margin: 0 6px;
+  border-radius: 6px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+}
+
+.calc-divider::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.calc-divider:hover::after {
+  background: var(--blue-light-border);
+}
+
+.calc-panel {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.calc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 8px 8px 12px;
+  border-bottom: 2px solid var(--line);
+}
+
+.calc-head .modal-close {
+  position: static;
+}
+
+.calc-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.calc-tab {
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: var(--faint);
+  cursor: pointer;
+}
+
+.calc-tab.active {
+  color: var(--blue);
+  background: var(--blue-light-bg);
+  border-color: var(--blue-light-border);
+}
+
+.desmos-box {
+  flex: 1;
+  min-height: 460px;
+}
+
+@media (max-width: 980px) {
+  .test-body.calc-open {
+    flex-direction: column;
+  }
+
+  .test-body.calc-open > aside.question-panel {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .calc-divider {
+    display: none;
+  }
+
+  .calc-panel {
+    width: 100% !important;
+    min-height: 420px;
+  }
+
+  .desmos-box {
+    min-height: 400px;
+  }
+}
+
 /* ---------- Timer + pause ---------- */
 .test-timer-wrap {
   position: absolute;
