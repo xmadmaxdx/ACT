@@ -4,7 +4,7 @@ import { getStroke } from "perfect-freehand";
 const INK = "#1f2937";
 const COLORS = ["#1f2937", "#1cb0f6", "#16a34a", "#ea580c"];
 const MIN_SIZE = 20;
-const HANDLE_R = 9;
+const HANDLE_R = 12;
 
 const average = (a, b) => (a + b) / 2;
 
@@ -287,11 +287,13 @@ export default function FreestyleBoard() {
     if (!svg) return;
     const onWheel = (e) => {
       e.preventDefault();
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1;
+      const dy = e.deltaY * unit;
       const rect = svg.getBoundingClientRect();
       const sx = e.clientX - rect.left;
       const sy = e.clientY - rect.top;
       setCam((c) => {
-        const zoom = Math.min(3, Math.max(0.2, c.zoom * Math.exp(-e.deltaY * 0.0015)));
+        const zoom = Math.min(3, Math.max(0.2, c.zoom * Math.exp(-dy * 0.0022)));
         return { zoom, x: c.x + sx / c.zoom - sx / zoom, y: c.y + sy / c.zoom - sy / zoom };
       });
     };
@@ -354,8 +356,17 @@ export default function FreestyleBoard() {
     (e) => {
       const svg = svgRef.current;
       if (!svg) return;
-      svg.setPointerCapture(e.pointerId);
+      try {
+        if (e.isPrimary !== false) svg.setPointerCapture(e.pointerId);
+      } catch {
+        /* Emulated or duplicate pointer: events still bubble to the svg. */
+      }
       const [px, py] = boardPoint(e.clientX, e.clientY);
+
+      if (tool === "move") {
+        gestureRef.current = { kind: "pan", lx: e.clientX, ly: e.clientY };
+        return;
+      }
 
       if (tool === "pen") {
         drawingRef.current = true;
@@ -583,7 +594,8 @@ export default function FreestyleBoard() {
     setMarquee(null);
   }, [finishStroke]);
 
-  const onPointerLeave = useCallback(() => {
+  const onPointerLeave = useCallback((e) => {
+    if (e && e.buttons !== 0) return;
     if (drawingRef.current) finishStroke();
     gestureRef.current = null;
     setMarquee(null);
@@ -679,7 +691,7 @@ export default function FreestyleBoard() {
             type="button"
             className={tool === "select" ? "board-tool active" : "board-tool"}
             onClick={() => setTool("select")}
-            title="Select / move"
+            title="Select: tap objects to grab, drag empty space to multi-select, drag objects to move"
           >
             Select
           </button>
@@ -687,7 +699,7 @@ export default function FreestyleBoard() {
             type="button"
             className={tool === "pen" ? "board-tool active" : "board-tool"}
             onClick={() => setTool("pen")}
-            title="Pen"
+            title="Pen: draw freehand (width via Size slider)"
           >
             Pen
           </button>
@@ -695,9 +707,17 @@ export default function FreestyleBoard() {
             type="button"
             className={tool === "text" ? "board-tool active" : "board-tool"}
             onClick={() => setTool("text")}
-            title="Text"
+            title="Text: click anywhere to write"
           >
             Text
+          </button>
+          <button
+            type="button"
+            className={tool === "move" ? "board-tool active" : "board-tool"}
+            onClick={() => setTool("move")}
+            title="Move: drag anywhere to pan the view"
+          >
+            Move
           </button>
         </div>
         <div className="board-tool-group board-shapes">
@@ -773,18 +793,18 @@ export default function FreestyleBoard() {
             const g = e.target && e.target.closest ? e.target.closest("[data-id]") : null;
             if (g && tool === "select") startEdit(g.getAttribute("data-id"));
           }}
-          style={{ touchAction: "none" }}
+          style={{ touchAction: "none", cursor: tool === "move" ? "grab" : tool === "pen" ? "crosshair" : "default" }}
         >
           <defs>
             <pattern
               id="board-dots"
-              width="22"
-              height="22"
+              width={22 * cam.zoom}
+              height={22 * cam.zoom}
               patternUnits="userSpaceOnUse"
-              x={((-cam.x * cam.zoom) % 22 + 22) % 22}
-              y={((-cam.y * cam.zoom) % 22 + 22) % 22}
+              x={((-cam.x * cam.zoom) % (22 * cam.zoom) + 22 * cam.zoom) % (22 * cam.zoom)}
+              y={((-cam.y * cam.zoom) % (22 * cam.zoom) + 22 * cam.zoom) % (22 * cam.zoom)}
             >
-              <circle cx="1.5" cy="1.5" r="1.5" fill="#dbe4ee" />
+              <circle cx={(22 * cam.zoom) / 2} cy={(22 * cam.zoom) / 2} r={Math.min(3.5, Math.max(0.7, 1.5 * cam.zoom))} fill="#dbe4ee" />
             </pattern>
           </defs>
           <rect x={0} y={0} width="100%" height="100%" fill="url(#board-dots)" />
