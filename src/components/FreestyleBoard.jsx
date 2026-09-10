@@ -158,8 +158,36 @@ function shapeBody(shape, w, h, stroke) {
   }
 }
 
-const SHAPES = [
-  { id: "rtriangle", label: "Right triangle" },
+function hitArea(shape, w, h) {
+  const hit = { fill: "#ffffff", fillOpacity: 0, stroke: "none", pointerEvents: "all" };
+  switch (shape) {
+    case "rtriangle":
+      return <polygon points={`0,0 0,${h} ${w},${h}`} {...hit} />;
+    case "triangle":
+      return <polygon points={`0,${h} ${w},${h} ${w / 2},0`} {...hit} />;
+    case "trapezoid":
+      return <polygon points={`${w / 4},0 ${(3 * w) / 4},0 ${w},${h} 0,${h}`} {...hit} />;
+    case "square":
+      return <rect x={0} y={0} width={w} height={h} {...hit} />;
+    case "circle":
+      return <ellipse cx={w / 2} cy={h / 2} rx={w / 2} ry={h / 2} {...hit} />;
+    case "cone":
+      return <polygon points={`${w / 2},0 0,${(5 * h) / 6} ${w},${(5 * h) / 6}`} {...hit} />;
+    case "pyramid":
+      return (
+        <g {...hit}>
+          <polygon points={`${w / 6},${h} ${(5 * w) / 6},${h} ${w},${(2 * h) / 3} ${w / 3},${(2 * h) / 3}`} />
+          <polygon points={`${w / 6},${h} ${(5 * w) / 6},${h} ${w / 2},0`} />
+        </g>
+      );
+    case "prism":
+      return <rect x={0} y={0} width={w} height={h} {...hit} />;
+    default:
+      return null;
+  }
+}
+
+const SHAPES = [  { id: "rtriangle", label: "Right triangle" },
   { id: "triangle", label: "Triangle" },
   { id: "trapezoid", label: "Trapezoid" },
   { id: "square", label: "Square" },
@@ -906,6 +934,7 @@ export default function FreestyleBoard() {
             if (o.type === "pen") {
               return (
                 <g key={o.id} data-id={o.id}>
+                  <path d={o.path} fill="none" stroke="#ffffff" strokeOpacity={0} strokeWidth={16} pointerEvents="stroke" />
                   <path d={o.path} fill={o.color} pointerEvents="all" />
                 </g>
               );
@@ -935,6 +964,7 @@ export default function FreestyleBoard() {
                 data-id={o.id}
                 transform={`translate(${o.x},${o.y}) rotate(${o.rotation},${o.w / 2},${o.h / 2})`}
               >
+                {hitArea(o.shape, o.w, o.h)}
                 {shapeBody(o.shape, o.w, o.h, o.color)}
               </g>
             );
@@ -1054,6 +1084,44 @@ export default function FreestyleBoard() {
             onCancel={handleEditorCancel}
           />
         )}
+        <div className="board-zoom" role="group" aria-label="Board zoom">
+          <button
+            type="button"
+            className="board-zoom-btn"
+            aria-label="Zoom in"
+            onClick={() => {
+              const svg = svgRef.current;
+              if (!svg) return;
+              const r = svg.getBoundingClientRect();
+              const sx = r.width / 2;
+              const sy = r.height / 2;
+              setCam((c) => {
+                const zoom = Math.min(3, c.zoom * 1.25);
+                return { zoom, x: c.x + sx / c.zoom - sx / zoom, y: c.y + sy / c.zoom - sy / zoom };
+              });
+            }}
+          >
+            +
+          </button>
+          <button
+            type="button"
+            className="board-zoom-btn"
+            aria-label="Zoom out"
+            onClick={() => {
+              const svg = svgRef.current;
+              if (!svg) return;
+              const r = svg.getBoundingClientRect();
+              const sx = r.width / 2;
+              const sy = r.height / 2;
+              setCam((c) => {
+                const zoom = Math.max(0.2, c.zoom * 0.8);
+                return { zoom, x: c.x + sx / c.zoom - sx / zoom, y: c.y + sy / c.zoom - sy / zoom };
+              });
+            }}
+          >
+            −
+          </button>
+        </div>
       </div>
     </div>
   );
