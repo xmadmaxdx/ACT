@@ -98,7 +98,7 @@ function shapeBody(shape, w, h, stroke) {
         <g {...common} fill="none">
           <line x1={w / 2} y1={0} x2={0} y2={ey} />
           <line x1={w / 2} y1={0} x2={w} y2={ey} />
-          <path d={`M 0,${ey} A ${w / 2},${ry} 0 0 0 ${w},${ey}`} />
+          <path d={`M 0,${ey} A ${w / 2},${ry} 0 0 1 ${w},${ey}`} />
           <path d={`M ${w},${ey} A ${w / 2},${ry} 0 0 0 0,${ey}`} {...dash} fill="none" />
         </g>
       );
@@ -210,7 +210,7 @@ export default function FreestyleBoard() {
   const [selectedIds, setSelectedIds] = useState([]);
   const [cam, setCam] = useState({ x: 0, y: 0, zoom: 1 });
   const [marquee, setMarquee] = useState(null);
-  const [penSize, setPenSize] = useState(14);
+  const [penSize, setPenSize] = useState(7);
   const [activePath, setActivePath] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState("");
@@ -222,6 +222,9 @@ export default function FreestyleBoard() {
   const drawingRef = useRef(false);
   const gestureRef = useRef(null);
   const spaceRef = useRef(false);
+  const lastTouchEndRef = useRef(0);
+  const panRef = useRef(null);
+  const panRaf = useRef(0);
 
   const objectsRef = useRef(objects);
   objectsRef.current = objects;
@@ -288,14 +291,29 @@ export default function FreestyleBoard() {
     const onWheel = (e) => {
       e.preventDefault();
       const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1;
-      const dy = e.deltaY * unit;
-      const rect = svg.getBoundingClientRect();
-      const sx = e.clientX - rect.left;
-      const sy = e.clientY - rect.top;
-      setCam((c) => {
-        const zoom = Math.min(3, Math.max(0.2, c.zoom * Math.exp(-dy * 0.0022)));
-        return { zoom, x: c.x + sx / c.zoom - sx / zoom, y: c.y + sy / c.zoom - sy / zoom };
-      });
+      if (e.ctrlKey || e.metaKey) {
+        const dy = e.deltaY * unit;
+        const rect = svg.getBoundingClientRect();
+        const sx = e.clientX - rect.left;
+        const sy = e.clientY - rect.top;
+        setCam((c) => {
+          const zoom = Math.min(3, Math.max(0.2, c.zoom * Math.exp(-dy * 0.0022)));
+          return { zoom, x: c.x + sx / c.zoom - sx / zoom, y: c.y + sy / c.zoom - sy / zoom };
+        });
+        return;
+      }
+      const acc = panRef.current || { dx: 0, dy: 0 };
+      panRef.current = { dx: acc.dx + e.deltaX * unit, dy: acc.dy + e.deltaY * unit };
+      if (!panRaf.current) {
+        panRaf.current = requestAnimationFrame(() => {
+          panRaf.current = 0;
+          const d = panRef.current;
+          panRef.current = null;
+          if (d && (d.dx || d.dy)) {
+            setCam((c) => ({ ...c, x: c.x - d.dx / c.zoom, y: c.y - d.dy / c.zoom }));
+          }
+        });
+      }
     };
     svg.addEventListener("wheel", onWheel, { passive: false });
     return () => svg.removeEventListener("wheel", onWheel);
@@ -304,6 +322,7 @@ export default function FreestyleBoard() {
   useEffect(() => {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (panRaf.current) cancelAnimationFrame(panRaf.current);
     };
   }, []);
 
@@ -356,6 +375,7 @@ export default function FreestyleBoard() {
     (e) => {
       const svg = svgRef.current;
       if (!svg) return;
+      if (e.pointerType === "mouse" && Date.now() - lastTouchEndRef.current < 600) return;
       try {
         if (e.isPrimary !== false) svg.setPointerCapture(e.pointerId);
       } catch {
@@ -385,7 +405,6 @@ export default function FreestyleBoard() {
         setSelectedIds([id]);
         setEditingId(id);
         setDraft("");
-        setTool("select");
         return;
       }
 
@@ -453,13 +472,22 @@ export default function FreestyleBoard() {
         return;
       }
       if (g.kind === "pan") {
-        setCam((c) => ({
-          ...c,
-          x: c.x - (e.clientX - g.lx) / c.zoom,
-          y: c.y - (e.clientY - g.ly) / c.zoom,
-        }));
+        panRef.current = {
+          dx: (panRef.current ? panRef.current.dx : 0) + (e.clientX - g.lx),
+          dy: (panRef.current ? panRef.current.dy : 0) + (e.clientY - g.ly),
+        };
         g.lx = e.clientX;
         g.ly = e.clientY;
+        if (!panRaf.current) {
+          panRaf.current = requestAnimationFrame(() => {
+            panRaf.current = 0;
+            const d = panRef.current;
+            panRef.current = null;
+            if (d && (d.dx || d.dy)) {
+              setCam((c) => ({ ...c, x: c.x - d.dx / c.zoom, y: c.y - d.dy / c.zoom }));
+            }
+          });
+        }
         return;
       }
       const obj = objectsRef.current.find((o) => o.id === (g.ids ? g.ids[0] : g.id));
@@ -585,14 +613,39 @@ export default function FreestyleBoard() {
   const colorRef = useRef(color);
   colorRef.current = color;
 
-  const onPointerUp = useCallback(() => {
+  const flushPan = useCallback(() => {
+    const d = panRef.current;
+    panRef.current = null;
+    if (panRaf.current) {
+      cancelAnimationFrame(panRaf.current);
+      panRaf.current = 0;
+    }
+    if (d && (d.dx || d.dy)) {
+      setCam((c) => ({ ...c, x: c.x - d.dx / c.zoom, y: c.y - d.dy / c.zoom }));
+    }
+  }, []);
+
+  const onPointerUp = useCallback((e) => {
+    if (e && e.pointerType && e.pointerType !== "mouse") lastTouchEndRef.current = Date.now();
+    flushPan();
     if (drawingRef.current) {
       finishStroke();
       return;
     }
     gestureRef.current = null;
     setMarquee(null);
-  }, [finishStroke]);
+  }, [finishStroke, flushPan]);
+
+  const onPointerCancel = useCallback((e) => {
+    if (e && e.pointerType && e.pointerType !== "mouse") lastTouchEndRef.current = Date.now();
+    flushPan();
+    if (drawingRef.current) {
+      finishStroke();
+      return;
+    }
+    gestureRef.current = null;
+    setMarquee(null);
+  }, [finishStroke, flushPan]);
 
   const onPointerLeave = useCallback((e) => {
     if (e && e.buttons !== 0) return;
@@ -788,6 +841,7 @@ export default function FreestyleBoard() {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
+          onPointerCancel={onPointerCancel}
           onPointerLeave={onPointerLeave}
           onDoubleClick={(e) => {
             const g = e.target && e.target.closest ? e.target.closest("[data-id]") : null;
@@ -808,7 +862,7 @@ export default function FreestyleBoard() {
             </pattern>
           </defs>
           <rect x={0} y={0} width="100%" height="100%" fill="url(#board-dots)" />
-          <text x={12} y={22} fontSize={12} fill="#94a3b8" pointerEvents="none">
+          <text x={12} y={22} fontSize={12} fill="#94a3b8" pointerEvents="none" style={{ userSelect: "none" }}>
             {Math.round(cam.zoom * 100)}%{selectedIds.length > 1 ? ` · ${selectedIds.length} selected` : ""}
           </text>
 
