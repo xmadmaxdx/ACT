@@ -4,7 +4,7 @@ import { getStroke } from "perfect-freehand";
 const INK = "#1f2937";
 const COLORS = ["#1f2937", "#1cb0f6", "#16a34a", "#ea580c"];
 const MIN_SIZE = 20;
-const HANDLE_R = 7;
+const HANDLE_R = 9;
 
 const average = (a, b) => (a + b) / 2;
 
@@ -98,7 +98,7 @@ function shapeBody(shape, w, h, stroke) {
         <g {...common} fill="none">
           <line x1={w / 2} y1={0} x2={0} y2={ey} />
           <line x1={w / 2} y1={0} x2={w} y2={ey} />
-          <path d={`M 0,${ey} A ${w / 2},${ry} 0 0 1 ${w},${ey}`} />
+          <path d={`M 0,${ey} A ${w / 2},${ry} 0 0 0 ${w},${ey}`} />
           <path d={`M ${w},${ey} A ${w / 2},${ry} 0 0 0 0,${ey}`} {...dash} fill="none" />
         </g>
       );
@@ -207,7 +207,10 @@ export default function FreestyleBoard() {
   const [objects, setObjects] = useState([]);
   const [tool, setTool] = useState("select");
   const [color, setColor] = useState(INK);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [cam, setCam] = useState({ x: 0, y: 0, zoom: 1 });
+  const [marquee, setMarquee] = useState(null);
+  const [penSize, setPenSize] = useState(14);
   const [activePath, setActivePath] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState("");
@@ -218,9 +221,16 @@ export default function FreestyleBoard() {
   const rafRef = useRef(0);
   const drawingRef = useRef(false);
   const gestureRef = useRef(null);
+  const spaceRef = useRef(false);
 
   const objectsRef = useRef(objects);
   objectsRef.current = objects;
+  const selectedIdsRef = useRef(selectedIds);
+  selectedIdsRef.current = selectedIds;
+  const camRef = useRef(cam);
+  camRef.current = cam;
+  const sizeRef = useRef(penSize);
+  sizeRef.current = penSize;
 
   const pushHistory = useCallback(() => {
     setHistory((h) => [...h.slice(-59), clone(objectsRef.current)]);
@@ -230,7 +240,7 @@ export default function FreestyleBoard() {
     setHistory((h) => {
       if (h.length === 0) return h;
       setObjects(clone(h[h.length - 1]));
-      setSelectedId(null);
+      setSelectedIds([]);
       setEditingId(null);
       return h.slice(0, -1);
     });
@@ -240,11 +250,11 @@ export default function FreestyleBoard() {
     const onKey = (e) => {
       const tag = (e.target && e.target.tagName) || "";
       if (editingId || /^(INPUT|TEXTAREA|SELECT)$/.test(tag)) return;
-      if ((e.key === "Delete" || e.key === "Backspace") && selectedId) {
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedIdsRef.current.length > 0) {
         e.preventDefault();
         pushHistory();
-        setObjects((o) => o.filter((x) => x.id !== selectedId));
-        setSelectedId(null);
+        setObjects((o) => o.filter((x) => !selectedIdsRef.current.includes(x.id)));
+        setSelectedIds([]);
       } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
         e.preventDefault();
         undo();
@@ -252,7 +262,42 @@ export default function FreestyleBoard() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [editingId, selectedId, undo, pushHistory]);
+  }, [editingId, undo, pushHistory]);
+
+  useEffect(() => {
+    const dn = (e) => {
+      if (e.code === "Space" && !/^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || "")) {
+        spaceRef.current = true;
+        e.preventDefault();
+      }
+    };
+    const up = (e) => {
+      if (e.code === "Space") spaceRef.current = false;
+    };
+    window.addEventListener("keydown", dn);
+    window.addEventListener("keyup", up);
+    return () => {
+      window.removeEventListener("keydown", dn);
+      window.removeEventListener("keyup", up);
+    };
+  }, []);
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const onWheel = (e) => {
+      e.preventDefault();
+      const rect = svg.getBoundingClientRect();
+      const sx = e.clientX - rect.left;
+      const sy = e.clientY - rect.top;
+      setCam((c) => {
+        const zoom = Math.min(3, Math.max(0.2, c.zoom * Math.exp(-e.deltaY * 0.0015)));
+        return { zoom, x: c.x + sx / c.zoom - sx / zoom, y: c.y + sy / c.zoom - sy / zoom };
+      });
+    };
+    svg.addEventListener("wheel", onWheel, { passive: false });
+    return () => svg.removeEventListener("wheel", onWheel);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -262,12 +307,13 @@ export default function FreestyleBoard() {
 
   const boardPoint = useCallback((clientX, clientY) => {
     const rect = svgRef.current.getBoundingClientRect();
-    return [clientX - rect.left, clientY - rect.top];
+    const c = camRef.current;
+    return [(clientX - rect.left) / c.zoom + c.x, (clientY - rect.top) / c.zoom + c.y];
   }, []);
 
   const renderActive = useCallback(() => {
     if (pointsRef.current.length > 0) {
-      const outline = getStroke(pointsRef.current, STROKE_OPTIONS);
+      const outline = getStroke(pointsRef.current, { ...STROKE_OPTIONS, size: sizeRef.current });
       setActivePath(getSvgPathFromStroke(outline));
     }
     rafRef.current = 0;
@@ -281,6 +327,27 @@ export default function FreestyleBoard() {
     });
   }, [renderActive]);
 
+  const selectInMarquee = useCallback((r) => {
+    const x0 = Math.min(r.x0, r.x1);
+    const x1 = Math.max(r.x0, r.x1);
+    const y0 = Math.min(r.y0, r.y1);
+    const y1 = Math.max(r.y0, r.y1);
+    const hits = [];
+    for (const o of objectsRef.current) {
+      let b = null;
+      if (o.type === "pen") {
+        if (typeof o.x !== "number") continue;
+        b = { minX: o.x, minY: o.y, maxX: o.x + o.w, maxY: o.y + o.h };
+      } else {
+        b = rotatedBox(o);
+      }
+      if (b.minX <= x1 && b.maxX >= x0 && b.minY <= y1 && b.maxY >= y0) hits.push(o.id);
+    }
+    setSelectedIds(hits);
+    setEditingId(null);
+  }, []);
+
+  const selectedId = selectedIds.length === 1 ? selectedIds[0] : null;
   const selected = objects.find((o) => o.id === selectedId) || null;
 
   const onPointerDown = useCallback(
@@ -304,7 +371,7 @@ export default function FreestyleBoard() {
           ...o,
           { id, type: "text", x: px, y: py, w: 120, h: 32, rotation: 0, text: "", fontSize: 19, color },
         ]);
-        setSelectedId(id);
+        setSelectedIds([id]);
         setEditingId(id);
         setDraft("");
         setTool("select");
@@ -331,18 +398,28 @@ export default function FreestyleBoard() {
       if (g) {
         const id = g.getAttribute("data-id");
         const obj = objectsRef.current.find((o) => o.id === id);
-        setSelectedId(id);
+        const ids = selectedIdsRef.current.includes(id) ? [...selectedIdsRef.current] : [id];
+        setSelectedIds(ids);
         setEditingId(null);
         if (obj && obj.type !== "pen") {
-          gestureRef.current = { kind: "maybe-move", id, startX: px, startY: py, moved: false };
+          gestureRef.current = { kind: "maybe-move", ids, startX: px, startY: py, moved: false };
+        } else if (obj && ids.length > 1) {
+          gestureRef.current = { kind: "maybe-move", ids, startX: px, startY: py, moved: false };
         }
         return;
       }
 
-      setSelectedId(null);
+      if (e.button === 1 || spaceRef.current) {
+        if (e.button === 1) e.preventDefault();
+        gestureRef.current = { kind: "pan", lx: e.clientX, ly: e.clientY };
+        return;
+      }
+      gestureRef.current = { kind: "marquee", x0: px, y0: py, x1: px, y1: py };
+      setMarquee({ x0: px, y0: py, x1: px, y1: py });
+      setSelectedIds([]);
       setEditingId(null);
     },
-    [tool, color, selectedId, boardPoint, scheduleRender, pushHistory]
+    [tool, color, boardPoint, scheduleRender, pushHistory]
   );
 
   const onPointerMove = useCallback(
@@ -357,7 +434,24 @@ export default function FreestyleBoard() {
 
       const g = gestureRef.current;
       if (!g) return;
-      const obj = objectsRef.current.find((o) => o.id === g.id);
+      if (g.kind === "marquee") {
+        const r = { ...g, x1: px, y1: py };
+        gestureRef.current = r;
+        setMarquee(r);
+        selectInMarquee(r);
+        return;
+      }
+      if (g.kind === "pan") {
+        setCam((c) => ({
+          ...c,
+          x: c.x - (e.clientX - g.lx) / c.zoom,
+          y: c.y - (e.clientY - g.ly) / c.zoom,
+        }));
+        g.lx = e.clientX;
+        g.ly = e.clientY;
+        return;
+      }
+      const obj = objectsRef.current.find((o) => o.id === (g.ids ? g.ids[0] : g.id));
       if (!obj) {
         gestureRef.current = null;
         return;
@@ -374,7 +468,9 @@ export default function FreestyleBoard() {
         g.startX = px;
         g.startY = py;
         setObjects((objs) =>
-          objs.map((o) => (o.id === g.id ? { ...o, x: o.x + dx, y: o.y + dy } : o))
+          objs.map((o) =>
+            g.ids.includes(o.id) && typeof o.x === "number" ? { ...o, x: o.x + dx, y: o.y + dy } : o
+          )
         );
         return;
       }
@@ -435,18 +531,36 @@ export default function FreestyleBoard() {
         );
       }
     },
-    [boardPoint, scheduleRender, pushHistory]
+    [boardPoint, scheduleRender, pushHistory, selectInMarquee]
   );
 
   const finishStroke = useCallback(() => {
     drawingRef.current = false;
     if (pointsRef.current.length > 0) {
-      const finalOutline = getStroke(pointsRef.current, { ...STROKE_OPTIONS, last: true });
+      const finalOutline = getStroke(pointsRef.current, { ...STROKE_OPTIONS, size: sizeRef.current, last: true });
       const finalPath = getSvgPathFromStroke(finalOutline);
       if (finalPath) {
         pushHistory();
         const strokeColor = colorRef.current;
-        setObjects((o) => [...o, { id: nid("pen"), type: "pen", path: finalPath, color: strokeColor }]);
+        const pts = pointsRef.current;
+        const xs = pts.map((p) => p[0]);
+        const ys = pts.map((p) => p[1]);
+        const pad = sizeRef.current;
+        const bx = Math.min(...xs) - pad;
+        const by = Math.min(...ys) - pad;
+        setObjects((o) => [
+          ...o,
+          {
+            id: nid("pen"),
+            type: "pen",
+            path: finalPath,
+            color: strokeColor,
+            x: bx,
+            y: by,
+            w: Math.max(...xs) - bx + pad,
+            h: Math.max(...ys) - by + pad,
+          },
+        ]);
       }
       pointsRef.current = [];
       setActivePath("");
@@ -466,11 +580,13 @@ export default function FreestyleBoard() {
       return;
     }
     gestureRef.current = null;
+    setMarquee(null);
   }, [finishStroke]);
 
   const onPointerLeave = useCallback(() => {
     if (drawingRef.current) finishStroke();
     gestureRef.current = null;
+    setMarquee(null);
   }, [finishStroke]);
 
   const addShape = useCallback(
@@ -495,7 +611,7 @@ export default function FreestyleBoard() {
           color: colorRef.current,
         },
       ]);
-      setSelectedId(id);
+      setSelectedIds([id]);
       setTool("select");
     },
     [pushHistory]
@@ -523,27 +639,34 @@ export default function FreestyleBoard() {
   );
 
   const deleteSelected = useCallback(() => {
-    if (!selectedId) return;
+    if (selectedIdsRef.current.length === 0) return;
     pushHistory();
-    setObjects((o) => o.filter((x) => x.id !== selectedId));
-    setSelectedId(null);
+    setObjects((o) => o.filter((x) => !selectedIdsRef.current.includes(x.id)));
+    setSelectedIds([]);
     setEditingId(null);
-  }, [selectedId, pushHistory]);
+  }, [pushHistory]);
 
   const clearAll = useCallback(() => {
     if (objectsRef.current.length === 0) return;
     pushHistory();
     setObjects([]);
-    setSelectedId(null);
+    setSelectedIds([]);
     setEditingId(null);
   }, [pushHistory]);
 
   const startEdit = useCallback((id) => {
     const obj = objectsRef.current.find((o) => o.id === id);
     if (!obj || obj.type !== "text") return;
-    setSelectedId(id);
+    setSelectedIds([id]);
     setEditingId(id);
     setDraft(obj.text);
+  }, []);
+
+  const focusSelectRef = useCallback((el) => {
+    if (el) {
+      el.focus({ preventScroll: true });
+      el.select();
+    }
   }, []);
 
   const selBox = selected && selected.type !== "pen" ? rotatedBox(selected) : null;
@@ -603,6 +726,20 @@ export default function FreestyleBoard() {
             />
           ))}
         </div>
+        <div className="board-tool-group" title="Pen size">
+          <span className="board-size-label">Size</span>
+          <input
+            type="range"
+            className="board-size"
+            min={4}
+            max={32}
+            step={1}
+            value={penSize}
+            onChange={(e) => setPenSize(Number(e.target.value))}
+            aria-label="Pen size"
+          />
+          <span className="board-size-val">{penSize}</span>
+        </div>
         <div className="board-tool-group">
           <button type="button" className="board-tool" onClick={undo} title="Undo">
             Undo
@@ -611,10 +748,10 @@ export default function FreestyleBoard() {
             type="button"
             className="board-tool"
             onClick={deleteSelected}
-            disabled={!selectedId}
-            title="Delete selected"
+            disabled={selectedIds.length === 0}
+            title={selectedIds.length > 1 ? `Delete ${selectedIds.length} selected (Del)` : "Delete selected (Del)"}
           >
-            Del
+            Del{selectedIds.length > 1 ? ` (${selectedIds.length})` : ""}
           </button>
           <button type="button" className="board-tool" onClick={clearAll} title="Clear board">
             Clear
@@ -639,12 +776,23 @@ export default function FreestyleBoard() {
           style={{ touchAction: "none" }}
         >
           <defs>
-            <pattern id="board-dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <pattern
+              id="board-dots"
+              width="22"
+              height="22"
+              patternUnits="userSpaceOnUse"
+              x={((-cam.x * cam.zoom) % 22 + 22) % 22}
+              y={((-cam.y * cam.zoom) % 22 + 22) % 22}
+            >
               <circle cx="1.5" cy="1.5" r="1.5" fill="#dbe4ee" />
             </pattern>
           </defs>
           <rect x={0} y={0} width="100%" height="100%" fill="url(#board-dots)" />
+          <text x={12} y={22} fontSize={12} fill="#94a3b8" pointerEvents="none">
+            {Math.round(cam.zoom * 100)}%{selectedIds.length > 1 ? ` · ${selectedIds.length} selected` : ""}
+          </text>
 
+          <g transform={`translate(${-cam.x * cam.zoom},${-cam.y * cam.zoom}) scale(${cam.zoom})`}>
           {objects.map((o) => {
             if (o.type === "pen") {
               return (
@@ -694,11 +842,52 @@ export default function FreestyleBoard() {
                 height={selBox.maxY - selBox.minY}
                 fill="none"
                 stroke="#1cb0f6"
-                strokeWidth={1.5}
-                strokeDasharray="6 4"
+                strokeWidth={1.5 / cam.zoom}
+                strokeDasharray={`${6 / cam.zoom} ${4 / cam.zoom}`}
               />
             </g>
           )}
+
+          {selectedIds.length > 1 && (
+            <g pointerEvents="none">
+              {objects
+                .filter((o) => selectedIds.includes(o.id) && o.type !== "pen")
+                .map((o) => {
+                  const b = rotatedBox(o);
+                  return (
+                    <rect
+                      key={o.id}
+                      x={b.minX}
+                      y={b.minY}
+                      width={b.maxX - b.minX}
+                      height={b.maxY - b.minY}
+                      fill="none"
+                      stroke="#1cb0f6"
+                      strokeWidth={1 / cam.zoom}
+                      strokeDasharray={`${4 / cam.zoom} ${3 / cam.zoom}`}
+                    />
+                  );
+                })}
+            </g>
+          )}
+
+          {marquee && (() => {
+            const mx = Math.min(marquee.x0, marquee.x1);
+            const my = Math.min(marquee.y0, marquee.y1);
+            return (
+              <rect
+                x={mx}
+                y={my}
+                width={Math.abs(marquee.x1 - marquee.x0)}
+                height={Math.abs(marquee.y1 - marquee.y0)}
+                fill="rgba(28,176,246,0.08)"
+                stroke="#1cb0f6"
+                strokeWidth={1.5 / cam.zoom}
+                strokeDasharray={`${6 / cam.zoom} ${4 / cam.zoom}`}
+                pointerEvents="none"
+              />
+            );
+          })()}
 
           {selected && selected.type !== "pen" && (
             <g
@@ -715,10 +904,10 @@ export default function FreestyleBoard() {
                   data-handle={id}
                   cx={cx}
                   cy={cy}
-                  r={HANDLE_R}
+                  r={HANDLE_R / cam.zoom}
                   fill="#fff"
                   stroke="#1cb0f6"
-                  strokeWidth={2}
+                  strokeWidth={2 / cam.zoom}
                   style={{ cursor: "nwse-resize", pointerEvents: "all" }}
                 />
               ))}
@@ -728,18 +917,19 @@ export default function FreestyleBoard() {
                 x2={selected.w / 2}
                 y2={-26}
                 stroke="#1cb0f6"
-                strokeWidth={1.5}
+                strokeWidth={1.5 / cam.zoom}
               />
               <circle
                 data-handle="rotate"
                 cx={selected.w / 2}
                 cy={-32}
-                r={HANDLE_R}
+                r={HANDLE_R / cam.zoom}
                 fill="#1cb0f6"
                 style={{ cursor: "grab", pointerEvents: "all" }}
               />
             </g>
           )}
+          </g>
         </svg>
 
         {editingId && (() => {
@@ -748,10 +938,16 @@ export default function FreestyleBoard() {
           return (
             <textarea
               className="board-text-editor"
-              style={{ left: obj.x, top: obj.y, fontSize: obj.fontSize, color: obj.color }}
+              style={{
+                left: (obj.x - cam.x) * cam.zoom,
+                top: (obj.y - cam.y) * cam.zoom,
+                fontSize: obj.fontSize * cam.zoom,
+                color: obj.color,
+                width: Math.max(140, obj.w * cam.zoom),
+              }}
               value={draft}
-              autoFocus
               rows={3}
+              ref={focusSelectRef}
               onChange={(e) => setDraft(e.target.value)}
               onBlur={() => commitText(editingId, draft)}
               onKeyDown={(e) => {
