@@ -2385,6 +2385,121 @@ button {
   }
 }
 
+/* ---------- Freestyle board ---------- */
+.board-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #fff;
+}
+
+.board-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.board-tool-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.board-tool-group + .board-tool-group {
+  border-left: 2px solid var(--line);
+  padding-left: 8px;
+}
+
+.board-tool {
+  background: #fff;
+  border: 2px solid transparent;
+  border-radius: 9px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.board-tool:hover {
+  background: #f4f9ff;
+}
+
+.board-tool.active {
+  color: var(--blue);
+  background: var(--blue-light-bg);
+  border-color: var(--blue-light-border);
+}
+
+.board-tool:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.board-tool.board-shape {
+  padding: 4px 5px;
+  color: var(--ink-soft);
+}
+
+.board-shapes {
+  flex-wrap: wrap;
+}
+
+.board-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.board-dot.active {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px #fff inset;
+}
+
+.board-canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #fbfcfe;
+}
+
+.board-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.board-text-editor {
+  position: absolute;
+  background: transparent;
+  border: 2px solid var(--blue);
+  border-radius: 6px;
+  outline: none;
+  padding: 2px 6px;
+  margin: 0;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.25;
+  min-width: 80px;
+  font-family: var(--font);
+  z-index: 5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board-wrap {
+    animation: none;
+  }
+}
+
 /* ---------- Intro step (inside test screen) ---------- */
 .intro-step {
   grid-column: 1 / -1;

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import MathText, { mathRich } from "./MathText.jsx";
+import FreestyleBoard from "./FreestyleBoard.jsx";
 
 const LETTERS = ["A", "B", "C", "D"];
 const FILTERS = ["All", "Marked", "Unanswered", "Answered"];
@@ -738,11 +739,11 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 <button
                   type="button"
                   role="tab"
-                  aria-selected={calcMode === "scientific"}
-                  className={calcMode === "scientific" ? "calc-tab active" : "calc-tab"}
-                  onClick={() => setCalcMode("scientific")}
+                  aria-selected={calcMode === "board"}
+                  className={calcMode === "board" ? "calc-tab active" : "calc-tab"}
+                  onClick={() => setCalcMode("board")}
                 >
-                  Scientific
+                  Board
                 </button>
               </div>
               <button
@@ -754,7 +755,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 ✕
               </button>
             </div>
-            <DesmosCalc
+            {calcMode === "board" ? (
+              <FreestyleBoard />
+            ) : (
+              <DesmosCalc
               mode={calcMode}
               apiRef={calcApiRef}
               initialState={desmosStates.current[desmosQRef.current]}
@@ -762,6 +766,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 if (desmosQRef.current !== null) desmosStates.current[desmosQRef.current] = s;
               }}
             />
+            )}
           </section>
         )}
           </>
