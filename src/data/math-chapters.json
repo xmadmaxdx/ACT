@@ -118,7 +118,304 @@
             }
           ]
         },
-        { "id": "MATH-MINI-1-2", "title": "Ratio / Proportion", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
+        {
+          "id": "MATH-MINI-1-2",
+          "title": "Ratio / Proportion",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "heading": "Read this before you start",
+            "blocks": [
+              { "p": "A ratio compares quantities with the same units. A proportion sets two ratios equal. Nearly every ACT ratio word problem is one of four moves: split a total by parts, scale by a unit rate, cross-multiply a proportion, or flip it for inverse proportion. Name the move before you compute." },
+              { "list": [
+                "Parts split: total $\\div$ total parts = one part. Ratio $2{:}3{:}5$ with total $240$ gives one part $24$.",
+                "Unit rate: reduce to one unit first. $420$ miles on $15$ gallons is $28$ mpg.",
+                "Proportion: $\\frac{a}{b}=\\frac{c}{d}$ cross-multiplies to $ad=bc$. Map scales live here.",
+                "Three-part chains: force a common middle. $A{:}B=3{:}4$, $B{:}C=5{:}6$ becomes $15{:}20{:}24$."
+              ] },
+              { "math": "\\frac{a}{b}=\\frac{c}{d} \\Rightarrow ad=bc \\qquad \\text{one part}=\\frac{\\text{total}}{\\text{sum of parts}}" },
+              { "p": "Scale and similarity are proportions in costume. Length scale $k$ means area scales by $k^2$ and volume by $k^3$. A $3{:}5$ edge ratio gives a $9{:}25$ area ratio. Forgetting to square is the number-one hard-question trap." },
+              { "list": [
+                "Direct: more workers, more output. Inverse: more workers, fewer days — multiply to a constant ($6$ workers $\\times$ $12$ days $= 72$ worker-days).",
+                "Mixtures: track the pure stuff, never the percent. $15\\%$ of $40$ L is $6$ L of acid; water added later never changes the $6$.",
+                "Percent-ratio hybrids: convert the percent to a ratio first. $20\\%$ off means price ratio $4{:}5$."
+              ] },
+              { "math": "\\text{length } k \\Rightarrow \\text{area } k^2 \\Rightarrow \\text{volume } k^3 \\qquad W_1T_1=W_2T_2" }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Ratio",
+              "short": "Class split",
+              "statement": "A summer program enrolls $32$ students, and the ratio of boys to girls is $5{:}3$. The counselors want equal-sized activity groups with no mixing across cabins. How many boys are enrolled?",
+              "options": ["$12$", "$15$", "$20$", "$24$"],
+              "answer": "C",
+              "explain": "Total parts $5+3=8$; one part is $32\\div 8=4$. Boys: $5\\times 4=20$. A picks the girls; D divides by the wrong part."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Proportion",
+              "short": "Road map",
+              "statement": "A highway map uses a scale of $1$ inch to $25$ miles. A family measures the route between two rest stops as $3.6$ inches on the map. They drive at a steady $60$ mph. How many miles long is that stretch?",
+              "options": ["$75$", "$85$", "$90$", "$100$"],
+              "answer": "C",
+              "explain": "Proportion: $3.6\\times 25=90$ miles. The $60$ mph is decoration — the question asks for miles, not hours."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Ratio",
+              "short": "Bakery scaling",
+              "statement": "A bakery keeps its flour-to-sugar ratio at $5{:}2$ for a signature loaf. A morning batch uses $15$ cups of flour because of a bulk delivery. How many cups of sugar does that batch require?",
+              "options": ["$5$", "$6$", "$7.5$", "$10$"],
+              "answer": "B",
+              "explain": "One flour part is $15\\div 5=3$ cups, so sugar is $2\\times 3=6$ cups. C scales by $1.5$ instead of the part value."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Unit Rate",
+              "short": "Fuel for 196 miles",
+              "statement": "A delivery van travels $420$ miles on $15$ gallons of gas. The dispatcher assigns a $196$-mile route tomorrow and wants the exact fuel needed at the same efficiency. How many gallons are required?",
+              "options": ["$6$", "$7$", "$7.5$", "$8$"],
+              "answer": "B",
+              "explain": "Unit rate $420\\div 15=28$ mpg. Then $196\\div 28=7$ gallons. Reduce to one unit first, then scale up."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Ratio",
+              "short": "Prize split",
+              "statement": "Three volunteers split a $\\$240$ prize in the ratio $2{:}3{:}5$ based on hours worked. The organizer hands each share in cash. What is the smallest share?",
+              "options": ["$\\$40$", "$\\$48$", "$\\$60$", "$\\$80$"],
+              "answer": "B",
+              "explain": "Total parts $10$; one part $240\\div 10=24$. Smallest: $2\\times 24=48$. D is the middle share, not the smallest."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Similarity",
+              "short": "Similar plots",
+              "statement": "Two rectangular garden plots are similar, with side lengths in the ratio $3{:}5$. The smaller plot has area $54$ square meters. A landscaper prices sod by area. What is the area of the larger plot?",
+              "options": ["$90$", "$120$", "$150$", "$250$"],
+              "answer": "C",
+              "explain": "Area ratio is $3^2{:}5^2=9{:}25$. One area part is $54\\div 9=6$, so larger is $25\\times 6=150$. A scales linearly and forgets to square."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Inverse Proportion",
+              "short": "Crew schedule",
+              "statement": "A crew of $6$ painters finishes a warehouse in $12$ days working at the same pace. The deadline moves up, so the foreman raises the crew to $9$ painters at the same pace. How many days will the job take now?",
+              "options": ["$6$", "$8$", "$9$", "$18$"],
+              "answer": "B",
+              "explain": "Worker-days constant: $6\\times 12=72$. Then $72\\div 9=8$ days. More workers means fewer days — direct division $12\\div 9$ is the trap."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Mixture",
+              "short": "Acid batch",
+              "statement": "A lab mixes acid and water in the ratio $3{:}2$ to make $45$ liters of cleaning solution. An inspector tests the acid content only. How many liters of acid are in the batch?",
+              "options": ["$18$", "$24$", "$27$", "$30$"],
+              "answer": "C",
+              "explain": "Total parts $5$; one part $45\\div 5=9$. Acid: $3\\times 9=27$ L. A is the water share."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Ratio",
+              "short": "Three-way grant",
+              "statement": "A $\\$144{,}000$ grant is divided among three labs in the ratio $2{:}3{:}7$. The middle lab spends its share on equipment. How much does the middle lab receive?",
+              "options": ["$\\$24{,}000$", "$\\$36{,}000$", "$\\$48{,}000$", "$\\$84{,}000$"],
+              "answer": "B",
+              "explain": "Total parts $12$; one part $144{,}000\\div 12=12{,}000$. Middle: $3\\times 12{,}000=36{,}000$. D is the largest share."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Scale",
+              "short": "Floor plan area",
+              "statement": "An architect's floor plan uses $1$ cm to $4$ m. A conference room measures $3.25$ cm by $4.5$ cm on the plan. The client wants the real floor area for carpet. What is it, in square meters?",
+              "options": ["$58.5$", "$117$", "$234$", "$468$"],
+              "answer": "C",
+              "explain": "Real sides: $3.25\\times 4=13$ m and $4.5\\times 4=18$ m. Area $13\\times 18=234$. A multiplies plan area by $4$ once instead of scaling each side."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Ratio",
+              "short": "Price gap",
+              "statement": "Two laptops sell in the price ratio $4{:}7$. The expensive model costs $\\$21$ more than the basic model during a sale. What is the price of the basic model?",
+              "options": ["$\\$24$", "$\\$28$", "$\\$35$", "$\\$49$"],
+              "answer": "B",
+              "explain": "Gap parts $7-4=3$ equal $\\$21$, so one part is $\\$7$. Basic: $4\\times 7=28$. D is the expensive model."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Ratio",
+              "short": "Freight speeds",
+              "statement": "Two freight trains leave a yard at the same time on parallel tracks, with speeds in the ratio $5{:}8$. After the same travel time, the faster train is $45$ miles ahead. A dispatcher needs the slower train's distance. How far has it traveled?",
+              "options": ["$60$", "$75$", "$100$", "$120$"],
+              "answer": "B",
+              "explain": "Gap parts $3$ equal $45$ miles, so one part is $15$. Slower: $5\\times 15=75$ miles. Equal times mean distances share the speed ratio."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Ratio",
+              "short": "Alloy zinc",
+              "statement": "A foundry casts an alloy with copper and zinc in the ratio $7{:}5$. A crucible holds $42$ kg of copper for a pour. How many kilograms of zinc must be added to keep the ratio?",
+              "options": ["$25$", "$28$", "$30$", "$35$"],
+              "answer": "C",
+              "explain": "One copper part is $42\\div 7=6$ kg, so zinc is $5\\times 6=30$ kg. Cross-multiplying $7/5=42/z$ gives the same $z=30$."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Ratio",
+              "short": "Paint order",
+              "statement": "A contractor mixes red, blue, and white paint in the ratio $4{:}3{:}1$ for $24$ gallons of custom color. The supplier runs short on blue pigment. How many gallons of blue paint does the full order need?",
+              "options": ["$3$", "$6$", "$9$", "$12$"],
+              "answer": "C",
+              "explain": "Total parts $8$; one part $24\\div 8=3$ gallons. Blue: $3\\times 3=9$ gallons. D doubles the blue parts."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Ratio",
+              "short": "Club roster shift",
+              "statement": "A robotics club starts with boys and girls in the ratio $3{:}5$. Then $8$ new girls join and no boys join, making the ratio $1{:}2$. The advisor needs the original boy count for uniforms. How many boys were there at the start?",
+              "options": ["$18$", "$21$", "$24$", "$30$"],
+              "answer": "C",
+              "explain": "Let parts be $k$: $3k/(5k+8)=1/2$, so $6k=5k+8$ and $k=8$. Boys: $3\\times 8=24$. Check: $24$ to $48$ is $1{:}2$."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Ratio",
+              "short": "Convoy gap",
+              "statement": "Two delivery trucks travel for the same time with speeds in the ratio $7{:}9$. The faster truck covers $36$ miles more than the slower one. How many miles does the slower truck cover?",
+              "options": ["$108$", "$126$", "$144$", "$162$"],
+              "answer": "B",
+              "explain": "Gap parts $2$ equal $36$ miles, so one part is $18$. Slower: $7\\times 18=126$ miles. Same time means distance ratio equals speed ratio."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Ratio",
+              "short": "Pastry ratio",
+              "statement": "A pastry chef holds flour, sugar, and butter in the ratio $6{:}4{:}3$. A holiday order uses $2.5$ cups of sugar. How many cups of flour does it need?",
+              "options": ["$3.25$", "$3.5$", "$3.75$", "$4$"],
+              "answer": "C",
+              "explain": "One sugar part is $2.5\\div 4=0.625$ cups. Flour: $6\\times 0.625=3.75$ cups. B rounds the part value early."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Scale",
+              "short": "Trail distance",
+              "statement": "A trail map has scale $1{:}50{,}000$. A scout measures $8.4$ cm between two camps on the map. The troop hikes in kilometers. What is the real distance?",
+              "options": ["$2.1\\text{ km}$", "$4.2\\text{ km}$", "$42\\text{ km}$", "$420\\text{ km}$"],
+              "answer": "B",
+              "explain": "Real cm: $8.4\\times 50{,}000=420{,}000$ cm $=4{,}200$ m $=4.2$ km. C misses the cm-to-km conversion ($100{,}000$ cm per km)."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Ratio",
+              "short": "Machine output",
+              "statement": "Two bottling machines run together with output rates in the ratio $3{:}2$, producing $30$ bottles per minute combined. An engineer isolates the faster machine for testing. How many bottles per minute does it produce alone?",
+              "options": ["$12$", "$15$", "$18$", "$20$"],
+              "answer": "C",
+              "explain": "Total parts $5$; one part $30\\div 5=6$. Faster: $3\\times 6=18$ per minute. A is the slower machine."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Inverse Proportion",
+              "short": "Pump crew",
+              "statement": "Four identical pumps drain a flooded basement in $9$ hours. The crew brings in two more identical pumps, for $6$ total, all at the same rate. How long will draining take now?",
+              "options": ["$4$", "$5$", "$6$", "$7.5$"],
+              "answer": "C",
+              "explain": "Pump-hours constant: $4\\times 9=36$. Then $36\\div 6=6$ hours. D divides the wrong direction."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Ratio",
+              "short": "Factory line",
+              "statement": "Three assembly lines produce at rates in the ratio $2{:}3{:}4$, with $1{,}080$ units total in a shift. Quality control audits the fastest line's full output. How many units is that?",
+              "options": ["$360$", "$420$", "$480$", "$540$"],
+              "answer": "C",
+              "explain": "Total parts $9$; one part $1{,}080\\div 9=120$. Fastest: $4\\times 120=480$ units. A is the slowest line."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Similarity",
+              "short": "Cube volumes",
+              "statement": "Two similar storage cubes have edge lengths in the ratio $2{:}3$. The smaller cube holds $64$ cubic feet. The buyer wants the larger cube's capacity. What is it?",
+              "options": ["$96$", "$144$", "$216$", "$324$"],
+              "answer": "C",
+              "explain": "Volume ratio is $2^3{:}3^3=8{:}27$. One part is $64\\div 8=8$, so larger is $27\\times 8=216$. B scales by area ($4{:}9$) instead of volume."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Mixture",
+              "short": "Solution blend",
+              "statement": "A chemist has $15$ liters of $20\\%$ salt solution and adds some $50\\%$ solution to reach a $30\\%$ mixture. She tracks pure salt only. How many liters of $50\\%$ solution must she add?",
+              "options": ["$5$", "$6$", "$7.5$", "$10$"],
+              "answer": "C",
+              "explain": "Salt: $0.2(15)+0.5x=0.3(15+x)$, so $3+0.5x=4.5+0.3x$, $0.2x=1.5$, $x=7.5$ L. Check: $6.75$ L salt in $22.5$ L is $30\\%$."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Ratio",
+              "short": "Shelter count",
+              "statement": "A shelter starts with dogs and cats in the ratio $5{:}3$. After $12$ dogs are adopted and no cats leave, the ratio becomes $1{:}1$. How many cats are there?",
+              "options": ["$12$", "$15$", "$18$", "$24$"],
+              "answer": "C",
+              "explain": "Let $k$ be the part: $5k-12=3k$, so $2k=12$ and $k=6$. Cats: $3\\times 6=18$. Verify: $30-12=18$ dogs equals $18$ cats."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Rate",
+              "short": "Cyclist gap",
+              "statement": "Two cyclists start together on a $60$-mile charity ride at steady speeds of $16$ mph and $20$ mph. The organizer at the finish wants the gap between them when the faster rider finishes. How many miles behind is the slower rider then?",
+              "options": ["$8$", "$9$", "$10$", "$12$"],
+              "answer": "D",
+              "explain": "Faster takes $60\\div 20=3$ hr. Slower covers $16\\times 3=48$ miles, so the gap is $60-48=12$ miles. C uses a $2.5$-hr guess instead of the true $3$-hr time."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Inverse Proportion",
+              "short": "Gear turns",
+              "statement": "Two meshed gears have teeth in the ratio $8{:}5$ (large to small). The large gear turns $120$ times during a test run. Because rotations run inverse to teeth, how many times does the small gear turn?",
+              "options": ["$75$", "$150$", "$192$", "$200$"],
+              "answer": "C",
+              "explain": "Rotations ratio is $5{:}8$. Small turns $120\\times 8\\div 5=192$ times. A multiplies by $5/8$ instead of flipping."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Percent",
+              "short": "Exchange fee",
+              "statement": "A bank exchanges dollars to euros at $\\$1=0.90$ euros, then charges a $2\\%$ fee on the euro amount. A traveler exchanges $\\$500$ for a homestay deposit. How many euros does she receive?",
+              "options": ["$432$", "$441$", "$450$", "$459$"],
+              "answer": "B",
+              "explain": "Gross euros: $500\\times 0.90=450$. After the fee keep $98\\%$: $450\\times 0.98=441$. C forgets the fee."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Proportion",
+              "short": "Shadow height",
+              "statement": "A $6$-foot pole casts a $9$-foot shadow. At the same time, a courthouse casts a $51$-foot shadow. A surveyor needs the courthouse height. What is it, in feet?",
+              "options": ["$28$", "$30$", "$34$", "$38$"],
+              "answer": "C",
+              "explain": "Same sun angle: $6/9=h/51$, so $h=51\\times 6\\div 9=34$ ft. B flips a ratio."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Ratio",
+              "short": "Triple chain",
+              "statement": "Three funds hold money with $A{:}B=3{:}4$ and $B{:}C=5{:}6$. An auditor finds $\\$45{,}000$ in fund A. How much is in fund C?",
+              "options": ["$60{,}000$", "$64{,}000$", "$72{,}000$", "$80{,}000$"],
+              "answer": "C",
+              "explain": "Common $B$: $A{:}B=15{:}20$, $B{:}C=20{:}24$, so $A{:}C=15{:}24=5{:}8$. One part $45{,}000\\div 5=9{,}000$; $C=8\\times 9{,}000=72{,}000$."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Mixture",
+              "short": "Brine dilution",
+              "statement": "A $2.5$-kg brine has salt and water in the ratio $1{:}9$ by mass. A cook adds $0.5$ kg of pure water for soup stock. What percent of the new mixture is salt?",
+              "options": ["$8\\%$", "$8.33\\%$", "$9\\%$", "$10\\%$"],
+              "answer": "B",
+              "explain": "Salt stays $2.5\\div 10=0.25$ kg; new total $3.0$ kg. Percent: $0.25\\div 3.0\\approx 8.33\\%$. A divides by $3.125$ instead of $3.0$."
+            }
+          ]
+        },
         { "id": "MATH-MINI-1-3", "title": "Rate-Distance-Work / Unit Conversion", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
         { "id": "MATH-MINI-1-4", "title": "Mean / Weighted Average / Money Models", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
       ]
