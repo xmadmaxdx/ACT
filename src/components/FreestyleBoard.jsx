@@ -352,6 +352,7 @@ export default function FreestyleBoard() {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (panRaf.current) cancelAnimationFrame(panRaf.current);
+      if (holdRef.current) clearInterval(holdRef.current);
     };
   }, []);
 
@@ -781,6 +782,36 @@ export default function FreestyleBoard() {
     setEditing(null);
   }, [pushHistory]);
 
+  const nudge = useCallback((fx, fy) => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const r = svg.getBoundingClientRect();
+    const dx = r.width * fx;
+    const dy = r.height * fy;
+    setCam((c) => ({ ...c, x: c.x - dx / c.zoom, y: c.y - dy / c.zoom }));
+  }, []);
+
+  const holdRef = useRef(null);
+  const startHold = useCallback((fx, fy) => {
+    nudge(fx, fy);
+    if (holdRef.current) {
+      clearInterval(holdRef.current);
+    }
+    holdRef.current = setInterval(() => nudge(fx, fy), 140);
+  }, [nudge]);
+
+  const stopHold = useCallback(() => {
+    if (holdRef.current) {
+      clearInterval(holdRef.current);
+      holdRef.current = null;
+    }
+  }, []);
+
+  const resetView = useCallback(() => {
+    stopHold();
+    setCam({ x: 0, y: 0, zoom: 1 });
+  }, [stopHold]);
+
   const startEdit = useCallback((id) => {
     const obj = objectsRef.current.find((o) => o.id === id);
     if (!obj || obj.type !== "text") return;
@@ -1084,6 +1115,88 @@ export default function FreestyleBoard() {
             onCancel={handleEditorCancel}
           />
         )}
+        <div className="board-dpad" role="group" aria-label="Pan view">
+          <span />
+          <button
+            type="button"
+            className="board-dpad-btn"
+            aria-label="Pan up"
+            onPointerDown={() => startHold(0, 0.3)}
+            onPointerUp={stopHold}
+            onPointerLeave={stopHold}
+            onPointerCancel={stopHold}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                nudge(0, 0.3);
+              }
+            }}
+          >
+            ▲
+          </button>
+          <span />
+          <button
+            type="button"
+            className="board-dpad-btn"
+            aria-label="Pan left"
+            onPointerDown={() => startHold(0.3, 0)}
+            onPointerUp={stopHold}
+            onPointerLeave={stopHold}
+            onPointerCancel={stopHold}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                nudge(0.3, 0);
+              }
+            }}
+          >
+            ◀
+          </button>
+          <button
+            type="button"
+            className="board-dpad-btn"
+            aria-label="Reset view"
+            onClick={resetView}
+          >
+            ⌂
+          </button>
+          <button
+            type="button"
+            className="board-dpad-btn"
+            aria-label="Pan right"
+            onPointerDown={() => startHold(-0.3, 0)}
+            onPointerUp={stopHold}
+            onPointerLeave={stopHold}
+            onPointerCancel={stopHold}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                nudge(-0.3, 0);
+              }
+            }}
+          >
+            ▶
+          </button>
+          <span />
+          <button
+            type="button"
+            className="board-dpad-btn"
+            aria-label="Pan down"
+            onPointerDown={() => startHold(0, -0.3)}
+            onPointerUp={stopHold}
+            onPointerLeave={stopHold}
+            onPointerCancel={stopHold}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                nudge(0, -0.3);
+              }
+            }}
+          >
+            ▼
+          </button>
+          <span />
+        </div>
         <div className="board-zoom" role="group" aria-label="Board zoom">
           <button
             type="button"
