@@ -2514,6 +2514,46 @@ button {
   z-index: 5;
 }
 
+.board-editor-box {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.board-editor-box .board-text-editor {
+  position: static;
+}
+
+.board-editor-box .board-text-editor::placeholder {
+  color: var(--faint);
+}
+
+.board-editor-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.board-editor-btn {
+  border: 2px solid var(--line);
+  border-bottom-width: 3px;
+  border-radius: 9px;
+  background: #fff;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+.board-editor-btn.done {
+  background: var(--blue);
+  border-color: var(--blue-dark);
+  color: #fff;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .board-wrap {
     animation: none;

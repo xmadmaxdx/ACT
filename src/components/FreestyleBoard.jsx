@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getStroke } from "perfect-freehand";
+import BoardTextEditor from "./BoardTextEditor.jsx";
 
 const INK = "#1f2937";
 const COLORS = ["#1f2937", "#1cb0f6", "#16a34a", "#ea580c"];
@@ -212,9 +213,9 @@ export default function FreestyleBoard() {
   const [marquee, setMarquee] = useState(null);
   const [penSize, setPenSize] = useState(7);
   const [activePath, setActivePath] = useState("");
-  const [editingId, setEditingId] = useState(null);
-  const [draft, setDraft] = useState("");
+  const [editing, setEditing] = useState(null);
   const [history, setHistory] = useState([]);
+  const editorRef = useRef(null);
 
   const svgRef = useRef(null);
   const pointsRef = useRef([]);
@@ -225,14 +226,9 @@ export default function FreestyleBoard() {
   const lastTouchEndRef = useRef(0);
   const panRef = useRef(null);
   const panRaf = useRef(0);
-  const editingIdRef = useRef(null);
-  const draftRef = useRef("");
-  const editorFocusedRef = useRef(false);
 
   const objectsRef = useRef(objects);
   objectsRef.current = objects;
-  editingIdRef.current = editingId;
-  draftRef.current = draft;
   const selectedIdsRef = useRef(selectedIds);
   selectedIdsRef.current = selectedIds;
   const camRef = useRef(cam);
@@ -249,7 +245,7 @@ export default function FreestyleBoard() {
       if (h.length === 0) return h;
       setObjects(clone(h[h.length - 1]));
       setSelectedIds([]);
-      setEditingId(null);
+      setEditing(null);
       return h.slice(0, -1);
     });
   }, []);
@@ -257,7 +253,7 @@ export default function FreestyleBoard() {
   useEffect(() => {
     const onKey = (e) => {
       const tag = (e.target && e.target.tagName) || "";
-      if (editingId || /^(INPUT|TEXTAREA|SELECT)$/.test(tag)) return;
+      if (editing || /^(INPUT|TEXTAREA|SELECT)$/.test(tag)) return;
       if ((e.key === "Delete" || e.key === "Backspace") && selectedIdsRef.current.length > 0) {
         e.preventDefault();
         pushHistory();
@@ -270,7 +266,7 @@ export default function FreestyleBoard() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [editingId, undo, pushHistory]);
+  }, [editing, undo, pushHistory]);
 
   useEffect(() => {
     const dn = (e) => {
@@ -375,6 +371,8 @@ export default function FreestyleBoard() {
 
   const selectedId = selectedIds.length === 1 ? selectedIds[0] : null;
   const selected = objects.find((o) => o.id === selectedId) || null;
+  const selectedIdRef = useRef(null);
+  selectedIdRef.current = selectedId;
 
   const onPointerDown = useCallback(
     (e) => {
@@ -386,8 +384,8 @@ export default function FreestyleBoard() {
       } catch {
         /* Emulated or duplicate pointer: events still bubble to the svg. */
       }
-      if (editingIdRef.current) {
-        commitText(editingIdRef.current, draftRef.current);
+      if (editorRef.current) {
+        editorRef.current.commit();
       }
       const [px, py] = boardPoint(e.clientX, e.clientY);
 
@@ -411,14 +409,23 @@ export default function FreestyleBoard() {
           { id, type: "text", x: px, y: py, w: 120, h: 32, rotation: 0, text: "", fontSize: 19, color },
         ]);
         setSelectedIds([id]);
-        setEditingId(id);
-        setDraft("");
+        setEditing({
+          key: `${id}-new`,
+          id,
+          x: px,
+          y: py,
+          fontSize: 19,
+          color,
+          initial: "",
+          isNew: true,
+        });
         return;
       }
 
       const handleEl = e.target && e.target.closest ? e.target.closest("[data-handle]") : null;
-      if (handleEl && selectedId) {
-        const obj = objectsRef.current.find((o) => o.id === selectedId);
+      const activeSelId = selectedIdRef.current;
+      if (handleEl && activeSelId) {
+        const obj = objectsRef.current.find((o) => o.id === activeSelId);
         if (!obj || obj.type === "pen") return;
         const kind = handleEl.getAttribute("data-handle");
         if (kind === "rotate") {
@@ -438,7 +445,6 @@ export default function FreestyleBoard() {
         const obj = objectsRef.current.find((o) => o.id === id);
         const ids = selectedIdsRef.current.includes(id) ? [...selectedIdsRef.current] : [id];
         setSelectedIds(ids);
-        setEditingId(null);
         if (obj && obj.type !== "pen") {
           gestureRef.current = { kind: "maybe-move", ids, startX: px, startY: py, moved: false };
         } else if (obj && ids.length > 1) {
@@ -455,7 +461,6 @@ export default function FreestyleBoard() {
       gestureRef.current = { kind: "marquee", x0: px, y0: py, x1: px, y1: py };
       setMarquee({ x0: px, y0: py, x1: px, y1: py });
       setSelectedIds([]);
-      setEditingId(null);
     },
     [tool, color, boardPoint, scheduleRender, pushHistory]
   );
@@ -690,14 +695,15 @@ export default function FreestyleBoard() {
     [pushHistory]
   );
 
-  const commitText = useCallback(
-    (id, value) => {
+  const handleEditorCommit = useCallback(
+    (value) => {
+      if (!editing) return;
       const text = value.trim();
+      const { id, isNew } = editing;
+      pushHistory();
       if (!text) {
-        pushHistory();
         setObjects((o) => o.filter((x) => x.id !== id));
       } else {
-        pushHistory();
         setObjects((o) =>
           o.map((x) => {
             if (x.id !== id) return x;
@@ -706,40 +712,61 @@ export default function FreestyleBoard() {
           })
         );
       }
-      setEditingId(null);
+      setEditing(null);
+      if (!text && !isNew) {
+        setSelectedIds((s) => s.filter((sid) => sid !== id));
+      }
     },
-    [pushHistory]
+    [editing, pushHistory]
   );
 
+  const handleEditorCancel = useCallback(() => {
+    if (!editing) return;
+    if (editing.isNew) {
+      pushHistory();
+      const id = editing.id;
+      setObjects((o) => o.filter((x) => x.id !== id));
+      setSelectedIds((s) => s.filter((sid) => sid !== id));
+    }
+    setEditing(null);
+  }, [editing, pushHistory]);
+
   const deleteSelected = useCallback(() => {
+    if (editorRef.current) {
+      editorRef.current.commit();
+      return;
+    }
     if (selectedIdsRef.current.length === 0) return;
     pushHistory();
     setObjects((o) => o.filter((x) => !selectedIdsRef.current.includes(x.id)));
     setSelectedIds([]);
-    setEditingId(null);
   }, [pushHistory]);
 
   const clearAll = useCallback(() => {
+    if (editorRef.current) {
+      editorRef.current.commit();
+    }
     if (objectsRef.current.length === 0) return;
     pushHistory();
     setObjects([]);
     setSelectedIds([]);
-    setEditingId(null);
+    setEditing(null);
   }, [pushHistory]);
 
   const startEdit = useCallback((id) => {
     const obj = objectsRef.current.find((o) => o.id === id);
     if (!obj || obj.type !== "text") return;
     setSelectedIds([id]);
-    setEditingId(id);
-    setDraft(obj.text);
-  }, []);
-
-  const focusSelectRef = useCallback((el) => {
-    if (el) {
-      el.focus({ preventScroll: true });
-      el.select();
-    }
+    setEditing({
+      key: `${id}-${Date.now()}`,
+      id,
+      x: obj.x,
+      y: obj.y,
+      fontSize: obj.fontSize,
+      color: obj.color,
+      initial: obj.text,
+      isNew: false,
+    });
   }, []);
 
   const selBox = selected && selected.type !== "pen" ? rotatedBox(selected) : null;
@@ -884,7 +911,7 @@ export default function FreestyleBoard() {
               );
             }
             if (o.type === "text") {
-              if (editingId === o.id) return <g key={o.id} data-id={o.id} />;
+              if (editing && editing.id === o.id) return <g key={o.id} data-id={o.id} />;
               const lines = String(o.text || "").split("\n");
               return (
                 <g
@@ -1014,46 +1041,19 @@ export default function FreestyleBoard() {
           </g>
         </svg>
 
-        {editingId && (() => {
-          const obj = objects.find((o) => o.id === editingId);
-          if (!obj || obj.type !== "text") return null;
-          return (
-            <textarea
-              className="board-text-editor"
-              autoFocus
-              style={{
-                left: (obj.x - cam.x) * cam.zoom,
-                top: (obj.y - cam.y) * cam.zoom,
-                fontSize: obj.fontSize * cam.zoom,
-                color: obj.color,
-                width: Math.max(140, obj.w * cam.zoom),
-              }}
-              value={draft}
-              rows={3}
-              ref={focusSelectRef}
-              onChange={(e) => setDraft(e.target.value)}
-              onFocus={() => {
-                editorFocusedRef.current = true;
-              }}
-              onBlur={() => {
-                if (editorFocusedRef.current) {
-                  editorFocusedRef.current = false;
-                  commitText(editingId, draft);
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                  e.stopPropagation();
-                  editorFocusedRef.current = false;
-                  setEditingId(null);
-                } else if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  commitText(editingId, draft);
-                }
-              }}
-            />
-          );
-        })()}
+        {editing && (
+          <BoardTextEditor
+            key={editing.key}
+            ref={editorRef}
+            x={(editing.x - cam.x) * cam.zoom}
+            y={(editing.y - cam.y) * cam.zoom}
+            fontSize={editing.fontSize * cam.zoom}
+            color={editing.color}
+            initialValue={editing.initial}
+            onCommit={handleEditorCommit}
+            onCancel={handleEditorCancel}
+          />
+        )}
       </div>
     </div>
   );
