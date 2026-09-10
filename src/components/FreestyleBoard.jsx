@@ -98,7 +98,7 @@ function shapeBody(shape, w, h, stroke) {
         <g {...common} fill="none">
           <line x1={w / 2} y1={0} x2={0} y2={ey} />
           <line x1={w / 2} y1={0} x2={w} y2={ey} />
-          <path d={`M 0,${ey} A ${w / 2},${ry} 0 0 1 ${w},${ey}`} />
+          <path d={`M 0,${ey} A ${w / 2},${ry} 0 0 0 ${w},${ey}`} />
           <path d={`M ${w},${ey} A ${w / 2},${ry} 0 0 0 0,${ey}`} {...dash} fill="none" />
         </g>
       );
@@ -225,9 +225,14 @@ export default function FreestyleBoard() {
   const lastTouchEndRef = useRef(0);
   const panRef = useRef(null);
   const panRaf = useRef(0);
+  const editingIdRef = useRef(null);
+  const draftRef = useRef("");
+  const editorFocusedRef = useRef(false);
 
   const objectsRef = useRef(objects);
   objectsRef.current = objects;
+  editingIdRef.current = editingId;
+  draftRef.current = draft;
   const selectedIdsRef = useRef(selectedIds);
   selectedIdsRef.current = selectedIds;
   const camRef = useRef(cam);
@@ -380,6 +385,9 @@ export default function FreestyleBoard() {
         if (e.isPrimary !== false) svg.setPointerCapture(e.pointerId);
       } catch {
         /* Emulated or duplicate pointer: events still bubble to the svg. */
+      }
+      if (editingIdRef.current) {
+        commitText(editingIdRef.current, draftRef.current);
       }
       const [px, py] = boardPoint(e.clientX, e.clientY);
 
@@ -1012,6 +1020,7 @@ export default function FreestyleBoard() {
           return (
             <textarea
               className="board-text-editor"
+              autoFocus
               style={{
                 left: (obj.x - cam.x) * cam.zoom,
                 top: (obj.y - cam.y) * cam.zoom,
@@ -1023,10 +1032,19 @@ export default function FreestyleBoard() {
               rows={3}
               ref={focusSelectRef}
               onChange={(e) => setDraft(e.target.value)}
-              onBlur={() => commitText(editingId, draft)}
+              onFocus={() => {
+                editorFocusedRef.current = true;
+              }}
+              onBlur={() => {
+                if (editorFocusedRef.current) {
+                  editorFocusedRef.current = false;
+                  commitText(editingId, draft);
+                }
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Escape") {
                   e.stopPropagation();
+                  editorFocusedRef.current = false;
                   setEditingId(null);
                 } else if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();

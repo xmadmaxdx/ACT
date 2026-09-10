@@ -57,7 +57,7 @@ function checkLatex(miniId, qn, field, text, short) {
   const parts = text.split("$");
   for (let i = 1; i < parts.length; i += 2) {
     const seg = parts[i];
-    if (/[a-zA-Z]{3,}/.test(seg) && !/\\(text|frac|times|div|cdot|sqrt|approx|equiv|pmod|bmod|geq|leq|neq|pm|begin|end|pmatrix|bmatrix|vmatrix|langle|rangle|theta|circ|sin|cos|tan|cdot|%|{|})|_/.test(seg))
+    if (/[a-zA-Z]{3,}/.test(seg) && !/\\(text|frac|times|div|cdot|sqrt|approx|equiv|pmod|bmod|geq|leq|neq|pm|begin|end|pmatrix|bmatrix|vmatrix|langle|rangle|theta|circ|sin|cos|tan|to|infty|log|ln|dots|ldots|cdots|cdot|%|{|})|_/.test(seg))
       problems.push(`${label}: prose inside math "${seg.slice(0, 45)}..." — a $ boundary is misplaced`);
     if (/(^|[^,{\\])\d,\d{3}/.test(seg))
       problems.push(`${label}: thousands separator in math "${seg.slice(0, 35)}" — wrap as {,} (e.g. $52{,}000$); vector/coordinate commas are fine`);

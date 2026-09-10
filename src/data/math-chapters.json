@@ -3833,9 +3833,930 @@
       "title": "Quadratics, Polynomials, Rationals, Sequences",
       "subtitle": "Quadratics, Polynomials, Sequences",
       "minis": [
-        { "id": "MATH-MINI-4-1", "title": "Quadratics", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
-        { "id": "MATH-MINI-4-2", "title": "Polynomials / Rational / Radical Equations", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
-        { "id": "MATH-MINI-4-3", "title": "Sequences / Exponential", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+        {
+          "id": "MATH-MINI-4-1",
+          "title": "Quadratics",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Forms and roots",
+                "blocks": [
+                  { "p": "Quadratics wear three outfits: standard for the discriminant, factored for instant roots, vertex for peaks and valleys. Pick the form that answers the question before manipulating anything." },
+                  { "list": [
+                    "Zero on one side first — roots only read from factored-equals-zero.",
+                    "Factor by finding two numbers that multiply to the constant and add to the middle coefficient.",
+                    "Zero product splits one equation into two one-step linears.",
+                    "Unfactorable over integers means the formula (or completing the square) takes over."
+                  ] },
+                  { "math": "ax^2+bx+c=0 \\qquad (x-m)(x-n)=0\\Rightarrow x=m,n" }
+                ]
+              },
+              {
+                "heading": "Vertex and discriminant",
+                "blocks": [
+                  { "p": "The vertex is the parabola's extreme point — maximum for downward openings, minimum for upward. The discriminant previews how many real roots exist without solving anything." },
+                  { "list": [
+                    "The axis formula drops straight onto the vertex's $x$-coordinate; plug back for the height.",
+                    "Any maximum or minimum word problem is asking for the vertex.",
+                    "Positive discriminant means two real roots, zero means one repeated root, negative means none.",
+                    "Symmetric roots sit evenly around the axis — their midpoint is the vertex."
+                  ] },
+                  { "math": "x=-\\frac{b}{2a} \\qquad D=b^2-4ac" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Quadratics",
+              "short": "Rocket peak",
+              "statement": "A rocket's height follows $h=-16t^2+64t$ feet after launch. What is its maximum height?",
+              "options": ["$128$", "$64$", "$96$", "$160$"],
+              "answer": "A",
+              "explain": "Vertex at $t=64\\div 32=2$ s; height $-64+128=128$ ft. The axis formula finds the peak time."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Quadratics",
+              "short": "Plot width",
+              "statement": "A plot's length is $5$ m more than its width, with area $84$ square meters. What is the width?",
+              "options": ["$5\\text{ m}$", "$7\\text{ m}$", "$6\\text{ m}$", "$12\\text{ m}$"],
+              "answer": "B",
+              "explain": "$w(w+5)=84$ factors as $(w+12)(w-7)=0$, so $w=7$ m. Reject the negative root physically."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Quadratics",
+              "short": "Price peak",
+              "statement": "Demand for a gadget is $100-2p$ units at price $p$ dollars. Revenue is price times demand. Which price maximizes revenue?",
+              "options": ["$20$", "$50$", "$25$", "$30$"],
+              "answer": "C",
+              "explain": "$R=-2p^2+100p$ peaks at $p=-100\\div(-4)=25$ dollars. Revenue quadratics open downward."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Quadratics",
+              "short": "Sum-product pair",
+              "statement": "Two numbers sum to $7$ with product $12$. What is the larger number?",
+              "options": ["$1$", "$2$", "$6$", "$4$"],
+              "answer": "D",
+              "explain": "They solve $t^2-7t+12=0$, factoring as $(t-3)(t-4)=0$. Larger: $4$."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Quadratics",
+              "short": "Touch once",
+              "statement": "For what $k$ does $x^2+4x+k=0$ have exactly one real solution?",
+              "options": ["$4$", "$0$", "$-4$", "$8$"],
+              "answer": "A",
+              "explain": "One solution needs $D=16-4k=0$, so $k=4$. The discriminant previews root counts."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Quadratics",
+              "short": "Consecutive product",
+              "statement": "Two consecutive integers multiply to $132$. What is the smaller positive one?",
+              "options": ["$12$", "$11$", "$10$", "$13$"],
+              "answer": "B",
+              "explain": "$n(n+1)=132$ factors as $(n+12)(n-11)=0$, so $n=11$. Translate products directly."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Quadratics",
+              "short": "Landing time",
+              "statement": "A ball thrown upward at $64$ ft/s from the ground follows $h=-16t^2+64t$. When does it land?",
+              "options": ["$2\\text{ s}$", "$8\\text{ s}$", "$4\\text{ s}$", "$6\\text{ s}$"],
+              "answer": "C",
+              "explain": "Set $h=0$: $-16t(t-4)=0$, so $t=4$ s (past launch). Landing means height zero."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Quadratics",
+              "short": "Wide plot",
+              "statement": "A lot's length is $3$ m less than twice its width, with area $65$ square meters. What is the width?",
+              "options": ["$5\\text{ m}$", "$13\\text{ m}$", "$6.5\\text{ m}$", "$10\\text{ m}$"],
+              "answer": "C",
+              "explain": "$2w^2-3w-65=0$ has discriminant $529=23^2$, giving $w=(3+23)\\div 4=6.5$ m."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Quadratics",
+              "short": "Low point",
+              "statement": "A valley curve follows $y=x^2-6x+5$. What is its minimum value?",
+              "options": ["$-4$", "$3$", "$5$", "$-3$"],
+              "answer": "A",
+              "explain": "Vertex at $x=3$; value $9-18+5=-4$. Upward parabolas bottom out at the vertex."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Quadratics",
+              "short": "Scaled roots",
+              "statement": "The equation $2x^2-8x+6=0$ models two meeting times. What is the larger time?",
+              "options": ["$1$", "$3$", "$2$", "$6$"],
+              "answer": "B",
+              "explain": "Halve first: $x^2-4x+3=(x-1)(x-3)=0$. Larger: $3$. Simplify before factoring."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Quadratics",
+              "short": "Drop from ledge",
+              "statement": "A stone falls from a $48$-ft ledge with $h=-16t^2+32t+48$. When does it hit the ground?",
+              "options": ["$2\\text{ s}$", "$4\\text{ s}$", "$3\\text{ s}$", "$6\\text{ s}$"],
+              "answer": "C",
+              "explain": "Divide by $-16$: $t^2-2t-3=(t-3)(t+1)=0$, so $t=3$ s. Keep the positive root."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Quadratics",
+              "short": "Grown square",
+              "statement": "A square's side grows by $3$ m until its area reaches $64$ square meters. What was the original side?",
+              "options": ["$11\\text{ m}$", "$8\\text{ m}$", "$9\\text{ m}$", "$5\\text{ m}$"],
+              "answer": "D",
+              "explain": "$(x+3)^2=64$ gives $x+3=8$ (positive root), so $x=5$ m. Root both sides directly."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Quadratics",
+              "short": "Missing coefficient",
+              "statement": "The equation $x^2+kx+12=0$ has $x=3$ as a root. What is $k$?",
+              "options": ["$-7$", "$-3$", "$7$", "$-12$"],
+              "answer": "A",
+              "explain": "Plug in: $9+3k+12=0$ gives $k=-7$. Roots must satisfy the equation."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Quadratics",
+              "short": "Best revenue",
+              "statement": "Revenue follows $R=-2p^2+80p$ dollars. What is the maximum revenue?",
+              "options": ["$1{,}600$", "$800$", "$40$", "$20$"],
+              "answer": "B",
+              "explain": "Peak at $p=20$; revenue $-800+1600=800$ dollars. Find the vertex, then evaluate."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Quadratics",
+              "short": "Square gap",
+              "statement": "A number's square exceeds the square of the number $4$ less than it by $64$. What is the number?",
+              "options": ["$6$", "$12$", "$10$", "$8$"],
+              "answer": "C",
+              "explain": "$x^2-(x-4)^2=8x-16=64$ gives $x=10$. Expanding kills the quadratic term."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Quadratics",
+              "short": "Root count",
+              "statement": "How many real solutions does $2x^2+3x-2=0$ have?",
+              "options": ["None", "One", "Three", "Two"],
+              "answer": "D",
+              "explain": "$D=9+16=25>0$, so two distinct real roots. Positive discriminant, two crossings."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Quadratics",
+              "short": "Zero split",
+              "statement": "A sensor triggers where $(x-5)(x+2)=0$. What is the larger trigger value?",
+              "options": ["$5$", "$-2$", "$3$", "$7$"],
+              "answer": "A",
+              "explain": "Zero product splits: $x=5$ or $x=-2$. Larger: $5$."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Quadratics",
+              "short": "Complete it",
+              "statement": "A tuner completes $x^2+10x$ into a perfect square $(x+5)^2$. What constant is added?",
+              "options": ["$10$", "$25$", "$5$", "$100$"],
+              "answer": "B",
+              "explain": "Half of $10$ is $5$; square it: $25$. Halve-then-square every time."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Quadratics",
+              "short": "Peak moment",
+              "statement": "A fountain arc follows $h=-16t^2+48t$ feet. At what time does the water peak?",
+              "options": ["$3\\text{ s}$", "$1\\text{ s}$", "$1.5\\text{ s}$", "$2\\text{ s}$"],
+              "answer": "C",
+              "explain": "Axis $t=-48\\div(-32)=1.5$ s. Time questions want the axis, not the height."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Quadratics",
+              "short": "Garden solve",
+              "statement": "A bed's length is $7$ m more than its width, with area $60$ square meters. What is the width?",
+              "options": ["$12\\text{ m}$", "$3\\text{ m}$", "$10\\text{ m}$", "$5\\text{ m}$"],
+              "answer": "D",
+              "explain": "$w^2+7w-60=(w+12)(w-5)=0$, so $w=5$ m."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Quadratics",
+              "short": "Even product",
+              "statement": "Two consecutive even integers multiply to $168$. What is the smaller?",
+              "options": ["$12$", "$14$", "$10$", "$16$"],
+              "answer": "A",
+              "explain": "$n^2+2n-168=0$ has discriminant $676=26^2$, giving $n=(-2+26)\\div 2=12$."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Quadratics",
+              "short": "Fence posts",
+              "statement": "A profit curve $y=-x^2+4x+5$ crosses zero at its break-even points. What is the positive one?",
+              "options": ["$-1$", "$5$", "$1$", "$4$"],
+              "answer": "B",
+              "explain": "$x^2-4x-5=(x-5)(x+1)=0$ gives $5$ and $-1$. Keep the meaningful root."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Quadratics",
+              "short": "No crossing",
+              "statement": "How many $x$-intercepts does $y=x^2+2x+5$ have?",
+              "options": ["Two", "$0$", "One", "Five"],
+              "answer": "B",
+              "explain": "$D=4-20<0$: the parabola never touches the axis. Intercepts are real roots."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Quadratics",
+              "short": "Read the vertex",
+              "statement": "A dish follows $y=(x-3)^2-4$. What is its lowest point's $y$-coordinate?",
+              "options": ["$3$", "$-3$", "$4$", "$-4$"],
+              "answer": "D",
+              "explain": "Vertex form reads off $(3,-4)$ directly — no algebra needed."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Quadratics",
+              "short": "Best pen",
+              "statement": "A rancher builds a rectangular pen with $100$ m of fence against a straight river (no fence on the river side). What is the maximum area?",
+              "options": ["$625$", "$2500$", "$1250$", "$500$"],
+              "answer": "C",
+              "explain": "With $2w+l=100$: area $w(100-2w)$ peaks at $w=25$, length $50$, area $1250$ square meters."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Quadratics",
+              "short": "Root product",
+              "statement": "What is the product of the roots of $3x^2-7x+2=0$?",
+              "options": ["$7/3$", "$2/3$", "$-2/3$", "$2$"],
+              "answer": "B",
+              "explain": "Product $=c\\div a=2\\div 3$. No solving required."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Quadratics",
+              "short": "Factor hunt",
+              "statement": "Two numbers sum to $9$ with product $20$. What is the smaller number?",
+              "options": ["$5$", "$2$", "$4$", "$10$"],
+              "answer": "C",
+              "explain": "They solve $t^2-9t+20=(t-4)(t-5)=0$. Smaller: $4$."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Quadratics",
+              "short": "Timed height",
+              "statement": "A rocket with $h=-16t^2+64t$ is tracked at $t=2$ s. How high is it?",
+              "options": ["$128$", "$96$", "$64$", "$32$"],
+              "answer": "C",
+              "explain": "$-64+128=64$ ft. Evaluate — this asks for height at a time, not the peak."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Quadratics",
+              "short": "Axis line",
+              "statement": "What is the axis of symmetry of $y=2x^2-8x+3$?",
+              "options": ["$x=2$", "$x=-2$", "$x=4$", "$x=8$"],
+              "answer": "A",
+              "explain": "$x=-(-8)\\div 4=2$. The axis formula never needs the constant."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Quadratics",
+              "short": "Dual break-even",
+              "statement": "Profit zeroes where $-x^2+14x-45=0$. What is the smaller break-even quantity?",
+              "options": ["$9$", "$5$", "$10$", "$4$"],
+              "answer": "B",
+              "explain": "$x^2-14x+45=(x-5)(x-9)=0$. Smaller: $5$."
+            }
+          ]
+        },
+        {
+          "id": "MATH-MINI-4-2",
+          "title": "Polynomials / Rational / Radical Equations",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Polynomial anatomy",
+                "blocks": [
+                  { "p": "Polynomials are sums of powers, and each feature reads off a different part: degree from the tallest power, ends from the leading sign, roots from factors, remainders from evaluation." },
+                  { "list": [
+                    "Degree is the highest exponent present; it caps the root count.",
+                    "Leading sign plus even-or-odd degree steers both ends up or down.",
+                    "Factored form lists every root directly — set each factor to zero.",
+                    "Dividing by a linear factor leaves the polynomial's value at that factor's zero as remainder."
+                  ] },
+                  { "math": "\\deg P=\\max k \\qquad P(x)\\div(x-a)\\Rightarrow R=P(a)" }
+                ]
+              },
+              {
+                "heading": "Fraction and root equations",
+                "blocks": [
+                  { "p": "Rational and radical equations hide traps: banned denominators and invented roots. Clear fractions with the common denominator, isolate radicals before squaring, and verify every candidate in the original." },
+                  { "list": [
+                    "Multiply every term by the shared denominator, then note which values it bans.",
+                    "Zero denominators disqualify candidates no matter how nicely they solve.",
+                    "Isolate the radical completely — then one squaring finishes it.",
+                    "Squaring can invent roots, so plug each answer back into the original line."
+                  ] },
+                  { "math": "\\sqrt{E}=k\\Rightarrow E=k^2\\ (k\\ge 0) \\qquad \\frac{a}{b}=c\\Rightarrow a=bc\\ (b\\ne 0)" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Polynomials",
+              "short": "Evaluate cubic",
+              "statement": "A model uses $P(x)=x^3-2x^2+x$ at $x=4$. What is the output?",
+              "options": ["$36$", "$12$", "$64$", "$20$"],
+              "answer": "A",
+              "explain": "$64-32+4=36$. Substitute into every term before combining."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Polynomials",
+              "short": "Degree hunt",
+              "statement": "A volume formula expands to $(x^2+1)(x^3-2)$. What is its degree?",
+              "options": ["$3$", "$5$", "$6$", "$2$"],
+              "answer": "B",
+              "explain": "Tallest powers add across the product: $2+3=5$. Multiply degrees, never add bases."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Polynomials",
+              "short": "Largest zero",
+              "statement": "A sensor zeroes where $(x-2)(x+3)(x-5)=0$. What is the largest zero?",
+              "options": ["$2$", "$-3$", "$5$", "$6$"],
+              "answer": "C",
+              "explain": "Each factor gives a root: $2,-3,5$. Largest: $5$."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Polynomials",
+              "short": "Clean divide",
+              "statement": "Dividing $x^3-8$ by $x-2$ leaves what remainder?",
+              "options": ["$-8$", "$8$", "$2$", "$0$"],
+              "answer": "D",
+              "explain": "Evaluate at $2$: $8-8=0$. Zero remainder means exact division."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Rational Equations",
+              "short": "Twin taps",
+              "statement": "Two taps with rates $\\frac{1}{x}$ and $\\frac{1}{x+1}$ jobs per hour combine to $\\frac{5}{6}$. What is $x$?",
+              "options": ["$2$", "$3$", "$1$", "$6$"],
+              "answer": "A",
+              "explain": "Common denominator $6x(x+1)$: $12x+6=5x^2+5x$, so $5x^2-7x-6=0$ with positive root $2$. Check: $\\frac{1}{2}+\\frac{1}{3}=\\frac{5}{6}$."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Radical Equations",
+              "short": "Root undo",
+              "statement": "A gauge satisfies $\\sqrt{x+7}=5$. What is $x$?",
+              "options": ["$18$", "$32$", "$25$", "$12$"],
+              "answer": "B",
+              "explain": "Square: $x+7=25$, so $x=18$. Verify: $\\sqrt{25}=5$."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Radical Equations",
+              "short": "Cube undo",
+              "statement": "A tank sensor reads $\\sqrt[3]{x+1}=3$. What is $x$?",
+              "options": ["$8$", "$9$", "$26$", "$27$"],
+              "answer": "C",
+              "explain": "Cube: $x+1=27$, so $x=26$. Cubing needs no verification step."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Rational Equations",
+              "short": "Crossed rates",
+              "statement": "A mixer satisfies $\\frac{3}{x-1}=\\frac{2}{x+2}$. What is $x$?",
+              "options": ["$8$", "$4$", "$-4$", "$-8$"],
+              "answer": "D",
+              "explain": "Cross-multiply: $3x+6=2x-2$, so $x=-8$. Denominators $-9$ and $-6$ stay legal."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Rational Equations",
+              "short": "Simple split",
+              "statement": "A ratio valve sets $\\frac{x}{x+2}=\\frac{3}{5}$. What is $x$?",
+              "options": ["$3$", "$5$", "$2$", "$8$"],
+              "answer": "A",
+              "explain": "$5x=3x+6$ gives $x=3$. Check: $\\frac{3}{5}$ matches."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Polynomials",
+              "short": "Left end",
+              "statement": "A cost model $-x^3+2x$ runs to the far left ($x\\to -\\infty$). Which way does it head?",
+              "options": ["Down to $-\\infty$", "Up to $+\\infty$", "Levels at $0$", "Oscillates"],
+              "answer": "B",
+              "explain": "Odd degree with negative lead flips the left end upward. Sign plus parity decides."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Polynomials",
+              "short": "Negative input",
+              "statement": "A controller evaluates $2x^3-x^2+3x+5$ at $x=-1$. What is the result?",
+              "options": ["$-1$", "$9$", "$-5$", "$-11$"],
+              "answer": "A",
+              "explain": "Evaluate term by term: $-2-1-3+5=-1$. Parenthesize negatives before powering."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Polynomials",
+              "short": "Triple split",
+              "statement": "A beam balances where $x^3-4x=0$. What is the smallest balance point?",
+              "options": ["$0$", "$2$", "$-2$", "$4$"],
+              "answer": "C",
+              "explain": "$x(x-2)(x+2)=0$ gives $-2,0,2$. Factor out the common $x$ first."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Rational Equations",
+              "short": "Cancel first",
+              "statement": "A gauge reads $\\frac{x^2-9}{x-3}=7$ (with $x\\ne 3$). What is $x$?",
+              "options": ["$4$", "$3$", "$10$", "$7$"],
+              "answer": "A",
+              "explain": "Cancel to $x+3=7$, so $x=4$. The ban only removes $3$, which is not the answer."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Radical Equations",
+              "short": "Shifted root",
+              "statement": "A probe satisfies $\\sqrt{2x-3}=7$. What is $x$?",
+              "options": ["$23$", "$26$", "$25$", "$10$"],
+              "answer": "B",
+              "explain": "Square: $2x-3=49$, so $x=26$. Isolate-then-square in that order."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Rational Equations",
+              "short": "Gap solve",
+              "statement": "A timer satisfies $\\frac{4}{x}=\\frac{2}{x-3}$. What is $x$?",
+              "options": ["$3$", "$12$", "$6$", "$-6$"],
+              "answer": "C",
+              "explain": "$4x-12=2x$ gives $x=6$. Denominators $6$ and $3$ stay legal."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Polynomials",
+              "short": "Right end",
+              "statement": "A model $-2x^4+5x$ runs far right. Which way does it head?",
+              "options": ["Up to $+\\infty$", "Down to $-\\infty$", "Levels at $5$", "Toward $0$"],
+              "answer": "B",
+              "explain": "Even degree with negative lead dives on both ends. Parity plus sign decides."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Polynomials",
+              "short": "Remainder check",
+              "statement": "Dividing $x^3+2x^2-5x+1$ by $x+1$ leaves what remainder?",
+              "options": ["$7$", "$-1$", "$9$", "$-5$"],
+              "answer": "A",
+              "explain": "Evaluate at $-1$: $-1+2+5+1=7$. The zero-maker plugs straight in."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Radical Equations",
+              "short": "Offset root",
+              "statement": "A meter reads $\\sqrt{3x+4}-5=0$. What is $x$?",
+              "options": ["$7$", "$9$", "$3$", "$21$"],
+              "answer": "A",
+              "explain": "Isolate ($\\sqrt{3x+4}=5$), then square: $3x=21$, so $x=7$."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Radical Equations",
+              "short": "Empty root",
+              "statement": "How many real solutions does $\\sqrt{x}=-3$ have?",
+              "options": ["One", "Two", "$0$", "Infinitely many"],
+              "answer": "C",
+              "explain": "Principal roots never go negative — no $x$ qualifies. Squaring would invent $9$ falsely."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Rational Equations",
+              "short": "Hole aware",
+              "statement": "A valve reads $\\frac{x^2-4x}{x-4}=6$ (with $x\\ne 4$). What is $x$?",
+              "options": ["$4$", "$10$", "$2$", "$6$"],
+              "answer": "D",
+              "explain": "Cancel to $x=6$, which survives the ban. Had the answer been $4$, it would die."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Rational Equations",
+              "short": "Speed trap",
+              "statement": "A car covers $120$ miles, where $\\frac{120}{x}-\\frac{120}{x+20}=1$ links speeds $x$ and $x+20$. What is $x$?",
+              "options": ["$40$", "$30$", "$60$", "$20$"],
+              "answer": "A",
+              "explain": "Clear to $2400=x^2+20x$; discriminant $10000=100^2$ gives $x=(-20+100)\\div 2=40$. Keep the positive speed."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Radical Equations",
+              "short": "Odd root",
+              "statement": "A depth gauge reads $\\sqrt[3]{2x-1}=5$. What is $x$?",
+              "options": ["$62$", "$63$", "$64$", "$13$"],
+              "answer": "B",
+              "explain": "Cube: $2x-1=125$, so $x=63$. Odd roots keep every sign."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Polynomials",
+              "short": "Ground zero",
+              "statement": "A height model $x^3-3x^2+2$ touches ground at $x=0$ with what value?",
+              "options": ["$0$", "$-1$", "$2$", "$5$"],
+              "answer": "C",
+              "explain": "The constant term survives: $P(0)=2$. Zero input exposes the constant."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Polynomials",
+              "short": "Real count",
+              "statement": "How many real roots does $(x^2+1)(x-4)$ have?",
+              "options": ["Three", "Two", "None", "One"],
+              "answer": "D",
+              "explain": "$x^2+1$ never zeroes over the reals; only $x=4$ counts."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Rational Equations",
+              "short": "Shared base",
+              "statement": "A circuit satisfies $\\frac{1}{x-2}+\\frac{1}{x+2}=\\frac{8}{x^2-4}$ (with $x\\ne\\pm 2$). What is $x$?",
+              "options": ["$2$", "$-2$", "$8$", "$4$"],
+              "answer": "D",
+              "explain": "Combine: $\\frac{2x}{x^2-4}=\\frac{8}{x^2-4}$ gives $x=4$, which clears both bans."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Radical Equations",
+              "short": "Trap root",
+              "statement": "A laser aligns where $\\sqrt{5x+1}=2x-1$. Which values actually work?",
+              "options": ["$0$ only", "$9/4$ only", "Both $0$ and $9/4$", "Neither"],
+              "answer": "B",
+              "explain": "Squaring gives $x=0$ or $9/4$, but $0$ fails the original ($1\\ne -1$). Only $9/4$ verifies."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Polynomials",
+              "short": "Repeated zero",
+              "statement": "A mold follows $(x-1)^2(x+2)$. What is its smallest zero?",
+              "options": ["$1$", "$-1$", "$-2$", "$2$"],
+              "answer": "C",
+              "explain": "Zeros are $1$ (twice) and $-2$. Multiplicity never moves a zero."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Rational Equations",
+              "short": "Shift solve",
+              "statement": "A dial satisfies $\\frac{2x+1}{x-5}=3$ (with $x\\ne 5$). What is $x$?",
+              "options": ["$8$", "$4$", "$2$", "$16$"],
+              "answer": "D",
+              "explain": "$2x+1=3x-15$ gives $x=16$. The ban spares the answer."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Polynomials",
+              "short": "Both ends",
+              "statement": "A quartic with positive leading coefficient runs to both far ends. Which way does it go?",
+              "options": ["Up on both ends", "Down on both ends", "Up left, down right", "Down left, up right"],
+              "answer": "A",
+              "explain": "Even degree plus positive lead rises everywhere far out."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Rational Equations",
+              "short": "Hole check",
+              "statement": "A sensor reads $\\frac{x^2-16}{x+4}=3$ (with $x\\ne -4$). What is $x$?",
+              "options": ["$-4$", "$12$", "$1$", "$7$"],
+              "answer": "D",
+              "explain": "Cancel to $x-4=3$, so $x=7$. The banned $-4$ never gets a vote."
+            }
+          ]
+        },
+        {
+          "id": "MATH-MINI-4-3",
+          "title": "Sequences / Exponential",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Arithmetic vs geometric",
+                "blocks": [
+                  { "p": "Sequences grow by a rule: arithmetic adds a fixed difference each step, geometric multiplies by a fixed ratio. Name the type first — every formula flows from that single decision." },
+                  { "list": [
+                    "Constant gaps mean arithmetic; constant multipliers mean geometric — test two steps to decide.",
+                    "The nth term builds from the start plus steps taken, never from the previous term alone.",
+                    "Recursive rules generate forward only; closed forms jump straight to any position.",
+                    "Middle terms average their neighbors in arithmetic runs and geometric-mean them in ratio runs."
+                  ] },
+                  { "math": "a_n=a_1+(n-1)d \\qquad a_n=a_1r^{n-1}" }
+                ]
+              },
+              {
+                "heading": "Sums and exponential models",
+                "blocks": [
+                  { "p": "Sums collapse whole runs at once: arithmetic pairs first with last, geometric scales by its ratio. Real-world growth and decay are geometric sequences wearing time units." },
+                  { "list": [
+                    "Arithmetic sums pair first-plus-last, then multiply by half the count.",
+                    "Geometric sums factor through one-minus-ratio — sign errors lurk here.",
+                    "Infinite geometric totals exist only when the ratio's size stays below one.",
+                    "Growth and decay read start-times-base-to-the-steps; match the base to the period."
+                  ] },
+                  { "math": "S=\\frac{n(a_1+a_n)}{2} \\qquad S=a_1\\frac{1-r^n}{1-r} \\qquad F=P\\cdot b^t" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Sequences",
+              "short": "Twentieth step",
+              "statement": "A staircase pattern starts $3, 7, 11, \\dots$ tiles per row. How many tiles does the $20$th row use?",
+              "options": ["$79$", "$75$", "$83$", "$71$"],
+              "answer": "A",
+              "explain": "Arithmetic with $d=4$: $3+19\\cdot 4=79$. Count steps taken ($19$), not rows."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Sequences",
+              "short": "First hundred",
+              "statement": "A charity drive collects $1$ on day one, $2$ on day two, and so on through day $100$. What is the total?",
+              "options": ["$5{,}000$", "$5{,}050$", "$10{,}000$", "$4{,}950$"],
+              "answer": "B",
+              "explain": "Pair first-plus-last: $100\\cdot 101\\div 2=5050$ dollars. Halve the count, not the sum."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Sequences",
+              "short": "Eighth culture",
+              "statement": "A culture triples each hour as $2, 6, 18, \\dots$ thousand cells. How many thousand cells exist in hour $8$?",
+              "options": ["$1458$", "$4374$", "$4374$ thousand", "$2187$"],
+              "answer": "C",
+              "explain": "$2\\cdot 3^7=2\\cdot 2187=4374$ thousand. Track units alongside powers."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Sequences",
+              "short": "Find the start",
+              "statement": "An arithmetic playlist's $5$th track is $20$ minutes cumulative with a $3$-minute step. What was the first track's length?",
+              "options": ["$5$", "$11$", "$9$", "$8$"],
+              "answer": "D",
+              "explain": "$a_1+4\\cdot 3=20$ gives $a_1=8$ minutes. Walk backward by the step count."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Sequences",
+              "short": "Four-term total",
+              "statement": "A bonus pays $3, 6, 12, 24$ dollars across four weeks. What is the total?",
+              "options": ["$45$", "$42$", "$48$", "$39$"],
+              "answer": "A",
+              "explain": "Geometric sum: $3(1-2^4)\\div(1-2)=45$ dollars. Short runs can list-and-add to check."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Sequences",
+              "short": "Lab doubling",
+              "statement": "A sample of $200$ cells doubles hourly. How many cells exist after $5$ hours?",
+              "options": ["$3200$", "$6400$", "$2000$", "$1200$"],
+              "answer": "B",
+              "explain": "$200\\cdot 2^5=6400$. Five doublings multiply by $32$."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Sequences",
+              "short": "Half-life fraction",
+              "statement": "An isotope decays with a $5{,}730$-year half-life. What fraction remains after two half-lives?",
+              "options": ["$1/2$", "$1/3$", "$1/4$", "$1/8$"],
+              "answer": "C",
+              "explain": "Each half-life halves: $\\frac{1}{2}\\cdot\\frac{1}{2}=\\frac{1}{4}$. Halvings multiply."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Sequences",
+              "short": "Three-year yield",
+              "statement": "A $1{,}000$ deposit earns $10\\%$ annual compound interest. What is it worth after $3$ years?",
+              "options": ["$1{,}300$", "$1{,}210$", "$1{,}100$", "$1{,}331$"],
+              "answer": "D",
+              "explain": "$1000\\cdot 1.1^3=1331$ dollars. Simple interest ($1300$) skips compounding."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Sequences",
+              "short": "Middle step",
+              "statement": "An arithmetic run starts at $5$ and its $9$th term is $45$. What is the common difference?",
+              "options": ["$5$", "$4$", "$6$", "$8$"],
+              "answer": "A",
+              "explain": "Eight steps cover $40$, so $d=5$. Divide the span by the step count."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Sequences",
+              "short": "Recursive climb",
+              "statement": "A sequence starts $a_1=2$ with $a_n=3a_{n-1}-1$. What is $a_4$?",
+              "options": ["$14$", "$41$", "$5$", "$122$"],
+              "answer": "B",
+              "explain": "Forward: $5$, then $14$, then $41$. Generate term by term — no shortcuts."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Sequences",
+              "short": "Middle multiplier",
+              "statement": "A geometric loan factor sits midway between $4$ and $16$ multiplicatively. What is it?",
+              "options": ["$10$", "$6$", "$8$", "$12$"],
+              "answer": "C",
+              "explain": "Geometric mean: $\\sqrt{4\\cdot 16}=8$. Midway multiplicatively means root-the-product."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Sequences",
+              "short": "Stepped sum",
+              "statement": "A theater counts seats $4+7+\\dots+28$ in steps of $3$. What is the total?",
+              "options": ["$108$", "$126$", "$120$", "$144$"],
+              "answer": "D",
+              "explain": "Nine terms: $9(4+28)\\div 2=144$. Count terms before pairing."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Sequences",
+              "short": "Rust decay",
+              "statement": "A machine worth $1{,}000$ loses $5\\%$ yearly. What is it worth after $4$ years, to the nearest dollar?",
+              "options": ["$815$", "$800$", "$950$", "$819$"],
+              "answer": "A",
+              "explain": "$1000\\cdot 0.95^4\\approx 814.5$, so $815$ dollars. Decay bases sit below one."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Sequences",
+              "short": "Formula term",
+              "statement": "A queue rule gives $a_n=5n-2$ tickets at position $n$. How many at position $100$?",
+              "options": ["$500$", "$498$", "$502$", "$495$"],
+              "answer": "B",
+              "explain": "$5\\cdot 100-2=498$. Closed forms jump straight there."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Sequences",
+              "short": "Signed ratio",
+              "statement": "A sequence starts $3$ with ratio $-2$. What is the $6$th term?",
+              "options": ["$96$", "$-48$", "$-96$", "$48$"],
+              "answer": "C",
+              "explain": "$3\\cdot(-2)^5=3\\cdot(-32)=-96$. Odd powers keep the sign."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Sequences",
+              "short": "Odd sum",
+              "statement": "A mosaic uses the first $12$ odd numbers of tiles. How many tiles total?",
+              "options": ["$122$", "$132$", "$120$", "$144$"],
+              "answer": "D",
+              "explain": "First-$n$ odds sum to $n^2$: $12^2=144$. Recognize the square pattern."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Sequences",
+              "short": "Fold thickness",
+              "statement": "Paper $0.1$ mm thick folds in half $10$ times. How thick is the stack, in centimeters?",
+              "options": ["$10.24\\text{ cm}$", "$1.024\\text{ cm}$", "$102.4\\text{ cm}$", "$5.12\\text{ cm}$"],
+              "answer": "A",
+              "explain": "$0.1\\cdot 2^{10}=102.4$ mm $=10.24$ cm. Convert units after powering."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Sequences",
+              "short": "Work backward",
+              "statement": "A geometric sample has $a_3=12$ and $a_6=96$. What was $a_1$?",
+              "options": ["$6$", "$3$", "$1.5$", "$4$"],
+              "answer": "B",
+              "explain": "Three steps multiply by $8$, so $r=2$; then $a_1=12\\div 4=3$."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Sequences",
+              "short": "Fill the gap",
+              "statement": "Three arithmetic means sit between $10$ and $26$. What is the common difference?",
+              "options": ["$3$", "$5.33$", "$4$", "$8$"],
+              "answer": "C",
+              "explain": "Four gaps span $16$, so $d=4$. Count gaps, not inserted terms."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Sequences",
+              "short": "Endless half",
+              "statement": "A fund pays $16+8+4+\\dots$ dollars forever, halving each round. What is the lifetime total?",
+              "options": ["$24$", "$48$", "$32$", "$30$"],
+              "answer": "C",
+              "explain": "$16\\div(1-0.5)=32$ dollars. Infinite totals need ratios below one."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Sequences",
+              "short": "Fleet decay",
+              "statement": "A $20{,}000$ van loses $15\\%$ yearly. What is it worth after $3$ years, to the nearest dollar?",
+              "options": ["$12{,}283$", "$14{,}000$", "$11{,}000$", "$17{,}000$"],
+              "answer": "A",
+              "explain": "$20000\\cdot 0.85^3\\approx 12282.5$, so $12283$ dollars."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Sequences",
+              "short": "Square-plus-one",
+              "statement": "A counter follows $a_n=n^2+1$. What is the $7$th reading?",
+              "options": ["$49$", "$50$", "$15$", "$64$"],
+              "answer": "B",
+              "explain": "$49+1=50$. Evaluate the rule directly."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Sequences",
+              "short": "Doubling sum",
+              "statement": "A prize doubles daily $1+2+\\dots+64$. What is the week's total?",
+              "options": ["$63$", "$128$", "$127$", "$255$"],
+              "answer": "C",
+              "explain": "Powers of two sum to one below the next: $2^7-1=127$ dollars."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Sequences",
+              "short": "Triple census",
+              "statement": "A pest population of $100$ triples every $5$ years. How many after $15$ years?",
+              "options": ["$900$", "$300$", "$9000$", "$2700$"],
+              "answer": "D",
+              "explain": "Three triplings: $100\\cdot 3^3=2700$. Count periods, not years."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Sequences",
+              "short": "Gap measure",
+              "statement": "An arithmetic log has $a_4=11$ and $a_9=26$. What is the common difference?",
+              "options": ["$3$", "$2.5$", "$3.75$", "$5$"],
+              "answer": "A",
+              "explain": "Five steps span $15$, so $d=3$. Far-apart terms reveal the step."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Sequences",
+              "short": "Bounce total",
+              "statement": "A ball drops $100$ m and rebounds to $3/4$ height repeatedly. What total distance does it travel?",
+              "options": ["$400\\text{ m}$", "$700\\text{ m}$", "$300\\text{ m}$", "$175\\text{ m}$"],
+              "answer": "B",
+              "explain": "Drop $100$ plus up-down bounces: $100+2\\cdot(75\\div 0.25)=700$ m. Every bounce after the drop runs twice."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Sequences",
+              "short": "Halving count",
+              "statement": "A $240$-g sample decays to $30$ g by halving. How many half-lives passed?",
+              "options": ["$2$", "$4$", "$3$", "$8$"],
+              "answer": "C",
+              "explain": "$240\\div 30=8=2^3$, so three halvings. Ratio first, then count powers."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Sequences",
+              "short": "Race of growth",
+              "statement": "Two funds grow as $2^{10}$ versus $10^2$ dollars from $1$. Which power-of-two value wins, and what is it?",
+              "options": ["$100$ wins", "$512$ wins", "$200$ wins", "$1024$ wins"],
+              "answer": "D",
+              "explain": "$2^{10}=1024$ beats $100$. Exponentials outrun polynomials."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Sequences",
+              "short": "First negative",
+              "statement": "A countdown runs $5, 2, -1, \\dots$ with difference $-3$. What is the first negative term's position value?",
+              "options": ["$-1$", "$-4$", "$2$", "$-7$"],
+              "answer": "A",
+              "explain": "$a_3=5-6=-1$ — already negative at position three."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Sequences",
+              "short": "Quarterly yield",
+              "statement": "A $2{,}000$ bond earns $8\\%$ yearly, compounded quarterly ($2\\%$ per quarter). What is it worth after one year?",
+              "options": ["$2{,}160$", "$2{,}165$", "$2{,}080$", "$2{,}000$"],
+              "answer": "B",
+              "explain": "$2000\\cdot 1.02^4\\approx 2164.86$, so $2165$ dollars. Match the rate to the period."
+            }
+          ]
+        }
       ]
     },
     {
@@ -3843,10 +4764,1238 @@
       "title": "Functions",
       "subtitle": "Notation, Composite, Transform, Log",
       "minis": [
-        { "id": "MATH-MINI-5-1", "title": "Notation / Evaluation / Domain", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
-        { "id": "MATH-MINI-5-2", "title": "Composite / Inverse", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
-        { "id": "MATH-MINI-5-3", "title": "Transformations / Graphs", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
-        { "id": "MATH-MINI-5-4", "title": "Exponential / Log", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+        {
+          "id": "MATH-MINI-5-1",
+          "title": "Notation / Evaluation / Domain",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Reading f(x)",
+                "blocks": [
+                  { "p": "Function notation is a substitution order: the input replaces every instance of the variable, then arithmetic runs its course. Nested calls and tables all obey the same inside-out discipline." },
+                  { "list": [
+                    "Replace every occurrence of the variable — hidden ones inside parentheses count too.",
+                    "Nested calls evaluate from the innermost parentheses outward.",
+                    "Tables read inputs across to outputs; graphs read height above each $x$.",
+                    "Solving $f(x)=k$ inverts the process: set the expression equal and solve."
+                  ] },
+                  { "math": "f(a)\\Rightarrow\\text{replace every }x\\text{ with }a" }
+                ]
+              },
+              {
+                "heading": "Domains and models",
+                "blocks": [
+                  { "p": "Domain asks which inputs survive: denominators forbid zeros, even roots forbid negatives, and real stories forbid nonsense. Piecewise rules simply route each input to its own branch." },
+                  { "list": [
+                    "Set every denominator nonzero and solve for the banned inputs.",
+                    "Even-root insides must stay nonnegative; odd roots accept everything.",
+                    "Piecewise branches activate by input range — check the condition first.",
+                    "Context trims further: counts stay whole, times stay forward."
+                  ] },
+                  { "math": "q(x)\\ne 0 \\qquad \\text{radicand}\\ge 0" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Functions",
+              "short": "Evaluate quadratic",
+              "statement": "A model uses $f(x)=x^2-3x+2$. What is $f(4)$?",
+              "options": ["$6$", "$10$", "$2$", "$14$"],
+              "answer": "A",
+              "explain": "$16-12+2=6$. Substitute into every term, then combine."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Functions",
+              "short": "Negative input",
+              "statement": "A sensor follows $g(t)=2t+5$. What does it read at $t=-3$?",
+              "options": ["$11$", "$-1$", "$1$", "$-11$"],
+              "answer": "B",
+              "explain": "$2(-3)+5=-1$. Parenthesize negatives before multiplying."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Functions",
+              "short": "Banned input",
+              "statement": "A formula $h(x)=\\frac{1}{x-4}$ crashes for one input. Which input must be excluded from its domain?",
+              "options": ["$0$", "$1$", "$4$", "$-4$"],
+              "answer": "C",
+              "explain": "Denominator zero at $x=4$ breaks the division. Set denominators nonzero."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Functions",
+              "short": "Root floor",
+              "statement": "A display computes $p(x)=\\sqrt{x+5}$. What is the smallest allowed input?",
+              "options": ["$0$", "$5$", "$-5$", "$25$"],
+              "answer": "C",
+              "explain": "$x+5\\ge 0$ gives $x\\ge -5$. Even roots need nonnegative insides."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Functions",
+              "short": "Undo value",
+              "statement": "A dispenser follows $f(x)=3x-7$ and must output $11$. What input achieves it?",
+              "options": ["$6$", "$2$", "$18$", "$4$"],
+              "answer": "A",
+              "explain": "$3x-7=11$ gives $x=6$. Set the expression equal and solve."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Functions",
+              "short": "Shifted input",
+              "statement": "A filter uses $h(x)=x^2-4$. What is $h(a+1)$ in terms of $a$?",
+              "options": ["$a^2-3$", "$a^2+2a-3$", "$a^2+1$", "$a^2-4a$"],
+              "answer": "B",
+              "explain": "$(a+1)^2-4=a^2+2a-3$. The whole block $(a+1)$ replaces $x$."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Functions",
+              "short": "Rational point",
+              "statement": "A controller uses $f(x)=\\frac{x+1}{x-2}$. What is $f(5)$?",
+              "options": ["$1$", "$3$", "$2$", "$6$"],
+              "answer": "C",
+              "explain": "$\\frac{6}{3}=2$. Evaluate top and bottom separately."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Functions",
+              "short": "Twin bans",
+              "statement": "A program runs $q(x)=\\frac{1}{x^2-9}$. Which inputs are banned?",
+              "options": ["$0$ only", "$3$ only", "$-3$ only", "$3$ and $-3$"],
+              "answer": "D",
+              "explain": "$x^2-9=0$ at both $3$ and $-3$. Factor denominators to find every ban."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Functions",
+              "short": "Freight branch",
+              "statement": "Shipping costs $5$ plus $2$ per kilogram beyond the first $10$ kg. What does a $14$-kg parcel cost?",
+              "options": ["$13$", "$33$", "$28$", "$18$"],
+              "answer": "A",
+              "explain": "Only $4$ kg count extra: $5+2\\cdot 4=13$ dollars. Check the branch condition first."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Functions",
+              "short": "Absolute read",
+              "statement": "A gauge follows $f(x)=|x-3|+2$. What does it read at $x=7$?",
+              "options": ["$2$", "$6$", "$12$", "$8$"],
+              "answer": "B",
+              "explain": "$|4|+2=6$. Resolve the bars before adding outside terms."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Functions",
+              "short": "Table step",
+              "statement": "A table shows $f(1)=3$, $f(2)=5$, $f(3)=7$. If the pattern holds, what is $f(4)$?",
+              "options": ["$8$", "$10$", "$9$", "$11$"],
+              "answer": "C",
+              "explain": "Constant step $+2$ continues: $9$. Name the pattern, then extend once."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Functions",
+              "short": "Ceiling input",
+              "statement": "A function $r(x)=\\sqrt{4-x}$ models a range limit. What is the largest allowed input?",
+              "options": ["$0$", "$-4$", "$2$", "$4$"],
+              "answer": "D",
+              "explain": "$4-x\\ge 0$ gives $x\\le 4$. Flipped inequalities keep the same rule."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Functions",
+              "short": "Power read",
+              "statement": "A growth cell follows $f(x)=2^x$. What is $f(5)$?",
+              "options": ["$32$", "$10$", "$25$", "$64$"],
+              "answer": "A",
+              "explain": "$2^5=32$. Exponents evaluate after substitution."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Functions",
+              "short": "Revenue point",
+              "statement": "Revenue follows $R(x)=50x-x^2$ dollars for $x$ hundred units. What is $R(10)$?",
+              "options": ["$4000$", "$400$", "$4900$", "$500$"],
+              "answer": "B",
+              "explain": "$500-100=400$ dollars. Units ride along — $x=10$ means a thousand units."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Functions",
+              "short": "Cubic dip",
+              "statement": "A track follows $f(x)=x^3-2x$. What is $f(-2)$?",
+              "options": ["$-12$", "$-4$", "$4$", "$12$"],
+              "answer": "B",
+              "explain": "$-8+4=-4$. Odd powers preserve the negative."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Functions",
+              "short": "Hidden zero",
+              "statement": "For which $x$ is $\\frac{1}{2x+6}$ undefined?",
+              "options": ["$3$", "$0$", "$6$", "$-3$"],
+              "answer": "D",
+              "explain": "$2x+6=0$ at $x=-3$. Solve the denominator-equals-zero equation."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Functions",
+              "short": "Hole value",
+              "statement": "A lifter uses $f(x)=\\frac{x^2-1}{x-1}$ for $x\\ne 1$. What is $f(4)$?",
+              "options": ["$5$", "$3$", "$15$", "$7$"],
+              "answer": "A",
+              "explain": "$\\frac{15}{3}=5$. The hole at $1$ never affects other inputs."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Functions",
+              "short": "Bracket tax",
+              "statement": "Tax is $10\\%$ on the first $10{,}000$ plus $20\\%$ on the rest. What is the tax on $25{,}000$?",
+              "options": ["$5{,}000$", "$4{,}000$", "$2{,}500$", "$3{,}000$"],
+              "answer": "B",
+              "explain": "$1000+3000=4000$ dollars. Each branch taxes only its own slice."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Functions",
+              "short": "Double root domain",
+              "statement": "A monitor needs $g(x)=\\sqrt{x-1}+\\sqrt{9-x}$ defined. How many integer inputs work?",
+              "options": ["$7$", "$8$", "$9$", "$10$"],
+              "answer": "C",
+              "explain": "Both insides nonnegative means $1\\le x\\le 9$ — nine integers. Intersect the conditions."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Functions",
+              "short": "Peak value",
+              "statement": "A fountain follows $f(x)=5-x^2$ meters high at horizontal $x$. What is its maximum height?",
+              "options": ["$5$ at $x=1$", "$4$", "$25$", "$5$ at $x=0$"],
+              "answer": "D",
+              "explain": "Squares subtract most at $x=0$... least: $f(0)=5$ m is the peak. A names the wrong spot."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Functions",
+              "short": "Nested count",
+              "statement": "A counter uses $h(n)=3n+1$. What is $h(h(2))$?",
+              "options": ["$22$", "$19$", "$10$", "$7$"],
+              "answer": "A",
+              "explain": "Inside first: $h(2)=7$; then $h(7)=22$. Work outward from the center."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Functions",
+              "short": "Strict floor",
+              "statement": "A formula $f(x)=\\frac{x+2}{\\sqrt{x-1}}$ needs its denominator defined and nonzero. What is the domain?",
+              "options": ["$x\\ge 1$", "$x>1$", "$x\\ne 1$", "$x>0$"],
+              "answer": "B",
+              "explain": "Square roots need $x\\ge 1$ but denominators forbid equality: $x>1$. Stack both rules."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Functions",
+              "short": "Square read",
+              "statement": "A pad follows $f(x)=x^2+2x+1$. What is $f(-4)$?",
+              "options": ["$25$", "$7$", "$9$", "$23$"],
+              "answer": "C",
+              "explain": "$16-8+1=9$. Alternatively $(x+1)^2$ at $-4$ gives $(-3)^2=9$."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Functions",
+              "short": "Phone eval",
+              "statement": "A bill follows $C(m)=20+0.1m$ dollars for $m$ minutes. What is the bill for $350$ minutes?",
+              "options": ["$37$", "$55$", "$35$", "$53$"],
+              "answer": "B",
+              "explain": "$20+35=55$ dollars. Substitute the full minute count."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Functions",
+              "short": "Half reciprocal",
+              "statement": "A lens follows $f(x)=\\frac{4}{x}$. What is $f(\\frac{1}{2})$?",
+              "options": ["$2$", "$8$", "$1/8$", "$16$"],
+              "answer": "B",
+              "explain": "$4\\div\\frac{1}{2}=8$. Dividing by a half doubles."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Functions",
+              "short": "Average climb",
+              "statement": "A ride's height follows $f(x)=x^2$. What is the average rate of change from $x=1$ to $x=3$?",
+              "options": ["$2$", "$4$", "$8$", "$3$"],
+              "answer": "B",
+              "explain": "$(9-1)\\div(3-1)=4$. Change in height over change in run."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Functions",
+              "short": "Left-side eval",
+              "statement": "A cooler follows $f(x)=2x^2-x+3$. What is $f(-1)$?",
+              "options": ["$0$", "$4$", "$6$", "$8$"],
+              "answer": "C",
+              "explain": "$2+1+3=6$. Even powers erase the negative; odd ones keep it."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Functions",
+              "short": "Root-denominator ban",
+              "statement": "A filter uses $\\frac{1}{\\sqrt{x+2}}$. Which inputs are allowed?",
+              "options": ["$x\\ge -2$", "$x>-2$", "$x\\ne -2$", "$x>0$"],
+              "answer": "B",
+              "explain": "Roots need $x\\ge -2$ but the denominator bans equality: $x>-2$."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Functions",
+              "short": "Crossing lines",
+              "statement": "A tracker solves $f(x)=2x-5$ where $f(x)=10-x$. What is $x$?",
+              "options": ["$5$", "$3$", "$15$", "$-5$"],
+              "answer": "A",
+              "explain": "$10-x=2x-5$ gives $3x=15$, so $x=5$. Equate the two rules."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Functions",
+              "short": "Quadratic gaps",
+              "statement": "A log shows $f(0)=3$, $f(1)=5$, $f(2)=9$, $f(3)=15$. If second differences stay constant, what is $f(4)$?",
+              "options": ["$21$", "$23$", "$19$", "$25$"],
+              "answer": "B",
+              "explain": "First gaps $2,4,6$ grow by $2$, so the next gap is $8$: $15+8=23$."
+            }
+          ]
+        },
+        {
+          "id": "MATH-MINI-5-2",
+          "title": "Composite / Inverse",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Chained calls",
+                "blocks": [
+                  { "p": "Composition feeds one function's output into the next function's input. Work strictly inside-out: the inner call computes first, and its result becomes the outer call's entire input." },
+                  { "list": [
+                    "Evaluate the inner function completely before touching the outer rule.",
+                    "For formulas, substitute the whole inner expression wherever the outer variable appears.",
+                    "Parenthesize the incoming expression — exponents and fractions punish bare drops.",
+                    "Triple chains repeat the same move twice; order never changes."
+                  ] },
+                  { "math": "f(g(x))\\Rightarrow\\text{inner first} \\qquad f(g(a))\\Rightarrow f(\\text{value})" }
+                ]
+              },
+              {
+                "heading": "Undoing with inverses",
+                "blocks": [
+                  { "p": "Inverse functions run the machine backward, swapping inputs with outputs. Round trips collapse to the identity, which is also the fastest way to verify a claimed inverse pair." },
+                  { "list": [
+                    "Build inverses by swapping the variable roles, then isolating the new output.",
+                    "Verify pairs by composing both directions — each must return the bare input.",
+                    "Undo moves in reverse order: addition before multiplication, roots before powers.",
+                    "Watch domains: roots and fractions restrict which trips stay legal."
+                  ] },
+                  { "math": "y=f(x)\\Rightarrow x=f^{-1}(y) \\qquad f(f^{-1}(x))=x" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Functions",
+              "short": "Inner first",
+              "statement": "Machines run $f(x)=2x+3$ after $g(x)=x-1$. What is $f(g(2))$?",
+              "options": ["$5$", "$7$", "$3$", "$6$"],
+              "answer": "A",
+              "explain": "Inside: $g(2)=1$; then $f(1)=5$. Inner first, always."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Functions",
+              "short": "Reverse order",
+              "statement": "With the same machines, what is $g(f(2))$?",
+              "options": ["$5$", "$6$", "$9$", "$7$"],
+              "answer": "B",
+              "explain": "$f(2)=7$, then $g(7)=6$. Order matters — this differs from the previous result."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Functions",
+              "short": "Square after shift",
+              "statement": "A filter squares after shifting: $f(x)=x^2$, $g(x)=x+1$. What is $f(g(3))$?",
+              "options": ["$10$", "$17$", "$16$", "$9$"],
+              "answer": "C",
+              "explain": "$g(3)=4$, then $4^2=16$. The shift happens under the square."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Functions",
+              "short": "Shift after square",
+              "statement": "With the same filter reversed, what is $g(f(3))$?",
+              "options": ["$16$", "$8$", "$12$", "$10$"],
+              "answer": "D",
+              "explain": "$f(3)=9$, then $9+1=10$. Compare with the previous answer: composition rarely commutes."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Functions",
+              "short": "Undo line",
+              "statement": "A controller inverts $f(x)=3x-2$. What is the inverse rule?",
+              "options": ["$\\frac{x+2}{3}$", "$\\frac{x-2}{3}$", "$3x+2$", "$\\frac{x}{3}+2$"],
+              "answer": "A",
+              "explain": "Swap and isolate: $x=3y-2$ gives $y=(x+2)\\div 3$. Undo addition before multiplication."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Functions",
+              "short": "Undo cube",
+              "statement": "A volume code inverts $g(x)=x^3+1$. What is the inverse rule?",
+              "options": ["$\\sqrt[3]{x}+1$", "$\\sqrt[3]{x-1}$", "$\\sqrt{x-1}$", "$(x-1)^3$"],
+              "answer": "B",
+              "explain": "Undo in reverse: subtract first, then cube-root. Roots must match the original power."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Functions",
+              "short": "Formula chain",
+              "statement": "A model chains $f(x)=2x+1$ outside $g(x)=x^2$. What is $f(g(x))$?",
+              "options": ["$2x^2+2x+1$", "$4x^2+4x+1$", "$2x^2+1$", "$(2x+1)^2$"],
+              "answer": "C",
+              "explain": "Drop the whole $x^2$ in: $2x^2+1$. D chains the wrong direction."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Functions",
+              "short": "Chain reversed",
+              "statement": "With the same model reversed, what is $g(f(x))$?",
+              "options": ["$2x^2+1$", "$4x+1$", "$2x+1+x^2$", "$4x^2+4x+1$"],
+              "answer": "D",
+              "explain": "Square the whole line: $(2x+1)^2=4x^2+4x+1$. Parenthesize the incoming block."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Functions",
+              "short": "Half undo",
+              "statement": "A scale inverts $f(x)=\\frac{x+5}{2}$. What is the inverse rule?",
+              "options": ["$2x-5$", "$2x+5$", "$\\frac{x-5}{2}$", "$x-5$"],
+              "answer": "A",
+              "explain": "Swap: $x=(y+5)\\div 2$ gives $y=2x-5$. Reverse the order of operations."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Functions",
+              "short": "Double run",
+              "statement": "A press applies $f(x)=3x-1$ twice. What is $f(f(1))$?",
+              "options": ["$8$", "$5$", "$2$", "$11$"],
+              "answer": "B",
+              "explain": "$f(1)=2$, then $f(2)=5$. Feed the output straight back in."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Functions",
+              "short": "Pair check",
+              "statement": "A manual claims $g(x)=\\frac{x-3}{2}$ inverts $f(x)=2x+3$. What is $f(g(x))$?",
+              "options": ["$x+3$", "$2x$", "$x$", "$0$"],
+              "answer": "C",
+              "explain": "$2\\cdot\\frac{x-3}{2}+3=x$. Collapsing to bare $x$ verifies the pair."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Functions",
+              "short": "Round trip",
+              "statement": "Temperature converts $F=\\frac{9}{5}C+32$ then back. What does the round trip $C(F(C))$ equal?",
+              "options": ["$C+32$", "$F$", "$9C/5$", "$C$"],
+              "answer": "D",
+              "explain": "True inverses annihilate: the output is the starting $C$. Round trips test pair claims."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Functions",
+              "short": "Flip twice",
+              "statement": "A toggle computes $f(x)=\\frac{1}{x}$, then toggles again. What is $f(f(2))$?",
+              "options": ["$2$", "$\\frac{1}{2}$", "$\\frac{1}{4}$", "$4$"],
+              "answer": "A",
+              "explain": "$f(2)=\\frac{1}{2}$, then $f=2$. Self-inverse machines return home in two steps."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Functions",
+              "short": "Root outside",
+              "statement": "A gauge roots after squaring: $f(x)=x^2$, $g(x)=\\sqrt{x+4}$. What is $g(f(5))$?",
+              "options": ["$9$", "$\\sqrt{29}$", "$29$", "$7$"],
+              "answer": "B",
+              "explain": "$f(5)=25$, then $\\sqrt{29}$. Keep the root exact — $29$ is not a square."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Functions",
+              "short": "Line undo",
+              "statement": "A dial inverts $y=4x-7$. What is the inverse rule?",
+              "options": ["$\\frac{x+7}{4}$", "$\\frac{x-7}{4}$", "$4x+7$", "$\\frac{x}{4}-7$"],
+              "answer": "A",
+              "explain": "Swap and isolate: $y=(x+7)\\div 4$. Signs travel with their terms."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Functions",
+              "short": "Mirror cancel",
+              "statement": "A reflector runs $f(x)=5-x$ twice. What is $f(f(x))$?",
+              "options": ["$10-x$", "$x$", "$5$", "$-x$"],
+              "answer": "B",
+              "explain": "$5-(5-x)=x$. Double mirrors restore the original."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Functions",
+              "short": "Power outside",
+              "statement": "A counter runs $g(x)=2^x$ after $f(x)=x+3$. What is $g(f(1))$?",
+              "options": ["$16$", "$8$", "$10$", "$2$"],
+              "answer": "A",
+              "explain": "$f(1)=4$, then $2^4=16$. The inner sum becomes the exponent."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Functions",
+              "short": "Negative pass",
+              "statement": "A probe runs $f(x)=x^2+1$ after $g(x)=2x$ at $x=-1$. What is $f(g(-1))$?",
+              "options": ["$3$", "$5$", "$-3$", "$2$"],
+              "answer": "B",
+              "explain": "$g(-1)=-2$, then $(-2)^2+1=5$. Even powers erase the inner negative."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Functions",
+              "short": "Third undo",
+              "statement": "A mixer inverts $f(x)=\\frac{x}{3}+2$. What is the inverse rule?",
+              "options": ["$3x+2$", "$3x-2$", "$3x-6$", "$\\frac{x-2}{3}$"],
+              "answer": "C",
+              "explain": "Swap: $x=y\\div 3+2$ gives $y=3x-6$. Distribute the reversal to both terms."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Functions",
+              "short": "Distance pass",
+              "statement": "A ranger runs $f(x)=|x|$ after $g(x)=x-5$ at $x=7$. What is $f(g(7))$?",
+              "options": ["$12$", "$-2$", "$7$", "$2$"],
+              "answer": "D",
+              "explain": "$g(7)=2$, then $|2|=2$. Absolute waits until its input is known."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Functions",
+              "short": "Root floor domain",
+              "statement": "A monitor runs $f(x)=\\sqrt{x}$ after $g(x)=x-4$. Which inputs survive the chain?",
+              "options": ["$x\\ge 4$", "$x\\ge 0$", "$x>4$", "$x\\ne 4$"],
+              "answer": "A",
+              "explain": "The outer root needs $x-4\\ge 0$. Chain domains from the outside inward."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Functions",
+              "short": "Fraction undo",
+              "statement": "A pump inverts $f(x)=\\frac{2x+1}{3}$. What is the inverse rule?",
+              "options": ["$\\frac{3x+1}{2}$", "$\\frac{3x-1}{2}$", "$\\frac{3x-1}{3}$", "$2x+1$"],
+              "answer": "B",
+              "explain": "Swap: $x=(2y+1)\\div 3$ gives $y=(3x-1)\\div 2$."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Functions",
+              "short": "Triple step",
+              "statement": "A stepper applies $f(x)=x+2$ three times from $0$. What is the final value?",
+              "options": ["$2$", "$4$", "$6$", "$8$"],
+              "answer": "C",
+              "explain": "$0\\to 2\\to 4\\to 6$. Chains repeat identically each round."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Functions",
+              "short": "Zero pass",
+              "statement": "A mill runs $g(x)=x^2-1$ after $f(x)=5x$ at $x=0$. What is $g(f(0))$?",
+              "options": ["$-1$", "$24$", "$1$", "$6$"],
+              "answer": "A",
+              "explain": "$f(0)=0$, then $0-1=-1$. Zero inputs still run the full chain."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Functions",
+              "short": "Cube-root undo",
+              "statement": "A vault inverts $y=x^3-2$. What is the inverse rule?",
+              "options": ["$\\sqrt[3]{x+2}$", "$\\sqrt[3]{x}+2$", "$\\sqrt{x+2}$", "$(x+2)^3$"],
+              "answer": "A",
+              "explain": "Swap: $x=y^3-2$ gives $y=\\sqrt[3]{x+2}$. Add before rooting."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Functions",
+              "short": "Half chain",
+              "statement": "A doser runs $f(x)=10-x$ after $g(x)=\\frac{x}{2}$ at $x=10$. What is $f(g(10))$?",
+              "options": ["$0$", "$5$", "$15$", "$-5$"],
+              "answer": "B",
+              "explain": "$g(10)=5$, then $10-5=5$. Coincidences still follow the chain."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Functions",
+              "short": "Pick the undo",
+              "statement": "Which function undoes $f(x)=2x+6$?",
+              "options": ["$\\frac{x+6}{2}$", "$2x-6$", "$\\frac{x-6}{2}$", "$\\frac{x}{2}+6$"],
+              "answer": "C",
+              "explain": "Swap and isolate: $y=(x-6)\\div 2$. Test by composing both ways."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Functions",
+              "short": "Chain formula",
+              "statement": "A lab chains $f(x)=\\frac{1}{x}$ outside $g(x)=x+1$ (with $x\\ne -1$). What is $f(g(x))$?",
+              "options": ["$\\frac{1}{x}+1$", "$x$", "$1+x^2$", "$\\frac{1}{x+1}$"],
+              "answer": "D",
+              "explain": "Drop the whole block in: $\\frac{1}{x+1}$. The ban travels with the inner zero."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Functions",
+              "short": "Root chain",
+              "statement": "A scope runs $f(x)=\\sqrt{x}$ after $g(x)=3x^2$ at $x=3$. What is $f(g(3))$?",
+              "options": ["$3\\sqrt{3}$", "$9$", "$\\sqrt{30}$", "$27$"],
+              "answer": "A",
+              "explain": "$g(3)=27$, then $\\sqrt{27}=3\\sqrt{3}$. Simplify the final root."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Functions",
+              "short": "Undo target",
+              "statement": "A lock inverts $f(x)=2x+1$ and must output the input that gives $7$. What is it?",
+              "options": ["$15$", "$3$", "$3.5$", "$6$"],
+              "answer": "B",
+              "explain": "$2x+1=7$ gives $x=3$. Invert, then evaluate — or solve directly."
+            }
+          ]
+        },
+        {
+          "id": "MATH-MINI-5-3",
+          "title": "Transformations / Graphs",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Moves and flips",
+                "blocks": [
+                  { "p": "Every graph move edits the formula in a fixed seat: outside changes push vertically, inside changes push horizontally — and horizontal moves run counterintuitive, always." },
+                  { "list": [
+                    "Outside additions lift the graph; outside negatives drop it.",
+                    "Inside additions shift left, inside subtractions shift right — the reverse of instinct.",
+                    "A leading negative flips the graph over the horizontal axis.",
+                    "Multipliers stretch or squeeze; fractions flatten toward the axis."
+                  ] },
+                  { "math": "f(x)+k\\Rightarrow\\text{up} \\qquad f(x-h)\\Rightarrow\\text{right} \\qquad -f(x)\\Rightarrow\\text{flip}" }
+                ]
+              },
+              {
+                "heading": "Reading key points",
+                "blocks": [
+                  { "p": "Vertices, intercepts, and test points anchor every transformed graph. Read them straight from vertex form or by zeroing one coordinate — then verify candidates by plugging back in." },
+                  { "list": [
+                    "Vertex form exposes the peak or valley with zero algebra.",
+                    "Intercepts come from zeroing the other coordinate and solving.",
+                    "Test points verify membership: both sides must agree exactly.",
+                    "Zeros of upward shapes bracket valleys; of downward shapes, peaks."
+                  ] },
+                  { "math": "a(x-h)^2+k\\Rightarrow(h,k) \\qquad f(0)\\Rightarrow y\\text{-intercept}" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Functions",
+              "short": "Lifted parabola",
+              "statement": "A dish $y=x^2$ is raised $3$ units for clearance. What is the new vertex's height?",
+              "options": ["$3$", "$0$", "$-3$", "$6$"],
+              "answer": "A",
+              "explain": "$y=x^2+3$ peaks... bottoms at $(0,3)$. Outside additions lift."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Functions",
+              "short": "Right shift",
+              "statement": "A curve $y=(x-4)^2$ is compared with $y=x^2$. Which way did it move?",
+              "options": ["Left $4$", "Right $4$", "Up $4$", "Down $4$"],
+              "answer": "B",
+              "explain": "Inside subtractions shift right, against instinct. Left would need $(x+4)$."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Functions",
+              "short": "Flip dish",
+              "statement": "A reflector uses $y=-x^2$ instead of $y=x^2$. What happened to the graph?",
+              "options": ["Shifted down", "Shifted left", "Reflected over the $x$-axis", "Steepened"],
+              "answer": "C",
+              "explain": "A leading negative flips vertically. Shifts need added constants instead."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Functions",
+              "short": "Steep dish",
+              "statement": "Two dishes follow $y=2x^2$ and $y=x^2$. How does the first compare?",
+              "options": ["Wider", "Shorter", "Shifted up", "Steeper"],
+              "answer": "D",
+              "explain": "The multiplier $2$ stretches vertically — steeper everywhere. Fractions would flatten."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Functions",
+              "short": "Corner point",
+              "statement": "A tent corner follows $y=|x-2|+1$. What is the corner's $x$-coordinate?",
+              "options": ["$2$", "$-2$", "$1$", "$3$"],
+              "answer": "A",
+              "explain": "The inside zero sits at $x=2$; outside lifts to height $1$."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Functions",
+              "short": "Root start",
+              "statement": "A ramp follows $y=\\sqrt{x+3}$. At what $x$ does the ramp begin?",
+              "options": ["$3$", "$-3$", "$0$", "$9$"],
+              "answer": "B",
+              "explain": "Inside needs $x+3\\ge 0$, starting at $-3$. Positive shifts move left."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Functions",
+              "short": "Valley read",
+              "statement": "A valley follows $y=(x+1)^2-4$. What is its lowest $y$-value?",
+              "options": ["$1$", "$-1$", "$-4$", "$4$"],
+              "answer": "C",
+              "explain": "Vertex form reads $(-1,-4)$ directly — no algebra needed."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Functions",
+              "short": "Peak read",
+              "statement": "A hill follows $y=-(x-2)^2+5$. What is its maximum height?",
+              "options": ["$2$", "$-5$", "$7$", "$5$"],
+              "answer": "D",
+              "explain": "Vertex $(2,5)$ with downward opening peaks at $5$."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Functions",
+              "short": "Point check",
+              "statement": "A survey claims point $(2,7)$ lies on $y=3x+1$. Is the claim true?",
+              "options": ["Yes", "No, height is $5$", "No, height is $9$", "No, height is $6$"],
+              "answer": "A",
+              "explain": "$3(2)+1=7$ matches exactly. Both sides must agree."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Functions",
+              "short": "Double move",
+              "statement": "A plaza curve $y=x^2$ shifts left $2$ and down $1$. What is the new rule?",
+              "options": ["$y=(x-2)^2+1$", "$y=(x+2)^2-1$", "$y=(x-2)^2-1$", "$y=(x+2)^2+1$"],
+              "answer": "B",
+              "explain": "Left adds inside, down subtracts outside: $(x+2)^2-1$. Each move owns its seat."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Functions",
+              "short": "Mirror V",
+              "statement": "A roofline $y=|x|$ is mirrored over the $x$-axis. What is the new rule?",
+              "options": ["$y=|-x|$", "$y=|x+1|$", "$y=-|x|$", "$y=|x|-1$"],
+              "answer": "C",
+              "explain": "Leading negatives flip vertically. Inside negatives mirror sideways instead."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Functions",
+              "short": "Vertex spot",
+              "statement": "A mound follows $y=3(x-1)^2+2$. What is its vertex's $x$-coordinate?",
+              "options": ["$-1$", "$2$", "$3$", "$1$"],
+              "answer": "D",
+              "explain": "Vertex form exposes $(1,2)$ — the inside zero is $x=1$."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Functions",
+              "short": "Squeeze read",
+              "statement": "A lens curve $y=(2x)^2$ is compared with $y=x^2$. What happened horizontally?",
+              "options": ["Compressed by half", "Stretched double", "Shifted right $2$", "Unchanged"],
+              "answer": "A",
+              "explain": "Inside multipliers squeeze horizontally by their reciprocal. Outside ones act vertically."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Functions",
+              "short": "Dropped cube",
+              "statement": "A sculpture $y=x^3$ drops $4$ units. What is its new $y$-intercept?",
+              "options": ["$0$", "$-4$", "$4$", "$-64$"],
+              "answer": "B",
+              "explain": "$0-4=-4$. Outside moves shift every point equally."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Functions",
+              "short": "Root flip",
+              "statement": "A slide uses $y=-\\sqrt{x}$ instead of $y=\\sqrt{x}$. What changed?",
+              "options": ["Shifted down", "Shifted left", "Reflected over the $x$-axis", "Domain flipped"],
+              "answer": "C",
+              "explain": "The leading negative flips vertically; the domain $x\\ge 0$ never moves."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Functions",
+              "short": "Hidden valley",
+              "statement": "A trough follows $y=x^2+6x+5$. What is its lowest $y$-value?",
+              "options": ["$-3$", "$5$", "$3$", "$-4$"],
+              "answer": "D",
+              "explain": "Axis $x=-3$; value $9-18+5=-4$. Complete or use the axis formula."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Functions",
+              "short": "Power slide",
+              "statement": "A colony $y=2^x$ shifts left $1$. What is the new rule?",
+              "options": ["$y=2^{x+1}$", "$y=2^x+1$", "$y=2^{x-1}$", "$y=2\\cdot 2^x$"],
+              "answer": "A",
+              "explain": "Left adds inside the exponent. Outside additions lift instead."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Functions",
+              "short": "Ground zero",
+              "statement": "An arch $y=(x-3)^2+2$ meets its $y$-intercept where? At what height?",
+              "options": ["$2$", "$11$", "$5$", "$9$"],
+              "answer": "B",
+              "explain": "At $x=0$: $9+2=11$. Zero the other coordinate for intercepts."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Functions",
+              "short": "Gap measure",
+              "statement": "Two rails follow $y=x^2+1$ and $y=x^2-1$. How far apart vertically are they?",
+              "options": ["$0$", "$1$", "$2$", "$2x^2$"],
+              "answer": "C",
+              "explain": "Outside constants differ by $2$ at every $x$. Subtract the rules."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Functions",
+              "short": "Corner check",
+              "statement": "A map claims $(-1,4)$ lies on $y=x^2+3$. Is it correct?",
+              "options": ["No, height is $2$", "No, height is $5$", "No, height is $1$", "Yes"],
+              "answer": "D",
+              "explain": "$(-1)^2+3=4$ matches. Even powers erase the sign first."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Functions",
+              "short": "V zeros",
+              "statement": "A barrier $|x+4|-2$ touches zero at two points. What is the larger one?",
+              "options": ["$-2$", "$-6$", "$2$", "$-4$"],
+              "answer": "A",
+              "explain": "$|x+4|=2$ gives $-2$ and $-6$. Larger: $-2$."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Functions",
+              "short": "Down narrow",
+              "statement": "A vault follows $y=-2x^2$. Which description fits?",
+              "options": ["Upward and wide", "Downward and narrow", "Upward and narrow", "Downward and wide"],
+              "answer": "B",
+              "explain": "Negative opens down; $|2|>1$ narrows. Sign steers, size stretches."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Functions",
+              "short": "Slide minimum",
+              "statement": "A slide follows $y=(x-5)^2+3$. What is its minimum height?",
+              "options": ["$5$", "$-5$", "$3$", "$8$"],
+              "answer": "C",
+              "explain": "Vertex $(5,3)$ bottoms at $3$. Upward shapes minimum at the vertex."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Functions",
+              "short": "Square pass",
+              "statement": "A trail marker claims $(3,9)$ lies on $y=x^2$. Is it right?",
+              "options": ["No, height is $6$", "No, height is $12$", "No, height is $3$", "Yes"],
+              "answer": "D",
+              "explain": "$3^2=9$ matches exactly."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Functions",
+              "short": "Root domain",
+              "statement": "A path $y=\\sqrt{x-2}$ is compared with $y=\\sqrt{x}$. Where does the first path begin?",
+              "options": ["$2$", "$0$", "$-2$", "$4$"],
+              "answer": "A",
+              "explain": "Inside needs $x\\ge 2$ — a right shift of two. Domains shift with graphs."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Functions",
+              "short": "Capped V",
+              "statement": "An awning follows $y=-|x-1|+4$. What is its maximum height?",
+              "options": ["$1$", "$4$", "$-1$", "$5$"],
+              "answer": "B",
+              "explain": "Corner at $(1,4)$ with downward opening peaks at $4$."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Functions",
+              "short": "Triple vertex",
+              "statement": "A ramp $y=3x^2$ has its vertex where?",
+              "options": ["$(3,0)$", "$(1,3)$", "$(0,0)$", "$(0,3)$"],
+              "answer": "C",
+              "explain": "Pure squares always bottom at the origin, however steep."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Functions",
+              "short": "Cube read",
+              "statement": "A mold follows $y=(x+2)^3+1$. What is its height at $x=-2$?",
+              "options": ["$9$", "$-7$", "$7$", "$1$"],
+              "answer": "D",
+              "explain": "$0+1=1$. Inside zeros collapse the power term."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Functions",
+              "short": "Crossing zeros",
+              "statement": "A bridge $y=x^2-4$ crosses zero at two points. What is the positive one?",
+              "options": ["$4$", "$-2$", "$0$", "$2$"],
+              "answer": "D",
+              "explain": "$x^2=4$ gives $\\pm 2$. Positive: $2$."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Functions",
+              "short": "Stretched valley",
+              "statement": "A basin follows $y=2(x-3)^2-8$. What is its vertex's $x$-coordinate?",
+              "options": ["$-3$", "$3$", "$-8$", "$8$"],
+              "answer": "B",
+              "explain": "Vertex $(3,-8)$ — stretch never moves the inside zero."
+            }
+          ]
+        },
+        {
+          "id": "MATH-MINI-5-4",
+          "title": "Exponential / Log",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Exponents undo with logs",
+                "blocks": [
+                  { "p": "Logarithms ask the exponent question: to what power must the base rise to reach the value? Same-base pairs collapse instantly, turning tangled equations into one-step linears." },
+                  { "list": [
+                    "Read every log as a power question — the answer is always an exponent.",
+                    "Matching bases collapse: logs eat powers and powers eat logs.",
+                    "Unwrap exponents by logging both sides with a convenient base.",
+                    "Common logs hide base ten; natural logs hide the constant $e$."
+                  ] },
+                  { "math": "\\log_b(b^k)=k \\qquad b^{\\log_b x}=x" }
+                ]
+              },
+              {
+                "heading": "Log rules and models",
+                "blocks": [
+                  { "p": "Log rules mirror exponent rules in reverse: products split into sums, quotients into differences, powers into multipliers. Science scales like acidity and quakes read these rules directly." },
+                  { "list": [
+                    "Products inside become sums outside; quotients become differences.",
+                    "Exponents slide out front as multipliers before any other move.",
+                    "Doubling and halving count in powers of two — ratio first, then powers.",
+                    "Each tenfold jump shifts pH and Richter scales by exactly one unit."
+                  ] },
+                  { "math": "\\log(MN)=\\log M+\\log N \\qquad \\log(M^k)=k\\cdot\\log M" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Exponential",
+              "short": "Power ask",
+              "statement": "A scale reads $\\log_2 8$. To what power must $2$ rise to reach $8$?",
+              "options": ["$3$", "$2$", "$4$", "$8$"],
+              "answer": "A",
+              "explain": "$2^3=8$, so the log is $3$. Logs answer power questions."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Exponential",
+              "short": "Base five",
+              "statement": "A gauge shows $\\log_5 25$. What is its value?",
+              "options": ["$3$", "$2$", "$5$", "$1$"],
+              "answer": "B",
+              "explain": "$5^2=25$, so the value is $2$."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Exponential",
+              "short": "Triple ten",
+              "statement": "A meter reads $\\log_{10} 1000$. What does it display?",
+              "options": ["$2$", "$4$", "$3$", "$10$"],
+              "answer": "C",
+              "explain": "Three zeros mean three powers of ten."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Exponential",
+              "short": "Power solve",
+              "statement": "A culture satisfies $2^x=32$. What is $x$?",
+              "options": ["$4$", "$6$", "$8$", "$5$"],
+              "answer": "D",
+              "explain": "$2^5=32$. Match the bases, then equate exponents."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Exponential",
+              "short": "Base three",
+              "statement": "A dial shows $\\log_3 81$. What is its reading?",
+              "options": ["$4$", "$3$", "$9$", "$27$"],
+              "answer": "A",
+              "explain": "$3^4=81$. Count the multiplications."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Exponential",
+              "short": "Ten power",
+              "statement": "A signal satisfies $10^x=10000$. What is $x$?",
+              "options": ["$3$", "$4$", "$5$", "$1000$"],
+              "answer": "B",
+              "explain": "Four zeros give $x=4$. Zeros count powers of ten."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Exponential",
+              "short": "Split product",
+              "statement": "A lab computes $\\log_2(8\\cdot 4)$ by splitting. What is the result?",
+              "options": ["$6$", "$12$", "$5$", "$7$"],
+              "answer": "C",
+              "explain": "$\\log_2 8+\\log_2 4=3+2=5$. Products split into sums."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Exponential",
+              "short": "Split quotient",
+              "statement": "A ratio meter computes $\\log(100\\div 10)$ in base ten. What does it show?",
+              "options": ["$10$", "$3$", "$0.5$", "$1$"],
+              "answer": "D",
+              "explain": "$\\log 100-\\log 10=2-1=1$. Quotients split into differences."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Exponential",
+              "short": "Triple power",
+              "statement": "A reactor satisfies $3^x=81$. What is $x$?",
+              "options": ["$3$", "$9$", "$27$", "$4$"],
+              "answer": "D",
+              "explain": "$3^4=81$. Same bases equate exponents."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Exponential",
+              "short": "Log of one",
+              "statement": "A baseline reads $\\log_7 1$. What is its value?",
+              "options": ["$1$", "$0$", "$7$", "Undefined"],
+              "answer": "B",
+              "explain": "Any base to power zero is one, so the log is $0$."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Exponential",
+              "short": "Decay count",
+              "statement": "A $160$-g sample decays to $20$ g by halving. How many half-lives passed?",
+              "options": ["$2$", "$4$", "$3$", "$8$"],
+              "answer": "C",
+              "explain": "$160\\div 20=8=2^3$, so three halvings."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Exponential",
+              "short": "Base four",
+              "statement": "A code reads $\\log_4 64$. What is the code?",
+              "options": ["$2$", "$4$", "$16$", "$3$"],
+              "answer": "D",
+              "explain": "$4^3=64$. Test small powers upward."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Exponential",
+              "short": "Fifth power",
+              "statement": "A vault satisfies $5^x=125$. What is $x$?",
+              "options": ["$3$", "$5$", "$25$", "$2$"],
+              "answer": "A",
+              "explain": "$5^3=125$."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Exponential",
+              "short": "Triple double",
+              "statement": "A $1{,}000$ grant doubles three times through matching rounds. What is the final amount?",
+              "options": ["$3{,}000$", "$8{,}000$", "$6{,}000$", "$4{,}000$"],
+              "answer": "B",
+              "explain": "$1000\\cdot 2^3=8000$ dollars. Three doublings multiply by eight."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Exponential",
+              "short": "Split difference",
+              "statement": "A tuner computes $\\log_2 32-\\log_2 4$. What is the result?",
+              "options": ["$8$", "$28$", "$3$", "$6$"],
+              "answer": "C",
+              "explain": "$5-2=3$. Evaluate each log, then subtract."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Exponential",
+              "short": "Base six",
+              "statement": "A ticket shows $\\log_6 36$. What number is it?",
+              "options": ["$3$", "$6$", "$12$", "$2$"],
+              "answer": "D",
+              "explain": "$6^2=36$."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Exponential",
+              "short": "Square power",
+              "statement": "A battery satisfies $4^x=64$. What is $x$?",
+              "options": ["$3$", "$4$", "$16$", "$2$"],
+              "answer": "A",
+              "explain": "Rewrite as powers of two: $2^{2x}=2^6$ gives $x=3$."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Exponential",
+              "short": "Acid scale",
+              "statement": "Acidity follows $\\text{pH}=-\\log[H^+]$, and a sample measures $[H^+]=10^{-3}$. What is its pH?",
+              "options": ["$-3$", "$3$", "$30$", "$1/3$"],
+              "answer": "B",
+              "explain": "$-\\log(10^{-3})=-(-3)=3$. The negative flips the exponent's sign."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Exponential",
+              "short": "Half power",
+              "statement": "A root table asks for $\\log_9 3$. What is the value?",
+              "options": ["$2$", "$3$", "$1/2$", "$9$"],
+              "answer": "C",
+              "explain": "$9^{1/2}=3$. Fractional answers are legal logs."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Exponential",
+              "short": "Shifted power",
+              "statement": "A timer satisfies $2^{x+1}=16$. What is $x$?",
+              "options": ["$5$", "$4$", "$2$", "$3$"],
+              "answer": "D",
+              "explain": "$x+1=4$ gives $x=3$. Unwrap the exponent's shift first."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Exponential",
+              "short": "Pair sum",
+              "statement": "A checksum adds $\\log 2+\\log 5$ in base ten. What is the total?",
+              "options": ["$1$", "$7$", "$10$", "$\\log 7$"],
+              "answer": "A",
+              "explain": "Sums combine inside: $\\log 10=1$. D adds the values instead."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Exponential",
+              "short": "Quake gap",
+              "statement": "One quake releases $10^3$ times the energy of another. How many Richter units apart are they?",
+              "options": ["$30$", "$3$", "$10$", "$1000$"],
+              "answer": "B",
+              "explain": "$\\log_{10}(10^3)=3$. Each tenfold jump is one unit."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Exponential",
+              "short": "Negative log",
+              "statement": "A dilution reads $\\log_2(1/8)$. What is its value?",
+              "options": ["$-8$", "$8$", "$-3$", "$3$"],
+              "answer": "C",
+              "explain": "$2^{-3}=1/8$. Fractions yield negative logs."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Exponential",
+              "short": "Self log",
+              "statement": "A calibration reads $\\log_{13} 13$. What is its value?",
+              "options": ["$13$", "$0$", "$2$", "$1$"],
+              "answer": "D",
+              "explain": "Any base to the first power is itself — self-logs equal one."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Exponential",
+              "short": "Matched bases",
+              "statement": "A lock satisfies $9^x=27$. What is $x$?",
+              "options": ["$1.5$", "$2$", "$3$", "$1$"],
+              "answer": "A",
+              "explain": "As powers of three: $2x=3$ gives $x=1.5$. Convert to a shared base."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Exponential",
+              "short": "Reciprocal log",
+              "statement": "A gauge reads $\\log_5(1/25)$. What is its value?",
+              "options": ["$5$", "$-2$", "$2$", "$-5$"],
+              "answer": "B",
+              "explain": "$5^{-2}=1/25$. Reciprocals negate the exponent."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Exponential",
+              "short": "Double clock",
+              "statement": "Money doubles every $8$ years at $9\\%$ by the rule of $72$ ($72\\div 9$). A saver asks: how fast does it double at $9\\%$?",
+              "options": ["$9$ years", "$6$ years", "$8$ years", "$7.2$ years"],
+              "answer": "C",
+              "explain": "$72\\div 9=8$ years. Divide the rule number by the percent."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Exponential",
+              "short": "Half exponent",
+              "statement": "A process satisfies $4^{x+1}=8$. What is $x$?",
+              "options": ["$2$", "$1$", "$-0.5$", "$0.5$"],
+              "answer": "D",
+              "explain": "As powers of two: $2x+2=3$ gives $x=0.5$."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Exponential",
+              "short": "Split and subtract",
+              "statement": "A filter computes $\\log_3 27-\\log_3 3$. What is the result?",
+              "options": ["$9$", "$24$", "$3$", "$2$"],
+              "answer": "D",
+              "explain": "$3-1=2$. Each log evaluates on its own."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Exponential",
+              "short": "Bracket log",
+              "statement": "A reading $\\log_2 10$ is compared with $3$. Which side is greater?",
+              "options": ["Less than $3$", "Greater than $3$", "Equal to $3$", "Cannot tell"],
+              "answer": "B",
+              "explain": "$2^3=8<10$, so the log passes $3$. Bracket between known powers."
+            }
+          ]
+        }
       ]
     },
     {
