@@ -276,6 +276,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const calcApiRef = useRef(null);
   const desmosStates = useRef({});
   const desmosQRef = useRef(null);
+  const boardStore = useRef({});
   const prevQRef = useRef(null);
   const pausedRef = useRef(false);
   const introDoneRef = useRef(false);
@@ -756,7 +757,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               </button>
             </div>
             {calcMode === "board" ? (
-              <FreestyleBoard />
+              <FreestyleBoard qkey={activeQ.n} store={boardStore} />
             ) : (
               <DesmosCalc
               mode={calcMode}

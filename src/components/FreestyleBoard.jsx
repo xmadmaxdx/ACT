@@ -232,8 +232,12 @@ function ShapeIcon({ id }) {
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 
-export default function FreestyleBoard() {
-  const [objects, setObjects] = useState([]);
+export default function FreestyleBoard({ qkey, store }) {
+  const [objects, setObjects] = useState(() =>
+    store && qkey !== undefined && qkey !== null && Array.isArray(store.current[qkey])
+      ? clone(store.current[qkey])
+      : []
+  );
   const [tool, setTool] = useState("select");
   const [color, setColor] = useState(INK);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -355,6 +359,22 @@ export default function FreestyleBoard() {
       if (holdRef.current) clearInterval(holdRef.current);
     };
   }, []);
+
+  const prevBoardKey = useRef(qkey);
+  useEffect(() => {
+    if (prevBoardKey.current !== qkey) {
+      if (store) {
+        if (prevBoardKey.current !== undefined && prevBoardKey.current !== null) {
+          store.current[prevBoardKey.current] = clone(objectsRef.current);
+        }
+        const saved = store.current[qkey];
+        setObjects(Array.isArray(saved) ? clone(saved) : []);
+      }
+      setSelectedIds([]);
+      setHistory([]);
+      prevBoardKey.current = qkey;
+    }
+  }, [qkey, store]);
 
   const boardPoint = useCallback((clientX, clientY) => {
     const rect = svgRef.current.getBoundingClientRect();
@@ -797,7 +817,7 @@ export default function FreestyleBoard() {
     if (holdRef.current) {
       clearInterval(holdRef.current);
     }
-    holdRef.current = setInterval(() => nudge(fx, fy), 140);
+    holdRef.current = setInterval(() => nudge(fx, fy), 200);
   }, [nudge]);
 
   const stopHold = useCallback(() => {
@@ -806,11 +826,6 @@ export default function FreestyleBoard() {
       holdRef.current = null;
     }
   }, []);
-
-  const resetView = useCallback(() => {
-    stopHold();
-    setCam({ x: 0, y: 0, zoom: 1 });
-  }, [stopHold]);
 
   const startEdit = useCallback((id) => {
     const obj = objectsRef.current.find((o) => o.id === id);
@@ -1121,14 +1136,14 @@ export default function FreestyleBoard() {
             type="button"
             className="board-dpad-btn"
             aria-label="Pan up"
-            onPointerDown={() => startHold(0, 0.3)}
+            onPointerDown={() => startHold(0, 0.12)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
             onPointerCancel={stopHold}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                nudge(0, 0.3);
+                nudge(0, 0.12);
               }
             }}
           >
@@ -1139,39 +1154,32 @@ export default function FreestyleBoard() {
             type="button"
             className="board-dpad-btn"
             aria-label="Pan left"
-            onPointerDown={() => startHold(0.3, 0)}
+            onPointerDown={() => startHold(0.12, 0)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
             onPointerCancel={stopHold}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                nudge(0.3, 0);
+                nudge(0.12, 0);
               }
             }}
           >
             ◀
           </button>
-          <button
-            type="button"
-            className="board-dpad-btn"
-            aria-label="Reset view"
-            onClick={resetView}
-          >
-            ⌂
-          </button>
+          <span />
           <button
             type="button"
             className="board-dpad-btn"
             aria-label="Pan right"
-            onPointerDown={() => startHold(-0.3, 0)}
+            onPointerDown={() => startHold(-0.12, 0)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
             onPointerCancel={stopHold}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                nudge(-0.3, 0);
+                nudge(-0.12, 0);
               }
             }}
           >
@@ -1182,14 +1190,14 @@ export default function FreestyleBoard() {
             type="button"
             className="board-dpad-btn"
             aria-label="Pan down"
-            onPointerDown={() => startHold(0, -0.3)}
+            onPointerDown={() => startHold(0, -0.12)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
             onPointerCancel={stopHold}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                nudge(0, -0.3);
+                nudge(0, -0.12);
               }
             }}
           >
