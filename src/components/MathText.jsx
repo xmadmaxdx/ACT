@@ -19,9 +19,23 @@ function texNode(tex, display, key) {
 /* Inline *italic* markup for non-math runs (matches TestScreen rich()). */
 function italicRich(text, keyPrefix) {
   return String(text)
-    .split(/\*([^*]+)\*/g)
-    .map((part, i) =>
-      i % 2 === 1 ? <em key={`${keyPrefix}-em-${i}`}>{part}</em> : <span key={`${keyPrefix}-t-${i}`}>{part}</span>
+    .split(/__([^_]+?)__/g)
+    .map((seg, si) =>
+      si % 2 === 1 ? (
+        <span key={`${keyPrefix}-u-${si}`} className="u-mark">{seg}</span>
+      ) : (
+        <span key={`${keyPrefix}-s-${si}`}>
+          {String(seg)
+            .split(/\*([^*]+)\*/g)
+            .map((part, i) =>
+              i % 2 === 1 ? (
+                <em key={`${keyPrefix}-em-${i}`}>{part}</em>
+              ) : (
+                <span key={`${keyPrefix}-t-${i}`}>{part}</span>
+              )
+            )}
+        </span>
+      )
     );
 }
 

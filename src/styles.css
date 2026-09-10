@@ -929,6 +929,13 @@ button {
   color: var(--green-dark);
 }
 
+.embed-check-note {
+  margin: 10px 0 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
 @media (max-width: 860px) {
   .course-layout {
     grid-template-columns: 1fr;

@@ -70,7 +70,11 @@ function PracticeEmbed({ problem, figures }) {
 }
 
 function ExampleEmbed({ example, figures }) {
+  const [pick, setPick] = useState(null);
+  const [checked, setChecked] = useState(false);
   if (!example) return null;
+  const hasOptions = Array.isArray(example.options) && example.options.length === 4;
+  const correct = pick === example.answer;
   return (
     <div className="example-q">
       <div className="embed-q-head">
@@ -80,6 +84,45 @@ function ExampleEmbed({ example, figures }) {
       <p className="lesson-p"><MathText text={example.statement} /></p>
       {example.figure && figures && figures[example.figure] && (
         <span className="lesson-figure" dangerouslySetInnerHTML={{ __html: figures[example.figure] }} />
+      )}
+      {hasOptions && (
+        <>
+          <div className="q-options">
+            {example.options.map((opt, i) => {
+              const letter = ["A", "B", "C", "D"][i];
+              const cls = ["q-option"];
+              if (pick === letter) cls.push("selected");
+              if (checked && letter === example.answer) cls.push("correct");
+              if (checked && pick === letter && letter !== example.answer) cls.push("wrong");
+              return (
+                <button
+                  key={letter}
+                  type="button"
+                  className={cls.join(" ")}
+                  disabled={checked}
+                  onClick={() => setPick(letter)}
+                >
+                  <span className="q-letter">{letter}</span>
+                  <span className="q-text"><MathText text={opt} /></span>
+                </button>
+              );
+            })}
+          </div>
+          {!checked ? (
+            <button
+              type="button"
+              className="btn-primary embed-check"
+              disabled={!pick}
+              onClick={() => setChecked(true)}
+            >
+              CHECK
+            </button>
+          ) : (
+            <p className="embed-check-note">
+              {correct ? "Correct." : `Correct answer: ${example.answer}.`} Walkthrough below.
+            </p>
+          )}
+        </>
       )}
       <div className="example-discuss">
         <span className="explain-head">Walkthrough</span>
