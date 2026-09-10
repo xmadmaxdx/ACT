@@ -504,6 +504,57 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       : [{ heading: intro && intro.heading, blocks: (intro && intro.blocks) || [] }];
   const [slideIdx, setSlideIdx] = useState(0);
 
+  useEffect(() => {
+    const onKey = (e) => {
+      const tag = (e.target && e.target.tagName) || "";
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable)) return;
+      const inIntro = needIntro && !introDoneRef.current;
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        if (inIntro) {
+          if (slideIdx < slides.length - 1) {
+            setSlideIdx(slideIdx + 1);
+            window.scrollTo(0, 0);
+          } else {
+            completeIntro();
+          }
+          return;
+        }
+        setQIndex((i) => Math.min(i + 1, total - 1));
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        if (inIntro) {
+          if (slideIdx > 0) {
+            setSlideIdx(slideIdx - 1);
+            window.scrollTo(0, 0);
+          }
+          return;
+        }
+        setQIndex((i) => Math.max(i - 1, 0));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setOverviewOpen((v) => !v);
+      } else if (e.key === "ArrowDown") {
+        if (e.shiftKey || e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          if (review) return;
+          const n = prevQRef.current;
+          const delta = elapsedRef.current - enterRef.current;
+          const finalPaces =
+            n !== null && n !== undefined && delta > 0
+              ? { ...pacesRef.current, [n]: (pacesRef.current[n] || 0) + delta }
+              : { ...pacesRef.current };
+          finishRef.current({ ...snapshotRef.current, paces: finalPaces });
+        } else if (showCalc && !calcOpen) {
+          e.preventDefault();
+          openCalc();
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
   return (
     <div className="test">
       <header className="test-topbar">

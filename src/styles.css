@@ -640,8 +640,11 @@ button {
 }
 
 .course-cta {
-  width: 100%;
+  width: auto;
   margin-top: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 14px;
 }
 
 .course-cta:disabled {
