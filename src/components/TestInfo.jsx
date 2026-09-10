@@ -124,10 +124,12 @@ function ExampleEmbed({ example, figures }) {
           )}
         </>
       )}
-      <div className="example-discuss">
-        <span className="explain-head">Walkthrough</span>
-        <p className="explain-text"><MathText text={example.discuss} /></p>
-      </div>
+      {(!hasOptions || checked) && (
+        <div className="example-discuss">
+          <span className="explain-head">Walkthrough</span>
+          <p className="explain-text"><MathText text={example.discuss} /></p>
+        </div>
+      )}
     </div>
   );
 }
@@ -264,17 +266,6 @@ function CoursePage({ course, subject, onBack, onSelect }) {
         <span>← All courses</span>
       </button>
       <h3 className="course-title">{course.title}</h3>
-      <p className="muted-text">
-        {course.tier} · {course.problems.length} practice problems · {course.timeMinutes || course.problems.length} min test
-      </p>
-      <button
-        type="button"
-        className="btn-primary course-cta"
-        disabled={!ready}
-        onClick={() => ready && onSelect(payload)}
-      >
-        {ready ? "GIVE TEST" : "COMING SOON"}
-      </button>
       <div className="course-layout">
         <div className="course-main">
           <p className="lesson-p">{course.summary}</p>
@@ -370,10 +361,14 @@ export default function TestInfo({ onGiveTest, onCourseOpen }) {
 
   return (
     <div>
-      <h2 className="section-title rise d2">Test info</h2>
-      <p className="muted-text rise d2">
-        Skill courses with lessons and 10-problem practice sets. A course loads only when you open this page.
-      </p>
+      {!openCourse && (
+        <>
+          <h2 className="section-title rise d2">Test info</h2>
+          <p className="muted-text rise d2">
+            Skill courses with lessons and 10-problem practice sets. A course loads only when you open this page.
+          </p>
+        </>
+      )}
 
       {!openCourse ? (
         <>
