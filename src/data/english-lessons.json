@@ -1,4 +1,227 @@
 {
   "subject": "english",
-  "lessons": []
+  "courses": [
+    {
+      "id": "verb-tenses",
+      "title": "Verb Tenses",
+      "tier": "EVERY TEST",
+      "summary": "Every tense the ACT tests — simple, perfect, and progressive forms, consistency, irregular participles, would/will sequence, and parallelism traps — taught through 22 worked examples that grow harder as you go, plus a distinct 10-question practice set.",
+      "timeMinutes": 10,
+      "skills": [
+        { "id": "simple-tenses", "title": "Simple Tenses", "key": "Past for finished time (yesterday, in 1999), present for habits and truths, future (will) for later time — match the time marker." },
+        { "id": "perfect-tenses", "title": "Perfect Tenses", "key": "have/has + participle = present perfect; had + participle = past perfect (earlier of two pasts); will have + participle = future perfect." },
+        { "id": "progressive-forms", "title": "Progressive Forms", "key": "be + -ing stresses ongoing action (was studying when the phone rang). Never pick a progressive when the simple form says the same thing." },
+        { "id": "tense-consistency", "title": "Tense Consistency", "key": "Stay in the passage's tense unless a time word forces a shift. Check one sentence before and one after the underline." },
+        { "id": "irregular-participles", "title": "Irregular Participles", "key": "Perfect tenses need the participle, not the simple past: had spoken (not spoke), had drunk, had swum, had written." },
+        { "id": "would-will", "title": "Would vs Will Sequence", "key": "Use will with present/future framing and would with past framing. Conditional would never pairs with a past time marker alone." },
+        { "id": "parallelism-tense", "title": "Parallelism Over Tense", "key": "In a list (published, gave, and wrote), all verbs share one tense. A had written inside a simple-past list is always wrong." },
+        { "id": "timeless-truths", "title": "Timeless Present", "key": "General facts stay in present tense even inside a past-tense story: Newton is known for his laws, not was known." }
+      ],
+      "lesson": [
+        { "h": "1. The Three Simple Tenses", "id": "simple-tenses" },
+        { "p": "Simple tenses place an action at one point in time. The ACT gives you the time for free — a date, yesterday, now, tomorrow, next May — and exactly one option matches it. Your job is to find the time marker first, then pick the tense." },
+        { "list": [
+          "Simple present: habits and general facts. She walks to school. Water boils at 100 degrees Celsius.",
+          "Simple past: finished time. In 1999, scientists discovered a new species. I played basketball yesterday.",
+          "Simple future: will + base verb. The trip next May will be long. She will finish tomorrow.",
+          "Spotter: if the options are the same verb in different tenses (discover, discovered, will discover, had discovered), this is a tense question — hunt the time word."
+        ] },
+        { "example": 1 },
+        { "example": 2 },
+        { "example": 3 },
+        { "h": "2. The Three Perfect Tenses", "id": "perfect-tenses" },
+        { "p": "Perfect tenses relate TWO times: an earlier action completed before a later reference point. Present perfect connects the past to now; past perfect connects an earlier past to a later past; future perfect connects an earlier future to a later future. The helping verb tells you which: have/has, had, will have." },
+        { "list": [
+          "Present perfect (have/has + participle): started in the past, relevant now. I have practiced, so I am ready. She has played piano for 8 years.",
+          "Past perfect (had + participle): the earlier of two past actions. By the time I woke up, my mother had left. He had spoken before Ken arrived.",
+          "Future perfect (will have + participle): completed before a future moment. By this time next summer, you will have completed your studies.",
+          "Signal words: since, for, already, yet, by the time, by next May — all invite a perfect tense."
+        ] },
+        { "example": 4 },
+        { "example": 5 },
+        { "example": 6 },
+        { "example": 7 },
+        { "h": "3. Progressive Forms: Ongoing Action", "id": "progressive" },
+        { "p": "Progressive (be + verb-ing) stresses that an action was in progress when something else happened. The ACT uses it in one pattern: a long background action interrupted by a short one. If nothing interrupts, prefer the simple tense — the ACT calls the extra be wordy." },
+        { "list": [
+          "Past progressive + simple past: She was studying when the phone rang. I was trying to change a bulb when I slipped.",
+          "Present progressive for right now: Shh — John is sleeping. Right now they are reading.",
+          "Trap: have been using inside a passage that is otherwise simple past (took, conducted) must become had been using — match the passage, not the moment."
+        ] },
+        { "example": 8 },
+        { "example": 9 },
+        { "example": 10 },
+        { "h": "4. Consistency Is the Whole Game", "id": "consistency" },
+        { "p": "Most ACT tense questions are consistency questions: the sentence starts in one tense and one option breaks it. Rule: verbs stay in the same tense throughout a sentence and across neighboring sentences unless a time word forces a shift. Always read one sentence before and one after the underline before choosing." },
+        { "list": [
+          "Same time frame, same tense: She finished her homework and watched a movie — never finished and watches.",
+          "Time markers override: In 1999 signals past; next May signals future. Without a doubt, our trip to Paris next May was interesting must become will be.",
+          "A shift is legal only when the timeline shifts: She was studying when the phone rang is fine; She was studying when the phone rings is broken."
+        ] },
+        { "example": 11 },
+        { "example": 12 },
+        { "example": 13 },
+        { "h": "5. Irregular Participles: the Form Trap", "id": "participles" },
+        { "p": "Half of perfect-tense misses are not about tense at all — they are about form. Every perfect tense demands the past participle, which for irregular verbs does NOT look like the simple past. Had spoke, had drank, had swam, had wrote are all wrong on arrival." },
+        { "list": [
+          "speak / spoke / spoken: he had spoken to the dignitary, not had spoke.",
+          "drink / drank / drunk; swim / swam / swum; write / wrote / written: Wright published, gave, and wrote — never had written in that list.",
+          "Check: cover the helping verb and ask whether the participle alone sounds finished. Spoke alone fails; spoken passes.",
+          "Short list to memorize: spoken, drunk, swum, written, broken, chosen, driven, eaten, fallen, forgotten, given, hidden, risen, seen, taken."
+        ] },
+        { "example": 14 },
+        { "example": 15 },
+        { "example": 16 },
+        { "h": "6. Would vs Will and Sequence Traps", "id": "would-will" },
+        { "p": "Will points forward from now; would points forward from a past moment or into a hypothetical. The ACT tests this as sequence: a past-tense frame takes would, a present- or future-tense frame takes will. Never choose would when the only time word is yesterday or last year with no condition attached." },
+        { "list": [
+          "Past frame takes would: He claimed he would call back soon. She said she would help.",
+          "Present or future frame takes will: I know she will help. The trip next May will be long.",
+          "Infinitive trap: the correct simple form is to be, not to have been or to being, when the sentence needs no perfect or progressive meaning."
+        ] },
+        { "example": 17 },
+        { "example": 18 },
+        { "h": "7. When Tense Meets Parallelism and Timeless Truth", "id": "parallelism-truths" },
+        { "p": "Two special consistency rules decide hard questions. First, items in a list must share one tense — a perfect tense smuggled into a simple-past list breaks parallelism even if it looks fancy. Second, timeless facts stay in the present tense forever, even when the story around them is past." },
+        { "list": [
+          "List rule: Throughout his career, Wright published articles, gave lectures, and wrote many books — had written breaks the chain.",
+          "Timeless rule: Newton is known for his laws of motion, even in a paragraph written in past tense. Science facts do not age into was.",
+          "Decision order: first ask whether the verbs form a list (parallelism wins), then ask whether the claim is a permanent fact (present wins), otherwise match neighbors."
+        ] },
+        { "example": 19 },
+        { "example": 20 },
+        { "example": 21 },
+        { "example": 22 },
+        { "practice": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+        { "h": "8. Cheatsheet — memorize these", "id": "verb-cheatsheet" },
+        { "list": [
+          "Find the time marker first: yesterday/in 1999 = past; now/since/for = present perfect; next May/tomorrow = will; by the time = perfect.",
+          "Stay consistent: match the verbs one sentence before and one after unless a time word forces a shift.",
+          "Perfect recipe: have/has + participle (now), had + participle (earlier past), will have + participle (earlier future).",
+          "Irregulars: spoken, drunk, swum, written, broken, chosen, driven, eaten, fallen, forgotten, given, hidden, risen, seen, taken.",
+          "Progressive only for interruption: was studying when the phone rang; otherwise prefer the simple tense.",
+          "will with present/future frames, would with past frames; never add extra to be / to have been without a reason.",
+          "Lists share one tense: published, gave, and wrote — kill any had written intruder.",
+          "Timeless facts stay present: Newton is known, water boils, even inside past-tense passages."
+        ] }
+      ],
+      "figures": {},
+      "examples": [
+        { "n": 1, "tag": "Verbs; Simple Past", "statement": "In 1999, scientists discover a new deep-sea species off the coast.", "discuss": "The time marker In 1999 is finished past, so the verb must be simple past: scientists discovered. Present-tense discover breaks consistency with a closed date." },
+        { "n": 2, "tag": "Verbs; Simple Future", "statement": "Without a doubt, our trip to Paris next May was one of the most interesting experiences of the year.", "discuss": "Next May is future, so was is impossible. Change to will be. This is the classic ACT move: the time word sits far from the verb, hoping you match the verb to interesting instead of to next May." },
+        { "n": 3, "tag": "Verbs; Simple Present", "statement": "Sharon loves to travel. She goes abroad almost every summer.", "discuss": "Almost every summer is a habit, so simple present goes is correct. Do not shift to went just because loves sits nearby — habits stay present." },
+        { "n": 4, "tag": "Verbs; Present Perfect", "statement": "I have practiced for weeks, so I am ready for the recital.", "discuss": "Have practiced connects earlier work to present readiness. Simple past practiced would cut the link to am ready; the present perfect keeps it." },
+        { "n": 5, "tag": "Verbs; Past Perfect", "statement": "By the time I woke up, my mother had left for work.", "discuss": "Two pasts: waking (later) and leaving (earlier). The earlier action takes had left. By the time is the flare that orders them." },
+        { "n": 6, "tag": "Verbs; Future Perfect", "statement": "My brother will have turned 30 by the time this decade is over.", "discuss": "Turning 30 completes before the future endpoint (decade over), so will have turned is required. Simple will turn misses the before relationship." },
+        { "n": 7, "tag": "Verbs; Present Perfect Duration", "statement": "Samantha has lived in Berlin for more than two years.", "discuss": "For + duration reaching now demands present perfect: has lived. Simple past lived would imply she left; has lived says she is still there." },
+        { "n": 8, "tag": "Verbs; Past Progressive", "statement": "When he slipped and fell, Sam was trying to change a light bulb.", "discuss": "Trying was the long background action; slipped and fell interrupted it. Past progressive was trying plus simple past slipped/fell is the only legal pairing." },
+        { "n": 9, "tag": "Verbs; Present Progressive", "statement": "Shh! Be quiet! John is sleeping.", "discuss": "Right-now context (Shh!) takes present progressive is sleeping. Simple present sleeps states a habit and misses the moment." },
+        { "n": 10, "tag": "Verbs; Past Perfect Progressive", "statement": "The team took part in the study that researchers had been conducting for a decade.", "discuss": "Took is simple past, so the ongoing study behind it must be past perfect progressive: had been conducting. Have been conducting (present perfect) breaks consistency with took." },
+        { "n": 11, "tag": "Verbs; Consistency", "statement": "She finished her homework and watches a movie.", "discuss": "Both actions share one finished evening, so both take past: finished and watched. Watches shifts to present with no time word licensing it." },
+        { "n": 12, "tag": "Verbs; Consistency Across Sentences", "statement": "The volunteers took part in the cleanup. They have used the same dock for years.", "discuss": "Took sets a simple-past passage, so have used must become had used or used. Check the sentence before the underline — the passage tense lives there." },
+        { "n": 13, "tag": "Verbs; Legal Shift", "statement": "She was studying when the phone rang.", "discuss": "This shift is legal: progressive background (was studying) plus interrupting point (rang). Rings would break it — the interruption must match the background past." },
+        { "n": 14, "tag": "Verbs; Participle Form", "statement": "When he claimed that he had spoke to the dignitary, Ken said nothing about the secretary.", "discuss": "Had demands the participle spoken, not the simple past spoke. Correct: had spoken. Whenever you see have/has/had, check the next word against the irregular list." },
+        { "n": 15, "tag": "Verbs; Participle Form", "statement": "The crew had swam across the bay before sunrise.", "discuss": "Swam is simple past; the participle is swum. Correct: had swum. Same family: had drunk (not drank), had written (not wrote)." },
+        { "n": 16, "tag": "Verbs; Participle vs List", "statement": "Throughout his 70-year career, Wright published articles, gave lectures, and had written many books.", "discuss": "Published and gave are simple past, so the third item must be wrote. Had written smuggles a perfect tense into a simple list and breaks parallelism." },
+        { "n": 17, "tag": "Verbs; Would vs Will", "statement": "He said he will call back as soon as the meeting ended.", "discuss": "Said and ended set a past frame, so the forward-looking verb must be would call, not will call. Will belongs to present/future frames." },
+        { "n": 18, "tag": "Verbs; Infinitive Form", "statement": "The plan requires the bridge to have been completed on schedule.", "discuss": "Nothing here means an earlier-before-later perfect, so the extra have been is wordy and wrong. Correct: to be completed. Add perfect or progressive machinery only when the timeline needs it." },
+        { "n": 19, "tag": "Verbs; Timeless Present", "statement": "Newton was known for his laws of motion.", "discuss": "Laws of motion are permanently true, so the verb stays present: Newton is known. Was known implies the fact expired — timeless truths never shift to past." },
+        { "n": 20, "tag": "Verbs; Past Perfect Ordering", "statement": "Bob left when Tim arrived. John had left when Tim arrived.", "discuss": "Bob and Tim met (same past); John was already gone (earlier past takes had left). Past perfect means before the other past action — the timeline word when orders them." },
+        { "n": 21, "tag": "Verbs; Conditional Would", "statement": "If it snows this weekend, we will go skiing near Lake Tahoe.", "discuss": "This-weekend future condition takes will go. Would go would need a past or hypothetical frame (If it snowed, we would go). Match will to present/future, would to past/hypothetical." },
+        { "n": 22, "tag": "Verbs; Present Perfect vs Simple Past", "statement": "In the last hundred years, traveling has become much easier. In the 19th century, it took months to cross the continent.", "discuss": "In the last hundred years reaches into now, so has become; In the 19th century is closed past, so took. Two time markers, two tenses — each verb answers its own marker." }
+      ],
+      "problems": [
+        {
+          "n": 1,
+          "tag": "Verbs; Simple Past",
+          "short": "Closed date",
+          "statement": "In 2005, the museum ___ a new wing dedicated to jazz.",
+          "options": ["opens", "opened", "will open", "had opened"],
+          "answer": "B",
+          "explain": "In 2005 is finished past, so opened. Opens is present, will open is future, and had opened needs a second, later past action that is not here."
+        },
+        {
+          "n": 2,
+          "tag": "Verbs; Future vs Past",
+          "short": "Next May trip",
+          "statement": "Our trip to Paris next May ___ one of the most interesting experiences of the year.",
+          "options": ["was", "were", "will be", "had been"],
+          "answer": "C",
+          "explain": "Next May is future, so will be. Was/were are past and had been needs an earlier-before-later past pair — none exists."
+        },
+        {
+          "n": 3,
+          "tag": "Verbs; Present Perfect",
+          "short": "For eight years",
+          "statement": "She ___ piano for eight years and still practices daily.",
+          "options": ["played", "has played", "had played", "will have played"],
+          "answer": "B",
+          "explain": "For eight years reaching now (still practices) takes present perfect has played. Played cuts the link to now; had/will have need past or future reference points."
+        },
+        {
+          "n": 4,
+          "tag": "Verbs; Past Perfect",
+          "short": "Earlier of two pasts",
+          "statement": "By the time I woke up, my mother ___ for work.",
+          "options": ["leaves", "left", "had left", "will leave"],
+          "answer": "C",
+          "explain": "Woke is the later past, leaving is earlier, so had left. By the time orders two pasts — the earlier one always takes had."
+        },
+        {
+          "n": 5,
+          "tag": "Verbs; Participle Form",
+          "short": "Had spoken",
+          "statement": "He claimed that he ___ to the director before the vote.",
+          "options": ["had spoke", "had spoken", "has spoke", "spoke had"],
+          "answer": "B",
+          "explain": "Had requires the participle spoken, not spoke. Has spoke repeats the form error in the present, and spoke had is not a verb form at all."
+        },
+        {
+          "n": 6,
+          "tag": "Verbs; Consistency",
+          "short": "Finished evening",
+          "statement": "She finished her homework and ___ a movie.",
+          "options": ["watches", "watch", "watched", "will watch"],
+          "answer": "C",
+          "explain": "Finished sets simple past with no time shift, so watched. Watches/watch are present and will watch needs a future marker."
+        },
+        {
+          "n": 7,
+          "tag": "Verbs; Progressive",
+          "short": "Interrupted study",
+          "statement": "She ___ when the phone rang.",
+          "options": ["studies", "was studying", "has studied", "will study"],
+          "answer": "B",
+          "explain": "Rang interrupts a longer background action, so past progressive was studying. Studies/has studied/will study cannot frame an interruption in the past."
+        },
+        {
+          "n": 8,
+          "tag": "Verbs; Parallelism",
+          "short": "List of three",
+          "statement": "Throughout his career, Wright published articles, gave lectures, and ___ many books.",
+          "options": ["had written", "written", "wrote", "writing"],
+          "answer": "C",
+          "explain": "Published and gave are simple past, so the third item must be wrote. Had written breaks parallelism, written has no helper, and writing breaks the verb chain."
+        },
+        {
+          "n": 9,
+          "tag": "Verbs; Would vs Will",
+          "short": "Past frame",
+          "statement": "He said he ___ call back after the meeting ended.",
+          "options": ["will", "would", "has", "had"],
+          "answer": "B",
+          "explain": "Said/ended set a past frame, so forward-looking would. Will needs a present/future frame; has/had cannot carry the future meaning."
+        },
+        {
+          "n": 10,
+          "tag": "Verbs; Timeless Present",
+          "short": "Permanent fact",
+          "statement": "Newton ___ for his laws of motion, which the exhibit explains in detail.",
+          "options": ["was known", "were known", "is known", "had known"],
+          "answer": "C",
+          "explain": "Laws of motion are permanently true, so timeless present is known. Was/were/had known all imply the fact expired."
+        }
+      ]
+    }
+  ]
 }

@@ -406,6 +406,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   };
 
   const goToIntro = () => {
+    setSlideIdx(0);
     setIntroDone(false);
     introDoneRef.current = false;
     window.scrollTo(0, 0);
@@ -497,6 +498,11 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
   const onIntro = needIntro && !introDone;
   const intro = (testData && testData.intro) || null;
+  const slides =
+    intro && Array.isArray(intro.slides) && intro.slides.length > 0
+      ? intro.slides
+      : [{ heading: intro && intro.heading, blocks: (intro && intro.blocks) || [] }];
+  const [slideIdx, setSlideIdx] = useState(0);
 
   return (
     <div className="test">
@@ -585,10 +591,12 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         {onIntro ? (
           <div className="intro-step">
             <div className="intro-card">
-              <p className="results-kicker">Before you start</p>
-              <h1 className="intro-title">{(intro && intro.heading) || testData.title}</h1>
+              <p className="results-kicker">
+                Before you start{slides.length > 1 ? ` · ${slideIdx + 1} of ${slides.length}` : ""}
+              </p>
+              <h1 className="intro-title">{(slides[slideIdx] && slides[slideIdx].heading) || testData.title}</h1>
               <div className="intro-blocks">
-                {((intro && intro.blocks) || []).map((b, i) => {
+                {((slides[slideIdx] && slides[slideIdx].blocks) || []).map((b, i) => {
                   if (b.h) return <h4 key={i} className="lesson-h">{b.h}</h4>;
                   if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
                   if (b.list) {
@@ -603,6 +611,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   return <p key={i} className="lesson-p"><MathText text={b.p || ""} /></p>;
                 })}
               </div>
+              {slides.length > 1 && (
+                <div className="intro-dots" aria-hidden="true">
+                  {slides.map((s, i) => (
+                    <span key={i} className={i === slideIdx ? "intro-dot on" : "intro-dot"} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         ) : (
@@ -704,14 +719,21 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
       <div className="test-nav">
         <div className="test-nav-inner">
-          <button
-            className="nav-btn"
-            type="button"
-            disabled={qIndex === 0}
-            onClick={() => setQIndex(qIndex - 1)}
-          >
-            BACK
-          </button>
+              <button
+                className="nav-btn"
+                type="button"
+                disabled={onIntro ? slideIdx === 0 : qIndex === 0}
+                onClick={() => {
+                  if (onIntro && slideIdx > 0) {
+                    setSlideIdx(slideIdx - 1);
+                    window.scrollTo(0, 0);
+                  } else {
+                    setQIndex(qIndex - 1);
+                  }
+                }}
+              >
+                BACK
+              </button>
           <span className="nav-count">
             {onIntro ? "Intro" : `${qIndex + 1} of ${total}`}
           </span>
@@ -738,14 +760,25 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               FINISH
             </button>
           ) : (
-            <button
-              className="nav-btn primary"
-              type="button"
-              onClick={onIntro ? completeIntro : () => setQIndex(qIndex + 1)}
-            >
-              NEXT
-            </button>
-          )}
+                <button
+                  className="nav-btn primary"
+                  type="button"
+                  onClick={
+                    onIntro
+                      ? () => {
+                          if (slideIdx < slides.length - 1) {
+                            setSlideIdx(slideIdx + 1);
+                            window.scrollTo(0, 0);
+                          } else {
+                            completeIntro();
+                          }
+                        }
+                      : () => setQIndex(qIndex + 1)
+                  }
+                >
+                  NEXT
+                </button>
+              )}
         </div>
       </div>
 

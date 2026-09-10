@@ -172,6 +172,35 @@ function lessonTest(course, subject) {
   };
 }
 
+function CourseGrid({ list, onOpen }) {
+  return (
+    <div className="skill-grid rise d3">
+      {list.map((course) => {
+        const ready = (course.problems || []).length > 0;
+        return (
+          <button
+            key={course.id}
+            type="button"
+            className="course-card course-link"
+            onClick={() => {
+              onOpen(course.id);
+              window.scrollTo(0, 0);
+            }}
+          >
+            <span className="skill-text">
+              <span className="skill-title">{course.title}</span>
+              <span className="skill-meta">
+                {course.tier} · {(course.problems || []).length} practice problems{ready ? "" : " · soon"}
+              </span>
+            </span>
+            <span className="course-caret" aria-hidden="true">▸</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function CoursePage({ course, subject, onBack, onSelect }) {
   const ready = (course.problems || []).length > 0;
   const toc = (course.lesson || []).filter((b) => b.h && b.id);
@@ -292,8 +321,9 @@ export default function TestInfo({ onGiveTest, onCourseOpen }) {
   }
 
   const courses = (data.math && data.math.courses) || [];
+  const englishCourses = (data.english && data.english.courses) || [];
   const englishCount = ((data.english && data.english.lessons) || []).length;
-  const openCourse = courses.find((c) => c.id === openId) || null;
+  const openCourse = courses.concat(englishCourses).find((c) => c.id === openId) || null;
 
   return (
     <div>
@@ -305,35 +335,12 @@ export default function TestInfo({ onGiveTest, onCourseOpen }) {
       {!openCourse ? (
         <>
           <h3 className="group-title rise d3">Math courses</h3>
-          <div className="skill-grid rise d3">
-            {courses.map((course) => {
-              const ready = (course.problems || []).length > 0;
-              return (
-                <button
-                  key={course.id}
-                  type="button"
-                  className="course-card course-link"
-                  onClick={() => {
-                    setOpenId(course.id);
-                    window.scrollTo(0, 0);
-                  }}
-                >
-                  <span className="skill-text">
-                    <span className="skill-title">{course.title}</span>
-                    <span className="skill-meta">
-                      {course.tier} · {(course.problems || []).length} practice problems{ready ? "" : " · soon"}
-                    </span>
-                  </span>
-                  <span className="course-caret" aria-hidden="true">▸</span>
-                </button>
-              );
-            })}
-          </div>
+          <CourseGrid list={courses} onOpen={setOpenId} />
         </>
       ) : (
         <CoursePage
           course={openCourse}
-          subject={(data.math && data.math.subject) || "math"}
+          subject={openCourse.subject || (data.math && data.math.subject) || "math"}
           onBack={() => {
             setOpenId(null);
             window.scrollTo(0, 0);
@@ -345,9 +352,13 @@ export default function TestInfo({ onGiveTest, onCourseOpen }) {
       {!openCourse && (
         <>
           <h3 className="group-title">English lessons</h3>
-          <p className="muted-text">
-            {englishCount === 0 ? "English lessons are coming soon." : `${englishCount} lessons available.`}
-          </p>
+          {englishCourses.length > 0 ? (
+            <CourseGrid list={englishCourses} onOpen={setOpenId} />
+          ) : (
+            <p className="muted-text">
+              {englishCount === 0 ? "English lessons are coming soon." : `${englishCount} lessons available.`}
+            </p>
+          )}
         </>
       )}
 

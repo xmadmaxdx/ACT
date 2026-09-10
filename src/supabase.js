@@ -101,7 +101,7 @@ export async function fetchLessons() {
   }));
   return {
     math: { subject: "math", courses: courses.filter((t) => t.subject === "math") },
-    english: { subject: "english", lessons: [] },
+    english: { subject: "english", lessons: [], courses: courses.filter((t) => t.subject !== "math") },
   };
 }
 

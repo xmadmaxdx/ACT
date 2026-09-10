@@ -876,6 +876,24 @@ button {
   margin-bottom: 22px;
 }
 
+.intro-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 0 2px;
+}
+
+.intro-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.intro-dot.on {
+  background: var(--blue);
+}
+
 .intro-cta {
   width: 100%;
 }
