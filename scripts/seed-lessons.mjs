@@ -161,6 +161,8 @@ for (const { file, subject, course } of selected) {
     statement: e.statement,
     figure: e.figure || null,
     discuss: e.discuss,
+    options: e.options || [],
+    answer: e.answer || "A",
   }));
   const problems = (course.problems || []).map((q) => ({
     course_id: course.id,

@@ -85,7 +85,7 @@ export async function fetchLessons() {
     ),
     examples: (e.data || [])
       .filter((r) => r.course_id === course.id)
-      .map((r) => ({ n: r.n, tag: r.tag, statement: r.statement, figure: r.figure, discuss: r.discuss })),
+      .map((r) => ({ n: r.n, tag: r.tag, statement: r.statement, figure: r.figure, discuss: r.discuss, options: r.options, answer: r.answer })),
     problems: (q.data || [])
       .filter((r) => r.course_id === course.id)
       .map((r) => ({
