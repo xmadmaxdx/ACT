@@ -1755,6 +1755,11 @@ button {
   box-shadow: none;
 }
 
+.nav-btn.copied {
+  color: var(--green-dark);
+  border-color: #bfe37a;
+}
+
 .nav-count {
   font-size: 13px;
   font-weight: 800;

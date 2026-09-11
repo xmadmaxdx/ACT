@@ -420,6 +420,59 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     window.scrollTo(0, 0);
   };
 
+  const [copied, setCopied] = useState(false);
+
+  const copyScreen = async () => {
+    const clean = (s) => String(s || "").replace(/\*/g, "");
+    const lines = [`Question ${activeQ.n} (${activeQ.tag})`];
+    if (activeQ.stem) {
+      lines.push(clean(activeQ.stem));
+    } else if (passage) {
+      lines.push(
+        passage.paras
+          .map((pa) =>
+            pa
+              .map((s) => (s.box !== undefined ? ` [${s.box}]` : clean(s.t)))
+              .join("")
+              .replace(/\s+/g, " ")
+              .trim()
+          )
+          .join("\n")
+      );
+    }
+    activeQ.options.forEach((opt, i) => {
+      lines.push(`${LETTERS[i]}. ${clean(opt)}`);
+    });
+    try {
+      const api = calcApiRef.current;
+      const st = api && api.getState ? api.getState() : null;
+      const list = (st && st.expressions && st.expressions.list) || [];
+      const latex = list
+        .map((e) => e && e.latex)
+        .filter((l) => typeof l === "string" && l.trim() !== "");
+      if (latex.length > 0) {
+        lines.push("Desmos:");
+        latex.forEach((l) => lines.push(`  ${l}`));
+      }
+    } catch (err) {
+      window.console.debug("desmos copy skipped", err);
+    }
+    const text = lines.join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      window.console.debug("clipboard failed, using fallback", err);
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   const startDrag = (e) => {
     e.preventDefault();
     const move = (ev) => {
@@ -776,10 +829,18 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
       <div className="test-nav">
         <div className="test-nav-inner">
-              <button
-                className="nav-btn"
-                type="button"
-                disabled={onIntro ? slideIdx === 0 : qIndex === 0}
+          <button
+            className={copied ? "nav-btn copied" : "nav-btn"}
+            type="button"
+            onClick={copyScreen}
+            title="Copy question, options and Desmos equations"
+          >
+            {copied ? "COPIED ✓" : "COPY"}
+          </button>
+          <button
+            className="nav-btn"
+            type="button"
+            disabled={onIntro ? slideIdx === 0 : qIndex === 0}
                 onClick={() => {
                   if (onIntro && slideIdx > 0) {
                     setSlideIdx(slideIdx - 1);

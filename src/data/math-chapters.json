@@ -157,7 +157,7 @@
               "n": 1,
               "tag": "Math; Ratio",
               "short": "Class split",
-              "statement": "A summer program enrolls $32$ students, and the ratio of boys to girls is $5{:}3$. The counselors want equal-sized activity groups with no mixing across cabins. How many boys are enrolled?",
+              "statement": "A lakeside summer program enrolls $32$ students for its July session, and the roster keeps a boys-to-girls ratio of $5{:}3$. The counselors want equal-sized activity groups with no mixing across cabins, so they need an exact headcount first. How many boys are enrolled?",
               "options": ["$12$", "$15$", "$20$", "$24$"],
               "answer": "C",
               "explain": "Total parts $5+3=8$; one part is $32\\div 8=4$. Boys: $5\\times 4=20$. A picks the girls; D divides by the wrong part."
@@ -166,7 +166,7 @@
               "n": 2,
               "tag": "Math; Proportion",
               "short": "Road map",
-              "statement": "A highway map uses a scale of $1$ inch to $25$ miles. A family measures the route between two rest stops as $3.6$ inches on the map. They drive at a steady $60$ mph. How many miles long is that stretch?",
+              "statement": "A highway map uses a scale of $1$ inch to $25$ miles. A family measures the route between two rest stops as $3.6$ inches on the map, then drives it at a steady $60$ mph after leaving right after lunch. How many miles long is that stretch?",
               "options": ["$75$", "$85$", "$90$", "$100$"],
               "answer": "C",
               "explain": "Proportion: $3.6\\times 25=90$ miles. The $60$ mph is decoration — the question asks for miles, not hours."
@@ -175,7 +175,7 @@
               "n": 3,
               "tag": "Math; Ratio",
               "short": "Bakery scaling",
-              "statement": "A bakery keeps its flour-to-sugar ratio at $5{:}2$ for a signature loaf. A morning batch uses $15$ cups of flour because of a bulk delivery. How many cups of sugar does that batch require?",
+              "statement": "A bakery keeps its flour-to-sugar ratio at $5{:}2$ for a signature loaf that took the owner months to perfect. A morning batch uses $15$ cups of flour because of a bulk delivery, and the head baker scales every other ingredient proportionally. How many cups of sugar does that batch require?",
               "options": ["$5$", "$6$", "$7.5$", "$10$"],
               "answer": "B",
               "explain": "One flour part is $15\\div 5=3$ cups, so sugar is $2\\times 3=6$ cups. C scales by $1.5$ instead of the part value."
@@ -184,7 +184,7 @@
               "n": 4,
               "tag": "Math; Unit Rate",
               "short": "Fuel for 196 miles",
-              "statement": "A delivery van travels $420$ miles on $15$ gallons of gas. The dispatcher assigns a $196$-mile route tomorrow and wants the exact fuel needed at the same efficiency. How many gallons are required?",
+              "statement": "A delivery van travels $420$ miles on $15$ gallons of gas at steady highway speed. The dispatcher assigns a $196$-mile route for tomorrow morning and wants the exact fuel needed at the same efficiency, hoping to avoid any mid-route refueling stop. How many gallons are required?",
               "options": ["$6$", "$7$", "$7.5$", "$8$"],
               "answer": "B",
               "explain": "Unit rate $420\\div 15=28$ mpg. Then $196\\div 28=7$ gallons. Reduce to one unit first, then scale up."
@@ -193,7 +193,7 @@
               "n": 5,
               "tag": "Math; Ratio",
               "short": "Prize split",
-              "statement": "Three volunteers split a $240$ prize in the ratio $2{:}3{:}5$ based on hours worked. The organizer hands each share in cash. What is the smallest share?",
+              "statement": "Three volunteers split a $240$ prize in the ratio $2{:}3{:}5$ based on hours worked over a long holiday weekend. The organizer hands each share in cash at Sunday evening's closing ceremony in front of the whole crew. What is the smallest share?",
               "options": ["$40$", "$48$", "$60$", "$80$"],
               "answer": "B",
               "explain": "Total parts $10$; one part $240\\div 10=24$. Smallest: $2\\times 24=48$. D is the middle share, not the smallest."
@@ -202,7 +202,7 @@
               "n": 6,
               "tag": "Math; Similarity",
               "short": "Similar plots",
-              "statement": "Two rectangular garden plots are similar, with side lengths in the ratio $3{:}5$. The smaller plot has area $54$ square meters. A landscaper prices sod by area. What is the area of the larger plot?",
+              "statement": "Two rectangular garden plots are similar, with side lengths in the ratio $3{:}5$. The smaller plot has area $54$ square meters, and a landscaper who prices sod by area will resod the larger one for next week's job. What is the area of the larger plot?",
               "options": ["$90$", "$120$", "$150$", "$250$"],
               "answer": "C",
               "explain": "Area ratio is $3^2{:}5^2=9{:}25$. One area part is $54\\div 9=6$, so larger is $25\\times 6=150$. A scales linearly and forgets to square."
@@ -211,7 +211,7 @@
               "n": 7,
               "tag": "Math; Inverse Proportion",
               "short": "Crew schedule",
-              "statement": "A crew of $6$ painters finishes a warehouse in $12$ days working at the same pace. The deadline moves up, so the foreman raises the crew to $9$ painters at the same pace. How many days will the job take now?",
+              "statement": "A crew of $6$ painters finishes a warehouse in $12$ days working at the same steady pace. The deadline suddenly moves up, so the foreman raises the crew to $9$ painters at the same pace with no overtime allowed. How many days will the job take now?",
               "options": ["$6$", "$8$", "$9$", "$18$"],
               "answer": "B",
               "explain": "Worker-days constant: $6\\times 12=72$. Then $72\\div 9=8$ days. More workers means fewer days — direct division $12\\div 9$ is the trap."
@@ -220,7 +220,7 @@
               "n": 8,
               "tag": "Math; Mixture",
               "short": "Acid batch",
-              "statement": "A lab mixes acid and water in the ratio $3{:}2$ to make $45$ liters of cleaning solution. An inspector tests the acid content only. How many liters of acid are in the batch?",
+              "statement": "A lab mixes acid and water in the ratio $3{:}2$ to make $45$ liters of cleaning solution for the hospital's new wing. An inspector tests the acid content only before approving the batch for use on Monday. How many liters of acid are in the batch?",
               "options": ["$18$", "$24$", "$27$", "$30$"],
               "answer": "C",
               "explain": "Total parts $5$; one part $45\\div 5=9$. Acid: $3\\times 9=27$ L. A is the water share."
@@ -229,7 +229,7 @@
               "n": 9,
               "tag": "Math; Ratio",
               "short": "Three-way grant",
-              "statement": "A $144{,}000$ grant is divided among three labs in the ratio $2{:}3{:}7$. The middle lab spends its share on equipment. How much does the middle lab receive?",
+              "statement": "A $144{,}000$ grant is divided among three labs in the ratio $2{:}3{:}7$ for next year's research cycle. The middle lab will spend its entire share on spectrometers arriving in the spring shipment. How much does the middle lab receive?",
               "options": ["$24{,}000$", "$36{,}000$", "$48{,}000$", "$84{,}000$"],
               "answer": "B",
               "explain": "Total parts $12$; one part $144{,}000\\div 12=12{,}000$. Middle: $3\\times 12{,}000=36{,}000$. D is the largest share."
@@ -346,7 +346,7 @@
               "n": 22,
               "tag": "Math; Similarity",
               "short": "Cube volumes",
-              "statement": "Two similar storage cubes have edge lengths in the ratio $2{:}3$. The smaller cube holds $64$ cubic feet. The buyer wants the larger cube's capacity. What is it?",
+              "statement": "A moving company is consolidating two similar cubic storage vaults at its downtown warehouse before a cross-country relocation scheduled for next month. The vaults' edge lengths stand in the ratio $2{:}3$, and engineers have measured the smaller vault at $64$ cubic feet. The buyer purchasing the larger vault needs its exact capacity for the insurance forms, which also ask for the paint color. What is it?",
               "options": ["$96$", "$144$", "$216$", "$324$"],
               "answer": "C",
               "explain": "Volume ratio is $2^3{:}3^3=8{:}27$. One part is $64\\div 8=8$, so larger is $27\\times 8=216$. B scales by area ($4{:}9$) instead of volume."
@@ -355,7 +355,7 @@
               "n": 23,
               "tag": "Math; Mixture",
               "short": "Solution blend",
-              "statement": "A chemist has $15$ liters of $20\\%$ salt solution and adds some $50\\%$ solution to reach a $30\\%$ mixture. She tracks pure salt only. How many liters of $50\\%$ solution must she add?",
+              "statement": "A quality-control chemist at a municipal water plant is preparing a calibration standard for the new testing rig arriving in the spring. She starts with $15$ liters of $20\\%$ salt solution and slowly adds a $50\\%$ stock solution, stirring constantly in the required safety goggles, until the batch reaches $30\\%$. She tracks pure salt only throughout the procedure. How many liters of $50\\%$ solution must she add?",
               "options": ["$5$", "$6$", "$7.5$", "$10$"],
               "answer": "C",
               "explain": "Salt: $0.2(15)+0.5x=0.3(15+x)$, so $3+0.5x=4.5+0.3x$, $0.2x=1.5$, $x=7.5$ L. Check: $6.75$ L salt in $22.5$ L is $30\\%$."
@@ -364,7 +364,7 @@
               "n": 24,
               "tag": "Math; Ratio",
               "short": "Shelter count",
-              "statement": "A shelter starts with dogs and cats in the ratio $5{:}3$. After $12$ dogs are adopted and no cats leave, the ratio becomes $1{:}1$. How many cats are there?",
+              "statement": "Riverside Shelter opened the year with dogs and cats in the ratio $5{:}3$ across its crowded kennels. During Saturday's big adoption fundraiser, $12$ dogs found homes while no cats left, and the remaining dogs and cats now stand in the ratio $1{:}1$. The director, who also runs the Sunday volunteer orientation, needs the current cat count for the census. How many cats are there?",
               "options": ["$12$", "$15$", "$18$", "$24$"],
               "answer": "C",
               "explain": "Let $k$ be the part: $5k-12=3k$, so $2k=12$ and $k=6$. Cats: $3\\times 6=18$. Verify: $30-12=18$ dogs equals $18$ cats."
@@ -373,7 +373,7 @@
               "n": 25,
               "tag": "Math; Rate",
               "short": "Cyclist gap",
-              "statement": "Two cyclists start together on a $60$-mile charity ride at steady speeds of $16$ mph and $20$ mph. The organizer at the finish wants the gap between them when the faster rider finishes. How many miles behind is the slower rider then?",
+              "statement": "Two cyclists start together at dawn on a $60$-mile charity ride benefiting the riverside trail fund, holding steady speeds of $16$ mph and $20$ mph despite a forecast of afternoon headwinds. Both riders skip every rest stop entirely to save time. The organizer waiting at the finish line wants the gap between them at the moment the faster rider crosses. How many miles behind is the slower rider then?",
               "options": ["$8$", "$9$", "$10$", "$12$"],
               "answer": "D",
               "explain": "Faster takes $60\\div 20=3$ hr. Slower covers $16\\times 3=48$ miles, so the gap is $60-48=12$ miles. C uses a $2.5$-hr guess instead of the true $3$-hr time."
@@ -382,7 +382,7 @@
               "n": 26,
               "tag": "Math; Inverse Proportion",
               "short": "Gear turns",
-              "statement": "Two meshed gears have teeth in the ratio $8{:}5$ (large to small). The large gear turns $120$ times during a test run. Because rotations run inverse to teeth, how many times does the small gear turn?",
+              "statement": "On the factory's overnight shift, two meshed gears drive a packaging conveyor, with teeth in the ratio $8{:}5$ from the large gear to the small one. During a test run the large gear turns $120$ times while a technician monitors oil pressure on an unrelated pump nearby. Because rotations run inverse to teeth, how many times does the small gear turn?",
               "options": ["$75$", "$150$", "$192$", "$200$"],
               "answer": "C",
               "explain": "Rotations ratio is $5{:}8$. Small turns $120\\times 8\\div 5=192$ times. A multiplies by $5/8$ instead of flipping."
@@ -391,7 +391,7 @@
               "n": 27,
               "tag": "Math; Percent",
               "short": "Exchange fee",
-              "statement": "A bank exchanges dollars to euros at $1=0.90$ euros, then charges a $2\\%$ fee on the euro amount. A traveler exchanges $500$ for a homestay deposit. How many euros does she receive?",
+              "statement": "A traveler flying to Lisbon for a semester abroad exchanges dollars to euros at a bank offering $1=0.90$ euros, which then charges a $2\\%$ fee on the euro amount. She converts $500$ for a homestay deposit due before her gate closes, triple-checking the posted rates board on the wall. How many euros does she receive?",
               "options": ["$432$", "$441$", "$450$", "$459$"],
               "answer": "B",
               "explain": "Gross euros: $500\\times 0.90=450$. After the fee keep $98\\%$: $450\\times 0.98=441$. C forgets the fee."
@@ -400,7 +400,7 @@
               "n": 28,
               "tag": "Math; Proportion",
               "short": "Shadow height",
-              "statement": "A $6$-foot pole casts a $9$-foot shadow. At the same time, a courthouse casts a $51$-foot shadow. A surveyor needs the courthouse height. What is it, in feet?",
+              "statement": "At midmorning a surveyor in the old town square notes that a $6$-foot pole casts a $9$-foot shadow across the cobblestones. At the same moment the county courthouse, pigeons circling its dome, casts a $51$-foot shadow in exactly the same direction. She needs the courthouse height for the renovation permit filed on Friday. What is it, in feet?",
               "options": ["$28$", "$30$", "$34$", "$38$"],
               "answer": "C",
               "explain": "Same sun angle: $6/9=h/51$, so $h=51\\times 6\\div 9=34$ ft. B flips a ratio."
@@ -409,7 +409,7 @@
               "n": 29,
               "tag": "Math; Ratio",
               "short": "Triple chain",
-              "statement": "Three funds hold money with $A{:}B=3{:}4$ and $B{:}C=5{:}6$. An auditor finds $45{,}000$ in fund A. How much is in fund C?",
+              "statement": "An auditor reviewing a firm's quarterly books finds three funds holding money with $A{:}B=3{:}4$ and $B{:}C=5{:}6$ across separate ledgers. Fund A contains $45{,}000$, confirmed during a long afternoon of spreadsheet checks fueled by vending-machine coffee. The partner wants fund C's balance for the annual report. How much is in fund C?",
               "options": ["$60{,}000$", "$64{,}000$", "$72{,}000$", "$80{,}000$"],
               "answer": "C",
               "explain": "Common $B$: $A{:}B=15{:}20$, $B{:}C=20{:}24$, so $A{:}C=15{:}24=5{:}8$. One part $45{,}000\\div 5=9{,}000$; $C=8\\times 9{,}000=72{,}000$."
@@ -418,7 +418,7 @@
               "n": 30,
               "tag": "Math; Mixture",
               "short": "Brine dilution",
-              "statement": "A $2.5$-kg brine has salt and water in the ratio $1{:}9$ by mass. A cook adds $0.5$ kg of pure water for soup stock. What percent of the new mixture is salt?",
+              "statement": "A restaurant's $2.5$-kg brine mixes salt and water in the ratio $1{:}9$ by mass for the weekend's soup stock. The head chef adds $0.5$ kg of pure water to stretch the batch, tasting and adjusting seasonings that do not change the salt mass. What percent of the new mixture is salt?",
               "options": ["$8\\%$", "$8.33\\%$", "$9\\%$", "$10\\%$"],
               "answer": "B",
               "explain": "Salt stays $2.5\\div 10=0.25$ kg; new total $3.0$ kg. Percent: $0.25\\div 3.0\\approx 8.33\\%$. A divides by $3.125$ instead of $3.0$."
@@ -653,7 +653,7 @@
               "n": 22,
               "tag": "Math; Rate",
               "short": "Belt ride",
-              "statement": "A sorting belt moves at $2.5$ ft/s. A package stays on the belt for $40$ seconds from load to diverter. How many feet down the line is the diverter?",
+              "statement": "At the regional sorting hub, a conveyor belt moves at $2.5$ ft/s through a long warehouse that also handles overnight freight. A package stays on the belt for $40$ seconds from load to diverter while sorters scan barcodes on neighboring lines. How many feet down the line is the diverter?",
               "options": ["$80$", "$90$", "$100$", "$120$"],
               "answer": "C",
               "explain": "$d=2.5\\times 40=100$ ft. A multiplies by $32$ instead of $40$."
@@ -662,7 +662,7 @@
               "n": 23,
               "tag": "Math; Rate",
               "short": "Jet fuel load",
-              "statement": "A jet burns $900$ gallons per hour. Dispatch plans a $5$-hour flight plus a $20\\%$ fuel reserve over the trip burn. How many gallons must be loaded?",
+              "statement": "A cargo jet burns $900$ gallons per hour at cruising altitude on its regular transcontinental route. Dispatch plans a $5$-hour flight plus a $20\\%$ fuel reserve over the trip burn, as company policy requires for winter operations. The ground crew needs the exact load figure before dawn. How many gallons must be loaded?",
               "options": ["$4{,}500$", "$5{,}000$", "$5{,}400$", "$6{,}000$"],
               "answer": "C",
               "explain": "Trip burn $900\\times 5=4{,}500$; reserve factor $1.2$ gives $5{,}400$ gallons. A skips the reserve."
@@ -671,7 +671,7 @@
               "n": 24,
               "tag": "Math; Work",
               "short": "Typing pool",
-              "statement": "Ann types $60$ words per minute and Ben types $40$ per minute. They split a $5{,}000$-word transcript and type together. How many minutes will it take?",
+              "statement": "Two court reporters, Ann and Ben, type at steady speeds of $60$ words per minute and $40$ words per minute during a long trial. They share a $5{,}000$-word transcript between them and type simultaneously through the lunch recess. How many minutes will it take them together?",
               "options": ["$40$", "$50$", "$60$", "$100$"],
               "answer": "B",
               "explain": "Combined $100$ wpm; $5{,}000\\div 100=50$ min. D uses Ben alone."
@@ -680,7 +680,7 @@
               "n": 25,
               "tag": "Math; Conversion",
               "short": "Sprint km/h",
-              "statement": "A sprinter runs $100$ m in $9.8$ seconds in a time trial. Analysts quote top speed in km/h. What is her average speed in km/h?",
+              "statement": "A sprinter runs $100$ m in $9.8$ seconds during a time trial on a newly resurfaced track, with coaches timing from the stands and a physiotherapist watching her form. Analysts quote top speed in km/h for the broadcast graphics shown that evening. What is her average speed in km/h?",
               "options": ["$32$", "$34.5$", "$36.7$", "$40$"],
               "answer": "C",
               "explain": "$100\\div 9.8\\approx 10.2$ m/s; times $3.6$ gives $\\approx 36.7$ km/h. A forgets the m/s-to-km/h factor."
@@ -689,7 +689,7 @@
               "n": 26,
               "tag": "Math; Work",
               "short": "Alternating pumps",
-              "statement": "Pump A fills a tank alone in $10$ minutes and pump B alone in $15$ minutes. The operator alternates them each minute starting with A. How many minutes until the tank is full?",
+              "statement": "At the municipal water plant, pump A fills a tank alone in $10$ minutes and pump B alone in $15$ minutes, though B rattles loudly on startup. The operator alternates them each minute starting with A while logging pressure readings for the maintenance file. How many minutes until the tank is full?",
               "options": ["$11$", "$12$", "$12.5$", "$13$"],
               "answer": "B",
               "explain": "Each $2$-min cycle adds $1/10+1/15=1/6$ of a tank. Six cycles ($12$ min) complete it exactly. C assumes a partial final cycle."
@@ -698,7 +698,7 @@
               "n": 27,
               "tag": "Math; Rate",
               "short": "Paddle plus lunch",
-              "statement": "A kayaker paddles $24$ miles downstream at $12$ mph, stops $1$ hour for lunch, then returns $24$ miles upstream at $4$ mph. What is the total trip time including the stop?",
+              "statement": "A kayaker paddles $24$ miles downstream at $12$ mph on a glassy morning river, stops $1$ hour for lunch at a sandy bank, then returns $24$ miles upstream at $4$ mph against the afternoon current. Her partner tracking from the bridge wants the whole outing's duration. What is the total trip time including the stop?",
               "options": ["$7$", "$8$", "$9$", "$10$"],
               "answer": "C",
               "explain": "Down $24\\div 12=2$ hr; up $24\\div 4=6$ hr; plus $1$ hr stop $=9$ hr. B drops the lunch hour."
@@ -707,7 +707,7 @@
               "n": 28,
               "tag": "Math; Conversion",
               "short": "Download time",
-              "statement": "A lab connection downloads at $50$ megabits per second. A dataset is $1.5$ gigabytes ($1$ byte $=8$ bits). About how long will the download take?",
+              "statement": "A research lab's connection downloads at $50$ megabits per second through a shared campus line that slows during class hours. A dataset of $1.5$ gigabytes ($1$ byte $=8$ bits) must arrive before the overnight backup window closes at midnight. About how long will the download take?",
               "options": ["$3\\text{ min}$", "$4\\text{ min}$", "$5\\text{ min}$", "$6\\text{ min}$"],
               "answer": "B",
               "explain": "Bits: $1.5\\times 8=12$ gigabits $=12{,}000$ Mb. Time $12{,}000\\div 50=240$ s $=4$ min. A divides gigabytes by megabits directly."
@@ -716,7 +716,7 @@
               "n": 29,
               "tag": "Math; Work",
               "short": "Three hoses",
-              "statement": "Three hoses fill a cistern alone in $6$, $8$, and $12$ hours. The keeper opens all three on an empty cistern. How long until it fills?",
+              "statement": "Three hoses with very different diameters fill a farm cistern alone in $6$, $8$, and $12$ hours respectively. The keeper opens all three on an empty cistern at sunrise before the long irrigation round begins. How long until it fills?",
               "options": ["$2\\text{ hr }20\\text{ min}$", "$2\\text{ hr }40\\text{ min}$", "$3\\text{ hr}$", "$8\\text{ hr }40\\text{ min}$"],
               "answer": "B",
               "explain": "Rate $1/6+1/8+1/12=9/24=3/8$ per hour, so $T=8/3$ hr $=2$ hr $40$ min. D adds the times."
@@ -725,7 +725,7 @@
               "n": 30,
               "tag": "Math; Rate",
               "short": "Marathon split",
-              "statement": "A marathoner passes $10$ km at $40$ minutes and finishes the $42.195$-km race in $3$ hours flat. Her coach wants her average speed after the $10$-km mark. What is it, in km/h?",
+              "statement": "A marathoner passes $10$ km at $40$ minutes through cheering crowds downtown and finishes the $42.195$-km race in $3$ hours flat on a cool, windless morning. Her coach, reviewing the split printout over coffee, wants her average speed after the $10$-km mark. What is it, in km/h?",
               "options": ["$12$", "$13.8$", "$15$", "$16$"],
               "answer": "B",
               "explain": "Remaining $32.195$ km in $140$ min ($7/3$ hr): $32.195\\div 7/3\\approx 13.8$ km/h. C divides the full distance by the split time."
@@ -961,7 +961,7 @@
               "n": 22,
               "tag": "Math; Money",
               "short": "Tiered sales",
-              "statement": "A stand sells $40$ jars at $25$ and $60$ jars at $30$ during a festival. What is the average revenue per jar?",
+              "statement": "At the autumn harvest festival, a farm stand sells $40$ jars of honey at $25$ and $60$ jars at $30$ over a busy weekend of tastings and live music. The owners, who also sold out of candles by Sunday, want the average revenue per jar for the books. What is the average revenue per jar?",
               "options": ["$27$", "$28$", "$29$", "$27.5$"],
               "answer": "D",
               "explain": "$(40\\cdot 25+60\\cdot 30)\\div 100=2{,}800\\div 100=28$. Weight by jars sold."
@@ -970,7 +970,7 @@
               "n": 23,
               "tag": "Math; Money",
               "short": "Phone overage",
-              "statement": "A phone plan charges $30$ for $500$ minutes plus $0.10$ per extra minute. June's bill is $47$. How many minutes were used in total?",
+              "statement": "A phone plan charges $30$ for $500$ minutes plus $0.10$ per extra minute, with free weekend calling that the family rarely uses. June's bill arrives at $47$ after a month of long evening calls with relatives abroad. How many minutes were used in total?",
               "options": ["$670$", "$640$", "$700$", "$600$"],
               "answer": "A",
               "explain": "Overage $(47-30)\\div 0.10=170$ minutes beyond $500$, so $670$ total. Add the base back."
@@ -979,7 +979,7 @@
               "n": 24,
               "tag": "Math; Weighted Average",
               "short": "Coffee roast",
-              "statement": "A roaster blends $5$ kg at $14$ per kg with $3$ kg at $22$ per kg for a house mix. What is the mix's cost per kilogram?",
+              "statement": "A roaster blends $5$ kg of beans at $14$ per kg with $3$ kg at $22$ per kg for a house mix served all winter. The head roaster, who trained in Colombia last year, needs the blend's exact cost per kilogram for the menu pricing meeting. What is the mix's cost per kilogram?",
               "options": ["$17$", "$16.5$", "$18$", "$16$"],
               "answer": "A",
               "explain": "$(5\\cdot 14+3\\cdot 22)\\div 8=136\\div 8=17$."
@@ -988,7 +988,7 @@
               "n": 25,
               "tag": "Math; Mean",
               "short": "Drop the lowest",
-              "statement": "Scores of $70, 80, 85, 90, 95$ are recorded, and the lowest is dropped before averaging. What is the resulting average?",
+              "statement": "Scores of $70, 80, 85, 90, 95$ are recorded across a semester of Friday quizzes, and the teacher drops each student's lowest before averaging. One student's quiz booklet went missing for a week but was found before grading. What is the resulting average?",
               "options": ["$84$", "$87.5$", "$88$", "$85$"],
               "answer": "B",
               "explain": "$(80+85+90+95)\\div 4=350\\div 4=87.5$. Drop first, then divide by four."
@@ -997,7 +997,7 @@
               "n": 26,
               "tag": "Math; Weighted Average",
               "short": "Two factories",
-              "statement": "Factory A makes $200$ units a day for $30$ days; Factory B makes $300$ a day for $20$ days. What is the combined average daily output?",
+              "statement": "Factory A makes $200$ units a day for $30$ straight days while Factory B makes $300$ a day for $20$ days, with both plants pausing for the same national holiday. The regional manager, comparing overtime reports from last quarter, needs the combined average daily output. What is the combined average daily output?",
               "options": ["$220$", "$250$", "$260$", "$240$"],
               "answer": "D",
               "explain": "Total $(6{,}000+6{,}000)\\div 50=240$ units a day. Weight by days, not by factories."
@@ -1006,7 +1006,7 @@
               "n": 27,
               "tag": "Math; Money",
               "short": "Split savings",
-              "statement": "A saver deposits $9{,}000$ across two accounts at $4\\%$ and $6\\%$, earning $460$ in a year. How much sits in the $6\\%$ account?",
+              "statement": "A saver deposits $9{,}000$ across two accounts at $4\\%$ and $6\\%$, earning $460$ in a year while barely checking statements. Her advisor, who also handles her retirement paperwork, needs to know the split for the annual review next month. How much sits in the $6\\%$ account?",
               "options": ["$5{,}000$", "$4{,}500$", "$5{,}500$", "$4{,}000$"],
               "answer": "A",
               "explain": "With $x$ at $4\\%$: $0.04x+0.06(9{,}000-x)=460$ gives $x=4{,}000$, so $5{,}000$ earns $6\\%$."
@@ -1015,7 +1015,7 @@
               "n": 28,
               "tag": "Math; Money",
               "short": "Taxi fare",
-              "statement": "A taxi charges a $3$ flag fee plus $2.50$ per mile. A ride costs $28$. How many miles long was the ride?",
+              "statement": "A city taxi charges a $3$ flag fee plus $2.50$ per mile, with the meter running the whole way through downtown traffic. A late ride home from the airport after a delayed connecting flight costs $28$ on the meter. How many miles long was the ride?",
               "options": ["$8$", "$9$", "$10$", "$11$"],
               "answer": "C",
               "explain": "$(28-3)\\div 2.50=10$ miles. Strip the flag before dividing."
@@ -1024,7 +1024,7 @@
               "n": 29,
               "tag": "Math; Weighted Average",
               "short": "Exam weight rescue",
-              "statement": "Homework at $95$ counts $20\\%$, quizzes at $80$ count $30\\%$, and the exam counts $50\\%$. Mia wants an $85$ overall. What exam score does she need?",
+              "statement": "Homework at $95$ counts $20\\%$, quizzes at $80$ count $30\\%$, and the big final exam counts $50\\%$ of a demanding statistics course. Mia, who works weekends at the campus library, wants an $85$ overall to keep her scholarship. What exam score does she need?",
               "options": ["$80$", "$84$", "$86$", "$82$"],
               "answer": "B",
               "explain": "$0.2(95)+0.3(80)+0.5x=85$ gives $43+0.5x=85$, so $x=84$."
@@ -1033,7 +1033,7 @@
               "n": 30,
               "tag": "Math; Mean",
               "short": "Even run",
-              "statement": "Five consecutive even integers have an average of $30$. A contest asks for the largest. What is it?",
+              "statement": "Five consecutive even integers have an average of $30$. A weekend puzzle contest with a small cash prize asks entrants for the largest of the five. The organizer, a retired teacher, reads the entries aloud on Sunday. What is it?",
               "options": ["$32$", "$33$", "$36$", "$34$"],
               "answer": "D",
               "explain": "The mean is the middle even ($30$); two steps of two give $34$."
@@ -1276,7 +1276,7 @@
               "n": 22,
               "tag": "Math; Scientific Notation",
               "short": "Best estimate",
-              "statement": "An engineer estimates $(6.1\\times 10^3)(9.8\\times 10^4)$ for a parts order. Which estimate is closest?",
+              "statement": "An engineer pricing a bulk parts order estimates $(6.1\\times 10^3)(9.8\\times 10^4)$ on a whiteboard during a long supplier call. Her manager, who dislikes calculators in meetings, wants the closest rough estimate before approving anything. Which estimate is closest?",
               "options": ["$6\\times 10^7$", "$6\\times 10^8$", "$6\\times 10^{12}$", "$60\\times 10^8$"],
               "answer": "B",
               "explain": "$6.1\\cdot 9.8\\approx 60$, tens $10^7$: $\\approx 6.0\\times 10^8$. A drops a ten."
@@ -1285,7 +1285,7 @@
               "n": 23,
               "tag": "Math; Exponents",
               "short": "Final digit",
-              "statement": "A contest asks for the units digit of $3^{20}$. The pattern of final digits cycles every four powers. What is the digit?",
+              "statement": "A weekend math contest asks for the units digit of $3^{20}$, offering bonus points for a written explanation. Contestants know the pattern of final digits cycles every four powers, and the judges allow scrap paper but no calculators. What is the digit?",
               "options": ["$3$", "$7$", "$9$", "$1$"],
               "answer": "D",
               "explain": "Powers of $3$ end $3{,}9{,}7{,}1$ repeating; the $20$th (multiple of $4$) ends in $1$."
@@ -1294,7 +1294,7 @@
               "n": 24,
               "tag": "Math; Exponents",
               "short": "Mold triples",
-              "statement": "A mold colony of $100$ spores triples every $2$ hours in an incubator. A researcher opens it $6$ hours later. How many spores are there?",
+              "statement": "A mold colony of $100$ spores triples every $2$ hours inside a warm university incubator that hums through the night. A bleary-eyed researcher opens the chamber $6$ hours later to log the culture before the morning lecture. How many spores are there?",
               "options": ["$2700$", "$900$", "$8100$", "$300$"],
               "answer": "A",
               "explain": "Three tripling intervals: $100\\cdot 3^3=2{,}700$. B multiplies by $3\\cdot 3$ instead of $3^3$."
@@ -1303,7 +1303,7 @@
               "n": 25,
               "tag": "Math; Exponents",
               "short": "Fleet value",
-              "statement": "A delivery van worth $1{,}200$ loses $10\\%$ of its value each year. The fleet manager values it after $2$ years. What is it worth?",
+              "statement": "A delivery van worth $1{,}200$ loses $10\\%$ of its value each year to wear, mileage, and dents from tight city routes. The fleet manager, preparing the resale paperwork for the spring auction, values it after $2$ years on the road. What is it worth?",
               "options": ["$960$", "$1{,}000$", "$972$", "$1{,}080$"],
               "answer": "C",
               "explain": "$1{,}200\\cdot 0.9^2=1{,}200\\cdot 0.81=972$. Subtracting $20\\%$ flat gives A."
@@ -1312,7 +1312,7 @@
               "n": 26,
               "tag": "Math; Exponents",
               "short": "Twin leaks",
-              "statement": "A cistern first loses one-eighth of its water to a leak, then one-quarter of the original volume to irrigation. What fraction of the original water is gone?",
+              "statement": "A farm cistern first loses one-eighth of its water to a slow overnight leak, then another one-quarter of the original volume to morning irrigation of the lower field. The farmer, checking levels with a dipstick at noon, wants the total fraction gone. What fraction of the original water is gone?",
               "options": ["$\\frac38$", "$\\frac5{16}$", "$\\frac12$", "$\\frac{11}{32}$"],
               "answer": "A",
               "explain": "Same-original fractions add: $1/8+2/8=3/8$. B compounds the second loss on the remainder."
@@ -1321,7 +1321,7 @@
               "n": 27,
               "tag": "Math; Scientific Notation",
               "short": "Chip area",
-              "statement": "A square sensor has sides $5\\times 10^{-2}$ meters. The spec sheet needs its area in scientific notation. What is the area, in square meters?",
+              "statement": "A square imaging sensor has sides of $5\\times 10^{-2}$ meters, built for a satellite camera launching next year. The spec sheet requires its light-gathering area in scientific notation for the optics review on Friday. What is the area, in square meters?",
               "options": ["$2.5\\times 10^{-4}$", "$25\\times 10^{-4}$", "$10^{-4}$", "$2.5\\times 10^{-3}$"],
               "answer": "D",
               "explain": "Square mantissa and double the ten: $25\\times 10^{-4}=2.5\\times 10^{-3}$. B never normalizes."
@@ -1330,7 +1330,7 @@
               "n": 28,
               "tag": "Math; Exponents",
               "short": "Concentrated sample",
-              "statement": "A culture holds $2^6$ cells and a centrifuge concentrates it by removing a divisor of $2^{-2}$. The log needs the final count as a power of two. What is it?",
+              "statement": "A lab culture holds $2^6$ cells, and a centrifuge concentrates it by removing a divisor of $2^{-2}$ during the spin cycle. The technician, who calibrated the rotor that morning, logs the final count as a single power of two. What is it?",
               "options": ["$64$", "$256$", "$16$", "$2^4$"],
               "answer": "B",
               "explain": "Dividing by $2^{-2}$ adds two: $2^{6-(-2)}=2^8=256$. A subtracts the wrong direction."
@@ -1339,7 +1339,7 @@
               "n": 29,
               "tag": "Math; Exponents",
               "short": "Fractal patch",
-              "statement": "A fractal patch's area equals $16$ raised to the $3/4$ power square units. The survey needs the numeric area. What is it?",
+              "statement": "A fractal patch generated for a graphics demo has area equal to $16$ raised to the $3/4$ power square units, rendered overnight on the studio cluster. The surveyor mapping its boundary for the showcase needs the numeric area on the placard. What is it?",
               "options": ["$12$", "$64$", "$4$", "$8$"],
               "answer": "D",
               "explain": "Fourth root first ($2$), then cube: $2^3=8$. C takes the root but forgets the power."
@@ -1348,7 +1348,7 @@
               "n": 30,
               "tag": "Math; Exponents",
               "short": "Amp gain",
-              "statement": "An amplifier boosts its $12$-volt input by a factor of $\\sqrt{81}$. The output label needs the voltage. What should it read?",
+              "statement": "A stage amplifier boosts its $12$-volt input by a factor of $\\sqrt{81}$ for the headliner's Saturday set, with the sound engineer watching the meters from the mixing booth. The output label on the rack needs the resulting voltage printed clearly. What should it read?",
               "options": ["$108\\text{ V}$", "$96\\text{ V}$", "$92\\text{ V}$", "$93\\text{ V}$"],
               "answer": "A",
               "explain": "$\\sqrt{81}=9$, and $12\\cdot 9=108$ V. B multiplies by $8$ instead."
@@ -1584,7 +1584,7 @@
               "n": 22,
               "tag": "Math; Radicals",
               "short": "Silo edge",
-              "statement": "A cubic silo holds $1{,}000$ cubic meters of grain. How long is each edge?",
+              "statement": "A cubic grain silo on a Kansas farm holds $1{,}000$ cubic meters after a record harvest that filled every bin on the property. The builder, pricing a custom liner for the spring, needs each edge length to the nearest order size. How long is each edge?",
               "options": ["$100\\text{ m}$", "$10\\text{ m}$", "$25\\text{ m}$", "$\\sqrt{1000}\\text{ m}$"],
               "answer": "B",
               "explain": "$\\sqrt[3]{1000}=10$ m. D takes the wrong root."
@@ -1593,7 +1593,7 @@
               "n": 23,
               "tag": "Math; Radicals",
               "short": "Bed side",
-              "statement": "A square garden bed covers $0.25$ square meters. The edging needs the side length. What is it?",
+              "statement": "A square garden bed behind a craftsman bungalow covers $0.25$ square meters of rich composted soil. The homeowner, edging it with reclaimed brick on Sunday afternoon, needs the exact side length before cutting. What is it?",
               "options": ["$0.5\\text{ m}$", "$0.25\\text{ m}$", "$0.05\\text{ m}$", "$5\\text{ m}$"],
               "answer": "A",
               "explain": "$\\sqrt{0.25}=0.5$ m. The root of a decimal smaller than one grows larger — C shrinks it."
@@ -1602,7 +1602,7 @@
               "n": 24,
               "tag": "Math; Radicals",
               "short": "Depot run",
-              "statement": "A depot at $(0, 0)$ dispatches to a site at $(6, 8)$ on a kilometer grid. What is the straight-line distance?",
+              "statement": "A supply depot at $(0, 0)$ dispatches a truck to a site at $(6, 8)$ on the county's kilometer grid, with the driver preferring back roads the GPS ignores. The dispatcher, quoting delivery windows to an impatient customer, needs the straight-line distance first. What is the straight-line distance?",
               "options": ["$14\\text{ km}$", "$\\sqrt{28}\\text{ km}$", "$48\\text{ km}$", "$10\\text{ km}$"],
               "answer": "D",
               "explain": "$\\sqrt{36+64}=\\sqrt{100}=10$ km — the $6$-$8$-$10$ triangle. A adds the legs."
@@ -1611,7 +1611,7 @@
               "n": 25,
               "tag": "Math; Radicals",
               "short": "Cut pieces",
-              "statement": "A $\\sqrt{48}$-m rope is cut into pieces each $\\sqrt{3}$ m long. How many full pieces result?",
+              "statement": "A climbing gym's $\\sqrt{48}$-m rope is cut into pieces, each $\\sqrt{3}$ m long, for the new kids' wall opening next month. The manager, who labels every piece with colored tape, needs the count of full pieces. How many full pieces result?",
               "options": ["$4$", "$16$", "$\\sqrt{45}$", "$\\sqrt{51}$"],
               "answer": "A",
               "explain": "$\\sqrt{48}\\div\\sqrt{3}=\\sqrt{16}=4$. Divide under one radical. C subtracts insides."
@@ -1620,7 +1620,7 @@
               "n": 26,
               "tag": "Math; Radicals",
               "short": "Mirror square",
-              "statement": "A square mirror has sides of $\\sqrt{6}$ m. What is its area?",
+              "statement": "A square bathroom mirror with sides of $\\sqrt{6}$ m hangs in a renovated loft with exposed brick and high windows. The glazier, cutting the backing board on site, needs its exact area for the quote. What is its area?",
               "options": ["$12\\text{ m}^2$", "$36\\text{ m}^2$", "$6\\text{ m}^2$", "$\\sqrt{12}\\text{ m}^2$"],
               "answer": "C",
               "explain": "$(\\sqrt{6})^2=6$. B multiplies the root by itself twice over."
@@ -1629,7 +1629,7 @@
               "n": 27,
               "tag": "Math; Radicals",
               "short": "Court diagonal",
-              "statement": "A square court measures $9$ m per side. The referee runs corner to corner. How far is that?",
+              "statement": "A square tennis court measures $9$ m per side at the community club, freshly painted for the summer league. The referee sprints corner to corner chasing a disputed call while players watch from the benches. How far is that?",
               "options": ["$18\\text{ m}$", "$9\\sqrt{2}\\text{ m}$", "$81\\sqrt{2}\\text{ m}$", "$12\\text{ m}$"],
               "answer": "B",
               "explain": "Diagonal $=9\\sqrt{2}$ m. A doubles instead of rooting."
@@ -1638,7 +1638,7 @@
               "n": 28,
               "tag": "Math; Radicals",
               "short": "Roll choice",
-              "statement": "A border needs $\\sqrt{40}$ m of trim, about $6.3$ m. The shop sells $5$-, $6$-, and $7$-m rolls. Which is the smallest that suffices?",
+              "statement": "A craft border needs $\\sqrt{40}$ m of trim, about $6.3$ m, for a quilt entered in the county fair. The shop sells $5$-, $6$-, and $7$-m rolls, and the quilter hates buying more than necessary. Which is the smallest roll that suffices?",
               "options": ["$6$-m roll", "$5$-m roll", "Either $6$ or $5$", "$7$-m roll"],
               "answer": "D",
               "explain": "$\\sqrt{40}$ sits between $6$ and $7$ but above $6$, so only the $7$-m roll covers it."
@@ -1647,7 +1647,7 @@
               "n": 29,
               "tag": "Math; Radicals",
               "short": "GPS error",
-              "statement": "A receiver reports a squared error of $25$ square meters. The manual needs the actual error radius. What is it?",
+              "statement": "A survey receiver reports a squared error of $25$ square meters after a firmware update changed its averaging routine. The field manual needs the actual error radius for the accuracy log the crew submits nightly. What is it?",
               "options": ["$5\\text{ m}$", "$25\\text{ m}$", "$\\sqrt{50}\\text{ m}$", "$12.5\\text{ m}$"],
               "answer": "A",
               "explain": "$\\sqrt{25}=5$ m. Root the variance to return to plain units."
@@ -1656,7 +1656,7 @@
               "n": 30,
               "tag": "Math; Radicals",
               "short": "Half plot",
-              "statement": "A square plot of $72$ square meters is split into two equal squares. What is the side of each new square?",
+              "statement": "A square community plot of $72$ square meters is split into two equal squares for rival neighborhood associations that could not agree on a layout. The fencing contractor, donating labor for the weekend build, needs each new side length. What is the side of each new square?",
               "options": ["$12\\text{ m}$", "$\\sqrt{34}\\text{ m}$", "$6\\text{ m}$", "$36\\text{ m}$"],
               "answer": "C",
               "explain": "Each half is $36$ square meters, so each side is $\\sqrt{36}=6$ m. Halve the area first, then root."
@@ -1892,7 +1892,7 @@
               "n": 22,
               "tag": "Math; Number Theory",
               "short": "Trailing zeros",
-              "statement": "A combinatorics result equals $100!$ and the report needs its trailing zeros. How many are there?",
+              "statement": "A combinatorics result equals $100!$ and the error-checking report needs its trailing zeros before the paper ships to reviewers. The lead author, who distrusts computer algebra for this step, wants the count verified by hand. How many are there?",
               "options": ["$20$", "$25$", "$24$", "$30$"],
               "answer": "C",
               "explain": "Count factors of five: $20+4=24$. Each zero needs a $2$–$5$ pair, and fives are scarce."
@@ -1901,7 +1901,7 @@
               "n": 23,
               "tag": "Math; Number Theory",
               "short": "Common measure",
-              "statement": "A recipe scales to any whole serving that divides evenly into batches of $2$ through $6$. What is the smallest batch size?",
+              "statement": "A test-kitchen recipe scales to any whole serving that divides evenly into batches of $2$ through $6$, pleasing the publisher's strict formatting rules. The editor, juggling three cookbooks at once, needs the smallest batch size that works for every case. What is the smallest batch size?",
               "options": ["$30$", "$120$", "$60$", "$90$"],
               "answer": "C",
               "explain": "$\\text{LCM}(1,\\dots,6)=60$. B multiplies everything without removing overlaps."
@@ -1910,7 +1910,7 @@
               "n": 24,
               "tag": "Math; Number Theory",
               "short": "Digit swap",
-              "statement": "A two-digit number has digits summing to $9$, and subtracting $27$ reverses its digits. What is the number?",
+              "statement": "A two-digit house number has digits summing to $9$, and subtracting $27$ reverses its digits — a curiosity the new owners discovered at the closing. The locksmith, cutting a spare key engraved with the number, needs the original. What is the number?",
               "options": ["$36$", "$72$", "$63$", "$45$"],
               "answer": "C",
               "explain": "With $a-b=3$ and $a+b=9$: $a=6,b=3$, so $63$. Check: $63-27=36$."
@@ -1919,7 +1919,7 @@
               "n": 25,
               "tag": "Math; Number Theory",
               "short": "Odd multiples",
-              "statement": "A lottery draws odd multiples of $5$ below $100$. How many possible draws exist?",
+              "statement": "A charity lottery draws odd multiples of $5$ below $100$, with the drawing televised live on Friday night. The organizers, who must print exactly one ticket per possible draw, need the count before ordering paper. How many possible draws exist?",
               "options": ["$20$", "$9$", "$10$", "$19$"],
               "answer": "C",
               "explain": "They run $5$, $15$, and so on through $95$ — ten numbers. Halve the twenty multiples of five."
@@ -1928,7 +1928,7 @@
               "n": 26,
               "tag": "Math; Absolute Value",
               "short": "Meeting point",
-              "statement": "A marker must sit where $|x-10|=|x-2|$, equidistant from exits at $10$ and $2$. Where should it go?",
+              "statement": "A gallery marker must sit where $|x-10|=|x-2|$, equidistant from emergency exits at $10$ and $2$ along the main hall. The curator, finalizing the floor plan before the weekend opening, needs the exact position. Where should it go?",
               "options": ["$4$", "$8$", "$6$", "$5$"],
               "answer": "C",
               "explain": "Equal distances meet at the midpoint: $(10+2)\\div 2=6$."
@@ -1937,7 +1937,7 @@
               "n": 27,
               "tag": "Math; Number Theory",
               "short": "Factor census",
-              "statement": "A parts bin holds $72=2^3\\cdot 3^2$ bolts per kit. How many positive divisors does $72$ have?",
+              "statement": "A parts bin holds $72=2^3\\cdot 3^2$ bolts per kit for an engine assembly line that never stops. The inventory auditor, counting during the noisy night shift, needs the divisor count for the meshing table. How many positive divisors does $72$ have?",
               "options": ["$6$", "$12$", "$10$", "$8$"],
               "answer": "B",
               "explain": "$(3+1)(2+1)=12$. The exponent sum ($5$) is not the divisor count."
@@ -1946,7 +1946,7 @@
               "n": 28,
               "tag": "Math; Number Theory",
               "short": "Shift change",
-              "statement": "Two machines beep every $15$ and $20$ minutes from a joint beep at noon. When is the next joint beep?",
+              "statement": "Two packaging machines beep every $15$ and $20$ minutes from a joint beep at noon, driving the floor supervisor slowly mad. A technician timing the maintenance window needs the next joint beep before scheduling the belt stop. When is the next joint beep?",
               "options": ["$12{:}40$", "$1{:}00$ p.m.", "$12{:}35$", "$12{:}45$"],
               "answer": "B",
               "explain": "The LCM of $15$ and $20$ is $60$ minutes, so $1{:}00$ p.m. Adding gives $12{:}35$, wrongly."
@@ -1955,7 +1955,7 @@
               "n": 29,
               "tag": "Math; Number Theory",
               "short": "Mod pattern",
-              "statement": "A checksum needs $2^{50}$ modulo $3$. Since $2\\equiv -1\\pmod 3$, what is the remainder?",
+              "statement": "A payment checksum needs $2^{50}$ modulo $3$ for a hash check that runs on every transaction. Since $2\\equiv -1\\pmod 3$, the firmware engineer reduces the base power first instead of computing the giant directly. What is the remainder?",
               "options": ["$2$", "$0$", "$1$", "$-1$"],
               "answer": "C",
               "explain": "$(-1)^{50}=1$. Even exponents erase the sign."
@@ -1964,7 +1964,7 @@
               "n": 30,
               "tag": "Math; Number Theory",
               "short": "Even run total",
-              "statement": "Four consecutive even integers sum to $100$. The invoices need the largest. What is it?",
+              "statement": "Four consecutive even house numbers on a cul-de-sac sum to $100$, a fact the mail carrier noticed over years of rounds. The city invoices the largest property for sidewalk repairs this spring. The invoices need the largest number. What is it?",
               "options": ["$24$", "$26$", "$30$", "$28$"],
               "answer": "D",
               "explain": "Average $25$ sits between $24$ and $26$, so the run is $22$, $24$, $26$, $28$. Largest: $28$."
@@ -2200,7 +2200,7 @@
               "n": 22,
               "tag": "Math; Complex",
               "short": "Real product",
-              "statement": "A matched filter multiplies $(4-3i)$ by its conjugate. What is the output?",
+              "statement": "A radar's matched filter multiplies $(4-3i)$ by its complex conjugate to squeeze the echo from noise during storm tracking. The engineer, calibrating the receiver before hurricane season, needs the output value for the gain table. What is the output?",
               "options": ["$7$", "$25$", "$16-9i$", "$1$"],
               "answer": "B",
               "explain": "$16+9=25$ — always a sum of squares, always real."
@@ -2209,7 +2209,7 @@
               "n": 23,
               "tag": "Math; Complex",
               "short": "High-low sum",
-              "statement": "A log sums $i^7$ and $i^8$. What total should appear?",
+              "statement": "A debug log sums the phasor terms $i^7$ and $i^8$ from an overnight simulation of the power grid. The analyst, hunting a rounding bug before the release deadline, needs the exact total for the report. What total should appear?",
               "options": ["$1+i$", "$1-i$", "$-1-i$", "$2i$"],
               "answer": "B",
               "explain": "$i^7=-i$ and $i^8=1$, totaling $1-i$."
@@ -2218,7 +2218,7 @@
               "n": 24,
               "tag": "Math; Complex",
               "short": "Residual",
-              "statement": "An error $(9-4i)$ is corrected by $(9-i)$. What residual remains?",
+              "statement": "A guidance system's position error of $(9-4i)$ is corrected by a backup reading of $(9-i)$ during a test flight over the desert. The flight engineer, reviewing telemetry with cold coffee, needs the leftover residual for the error budget. What residual remains?",
               "options": ["$-3i$", "$18-5i$", "$-5i$", "$0$"],
               "answer": "A",
               "explain": "Real parts cancel ($0$); imaginary: $-4-(-1)=-3$, so $-3i$."
@@ -2227,7 +2227,7 @@
               "n": 25,
               "tag": "Math; Complex",
               "short": "Wide magnitude",
-              "statement": "A transmission phasor reads $8-6i$ kV. What is its magnitude?",
+              "statement": "A transmission phasor on a high-voltage line reads $8-6i$ kV during peak summer demand, with cicadas drowning out the substation hum. The crew chief sizing the breaker rating needs the phasor's magnitude from the chart. What is its magnitude?",
               "options": ["$2$", "$14$", "$10$", "$\\sqrt{28}$"],
               "answer": "C",
               "explain": "$\\sqrt{64+36}=10$ kV — the scaled $3$-$4$-$5$ triangle."
@@ -2236,7 +2236,7 @@
               "n": 26,
               "tag": "Math; Complex",
               "short": "Rotate once",
-              "statement": "Multiplying by $i$ rotates a phasor $90$ degrees. Starting from $(3+i)$, what is one rotation's result?",
+              "statement": "Multiplying by $i$ rotates a phasor $90$ degrees on the control-room display that tracks antenna alignment. Starting from $(3+i)$, the operator applies one rotation to dodge interference from a passing storm. What is one rotation's result?",
               "options": ["$3i+i^2$", "$-1+3i$", "$1+3i$", "$3-i$"],
               "answer": "B",
               "explain": "$3i+i^2=-1+3i$. Rotation swaps the parts with a sign flip."
@@ -2245,7 +2245,7 @@
               "n": 27,
               "tag": "Math; Complex",
               "short": "Opposed product",
-              "statement": "A detector multiplies $(5i)$ by $(-2i)$. What does it register?",
+              "statement": "A particle detector multiplies the signals $(5i)$ by $(-2i)$ from opposite sensor banks lining the collision chamber. The physicist on shift, watching event counts climb through the night, needs the registered product for the logbook. What does it register?",
               "options": ["$-10i$", "$10$", "$-10$", "$10i$"],
               "answer": "B",
               "explain": "$-10i^2=10$. Two imaginary factors with opposite signs go positive real."
@@ -2254,7 +2254,7 @@
               "n": 28,
               "tag": "Math; Complex",
               "short": "Balanced sum",
-              "statement": "Loads of $(3+4i)$ and $(-3+2i)$ ohms combine in series. What is the total?",
+              "statement": "Two industrial loads of $(3+4i)$ and $(-3+2i)$ ohms combine in series on a factory floor that runs three shifts. The electrician, replacing a scorched panel before the morning whistle, needs the combined total for the work order. What is the total?",
               "options": ["$6i$", "$6+6i$", "$2i$", "$10i$"],
               "answer": "A",
               "explain": "Real parts cancel ($0$); imaginary sums to $6i$."
@@ -2263,7 +2263,7 @@
               "n": 29,
               "tag": "Math; Complex",
               "short": "Fiftieth power",
-              "statement": "A stability check evaluates $i^{50}$. What value should the assertion use?",
+              "statement": "A flight-control stability check evaluates $i^{50}$ in an assertion that must pass before the software ships to the fleet. The verification engineer, running the suite overnight, needs the exact expected value. What value should the assertion use?",
               "options": ["$i$", "$1$", "$-1$", "$-i$"],
               "answer": "C",
               "explain": "$i^{50}=(i^4)^{12}\\cdot i^2=-1$. Strip full cycles, then read the remainder."
@@ -2272,7 +2272,7 @@
               "n": 30,
               "tag": "Math; Complex",
               "short": "Difference size",
-              "statement": "Two probes read $(2+3i)$ and $(5+i)$. The display shows the modulus of their difference. What appears?",
+              "statement": "Two lab probes read $(2+3i)$ and $(5+i)$ during a late calibration of the test bench, with the senior tech supervising the intern's first solo run. The bench display shows the modulus of their difference for the tolerance check. What appears?",
               "options": ["$\\sqrt{5}$", "$\\sqrt{13}$", "$\\sqrt{17}$", "$\\sqrt{29}$"],
               "answer": "B",
               "explain": "Difference is $-3+2i$ with modulus $\\sqrt{9+4}=\\sqrt{13}$."
@@ -2508,7 +2508,7 @@
               "n": 22,
               "tag": "Math; Matrices",
               "short": "Identity run",
-              "statement": "The identity $\\begin{pmatrix}1 & 0 \\\\ 0 & 1\\end{pmatrix}$ multiplies $\\begin{pmatrix}4 & 9 \\\\ 2 & 5\\end{pmatrix}$. What results?",
+              "statement": "The identity $\\begin{pmatrix}1 & 0 \\\\ 0 & 1\\end{pmatrix}$ multiplies the table $\\begin{pmatrix}4 & 9 \\\\ 2 & 5\\end{pmatrix}$ in a graphics pipeline that renders overnight batches. A junior dev, debugging a black screen before the demo, needs the product. What results?",
               "options": ["$\\begin{pmatrix}1 & 0 \\\\ 0 & 1\\end{pmatrix}$", "$\\begin{pmatrix}4 & 0 \\\\ 0 & 5\\end{pmatrix}$", "$\\begin{pmatrix}4 & 9 \\\\ 2 & 5\\end{pmatrix}$", "$\\begin{pmatrix}5 & 9 \\\\ 2 & 6\\end{pmatrix}$"],
               "answer": "C",
               "explain": "Identity preserves every entry. B zeroes the off-diagonal instead."
@@ -2517,7 +2517,7 @@
               "n": 23,
               "tag": "Math; Matrices",
               "short": "Dot total",
-              "statement": "Loads $[6,2,9]$ meet rates $[1,3,2]^T$. What is the combined total?",
+              "statement": "Warehouse loads $[6,2,9]$ meet shipping rates $[1,3,2]^T$ in the logistics model that prices every outbound truck. The dispatcher, reconciling invoices during the busy holiday rush, needs the combined total for the ledger. What is the combined total?",
               "options": ["$18$", "$17$", "$38$", "$30$"],
               "answer": "D",
               "explain": "$6\\cdot 1+2\\cdot 3+9\\cdot 2=6+6+18=30$."
@@ -2526,7 +2526,7 @@
               "n": 24,
               "tag": "Math; Matrices",
               "short": "Negative det",
-              "statement": "A shear factor is $\\det\\begin{pmatrix}3 & 8 \\\\ 4 & 6\\end{pmatrix}$. What is it?",
+              "statement": "A map's shear factor is $\\det\\begin{pmatrix}3 & 8 \\\\ 4 & 6\\end{pmatrix}$, computed by the GIS team before the atlas goes to print. The cartographer, double-checking projections over strong coffee, needs the exact value. What is it?",
               "options": ["$18-32=-14$", "$50$", "$-50$", "$14$"],
               "answer": "A",
               "explain": "$3\\cdot 6-8\\cdot 4=18-32=-14$. Keep the subtraction order: main diagonal minus the other."
@@ -2535,7 +2535,7 @@
               "n": 25,
               "tag": "Math; Matrices",
               "short": "Shelf remainder",
-              "statement": "Shelves hold $\\begin{pmatrix}50 & 30 \\\\ 20 & 40\\end{pmatrix}$ and sell $\\begin{pmatrix}12 & 8 \\\\ 5 & 15\\end{pmatrix}$. What remains?",
+              "statement": "Store shelves hold $\\begin{pmatrix}50 & 30 \\\\ 20 & 40\\end{pmatrix}$ units while the week's sales remove $\\begin{pmatrix}12 & 8 \\\\ 5 & 15\\end{pmatrix}$ across two departments. The manager, counting before the holiday weekend, needs the remaining stock table. What remains?",
               "options": ["$\\begin{pmatrix}62 & 38 \\\\ 25 & 55\\end{pmatrix}$", "$\\begin{pmatrix}38 & 22 \\\\ 15 & 25\\end{pmatrix}$", "$\\begin{pmatrix}38 & 30 \\\\ 20 & 25\\end{pmatrix}$", "$\\begin{pmatrix}600 & 240 \\\\ 100 & 600\\end{pmatrix}$"],
               "answer": "B",
               "explain": "Subtract per shelf and product. D multiplies the tables instead."
@@ -2544,7 +2544,7 @@
               "n": 26,
               "tag": "Math; Matrices",
               "short": "Half turn",
-              "statement": "A camera at $(3,-4)$ pans $180$ degrees about the origin. Where does it point?",
+              "statement": "A security camera at $(3,-4)$ pans $180$ degrees about the origin to cover the parking lot's far corner during the night shift. The guard watching the monitors needs the new pointing direction for the log. Where does it point?",
               "options": ["$(4,-3)$", "$(-4,3)$", "$(-3,4)$", "$(3,4)$"],
               "answer": "C",
               "explain": "A half turn negates both coordinates: $(-3,4)$. A swaps instead of negating."
@@ -2553,7 +2553,7 @@
               "n": 27,
               "tag": "Math; Matrices",
               "short": "Two-leg route",
-              "statement": "A planner multiplies $\\begin{pmatrix}2 & 0 \\\\ 1 & 3\\end{pmatrix}$ by $\\begin{pmatrix}4 & 5 \\\\ 6 & 7\\end{pmatrix}$. What is the product?",
+              "statement": "A transit planner multiplies the transfer table $\\begin{pmatrix}2 & 0 \\\\ 1 & 3\\end{pmatrix}$ by the schedule table $\\begin{pmatrix}4 & 5 \\\\ 6 & 7\\end{pmatrix}$ to model two-leg routes across the city. The analyst, presenting to the council on Tuesday, needs the exact product. What is the product?",
               "options": ["$\\begin{pmatrix}8 & 0 \\\\ 6 & 21\\end{pmatrix}$", "$\\begin{pmatrix}6 & 5 \\\\ 7 & 10\\end{pmatrix}$", "$\\begin{pmatrix}14 & 17 \\\\ 28 & 32\\end{pmatrix}$", "$\\begin{pmatrix}8 & 10 \\\\ 22 & 26\\end{pmatrix}$"],
               "answer": "D",
               "explain": "Row-times-column: $8,10,22,26$. A multiplies entrywise — never legal for products."
@@ -2562,7 +2562,7 @@
               "n": 28,
               "tag": "Math; Matrices",
               "short": "Final grade",
-              "statement": "Weights $[0.3,0.5,0.2]$ meet scores $[80,90,70]^T$. What is the final grade?",
+              "statement": "Course weights $[0.3,0.5,0.2]$ meet a student's scores $[80,90,70]^T$ in the registrar's spreadsheet at semester's end. The advisor, writing the scholarship letter that afternoon, needs the final grade. What is the final grade?",
               "options": ["$83$", "$80$", "$85$", "$240$"],
               "answer": "A",
               "explain": "$0.3(80)+0.5(90)+0.2(70)=24+45+14=83$. Weights must pair with their own scores."
@@ -2571,7 +2571,7 @@
               "n": 29,
               "tag": "Math; Matrices",
               "short": "Det sign",
-              "statement": "A code equals $\\det\\begin{pmatrix}-2 & 5 \\\\ 3 & 4\\end{pmatrix}$. What is it?",
+              "statement": "A vault access code equals $\\det\\begin{pmatrix}-2 & 5 \\\\ 3 & 4\\end{pmatrix}$, generated by the security system during last night's rotation. The guard, reading the code over a crackling radio, needs its exact value. What is it?",
               "options": ["$7$", "$-23$", "$23$", "$-7$"],
               "answer": "B",
               "explain": "$(-2)(4)-(5)(3)=-8-15=-23$. Signs ride along inside the diagonals."
@@ -2580,7 +2580,7 @@
               "n": 30,
               "tag": "Math; Matrices",
               "short": "Scaled difference",
-              "statement": "A model needs $2A-B$ with $A=\\begin{pmatrix}4 & 1 \\\\ 2 & 3\\end{pmatrix}$ and $B=\\begin{pmatrix}2 & 5 \\\\ 0 & 4\\end{pmatrix}$. What is the result?",
+              "statement": "An engineering model needs $2A-B$ with $A=\\begin{pmatrix}4 & 1 \\\\ 2 & 3\\end{pmatrix}$ and $B=\\begin{pmatrix}2 & 5 \\\\ 0 & 4\\end{pmatrix}$ for the stress simulation running over the weekend. The analyst, checking results Monday morning, needs the exact table. What is the result?",
               "options": ["$\\begin{pmatrix}10 & 7 \\\\ 4 & 10\\end{pmatrix}$", "$\\begin{pmatrix}6 & -4 \\\\ 4 & 2\\end{pmatrix}$", "$\\begin{pmatrix}6 & -3 \\\\ 4 & 2\\end{pmatrix}$", "$\\begin{pmatrix}2 & -4 \\\\ 2 & -1\\end{pmatrix}$"],
               "answer": "C",
               "explain": "Scale first ($8,2,4,6$), then subtract ($6,-3,4,2$). Scaling after subtracting misplaces the weights."
@@ -2816,7 +2816,7 @@
               "n": 22,
               "tag": "Math; Vectors",
               "short": "Down unit",
-              "statement": "A probe descends along $\\langle 0,-8\\rangle$ m/s. What is the unit vector of its motion?",
+              "statement": "A deep-sea probe descends straight along $\\langle 0,-8\\rangle$ m/s into dark water far below the research vessel. The pilot, watching sonar in the cramped control room, needs the unit vector of its motion for the log. What is the unit vector of its motion?",
               "options": ["$\\langle 0,-1\\rangle$", "$\\langle 1,0\\rangle$", "$\\langle 0,-8\\rangle$", "$\\langle 0,1\\rangle$"],
               "answer": "A",
               "explain": "Length $8$; dividing gives straight down with length one."
@@ -2825,7 +2825,7 @@
               "n": 23,
               "tag": "Math; Vectors",
               "short": "Push work",
-              "statement": "A force $\\langle 3,4\\rangle$ N acts over displacement $\\langle 5,0\\rangle$ m. How much work is done?",
+              "statement": "A warehouse force of $\\langle 3,4\\rangle$ N drags a pallet over displacement $\\langle 5,0\\rangle$ m across the concrete floor. The supervisor, tracking energy costs for the quarterly report, needs the work done. How much work is done?",
               "options": ["$35\\text{ J}$", "$15\\text{ J}$", "$12\\text{ J}$", "$27\\text{ J}$"],
               "answer": "B",
               "explain": "$3\\cdot 5+4\\cdot 0=15$ J. Only the aligned part works."
@@ -2834,7 +2834,7 @@
               "n": 24,
               "tag": "Math; Vectors",
               "short": "Split angle",
-              "statement": "Paths along $\\langle 1,0\\rangle$ and $\\langle 1,1\\rangle$ meet at a junction. Their dot is $1$ and lengths are $1$ and $\\sqrt{2}$. What is the angle between them?",
+              "statement": "Two hiking paths along $\\langle 1,0\\rangle$ and $\\langle 1,1\\rangle$ meet at a junction marked by a weathered cairn. Their dot is $1$ and their lengths are $1$ and $\\sqrt{2}$, facts the trail guide memorized years ago. What is the angle between them?",
               "options": ["$30^\\circ$", "$45^\\circ$", "$60^\\circ$", "$90^\\circ$"],
               "answer": "B",
               "explain": "$\\cos\\theta=1\\div\\sqrt{2}$, so $\\theta=45^\\circ$. The diagonal splits the right angle."
@@ -2843,7 +2843,7 @@
               "n": 25,
               "tag": "Math; Vectors",
               "short": "Tug pair",
-              "statement": "Two tugs pull $\\langle 6,2\\rangle$ and $\\langle -2,4\\rangle$ kN on one barge. What is the combined pull's magnitude?",
+              "statement": "Two harbor tugs pull $\\langle 6,2\\rangle$ and $\\langle -2,4\\rangle$ kN on one heavy barge during a tricky dawn docking. The harbormaster, coordinating over the radio, needs the combined pull's magnitude for the safety margin. What is the combined pull's magnitude?",
               "options": ["$\\sqrt{20}\\text{ kN}$", "$\\sqrt{52}\\text{ kN}$", "$10\\text{ kN}$", "$\\sqrt{40}\\text{ kN}$"],
               "answer": "B",
               "explain": "Sum $\\langle 4,6\\rangle$ first, then $\\sqrt{16+36}=\\sqrt{52}$ kN. Never root before adding."
@@ -2852,7 +2852,7 @@
               "n": 26,
               "tag": "Math; Vectors",
               "short": "Cross difference",
-              "statement": "A survey takes $\\langle -2,5\\rangle$ minus $\\langle 3,-1\\rangle$. What vector remains?",
+              "statement": "A land survey takes the boundary vector $\\langle -2,5\\rangle$ minus the easement vector $\\langle 3,-1\\rangle$ to settle a fence dispute between neighbors. The surveyor, staking corners in the mud after rain, needs the remaining vector. What vector remains?",
               "options": ["$\\langle 1,4\\rangle$", "$\\langle -5,6\\rangle$", "$\\langle -5,4\\rangle$", "$\\langle 1,6\\rangle$"],
               "answer": "B",
               "explain": "$-2-3$ and $5-(-1)$: $\\langle -5,6\\rangle$. Subtracting a negative adds."
@@ -2861,7 +2861,7 @@
               "n": 27,
               "tag": "Math; Vectors",
               "short": "Quad stretch",
-              "statement": "A gust quadruples the vector $\\langle -1,2\\rangle$. What is the result?",
+              "statement": "A sudden desert gust quadruples the wind vector $\\langle -1,2\\rangle$ measured at the airfield station, rattling the hangar doors. The meteorologist, updating the forecast discussion, needs the resulting vector for the advisory. What is the result?",
               "options": ["$\\langle -4,2\\rangle$", "$\\langle -4,8\\rangle$", "$\\langle -1,8\\rangle$", "$\\langle 4,-8\\rangle$"],
               "answer": "B",
               "explain": "Scale both parts: $\\langle -4,8\\rangle$. D also flips the signs."
@@ -2870,7 +2870,7 @@
               "n": 28,
               "tag": "Math; Vectors",
               "short": "Square corner",
-              "statement": "Two edges run $\\langle 4,1\\rangle$ and $\\langle -1,4\\rangle$. Do they meet at a right angle?",
+              "statement": "Two steel edges of a bracket run $\\langle 4,1\\rangle$ and $\\langle -1,4\\rangle$ in the fabricator's CAD drawing, which the inspector reviews with calipers. The quality sheet demands a right angle at that joint. Do they meet at a right angle?",
               "options": ["No, dot is $8$", "Yes, dot is $0$", "No, dot is $-8$", "Yes, dot is $17$"],
               "answer": "B",
               "explain": "$4(-1)+1(4)=0$ — perpendicular. A misplaces a sign."
@@ -2879,7 +2879,7 @@
               "n": 29,
               "tag": "Math; Vectors",
               "short": "Return speed",
-              "statement": "A ball rolls with velocity $\\langle -6,-8\\rangle$ m/s. What is its speed?",
+              "statement": "A bowling ball rolls with velocity $\\langle -6,-8\\rangle$ m/s down a polished lane under bright league-night lights. The coach, filming the release for slow-motion review, needs the ball's speed for the stats sheet. What is its speed?",
               "options": ["$14\\text{ m/s}$", "$10\\text{ m/s}$", "$\\sqrt{14}\\text{ m/s}$", "$48\\text{ m/s}$"],
               "answer": "B",
               "explain": "$\\sqrt{36+64}=10$ m/s. Direction never changes speed."
@@ -2888,7 +2888,7 @@
               "n": 30,
               "tag": "Math; Vectors",
               "short": "Launch east",
-              "statement": "A launcher fires at $20$ m/s, $60^\\circ$ above east. The east component is $20\\cos 60^\\circ$. What is it?",
+              "statement": "A fireworks launcher fires at $20$ m/s, $60^\\circ$ above east, over a cheering lakeside crowd on the Fourth. The east component is $20\\cos 60^\\circ$, a fact the crew chief calls out during setup. What is it?",
               "options": ["$17.32\\text{ m/s}$", "$10\\text{ m/s}$", "$20\\text{ m/s}$", "$0\\text{ m/s}$"],
               "answer": "B",
               "explain": "$20\\cdot 0.5=10$ m/s eastward. A is the north component."
@@ -3131,7 +3131,7 @@
               "n": 22,
               "tag": "Math; Linear Equations",
               "short": "Rate form",
-              "statement": "From $I=P\\cdot r\\cdot t$, solving for the rate $r$ gives which formula?",
+              "statement": "The physics formula $I=P\\cdot r\\cdot t$ relates interest, principal, rate, and time on the finance exam's reference sheet. A student solving for the rate $r$ circles candidate rearrangements during the timed section. From $I=P\\cdot r\\cdot t$, solving for the rate $r$ gives which formula?",
               "options": ["$r=I\\cdot P\\cdot t$", "$r=\\frac{Pt}{I}$", "$r=I-P-t$", "$r=\\frac{I}{Pt}$"],
               "answer": "D",
               "explain": "Divide both sides by $Pt$ at once. Everything except the target moves."
@@ -3140,7 +3140,7 @@
               "n": 23,
               "tag": "Math; Linear Equations",
               "short": "Nested undo",
-              "statement": "A packing list satisfies $4(x+2)-3(x-1)=17$. How many units is $x$?",
+              "statement": "A warehouse packing list satisfies $4(x+2)-3(x-1)=17$, scribbled by the night manager on a clipboard. The morning crew, counting cartons before the trucks arrive, needs the value of $x$ to reconcile the manifest. How many units is $x$?",
               "options": ["$2$", "$6$", "$0$", "$11$"],
               "answer": "B",
               "explain": "$4x+8-3x+3=17$ gives $x+11=17$, so $x=6$. Minus times minus turns plus."
@@ -3149,7 +3149,7 @@
               "n": 24,
               "tag": "Math; Linear Equations",
               "short": "Quota sales",
-              "statement": "A rep earns $3{,}000$ plus $10\\%$ of sales and targets $5{,}000$. What sales total is needed?",
+              "statement": "A sales rep earns $3{,}000$ plus $10\\%$ of sales and targets $5{,}000$ for the quarter to qualify for the company's Hawaii trip. Her manager, reviewing pipelines on Friday, needs the required sales total for the forecast. What sales total is needed?",
               "options": ["$15{,}000$", "$50{,}000$", "$200{,}000$", "$20{,}000$"],
               "answer": "D",
               "explain": "$3000+0.1s=5000$ gives $s=20{,}000$. Percent means hundredths in the equation."
@@ -3158,7 +3158,7 @@
               "n": 25,
               "tag": "Math; Linear Equations",
               "short": "Paddock width",
-              "statement": "A paddock's length is $4$ m less than twice its width, and the perimeter is $52$ m. What is the width?",
+              "statement": "A horse paddock's length is $4$ m less than twice its width, fenced last spring with cedar posts. The owner measures the perimeter at $52$ m for the insurance inventory taken every September. What is the width?",
               "options": ["$16\\text{ m}$", "$10\\text{ m}$", "$12\\text{ m}$", "$8\\text{ m}$"],
               "answer": "B",
               "explain": "$2(w+2w-4)=52$ gives $6w=60$, so $w=10$ m."
@@ -3167,7 +3167,7 @@
               "n": 26,
               "tag": "Math; Linear Equations",
               "short": "Undo division",
-              "statement": "A gauge satisfies $\\frac{x-5}{3}=7$. What is $x$?",
+              "statement": "A pressure gauge on the bottling line satisfies $\\frac{x-5}{3}=7$, flickering slightly with each vibration of the conveyor. The line technician, calibrating before the inspector's visit, needs the exact value of $x$. What is $x$?",
               "options": ["$12$", "$26$", "$16$", "$\\frac{26}{3}$"],
               "answer": "A",
               "explain": "Multiply first ($x-5=21$), then add: $x=26$. Reverse the outside move first."
@@ -3176,7 +3176,7 @@
               "n": 27,
               "tag": "Math; Linear Equations",
               "short": "Gate split",
-              "statement": "A gate sells $100$ tickets, adult $12$ and child $7$, for $1{,}020$. How many adult tickets sold?",
+              "statement": "A theater gate sells $100$ tickets for a sold-out Saturday show, adult $12$ and child $7$, totaling $1{,}020$ at the box office. The treasurer, balancing the drawer past midnight, needs the adult count for the report. How many adult tickets sold?",
               "options": ["$36$", "$60$", "$40$", "$64$"],
               "answer": "D",
               "explain": "$12a+7(100-a)=1020$ gives $5a=320$, so $a=64$."
@@ -3185,7 +3185,7 @@
               "n": 28,
               "tag": "Math; Linear Equations",
               "short": "General form",
-              "statement": "From $ax+b=c$ (with $a\\neq 0$), solving for $x$ gives which formula?",
+              "statement": "The general linear form $ax+b=c$ (with $a\\neq 0$) appears on the exam's formula review page that students memorize all semester. A tutor drilling rearrangements asks the class to isolate $x$ symbolically. From $ax+b=c$ (with $a\\neq 0$), solving for $x$ gives which formula?",
               "options": ["$x=c-b-a$", "$x=\\frac{c+b}{a}$", "$x=a(c-b)$", "$x=\\frac{c-b}{a}$"],
               "answer": "D",
               "explain": "Subtract $b$, divide by $a$ — the master pattern for every linear equation."
@@ -3194,7 +3194,7 @@
               "n": 29,
               "tag": "Math; Linear Equations",
               "short": "Triple sum",
-              "statement": "Three consecutive integers sum to $84$. What is the largest?",
+              "statement": "Three consecutive page numbers in a novel sum to $84$, a detail an eagle-eyed reader spotted and posted online. The book club, meeting Thursday at the library, wonders which page is the largest of the three. What is the largest?",
               "options": ["$27$", "$29$", "$28$", "$30$"],
               "answer": "B",
               "explain": "The middle is $84\\div 3=28$, so the largest is $29$."
@@ -3203,7 +3203,7 @@
               "n": 30,
               "tag": "Math; Linear Equations",
               "short": "Negative root",
-              "statement": "A ledger satisfies $2(x-4)+5=3x-1$. What is $x$?",
+              "statement": "A shop ledger satisfies $2(x-4)+5=3x-1$, written in pencil by the owner at closing time. The accountant, reconciling the month's books during tax season, needs the exact value of $x$ to balance the page. What is $x$?",
               "options": ["$-2$", "$-4$", "$2$", "$12$"],
               "answer": "A",
               "explain": "$2x-8+5=3x-1$ gives $2x-3=3x-1$, so $x=-2$. Negatives are legal answers — verify by plugging."
@@ -3439,7 +3439,7 @@
               "n": 22,
               "tag": "Math; Absolute Value",
               "short": "Twin bounds",
-              "statement": "A part measures $|4x-12|\\ge 8$. Which set passes inspection?",
+              "statement": "A machined part measures up only when $|4x-12|\\ge 8$, checked with calipers at the end of the production line. The inspector, rejecting flawed pieces into the red bin all morning, needs the passing set for the stamp. Which set passes inspection?",
               "options": ["$1\\le x\\le 5$", "$x\\ge 5$ or $x\\le 1$", "$x\\ge 1$ or $x\\le 5$", "$3\\le x\\le 5$"],
               "answer": "B",
               "explain": "$4x-12\\ge 8$ gives $x\\ge 5$; the mirror gives $x\\le 1$. Outside or nothing."
@@ -3448,7 +3448,7 @@
               "n": 23,
               "tag": "Math; Inequalities",
               "short": "Drain limit",
-              "statement": "A tank model needs $-\\frac{x}{3}+2\\ge 5$. Which levels satisfy it?",
+              "statement": "A chemical tank model needs $-\\frac{x}{3}+2\\ge 5$ to keep the reaction stable through the night shift. The operator, watching sight glasses between rounds, needs the safe levels for the logbook. Which levels satisfy it?",
               "options": ["$x\\ge -9$", "$x\\ge 9$", "$x\\le -9$", "$x\\le 9$"],
               "answer": "C",
               "explain": "$-\\frac{x}{3}\\ge 3$ multiplies to $x\\le -9$ with a flip. Negatives reverse."
@@ -3457,7 +3457,7 @@
               "n": 24,
               "tag": "Math; Inequalities",
               "short": "Mixed rails",
-              "statement": "A controller holds $1<2x-3\\le 9$. Which range is live?",
+              "statement": "A greenhouse controller holds temperature while $1<2x-3\\le 9$, cycling heaters that hum through winter nights. The grower, protecting orchids before the spring show, needs the live range for the alarm panel. Which range is live?",
               "options": ["$2<x<6$", "$-1<x\\le 3$", "$2<x\\le 6$", "$4<x\\le 12$"],
               "answer": "C",
               "explain": "Add $3$ ($4<2x\\le 12$), halve: $2<x\\le 6$. Strictness rides along unchanged."
@@ -3466,7 +3466,7 @@
               "n": 25,
               "tag": "Math; Absolute Value",
               "short": "Halfway beacon",
-              "statement": "A beacon must satisfy $|x+5|=|x-3|$, equidistant from posts at $-5$ and $3$. Where does it go?",
+              "statement": "An emergency beacon must satisfy $|x+5|=|x-3|$, equidistant from stone posts at $-5$ and $3$ along a dark hiking trail. The ranger, placing it before storm season, needs the exact spot on the map. Where does it go?",
               "options": ["$-1$", "$1$", "$-4$", "$4$"],
               "answer": "A",
               "explain": "Equal distances meet at the midpoint: $(-5+3)\\div 2=-1$."
@@ -3475,7 +3475,7 @@
               "n": 26,
               "tag": "Math; Inequalities",
               "short": "Expand and bound",
-              "statement": "A frame needs $3(x+1)-2(x-2)>11$. Which lengths work?",
+              "statement": "A carpenter's picture frame needs $3(x+1)-2(x-2)>11$ inches of molding for a custom wedding order due Saturday. The apprentice, measuring twice in the dusty shop, needs the qualifying lengths for the cut list. Which lengths work?",
               "options": ["$x<4$", "$x>4$", "$x<6$", "$x>6$"],
               "answer": "B",
               "explain": "$x+7>11$ gives $x>4$. Expand fully before collecting."
@@ -3484,7 +3484,7 @@
               "n": 27,
               "tag": "Math; Inequalities",
               "short": "Cargo cap",
-              "statement": "An elevator carries $12$ people averaging $150$ lb plus $c$ lb of cargo, capped at $2{,}000$ lb. What is the cargo max?",
+              "statement": "A freight elevator carries $12$ people averaging $150$ lb plus $c$ lb of equipment crates, capped at $2{,}000$ lb by the posted safety placard. The building manager, scheduling the morning rush, needs the cargo maximum. What is the cargo max?",
               "options": ["$350$", "$500$", "$200$", "$150$"],
               "answer": "C",
               "explain": "$1800+c\\le 2000$ gives $c\\le 200$ lb. People first, cargo second."
@@ -3493,7 +3493,7 @@
               "n": 28,
               "tag": "Math; Absolute Value",
               "short": "Inner span",
-              "statement": "A cable fits while $|2x-10|<6$. Which span fits?",
+              "statement": "A suspension cable fits its housing while $|2x-10|<6$, swaying gently in the gorge wind that whistles through the towers. The bridge crew, torquing bolts at dawn, needs the fitting span for the spec sheet. Which span fits?",
               "options": ["$2<x<8$", "$x<8$", "$x>2$", "$7<x<13$"],
               "answer": "A",
               "explain": "$4<2x<16$ halves to $2<x<8$. Inside means between."
@@ -3502,7 +3502,7 @@
               "n": 29,
               "tag": "Math; Inequalities",
               "short": "Exemption average",
-              "statement": "Scores of $88, 92, 86$ need a four-test average of at least $90$ for exemption. What must the fourth test reach?",
+              "statement": "Scores of $88, 92, 86$ across three brutal organic-chemistry midterms need a four-test average of at least $90$ for a lab exemption. The student, studying through weekends at the campus library, faces one final exam next week. What must the fourth test reach?",
               "options": ["$94$", "$90$", "$92$", "$96$"],
               "answer": "A",
               "explain": "$266+x\\ge 360$ gives $x\\ge 94$. At-least sets a floor."
@@ -3511,7 +3511,7 @@
               "n": 30,
               "tag": "Math; Inequalities",
               "short": "Sign trap",
-              "statement": "A model requires $-4(x-2)>8$. Which values satisfy it?",
+              "statement": "An economic model requires $-4(x-2)>8$ for the policy to reduce the deficit, according to analysts briefing the committee. The staffer, highlighting passages late at night, needs the satisfying values for the memo. Which values satisfy it?",
               "options": ["$x>0$", "$x<0$", "$x>4$", "$x<4$"],
               "answer": "B",
               "explain": "Divide by $-4$ (flip!): $x-2<-2$, so $x<0$. The flip decides everything."
@@ -3747,7 +3747,7 @@
               "n": 22,
               "tag": "Math; Systems",
               "short": "Lot wheels",
-              "statement": "A lot holds $30$ vehicles, cars ($4$ wheels) and motorcycles ($2$ wheels), totaling $100$ wheels. How many motorcycles?",
+              "statement": "A dealership lot holds $30$ vehicles, cars ($4$ wheels) and motorcycles ($2$ wheels), totaling $100$ wheels at the quarterly inventory count. The manager, reconciling the lot against sales records, needs the motorcycle count for the report. How many motorcycles?",
               "options": ["$20$", "$15$", "$25$", "$10$"],
               "answer": "D",
               "explain": "$4c+2(30-c)=100$ gives $2c=40$, so $c=20$ cars and $10$ motorcycles."
@@ -3756,7 +3756,7 @@
               "n": 23,
               "tag": "Math; Systems",
               "short": "Feed mix",
-              "statement": "Feeds $p$ and $q$ satisfy $p+q=100$ with $3p+5q=360$. How much of $q$ is used?",
+              "statement": "Two livestock feeds $p$ and $q$ satisfy $p+q=100$ with $3p+5q=360$ in the nutritionist's winter ration plan. The rancher, ordering before the mountain passes close, needs the amount of $q$ for the delivery ticket. How much of $q$ is used?",
               "options": ["$70$", "$40$", "$30$", "$50$"],
               "answer": "C",
               "explain": "$3p+5(100-p)=360$ gives $2p=140$, so $p=70$ and $q=30$. Read which variable is asked."
@@ -3765,7 +3765,7 @@
               "n": 24,
               "tag": "Math; Systems",
               "short": "Doubled line",
-              "statement": "A system reads $4x-6y=10$ and $2x-3y=5$. How many solutions exist?",
+              "statement": "A homework system reads $4x-6y=10$ and $2x-3y=5$ in a problem set about traffic flow due Friday. The student, checking answers against the back of the book, needs the solution count for the study guide. How many solutions exist?",
               "options": ["None", "Exactly one", "Two", "Infinitely many"],
               "answer": "D",
               "explain": "Halving the first reproduces the second — one line twice, infinite solutions."
@@ -3774,7 +3774,7 @@
               "n": 25,
               "tag": "Math; Systems",
               "short": "Shifted pair",
-              "statement": "A system reads $y=x-4$ with $2x+y=14$. What is $y$?",
+              "statement": "A navigation system reads $y=x-4$ with $2x+y=14$ while guiding a delivery drone through downtown corridors. The operator, watching the battery gauge anxiously, needs the value of $y$ at the waypoint. What is $y$?",
               "options": ["$2$", "$6$", "$-2$", "$10$"],
               "answer": "A",
               "explain": "$2x+x-4=14$ gives $x=6$, so $y=2$. Substitute the ready-made expression."
@@ -3783,7 +3783,7 @@
               "n": 26,
               "tag": "Math; Systems",
               "short": "Matched columns",
-              "statement": "A system reads $2x+3y=26$ and $3x+2y=24$. What is $x$?",
+              "statement": "A budgeting spreadsheet reads $2x+3y=26$ and $3x+2y=24$ for two departments splitting a grant. The analyst, presenting the allocation to the board on Tuesday, needs the value of $x$ for the summary slide. What is $x$?",
               "options": ["$6$", "$4$", "$8$", "$2$"],
               "answer": "B",
               "explain": "Triple the first and double the second: $6x+9y=78$ minus $6x+4y=48$ gives $5y=30$, so $y=6$ and $x=4$."
@@ -3792,7 +3792,7 @@
               "n": 27,
               "tag": "Math; Systems",
               "short": "Age gap",
-              "statement": "A father is $25$ years older than his daughter, and their ages sum to $55$. How old is the father?",
+              "statement": "A father is $25$ years older than his daughter, and their ages sum to $55$ at this year's reunion barbecue. The family historian, updating the genealogy book that spans four generations, needs the father's age. How old is the father?",
               "options": ["$15$", "$30$", "$40$", "$20$"],
               "answer": "C",
               "explain": "$f-d=25$ with $f+d=55$: adding gives $2f=80$, so $f=40$. Gap-plus-total begs adding."
@@ -3801,7 +3801,7 @@
               "n": 28,
               "tag": "Math; Systems",
               "short": "Bean prices",
-              "statement": "Two kilos of bean X plus three of bean Y cost $46$; one of X plus two of Y cost $28$. What is X's price per kilo?",
+              "statement": "Two kilos of bean X plus three of bean Y cost $46$ at the roastery, while one of X plus two of Y cost $28$ on last month's invoice. The buyer, renegotiating the supply contract over tastings, needs X's price per kilo. What is X's price per kilo?",
               "options": ["$10$", "$12$", "$8$", "$6$"],
               "answer": "C",
               "explain": "Doubling the second ($2x+4y=56$) and subtracting the first gives $y=10$, so $x=8$."
@@ -3810,7 +3810,7 @@
               "n": 29,
               "tag": "Math; Systems",
               "short": "Scaled line",
-              "statement": "A system reads $5x-3y=2$ and $10x-6y=4$. How many solutions exist?",
+              "statement": "A quiz system reads $5x-3y=2$ and $10x-6y=4$ in a section on dependent equations that most students dread. The tutor, preparing answer keys late at night, needs the solution count for the guide. How many solutions exist?",
               "options": ["Infinitely many", "None", "Exactly one", "Two"],
               "answer": "A",
               "explain": "Doubling the first reproduces the second exactly — infinite solutions."
@@ -3819,7 +3819,7 @@
               "n": 30,
               "tag": "Math; Systems",
               "short": "Head-on trains",
-              "statement": "Two trains $420$ miles apart approach at $60$ and $80$ mph. Their distances satisfy $60t+80t=420$. After how many hours do they meet?",
+              "statement": "Two overnight trains $420$ miles apart approach at $60$ and $80$ mph through farmland and sleeping towns. Their distances satisfy $60t+80t=420$, a relation the dispatcher scribbled on the shift log. After how many hours do they meet?",
               "options": ["$2$", "$3$", "$3.5$", "$7$"],
               "answer": "B",
               "explain": "$140t=420$ gives $t=3$ hr. Closing speed is the sum."
@@ -4062,7 +4062,7 @@
               "n": 22,
               "tag": "Math; Quadratics",
               "short": "Fence posts",
-              "statement": "A profit curve $y=-x^2+4x+5$ crosses zero at its break-even points. What is the positive one?",
+              "statement": "A startup's profit curve $y=-x^2+4x+5$ crosses zero at its break-even points, watched anxiously by investors through two funding rounds. The CFO, preparing slides for the quarterly board meeting, needs the positive crossing. What is the positive one?",
               "options": ["$-1$", "$5$", "$1$", "$4$"],
               "answer": "B",
               "explain": "$x^2-4x-5=(x-5)(x+1)=0$ gives $5$ and $-1$. Keep the meaningful root."
@@ -4071,7 +4071,7 @@
               "n": 23,
               "tag": "Math; Quadratics",
               "short": "No crossing",
-              "statement": "How many $x$-intercepts does $y=x^2+2x+5$ have?",
+              "statement": "An engineer wonders how many $x$-intercepts the curve $y=x^2+2x+5$ has before plotting it for the design review. Her colleague bets it never touches the axis, coffee riding on the outcome. How many $x$-intercepts does $y=x^2+2x+5$ have?",
               "options": ["Two", "$0$", "One", "Five"],
               "answer": "B",
               "explain": "$D=4-20<0$: the parabola never touches the axis. Intercepts are real roots."
@@ -4080,7 +4080,7 @@
               "n": 24,
               "tag": "Math; Quadratics",
               "short": "Read the vertex",
-              "statement": "A dish follows $y=(x-3)^2-4$. What is its lowest point's $y$-coordinate?",
+              "statement": "A satellite dish follows $y=(x-3)^2-4$, installed on a windy rooftop with a view of the harbor. The technician aligning it needs the lowest point's height for the mounting bracket order. What is its lowest point's $y$-coordinate?",
               "options": ["$3$", "$-3$", "$4$", "$-4$"],
               "answer": "D",
               "explain": "Vertex form reads off $(3,-4)$ directly — no algebra needed."
@@ -4089,7 +4089,7 @@
               "n": 25,
               "tag": "Math; Quadratics",
               "short": "Best pen",
-              "statement": "A rancher builds a rectangular pen with $100$ m of fence against a straight river (no fence on the river side). What is the maximum area?",
+              "statement": "A rancher builds a rectangular pen with $100$ m of fence against a straight river, so no fence runs along the water side. The herd, currently grazing the far pasture, moves in after the county fair. What is the maximum area?",
               "options": ["$625$", "$2500$", "$1250$", "$500$"],
               "answer": "C",
               "explain": "With $2w+l=100$: area $w(100-2w)$ peaks at $w=25$, length $50$, area $1250$ square meters."
@@ -4098,7 +4098,7 @@
               "n": 26,
               "tag": "Math; Quadratics",
               "short": "Root product",
-              "statement": "What is the product of the roots of $3x^2-7x+2=0$?",
+              "statement": "A quality audit needs the product of the roots of $3x^2-7x+2=0$ without solving it, as a shortcut check on the contractor's calculations. The reviewer, working through a thick binder of equations, recalls a coefficient shortcut. What is the product of the roots of $3x^2-7x+2=0$?",
               "options": ["$7/3$", "$2/3$", "$-2/3$", "$2$"],
               "answer": "B",
               "explain": "Product $=c\\div a=2\\div 3$. No solving required."
@@ -4107,7 +4107,7 @@
               "n": 27,
               "tag": "Math; Quadratics",
               "short": "Factor hunt",
-              "statement": "Two numbers sum to $9$ with product $20$. What is the smaller number?",
+              "statement": "Two locker numbers at the community gym sum to $9$ with product $20$, a coincidence the manager uses for the annual scavenger hunt. The winning team needs the smaller number to unlock the prize box. What is the smaller number?",
               "options": ["$5$", "$2$", "$4$", "$10$"],
               "answer": "C",
               "explain": "They solve $t^2-9t+20=(t-4)(t-5)=0$. Smaller: $4$."
@@ -4116,7 +4116,7 @@
               "n": 28,
               "tag": "Math; Quadratics",
               "short": "Timed height",
-              "statement": "A rocket with $h=-16t^2+64t$ is tracked at $t=2$ s. How high is it?",
+              "statement": "A test rocket with height $h=-16t^2+64t$ is tracked by radar at $t=2$ s during a windy launch-window trial. The range officer, clearing the countdown checklist, needs its exact altitude at that moment. How high is it?",
               "options": ["$128$", "$96$", "$64$", "$32$"],
               "answer": "C",
               "explain": "$-64+128=64$ ft. Evaluate — this asks for height at a time, not the peak."
@@ -4125,7 +4125,7 @@
               "n": 29,
               "tag": "Math; Quadratics",
               "short": "Axis line",
-              "statement": "What is the axis of symmetry of $y=2x^2-8x+3$?",
+              "statement": "A landscape architect asks for the axis of symmetry of $y=2x^2-8x+3$ to center a symmetric flower bed on the estate's main lawn. Her assistant, double-checking the algebra over lunch, applies the axis formula to the coefficients. What is the axis of symmetry of $y=2x^2-8x+3$?",
               "options": ["$x=2$", "$x=-2$", "$x=4$", "$x=8$"],
               "answer": "A",
               "explain": "$x=-(-8)\\div 4=2$. The axis formula never needs the constant."
@@ -4134,7 +4134,7 @@
               "n": 30,
               "tag": "Math; Quadratics",
               "short": "Dual break-even",
-              "statement": "Profit zeroes where $-x^2+14x-45=0$. What is the smaller break-even quantity?",
+              "statement": "A farm stand's profit zeroes where $-x^2+14x-45=0$ across the harvest season, tracked weekly in a green ledger. The owners, deciding whether to expand the orchard next spring, need the smaller break-even quantity first. What is the smaller break-even quantity?",
               "options": ["$9$", "$5$", "$10$", "$4$"],
               "answer": "B",
               "explain": "$x^2-14x+45=(x-5)(x-9)=0$. Smaller: $5$."
@@ -4370,7 +4370,7 @@
               "n": 22,
               "tag": "Math; Radical Equations",
               "short": "Odd root",
-              "statement": "A depth gauge reads $\\sqrt[3]{2x-1}=5$. What is $x$?",
+              "statement": "A depth gauge on a submersible reads $\\sqrt[3]{2x-1}=5$ during a dive to a reef shelf far offshore. The pilot, monitoring pressure in the cramped cabin, needs the exact value of $x$ for the dive log. What is $x$?",
               "options": ["$62$", "$63$", "$64$", "$13$"],
               "answer": "B",
               "explain": "Cube: $2x-1=125$, so $x=63$. Odd roots keep every sign."
@@ -4379,7 +4379,7 @@
               "n": 23,
               "tag": "Math; Polynomials",
               "short": "Ground zero",
-              "statement": "A height model $x^3-3x^2+2$ touches ground at $x=0$ with what value?",
+              "statement": "A drone's height model $x^3-3x^2+2$ touches ground at $x=0$ on the test range at dawn, with engineers tracking every flight. The analyst, compiling the morning's telemetry before the briefing, needs that ground value. A height model $x^3-3x^2+2$ touches ground at $x=0$ with what value?",
               "options": ["$0$", "$-1$", "$2$", "$5$"],
               "answer": "C",
               "explain": "The constant term survives: $P(0)=2$. Zero input exposes the constant."
@@ -4388,7 +4388,7 @@
               "n": 24,
               "tag": "Math; Polynomials",
               "short": "Real count",
-              "statement": "How many real roots does $(x^2+1)(x-4)$ have?",
+              "statement": "An engineer asks how many real roots $(x^2+1)(x-4)$ has before coding the solver that runs on the factory controller. Her colleague bets the squared term contributes nothing, with lunch riding on it. How many real roots does $(x^2+1)(x-4)$ have?",
               "options": ["Three", "Two", "None", "One"],
               "answer": "D",
               "explain": "$x^2+1$ never zeroes over the reals; only $x=4$ counts."
@@ -4397,7 +4397,7 @@
               "n": 25,
               "tag": "Math; Rational Equations",
               "short": "Shared base",
-              "statement": "A circuit satisfies $\\frac{1}{x-2}+\\frac{1}{x+2}=\\frac{8}{x^2-4}$ (with $x\\ne\\pm 2$). What is $x$?",
+              "statement": "A chemical circuit satisfies $\\frac{1}{x-2}+\\frac{1}{x+2}=\\frac{8}{x^2-4}$ (with $x\\ne\\pm 2$) in the plant's flow model that runs every shift. The operator, verifying the balance on the night round, needs the value of $x$. What is $x$?",
               "options": ["$2$", "$-2$", "$8$", "$4$"],
               "answer": "D",
               "explain": "Combine: $\\frac{2x}{x^2-4}=\\frac{8}{x^2-4}$ gives $x=4$, which clears both bans."
@@ -4406,7 +4406,7 @@
               "n": 26,
               "tag": "Math; Radical Equations",
               "short": "Trap root",
-              "statement": "A laser aligns where $\\sqrt{5x+1}=2x-1$. Which values actually work?",
+              "statement": "A targeting laser aligns where $\\sqrt{5x+1}=2x-1$ on the test range, with engineers watching the beam strike the far wall. The safety officer, who halts trials at any anomaly, demands only values that truly work in the original equation. Which values actually work?",
               "options": ["$0$ only", "$9/4$ only", "Both $0$ and $9/4$", "Neither"],
               "answer": "B",
               "explain": "Squaring gives $x=0$ or $9/4$, but $0$ fails the original ($1\\ne -1$). Only $9/4$ verifies."
@@ -4415,7 +4415,7 @@
               "n": 27,
               "tag": "Math; Polynomials",
               "short": "Repeated zero",
-              "statement": "A mold follows $(x-1)^2(x+2)$. What is its smallest zero?",
+              "statement": "A pottery mold follows $(x-1)^2(x+2)$ in the designer's sketchbook full of vase profiles. The kiln master, scaling the template for a gallery order, needs its smallest zero for the base measurement. What is its smallest zero?",
               "options": ["$1$", "$-1$", "$-2$", "$2$"],
               "answer": "C",
               "explain": "Zeros are $1$ (twice) and $-2$. Multiplicity never moves a zero."
@@ -4424,7 +4424,7 @@
               "n": 28,
               "tag": "Math; Rational Equations",
               "short": "Shift solve",
-              "statement": "A dial satisfies $\\frac{2x+1}{x-5}=3$ (with $x\\ne 5$). What is $x$?",
+              "statement": "A factory dial satisfies $\\frac{2x+1}{x-5}=3$ (with $x\\ne 5$) on the control panel that runs the whole bottling line. The technician, recalibrating before the inspector's morning visit, needs the exact setting. What is $x$?",
               "options": ["$8$", "$4$", "$2$", "$16$"],
               "answer": "D",
               "explain": "$2x+1=3x-15$ gives $x=16$. The ban spares the answer."
@@ -4433,7 +4433,7 @@
               "n": 29,
               "tag": "Math; Polynomials",
               "short": "Both ends",
-              "statement": "A quartic with positive leading coefficient runs to both far ends. Which way does it go?",
+              "statement": "A population quartic with positive leading coefficient runs to both far ends of the ecologist's century-long projection chart. The research team, debating the model's optimism over seminar coffee, needs its end behavior. A quartic with positive leading coefficient runs to both far ends. Which way does it go?",
               "options": ["Up on both ends", "Down on both ends", "Up left, down right", "Down left, up right"],
               "answer": "A",
               "explain": "Even degree plus positive lead rises everywhere far out."
@@ -4442,7 +4442,7 @@
               "n": 30,
               "tag": "Math; Rational Equations",
               "short": "Hole check",
-              "statement": "A sensor reads $\\frac{x^2-16}{x+4}=3$ (with $x\\ne -4$). What is $x$?",
+              "statement": "A pressure sensor reads $\\frac{x^2-16}{x+4}=3$ (with $x\\ne -4$) on the refinery manifold that feeds three downstream units. The engineer, logging readings through the night shift, needs the true value of $x$. What is $x$?",
               "options": ["$-4$", "$12$", "$1$", "$7$"],
               "answer": "D",
               "explain": "Cancel to $x-4=3$, so $x=7$. The banned $-4$ never gets a vote."
@@ -4678,7 +4678,7 @@
               "n": 22,
               "tag": "Math; Sequences",
               "short": "Square-plus-one",
-              "statement": "A counter follows $a_n=n^2+1$. What is the $7$th reading?",
+              "statement": "A pedometer counter follows $a_n=n^2+1$ steps on a hiker's wrist through mountain switchbacks. The hiker, comparing totals with a friend at the summit lodge, needs the $7$th reading for the logbook. What is the $7$th reading?",
               "options": ["$49$", "$50$", "$15$", "$64$"],
               "answer": "B",
               "explain": "$49+1=50$. Evaluate the rule directly."
@@ -4687,7 +4687,7 @@
               "n": 23,
               "tag": "Math; Sequences",
               "short": "Doubling sum",
-              "statement": "A prize doubles daily $1+2+\\dots+64$. What is the week's total?",
+              "statement": "A game-show prize doubles daily as $1+2+\\dots+64$ through a week of televised rounds with a roaring studio audience. The producer, totaling the payout for the network accountants, needs the week's total before Friday's finale. What is the week's total?",
               "options": ["$63$", "$128$", "$127$", "$255$"],
               "answer": "C",
               "explain": "Powers of two sum to one below the next: $2^7-1=127$ dollars."
@@ -4696,7 +4696,7 @@
               "n": 24,
               "tag": "Math; Sequences",
               "short": "Triple census",
-              "statement": "A pest population of $100$ triples every $5$ years. How many after $15$ years?",
+              "statement": "A pest population of $100$ triples every $5$ years in the valley orchards, worrying growers ahead of harvest season. The extension agent, surveying traps across three counties, projects the count $15$ years out. How many after $15$ years?",
               "options": ["$900$", "$300$", "$9000$", "$2700$"],
               "answer": "D",
               "explain": "Three triplings: $100\\cdot 3^3=2700$. Count periods, not years."
@@ -4705,7 +4705,7 @@
               "n": 25,
               "tag": "Math; Sequences",
               "short": "Gap measure",
-              "statement": "An arithmetic log has $a_4=11$ and $a_9=26$. What is the common difference?",
+              "statement": "An arithmetic delivery log has $a_4=11$ and $a_9=26$ stops across two far-apart weeks of the route. The dispatcher, auditing mileage for the fuel report, needs the common difference between stops. What is the common difference?",
               "options": ["$3$", "$2.5$", "$3.75$", "$5$"],
               "answer": "A",
               "explain": "Five steps span $15$, so $d=3$. Far-apart terms reveal the step."
@@ -4714,7 +4714,7 @@
               "n": 26,
               "tag": "Math; Sequences",
               "short": "Bounce total",
-              "statement": "A ball drops $100$ m and rebounds to $3/4$ height repeatedly. What total distance does it travel?",
+              "statement": "A tennis ball drops $100$ m from a stadium catwalk and rebounds to $3/4$ height repeatedly, bouncing through the empty arena after hours. The physics class measuring the spectacle needs the total distance traveled. What total distance does it travel?",
               "options": ["$400\\text{ m}$", "$700\\text{ m}$", "$300\\text{ m}$", "$175\\text{ m}$"],
               "answer": "B",
               "explain": "Drop $100$ plus up-down bounces: $100+2\\cdot(75\\div 0.25)=700$ m. Every bounce after the drop runs twice."
@@ -4723,7 +4723,7 @@
               "n": 27,
               "tag": "Math; Sequences",
               "short": "Halving count",
-              "statement": "A $240$-g sample decays to $30$ g by halving. How many half-lives passed?",
+              "statement": "A $240$-g soil sample decays to $30$ g by halving in the lab's long-term storage vault, checked once a year by rotating interns. The researcher dating the core needs the count of elapsed half-lives. How many half-lives passed?",
               "options": ["$2$", "$4$", "$3$", "$8$"],
               "answer": "C",
               "explain": "$240\\div 30=8=2^3$, so three halvings. Ratio first, then count powers."
@@ -4732,7 +4732,7 @@
               "n": 28,
               "tag": "Math; Sequences",
               "short": "Race of growth",
-              "statement": "Two funds grow as $2^{10}$ versus $10^2$ dollars from $1$. Which power-of-two value wins, and what is it?",
+              "statement": "Two rival funds grow as $2^{10}$ versus $10^2$ dollars from $1$ in a classroom demo about exponential power. The teacher, settling a loud debate between two rows of students, asks which power-of-two value wins and what it is. Which power-of-two value wins, and what is it?",
               "options": ["$100$ wins", "$512$ wins", "$200$ wins", "$1024$ wins"],
               "answer": "D",
               "explain": "$2^{10}=1024$ beats $100$. Exponentials outrun polynomials."
@@ -4741,7 +4741,7 @@
               "n": 29,
               "tag": "Math; Sequences",
               "short": "First negative",
-              "statement": "A countdown runs $5, 2, -1, \\dots$ with difference $-3$. What is the first negative term's position value?",
+              "statement": "A rocket countdown runs $5, 2, -1, \\dots$ with difference $-3$ on the mission clock that the whole control room watches. The flight director needs the first negative term's position value for the abort checklist. What is the first negative term's position value?",
               "options": ["$-1$", "$-4$", "$2$", "$-7$"],
               "answer": "A",
               "explain": "$a_3=5-6=-1$ — already negative at position three."
@@ -4750,7 +4750,7 @@
               "n": 30,
               "tag": "Math; Sequences",
               "short": "Quarterly yield",
-              "statement": "A $2{,}000$ bond earns $8\\%$ yearly, compounded quarterly ($2\\%$ per quarter). What is it worth after one year?",
+              "statement": "A $2{,}000$ municipal bond earns $8\\%$ yearly, compounded quarterly ($2\\%$ per quarter), in a retiree's conservative portfolio. The broker, preparing the annual statement in January, must report its value after one full year. What is it worth after one year?",
               "options": ["$2{,}160$", "$2{,}165$", "$2{,}080$", "$2{,}000$"],
               "answer": "B",
               "explain": "$2000\\cdot 1.02^4\\approx 2164.86$, so $2165$ dollars. Match the rate to the period."
@@ -4993,7 +4993,7 @@
               "n": 22,
               "tag": "Math; Functions",
               "short": "Strict floor",
-              "statement": "A formula $f(x)=\\frac{x+2}{\\sqrt{x-1}}$ needs its denominator defined and nonzero. What is the domain?",
+              "statement": "A water formula $f(x)=\\frac{x+2}{\\sqrt{x-1}}$ needs its denominator defined and nonzero for the treatment plant's dosing model. The engineer, validating inputs before the morning shift change, must state the exact domain. What is the domain?",
               "options": ["$x\\ge 1$", "$x>1$", "$x\\ne 1$", "$x>0$"],
               "answer": "B",
               "explain": "Square roots need $x\\ge 1$ but denominators forbid equality: $x>1$. Stack both rules."
@@ -5002,7 +5002,7 @@
               "n": 23,
               "tag": "Math; Functions",
               "short": "Square read",
-              "statement": "A pad follows $f(x)=x^2+2x+1$. What is $f(-4)$?",
+              "statement": "A launch pad follows $f(x)=x^2+2x+1$ meters of cable run at horizontal station $x$. The electrician, pulling wire through conduit in the afternoon heat, needs the value at $x=-4$ for the cut sheet. What is $f(-4)$?",
               "options": ["$25$", "$7$", "$9$", "$23$"],
               "answer": "C",
               "explain": "$16-8+1=9$. Alternatively $(x+1)^2$ at $-4$ gives $(-3)^2=9$."
@@ -5011,7 +5011,7 @@
               "n": 24,
               "tag": "Math; Functions",
               "short": "Phone eval",
-              "statement": "A bill follows $C(m)=20+0.1m$ dollars for $m$ minutes. What is the bill for $350$ minutes?",
+              "statement": "A family phone bill follows $C(m)=20+0.1m$ dollars for $m$ minutes, with teenagers streaming video all month. The parents, auditing the charges over Sunday breakfast, need the bill for $350$ minutes exactly. What is the bill for $350$ minutes?",
               "options": ["$37$", "$55$", "$35$", "$53$"],
               "answer": "B",
               "explain": "$20+35=55$ dollars. Substitute the full minute count."
@@ -5020,7 +5020,7 @@
               "n": 25,
               "tag": "Math; Functions",
               "short": "Half reciprocal",
-              "statement": "A lens follows $f(x)=\\frac{4}{x}$. What is $f(\\frac{1}{2})$?",
+              "statement": "A camera lens follows $f(x)=\\frac{4}{x}$ in the optics lab where students calibrate focus rigs all semester. The lab assistant, testing the new mount at half extension, needs the value at one-half. What is $f(\\frac{1}{2})$?",
               "options": ["$2$", "$8$", "$1/8$", "$16$"],
               "answer": "B",
               "explain": "$4\\div\\frac{1}{2}=8$. Dividing by a half doubles."
@@ -5029,7 +5029,7 @@
               "n": 26,
               "tag": "Math; Functions",
               "short": "Average climb",
-              "statement": "A ride's height follows $f(x)=x^2$. What is the average rate of change from $x=1$ to $x=3$?",
+              "statement": "A coaster's height follows $f(x)=x^2$ along the first climb, with riders screaming through the morning test runs. The safety engineer, reviewing the lift profile before certification, needs the average rate of change from $x=1$ to $x=3$. What is the average rate of change from $x=1$ to $x=3$?",
               "options": ["$2$", "$4$", "$8$", "$3$"],
               "answer": "B",
               "explain": "$(9-1)\\div(3-1)=4$. Change in height over change in run."
@@ -5038,7 +5038,7 @@
               "n": 27,
               "tag": "Math; Functions",
               "short": "Left-side eval",
-              "statement": "A cooler follows $f(x)=2x^2-x+3$. What is $f(-1)$?",
+              "statement": "A brewery cooler follows $f(x)=2x^2-x+3$ degrees at dial setting $x$, humming through the summer fermentation rush. The brewmaster, checking the lager room before closing, needs the reading at $x=-1$. What is $f(-1)$?",
               "options": ["$0$", "$4$", "$6$", "$8$"],
               "answer": "C",
               "explain": "$2+1+3=6$. Even powers erase the negative; odd ones keep it."
@@ -5047,7 +5047,7 @@
               "n": 28,
               "tag": "Math; Functions",
               "short": "Root-denominator ban",
-              "statement": "A filter uses $\\frac{1}{\\sqrt{x+2}}$. Which inputs are allowed?",
+              "statement": "A pool filter uses $\\frac{1}{\\sqrt{x+2}}$ in the maintenance model the condo board approved last spring. The technician, winterizing the equipment shed, must list exactly which inputs are allowed. Which inputs are allowed?",
               "options": ["$x\\ge -2$", "$x>-2$", "$x\\ne -2$", "$x>0$"],
               "answer": "B",
               "explain": "Roots need $x\\ge -2$ but the denominator bans equality: $x>-2$."
@@ -5056,7 +5056,7 @@
               "n": 29,
               "tag": "Math; Functions",
               "short": "Crossing lines",
-              "statement": "A tracker solves $f(x)=2x-5$ where $f(x)=10-x$. What is $x$?",
+              "statement": "A wildlife tracker solves $f(x)=2x-5$ where the collar model gives $f(x)=10-x$, reconciling two data streams from the same elk herd. The biologist, merging datasets before migration season, needs the crossing value of $x$. What is $x$?",
               "options": ["$5$", "$3$", "$15$", "$-5$"],
               "answer": "A",
               "explain": "$10-x=2x-5$ gives $3x=15$, so $x=5$. Equate the two rules."
@@ -5065,7 +5065,7 @@
               "n": 30,
               "tag": "Math; Functions",
               "short": "Quadratic gaps",
-              "statement": "A log shows $f(0)=3$, $f(1)=5$, $f(2)=9$, $f(3)=15$. If second differences stay constant, what is $f(4)$?",
+              "statement": "A seismograph log shows $f(0)=3$, $f(1)=5$, $f(2)=9$, $f(3)=15$ for tremor energy across four stations. The analyst, told second differences stay constant through the aftershock sequence, must project the next station's reading. If second differences stay constant, what is $f(4)$?",
               "options": ["$21$", "$23$", "$19$", "$25$"],
               "answer": "B",
               "explain": "First gaps $2,4,6$ grow by $2$, so the next gap is $8$: $15+8=23$."
@@ -5301,7 +5301,7 @@
               "n": 22,
               "tag": "Math; Functions",
               "short": "Fraction undo",
-              "statement": "A pump inverts $f(x)=\\frac{2x+1}{3}$. What is the inverse rule?",
+              "statement": "A dosing pump inverts $f(x)=\\frac{2x+1}{3}$ mL per setting in the hospital ward's new infusion system. The nurse, programming the overnight drip before rounds, needs the exact inverse rule for the chart. What is the inverse rule?",
               "options": ["$\\frac{3x+1}{2}$", "$\\frac{3x-1}{2}$", "$\\frac{3x-1}{3}$", "$2x+1$"],
               "answer": "B",
               "explain": "Swap: $x=(2y+1)\\div 3$ gives $y=(3x-1)\\div 2$."
@@ -5310,7 +5310,7 @@
               "n": 23,
               "tag": "Math; Functions",
               "short": "Triple step",
-              "statement": "A stepper applies $f(x)=x+2$ three times from $0$. What is the final value?",
+              "statement": "A warehouse stepper applies $f(x)=x+2$ three times from $0$ to position pallets along the conveyor each morning. The floor lead, verifying the route before the forklifts start, needs the final value after all three moves. What is the final value?",
               "options": ["$2$", "$4$", "$6$", "$8$"],
               "answer": "C",
               "explain": "$0\\to 2\\to 4\\to 6$. Chains repeat identically each round."
@@ -5319,7 +5319,7 @@
               "n": 24,
               "tag": "Math; Functions",
               "short": "Zero pass",
-              "statement": "A mill runs $g(x)=x^2-1$ after $f(x)=5x$ at $x=0$. What is $g(f(0))$?",
+              "statement": "A grain mill runs $g(x)=x^2-1$ after $f(x)=5x$ at the $x=0$ startup setting, with the operator watching gauges during the test batch. The shift log needs the chained output at that setting. What is $g(f(0))$?",
               "options": ["$-1$", "$24$", "$1$", "$6$"],
               "answer": "A",
               "explain": "$f(0)=0$, then $0-1=-1$. Zero inputs still run the full chain."
@@ -5328,7 +5328,7 @@
               "n": 25,
               "tag": "Math; Functions",
               "short": "Cube-root undo",
-              "statement": "A vault inverts $y=x^3-2$. What is the inverse rule?",
+              "statement": "A bank vault inverts $y=x^3-2$ for its combination mechanism, serviced once a decade by specialists. The locksmith, decoding the service manual's worn pages, needs the exact inverse rule. What is the inverse rule?",
               "options": ["$\\sqrt[3]{x+2}$", "$\\sqrt[3]{x}+2$", "$\\sqrt{x+2}$", "$(x+2)^3$"],
               "answer": "A",
               "explain": "Swap: $x=y^3-2$ gives $y=\\sqrt[3]{x+2}$. Add before rooting."
@@ -5337,7 +5337,7 @@
               "n": 26,
               "tag": "Math; Functions",
               "short": "Half chain",
-              "statement": "A doser runs $f(x)=10-x$ after $g(x)=\\frac{x}{2}$ at $x=10$. What is $f(g(10))$?",
+              "statement": "A supplement doser runs $f(x)=10-x$ after $g(x)=\\frac{x}{2}$ at the $x=10$ calibration mark, checked by the pharmacist each Monday. The label printer needs the chained result for the dosage card. What is $f(g(10))$?",
               "options": ["$0$", "$5$", "$15$", "$-5$"],
               "answer": "B",
               "explain": "$g(10)=5$, then $10-5=5$. Coincidences still follow the chain."
@@ -5346,7 +5346,7 @@
               "n": 27,
               "tag": "Math; Functions",
               "short": "Pick the undo",
-              "statement": "Which function undoes $f(x)=2x+6$?",
+              "statement": "A student asks which function undoes $f(x)=2x+6$ on a homework set about inverse pairs due Thursday. The tutor, grading a stack of papers at the kitchen table, demands the exact undoing rule. Which function undoes $f(x)=2x+6$?",
               "options": ["$\\frac{x+6}{2}$", "$2x-6$", "$\\frac{x-6}{2}$", "$\\frac{x}{2}+6$"],
               "answer": "C",
               "explain": "Swap and isolate: $y=(x-6)\\div 2$. Test by composing both ways."
@@ -5355,7 +5355,7 @@
               "n": 28,
               "tag": "Math; Functions",
               "short": "Chain formula",
-              "statement": "A lab chains $f(x)=\\frac{1}{x}$ outside $g(x)=x+1$ (with $x\\ne -1$). What is $f(g(x))$?",
+              "statement": "A chemistry lab chains $f(x)=\\frac{1}{x}$ outside $g(x)=x+1$ (with $x\\ne -1$) in the titration software updated last month. The analyst, validating the calculation chain before publishing results, needs the composed formula. What is $f(g(x))$?",
               "options": ["$\\frac{1}{x}+1$", "$x$", "$1+x^2$", "$\\frac{1}{x+1}$"],
               "answer": "D",
               "explain": "Drop the whole block in: $\\frac{1}{x+1}$. The ban travels with the inner zero."
@@ -5364,7 +5364,7 @@
               "n": 29,
               "tag": "Math; Functions",
               "short": "Root chain",
-              "statement": "A scope runs $f(x)=\\sqrt{x}$ after $g(x)=3x^2$ at $x=3$. What is $f(g(3))$?",
+              "statement": "An optics scope runs $f(x)=\\sqrt{x}$ after $g(x)=3x^2$ at the $x=3$ test setting on the calibration bench. The technician, aligning lenses under bright lamps, needs the chained output for the report. What is $f(g(3))$?",
               "options": ["$3\\sqrt{3}$", "$9$", "$\\sqrt{30}$", "$27$"],
               "answer": "A",
               "explain": "$g(3)=27$, then $\\sqrt{27}=3\\sqrt{3}$. Simplify the final root."
@@ -5373,7 +5373,7 @@
               "n": 30,
               "tag": "Math; Functions",
               "short": "Undo target",
-              "statement": "A lock inverts $f(x)=2x+1$ and must output the input that gives $7$. What is it?",
+              "statement": "A gym lock inverts $f(x)=2x+1$ and a member must output the input that gives $7$ to open a jammed locker before closing time. The front desk, talking the member through it over the phone, needs that input value. What is it?",
               "options": ["$15$", "$3$", "$3.5$", "$6$"],
               "answer": "B",
               "explain": "$2x+1=7$ gives $x=3$. Invert, then evaluate — or solve directly."
@@ -5609,7 +5609,7 @@
               "n": 22,
               "tag": "Math; Functions",
               "short": "Down narrow",
-              "statement": "A vault follows $y=-2x^2$. Which description fits?",
+              "statement": "A concert vault follows $y=-2x^2$ in the lighting rig's control software that runs every show. The technician, programming cues before doors open, must pick the description matching its shape. Which description fits?",
               "options": ["Upward and wide", "Downward and narrow", "Upward and narrow", "Downward and wide"],
               "answer": "B",
               "explain": "Negative opens down; $|2|>1$ narrows. Sign steers, size stretches."
@@ -5618,7 +5618,7 @@
               "n": 23,
               "tag": "Math; Functions",
               "short": "Slide minimum",
-              "statement": "A slide follows $y=(x-5)^2+3$. What is its minimum height?",
+              "statement": "A playground slide follows $y=(x-5)^2+3$ in the park designer's blueprint for the summer rebuild. The inspector, checking clearances with a laser measure, needs its minimum height for the safety form. What is its minimum height?",
               "options": ["$5$", "$-5$", "$3$", "$8$"],
               "answer": "C",
               "explain": "Vertex $(5,3)$ bottoms at $3$. Upward shapes minimum at the vertex."
@@ -5627,7 +5627,7 @@
               "n": 24,
               "tag": "Math; Functions",
               "short": "Square pass",
-              "statement": "A trail marker claims $(3,9)$ lies on $y=x^2$. Is it right?",
+              "statement": "A trail marker claims $(3,9)$ lies on the parabola $y=x^2$ painted on the park's new math walk. The ranger, verifying every marker before the grand opening, checks the claim against the rule. Is it right?",
               "options": ["No, height is $6$", "No, height is $12$", "No, height is $3$", "Yes"],
               "answer": "D",
               "explain": "$3^2=9$ matches exactly."
@@ -5636,7 +5636,7 @@
               "n": 25,
               "tag": "Math; Functions",
               "short": "Root domain",
-              "statement": "A path $y=\\sqrt{x-2}$ is compared with $y=\\sqrt{x}$. Where does the first path begin?",
+              "statement": "A garden path $y=\\sqrt{x-2}$ is compared with the classic $y=\\sqrt{x}$ in the landscape architect's plan for the estate. The crew, breaking ground next week, must know where the shifted path begins. Where does the first path begin?",
               "options": ["$2$", "$0$", "$-2$", "$4$"],
               "answer": "A",
               "explain": "Inside needs $x\\ge 2$ — a right shift of two. Domains shift with graphs."
@@ -5645,7 +5645,7 @@
               "n": 26,
               "tag": "Math; Functions",
               "short": "Capped V",
-              "statement": "An awning follows $y=-|x-1|+4$. What is its maximum height?",
+              "statement": "A cafe awning follows $y=-|x-1|+4$ in the storefront plan awaiting the landlord's signature. The installer, ordering fabric before the rainy season, needs its maximum height for the clearance check. What is its maximum height?",
               "options": ["$1$", "$4$", "$-1$", "$5$"],
               "answer": "B",
               "explain": "Corner at $(1,4)$ with downward opening peaks at $4$."
@@ -5654,7 +5654,7 @@
               "n": 27,
               "tag": "Math; Functions",
               "short": "Triple vertex",
-              "statement": "A ramp $y=3x^2$ has its vertex where?",
+              "statement": "A skate ramp $y=3x^2$ rises steeply in the youth center's new park, popular with the after-school crowd. The designer, confirming the plans with the city engineer, needs the exact vertex location. A ramp $y=3x^2$ has its vertex where?",
               "options": ["$(3,0)$", "$(1,3)$", "$(0,0)$", "$(0,3)$"],
               "answer": "C",
               "explain": "Pure squares always bottom at the origin, however steep."
@@ -5663,7 +5663,7 @@
               "n": 28,
               "tag": "Math; Functions",
               "short": "Cube read",
-              "statement": "A mold follows $y=(x+2)^3+1$. What is its height at $x=-2$?",
+              "statement": "A ceramic mold follows $y=(x+2)^3+1$ in the artist's glaze-firing notes for the fall exhibition. The assistant, mixing test batches in the studio, needs its height at the $x=-2$ mark. What is its height at $x=-2$?",
               "options": ["$9$", "$-7$", "$7$", "$1$"],
               "answer": "D",
               "explain": "$0+1=1$. Inside zeros collapse the power term."
@@ -5672,7 +5672,7 @@
               "n": 29,
               "tag": "Math; Functions",
               "short": "Crossing zeros",
-              "statement": "A bridge $y=x^2-4$ crosses zero at two points. What is the positive one?",
+              "statement": "A footbridge arch $y=x^2-4$ crosses zero at two points over the creek, with hikers stopping for photos at each end. The trail crew, repainting the span before autumn, needs the positive crossing for the work order. What is the positive one?",
               "options": ["$4$", "$-2$", "$0$", "$2$"],
               "answer": "D",
               "explain": "$x^2=4$ gives $\\pm 2$. Positive: $2$."
@@ -5681,7 +5681,7 @@
               "n": 30,
               "tag": "Math; Functions",
               "short": "Stretched valley",
-              "statement": "A basin follows $y=2(x-3)^2-8$. What is its vertex's $x$-coordinate?",
+              "statement": "A retention basin follows $y=2(x-3)^2-8$ in the county's stormwater plan for the new subdivision. The surveyor, staking grades in the mud after rain, needs its vertex's $x$-coordinate for the plat. What is its vertex's $x$-coordinate?",
               "options": ["$-3$", "$3$", "$-8$", "$8$"],
               "answer": "B",
               "explain": "Vertex $(3,-8)$ — stretch never moves the inside zero."
@@ -5917,7 +5917,7 @@
               "n": 22,
               "tag": "Math; Exponential",
               "short": "Quake gap",
-              "statement": "One quake releases $10^3$ times the energy of another. How many Richter units apart are they?",
+              "statement": "A seismologist notes one quake releases $10^3$ times the energy of another in the fault-zone catalog spanning decades. The press officer, briefing reporters after the tremor, needs the Richter gap between them. How many Richter units apart are they?",
               "options": ["$30$", "$3$", "$10$", "$1000$"],
               "answer": "B",
               "explain": "$\\log_{10}(10^3)=3$. Each tenfold jump is one unit."
@@ -5926,7 +5926,7 @@
               "n": 23,
               "tag": "Math; Exponential",
               "short": "Negative log",
-              "statement": "A dilution reads $\\log_2(1/8)$. What is its value?",
+              "statement": "A marine dilution reads $\\log_2(1/8)$ on the lab's salinity monitor during ballast testing. The technician, logging results between sensor calibrations, needs the exact value for the report. What is its value?",
               "options": ["$-8$", "$8$", "$-3$", "$3$"],
               "answer": "C",
               "explain": "$2^{-3}=1/8$. Fractions yield negative logs."
@@ -5935,7 +5935,7 @@
               "n": 24,
               "tag": "Math; Exponential",
               "short": "Self log",
-              "statement": "A calibration reads $\\log_{13} 13$. What is its value?",
+              "statement": "A metrology calibration reads $\\log_{13} 13$ on the reference standard recertified each spring. The lab manager, signing the compliance paperwork, needs the exact value. What is its value?",
               "options": ["$13$", "$0$", "$2$", "$1$"],
               "answer": "D",
               "explain": "Any base to the first power is itself — self-logs equal one."
@@ -5944,7 +5944,7 @@
               "n": 25,
               "tag": "Math; Exponential",
               "short": "Matched bases",
-              "statement": "A lock satisfies $9^x=27$. What is $x$?",
+              "statement": "A combination lock satisfies $9^x=27$ in the puzzle hunt's final round downtown, with teams racing the clock. The game master, verifying answers at the finish line, needs the exact exponent. What is $x$?",
               "options": ["$1.5$", "$2$", "$3$", "$1$"],
               "answer": "A",
               "explain": "As powers of three: $2x=3$ gives $x=1.5$. Convert to a shared base."
@@ -5953,7 +5953,7 @@
               "n": 26,
               "tag": "Math; Exponential",
               "short": "Reciprocal log",
-              "statement": "A gauge reads $\\log_5(1/25)$. What is its value?",
+              "statement": "A chemistry gauge reads $\\log_5(1/25)$ for a solution prepared in the teaching lab. The instructor, demonstrating dilutions to the morning section, needs the exact value on the board. What is its value?",
               "options": ["$5$", "$-2$", "$2$", "$-5$"],
               "answer": "B",
               "explain": "$5^{-2}=1/25$. Reciprocals negate the exponent."
@@ -5962,7 +5962,7 @@
               "n": 27,
               "tag": "Math; Exponential",
               "short": "Double clock",
-              "statement": "Money doubles every $8$ years at $9\\%$ by the rule of $72$ ($72\\div 9$). A saver asks: how fast does it double at $9\\%$?",
+              "statement": "Money doubles every $8$ years at $9\\%$ by the rule of $72$ ($72\\div 9$), a shortcut bankers quote to clients. A saver opening a college fund asks how fast it doubles at $9\\%$. A saver asks: how fast does it double at $9\\%$?",
               "options": ["$9$ years", "$6$ years", "$8$ years", "$7.2$ years"],
               "answer": "C",
               "explain": "$72\\div 9=8$ years. Divide the rule number by the percent."
