@@ -277,6 +277,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const calcApiRef = useRef(null);
   const desmosStates = useRef({});
   const desmosQRef = useRef(null);
+  const boardApiRef = useRef(null);
   const boardStore = useRef({});
   const prevQRef = useRef(null);
   const pausedRef = useRef(false);
@@ -508,6 +509,28 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     } else {
       setCalcW(440);
     }
+  };
+
+  const toggleFull = (v) => {
+    const api = calcApiRef.current;
+    if (api) {
+      try {
+        desmosStates.current[desmosQRef.current] = api.getState();
+      } catch (err) {
+        window.console.debug("desmos pre-toggle snapshot skipped", err);
+      }
+    }
+    if (boardApiRef.current) {
+      try {
+        const objs = boardApiRef.current();
+        if (desmosQRef.current !== null && desmosQRef.current !== undefined) {
+          boardStore.current[desmosQRef.current] = objs;
+        }
+      } catch (err) {
+        window.console.debug("board pre-toggle snapshot skipped", err);
+      }
+    }
+    setCalcFull(v);
   };
 
   const commitActivePace = () => {
@@ -802,12 +825,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   Board
                 </button>
               </div>
+            <div className="calc-head-actions">
               <button
                 type="button"
                 className="calc-full-btn"
                 aria-label="Fullscreen calculator"
                 title="Fullscreen"
-                onClick={() => setCalcFull(true)}
+                onClick={() => toggleFull(true)}
               >
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <polyline points="15 3 21 3 21 9" />
@@ -825,8 +849,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 ✕
               </button>
             </div>
+            </div>
             {calcMode === "board" ? (
-              <FreestyleBoard qkey={activeQ.n} store={boardStore} />
+              <FreestyleBoard qkey={activeQ.n} store={boardStore} apiRef={boardApiRef} />
             ) : (
               <DesmosCalc
               mode={calcMode}
@@ -867,7 +892,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               className="calc-full-exit"
               aria-label="Exit fullscreen"
               title="Back to split view"
-              onClick={() => setCalcFull(false)}
+              onClick={() => toggleFull(false)}
             >
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="4 14 10 14 10 20" />
@@ -879,7 +904,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
           <div className="calc-full-body">
             {calcMode === "board" ? (
-              <FreestyleBoard qkey={activeQ.n} store={boardStore} />
+              <FreestyleBoard qkey={activeQ.n} store={boardStore} apiRef={boardApiRef} />
             ) : (
               <DesmosCalc
                 mode={calcMode}

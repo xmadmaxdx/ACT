@@ -232,7 +232,7 @@ function ShapeIcon({ id }) {
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 
-export default function FreestyleBoard({ qkey, store }) {
+export default function FreestyleBoard({ qkey, store, apiRef }) {
   const [objects, setObjects] = useState(() =>
     store && qkey !== undefined && qkey !== null && Array.isArray(store.current[qkey])
       ? clone(store.current[qkey])
@@ -261,6 +261,9 @@ export default function FreestyleBoard({ qkey, store }) {
 
   const objectsRef = useRef(objects);
   objectsRef.current = objects;
+  if (apiRef) {
+    apiRef.current = () => clone(objectsRef.current);
+  }
   const selectedIdsRef = useRef(selectedIds);
   selectedIdsRef.current = selectedIds;
   const camRef = useRef(cam);

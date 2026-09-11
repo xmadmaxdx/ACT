@@ -2790,6 +2790,13 @@ button {
   position: static;
 }
 
+.calc-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
 .calc-full-btn {
   display: flex;
   align-items: center;

@@ -154,3 +154,42 @@ export async function fetchChapters() {
     }));
   return { subject: "math", chapters };
 }
+
+export function buildMiniTest(mini) {
+  return {
+    id: mini.id,
+    title: mini.title,
+    section: "math",
+    total: mini.questions.length,
+    timeMinutes: mini.timeMinutes || 10,
+    intro: mini.theory || null,
+    figures: {},
+    passages: mini.questions.map((q) => ({
+      id: `q${q.n}`,
+      title: `Problem ${q.n}`,
+      paras: [[{ t: q.statement }]],
+    })),
+    questions: mini.questions.map((q) => ({
+      n: q.n,
+      p: `q${q.n}`,
+      tag: q.tag,
+      stem: "",
+      stemSide: "left",
+      short: q.short,
+      options: q.options,
+      answer: q.answer,
+      explain: q.explain,
+    })),
+  };
+}
+
+export async function fetchMinis() {
+  const data = await fetchChapters();
+  const out = [];
+  (data.chapters || []).forEach((ch) => {
+    (ch.minis || []).forEach((mini) => {
+      if (mini.done && (mini.questions || []).length > 0) out.push(buildMiniTest(mini));
+    });
+  });
+  return out;
+}

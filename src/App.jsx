@@ -10,13 +10,21 @@ import TestInfo from "./components/TestInfo.jsx";
 import TestScreen from "./components/TestScreen.jsx";
 import Results from "./components/Results.jsx";
 import Loader, { LoaderError } from "./components/Loader.jsx";
-import { fetchCatalog } from "./supabase.js";
+import { fetchCatalog, fetchMinis } from "./supabase.js";
 import "./styles.css";
 
 function slugFor(skill) {
   const m = /^([A-Z]+)-(.+)$/.exec(skill.id || "");
   if (!m) return "/practice";
   return `/practice-test-${m[2].toLowerCase()}-${m[1].toLowerCase()}`;
+}
+
+function slugToId(path) {
+  let p = path;
+  if (p.endsWith("/results")) p = p.slice(0, -"/results".length);
+  const m = /^\/practice-test-(.+)-([a-z0-9]+)$/.exec(p);
+  if (!m) return null;
+  return `${m[2].toUpperCase()}-${m[1].toUpperCase()}`;
 }
 
 function routeFromPath(path) {
@@ -29,13 +37,17 @@ function routeFromPath(path) {
 }
 
 export default function App() {
+  const pendingRef = useRef(
+    (() => {
+      const p = window.location.pathname;
+      const r = routeFromPath(p);
+      return r === "test" || r === "results" ? p : null;
+    })()
+  );
+  const minisRef = useRef([]);
   const [route, setRoute] = useState(() => {
-    const r = routeFromPath(window.location.pathname);
-    if (r === "test" || r === "results") {
-      window.history.replaceState({}, "", "/practice");
-      return "practice";
-    }
-    return r;
+    if (pendingRef.current) return "test";
+    return routeFromPath(window.location.pathname);
   });
   const [session, setSession] = useState(null);
   const [reviewIndex, setReviewIndex] = useState(null);
@@ -50,11 +62,44 @@ export default function App() {
 
   useEffect(() => {
     let live = true;
-    fetchCatalog()
-      .then((tests) => {
+    Promise.all([
+      fetchCatalog(),
+      fetchMinis().catch((e) => {
+        window.console.debug("minis unavailable", e);
+        return [];
+      }),
+    ])
+      .then(([tests, minis]) => {
         if (!live) return;
         console.info(`ACTprep catalog source: supabase (${tests.length} tests)`);
         setCatalog(tests);
+        minisRef.current = minis;
+        const pending = pendingRef.current;
+        pendingRef.current = null;
+        if (pending && !sessionRef.current) {
+          const id = slugToId(pending);
+          const match = (x) => x.id === id || x.id.toLowerCase() === (id || "").toLowerCase();
+          const t = id && tests.find(match);
+          const mini = !t && id ? minis.find(match) : null;
+          const found = t || mini;
+          if (found) {
+            const skill = mini
+              ? { id: found.id, title: found.title, meta: `${found.total} questions` }
+              : { id: found.id, title: found.title, meta: `${found.total} questions · ${found.timeMinutes} min` };
+            if (mini) {
+              setCustomTestData(mini);
+              customRef.current = mini;
+            }
+            const fresh = { skill, mode: "untimed", picks: {}, flags: {}, paces: {} };
+            sessionRef.current = fresh;
+            setSession(fresh);
+            setReviewIndex(null);
+            setRoute("test");
+          } else {
+            window.history.replaceState({}, "", "/practice");
+            setRoute("practice");
+          }
+        }
       })
       .catch((e) => {
         if (live) setLoadError(e && e.message ? e.message : String(e));
