@@ -6003,9 +6003,930 @@
       "title": "Coordinate Geometry",
       "subtitle": "Distance, Slope, Parabolas, Circles",
       "minis": [
-        { "id": "MATH-MINI-6-1", "title": "Distance / Midpoint", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
-        { "id": "MATH-MINI-6-2", "title": "Slope / Lines", "done": false, "timeMinutes": 10, "theory": null, "questions": [] },
-        { "id": "MATH-MINI-6-3", "title": "Parabolas / Circles", "done": false, "timeMinutes": 10, "theory": null, "questions": [] }
+        {
+          "id": "MATH-MINI-6-1",
+          "title": "Distance / Midpoint",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Gap and middle",
+                "blocks": [
+                  { "p": "Distance roots the squared gaps in each axis, and midpoints average each axis separately. Both run per-coordinate every time — never blend the axes together before their step finishes." },
+                  { "list": [
+                    "Subtract within each axis first, then square, add, and root exactly once.",
+                    "Midpoints average the $x$'s and the $y$'s in two independent moves.",
+                    "Missing endpoints double the midpoint and subtract the known end.",
+                    "Pythagorean triples hide inside integer grids — spot them to skip rooting."
+                  ] },
+                  { "math": "d=\\sqrt{(\\Delta x)^2+(\\Delta y)^2} \\qquad M=\\left(\\frac{x_1+x_2}{2},\\frac{y_1+y_2}{2}\\right)" }
+                ]
+              },
+              {
+                "heading": "Shapes on grids",
+                "blocks": [
+                  { "p": "Polygons on grids reduce to side lengths: perimeters add distances side by side, diagonals run corner to corner, and centers of symmetric shapes sit at averaged extremes." },
+                  { "list": [
+                    "Walk every side with the distance rule, then add — order never matters.",
+                    "Rectangle sides come from shared-coordinate pairs before multiplying into area.",
+                    "Hypotenuse midpoints mark the circumcenter of right triangles.",
+                    "Estimate trapped roots between neighboring integers when options spread wide."
+                  ] },
+                  { "math": "P=\\sum\\text{ sides} \\qquad A=\\text{length}\\times\\text{width}" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Origin run",
+              "statement": "A courier depot at $(0, 0)$ sends a rider straight to a client at $(3, 4)$ on the city kilometer grid, cutting through side streets. The dispatcher logs paid mileage from the straight-line distance. How far is the ride?",
+              "options": ["$5\\text{ km}$", "$7\\text{ km}$", "$25\\text{ km}$", "$12\\text{ km}$"],
+              "answer": "A",
+              "explain": "$\\sqrt{9+16}=5$ km — the $3$-$4$-$5$ triangle. C stops before rooting."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Halfway flags",
+              "statement": "Two survey flags stand at $(2, 6)$ and $(8, 4)$ on a construction grid where crews align the foundation pour. The foreman plants a marker exactly halfway between them before lunch. Where does the marker go?",
+              "options": ["$(5, 10)$", "$(5, 5)$", "$(6, 5)$", "$(10, 10)$"],
+              "answer": "B",
+              "explain": "Average each axis: $(5, 5)$. D adds instead of averaging."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Lost endpoint",
+              "statement": "A cable's midpoint is $(5, 5)$ with one known end at $(2, 3)$, buried under the new parking lot. The crew must dig at the other end tomorrow. Where is the missing endpoint?",
+              "options": ["$(3, 4)$", "$(7, 8)$", "$(8, 7)$", "$(3.5, 4)$"],
+              "answer": "C",
+              "explain": "Double the middle and subtract: $(10-2, 10-3)=(8, 7)$. Midpoints average — reverse it."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Garden diagonal",
+              "statement": "A rectangular garden spans from $(1, 1)$ to $(4, 5)$ in the corner of a public park. The landscaper runs edging along the diagonal between those corners. How long is the diagonal?",
+              "options": ["$7\\text{ m}$", "$25\\text{ m}$", "$3\\text{ m}$", "$5\\text{ m}$"],
+              "answer": "D",
+              "explain": "Gaps $3$ and $4$ root to $5$ m. B reports the squared total."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Signed middle",
+              "statement": "Two trailheads sit at $(-4, 2)$ and $(6, -8)$ on the park's coordinate map, far apart across the ridge. The rangers build a water station exactly between them for summer hikers. Where does it go?",
+              "options": ["$(1, -3)$", "$(2, -5)$", "$(-5, 5)$", "$(10, -10)$"],
+              "answer": "A",
+              "explain": "Average with signs: $((-4+6)\\div 2, (2-8)\\div 2)=(1, -3)$. Signs ride along."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Ranger station",
+              "statement": "Two fire lookout towers stand at $(2, 3)$ and $(10, 15)$ on the forestry service's coordinate map of the Cascade district, one on a basalt ridge and the other above a glacial lake. The service builds a ranger station exactly halfway between them so patrols from both towers restock equally, hauling lumber up a switchback road all summer. The station's elevation and its driving distance from headquarters appear in the proposal appendix, but the construction crew only needs the map position to pour the foundation. Where on the map does the station go?",
+              "options": ["$(12, 18)$", "$(6, 9)$", "$(4, 6)$", "$(8, 12)$"],
+              "answer": "B",
+              "explain": "Average each axis: $((2+10)\\div 2, (3+15)\\div 2)=(6, 9)$. Elevation and road miles never enter the midpoint."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Fence triangle",
+              "statement": "A triangular pen has corners at $(0, 0)$, $(3, 0)$, and $(0, 4)$ behind the old dairy barn. The farmer prices fencing per meter of perimeter before winter. What is the perimeter?",
+              "options": ["$7\\text{ m}$", "$9\\text{ m}$", "$12\\text{ m}$", "$14\\text{ m}$"],
+              "answer": "C",
+              "explain": "Sides $3$, $4$, $5$ total $12$ m. The hypotenuse comes from Pythagoras."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Basement corners",
+              "statement": "A basement plan marks opposite wall studs at $(-1, -1)$ and $(2, 3)$ for the electrician's wire run. The wire follows the straight line between them through the joists. How long is the run?",
+              "options": ["$7\\text{ m}$", "$13\\text{ m}$", "$5\\text{ m}$", "$4\\text{ m}$"],
+              "answer": "C",
+              "explain": "Gaps $3$ and $4$ give $5$ m. D measures one gap only."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Pipe joint",
+              "statement": "A pipe's midpoint is $(0, 4)$ with one flanged end at $(-2, 6)$ inside the treatment plant. The fitter must locate the buried end to attach the new valve. Where is the missing end?",
+              "options": ["$(2, 2)$", "$(-1, 5)$", "$(-4, 8)$", "$(1, 3)$"],
+              "answer": "A",
+              "explain": "Double and subtract: $(0+2, 8-6)=(2, 2)$. Work per axis."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Field diagonal",
+              "statement": "A soccer field stretches from $(0, 0)$ to $(9, 12)$ on the school's survey grid, freshly lined for the season opener. The coach walks the diagonal to test the turf. How far does she walk?",
+              "options": ["$21\\text{ m}$", "$15\\text{ m}$", "$225\\text{ m}$", "$12\\text{ m}$"],
+              "answer": "B",
+              "explain": "$\\sqrt{81+144}=15$ m — the scaled $3$-$4$-$5$. C forgets the root."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Bench midpoint",
+              "statement": "Two benches sit at $(7, -3)$ and $(-5, 9)$ along the riverside promenade. The city installs a lamp exactly between them for evening joggers. Where does the lamp go?",
+              "options": ["$(6, -6)$", "$(2, 6)$", "$(1, 3)$", "$(12, -12)$"],
+              "answer": "C",
+              "explain": "$((7-5)\\div 2, (-3+9)\\div 2)=(1, 3)$. Halve the gaps from either end."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Drone rendezvous",
+              "statement": "Two survey drones launch at dawn over the floodplain, one from $(1, 2)$ near the levee gate and the other from $(9, 14)$ by the grain silos, each photographing erosion lines for the county's flood report. Controllers order both to meet at the exact midpoint to swap batteries, a maneuver complicated by gusting crosswinds and a low cloud ceiling that delayed the launch by an hour. The operations log also records wind speed, battery percentages, and the photographers' lunch orders, none of which changes the geometry. The meeting point must be programmed before the drones climb. Where do they meet?",
+              "options": ["$(10, 16)$", "$(4, 6)$", "$(8, 12)$", "$(5, 8)$"],
+              "answer": "D",
+              "explain": "Average each axis: $((1+9)\\div 2, (2+14)\\div 2)=(5, 8)$. Wind, batteries, and lunch never bend a midpoint."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Irrational gap",
+              "statement": "Two wells sit at $(5, 5)$ and $(9, 13)$ on the farm's section map, both drilled last drought. The farmer runs pipe straight between them across the north forty. How long is the pipe, exactly?",
+              "options": ["$4\\sqrt{5}$", "$80$", "$2\\sqrt{20}$", "$10$"],
+              "answer": "A",
+              "explain": "Gaps $4$ and $8$: $\\sqrt{16+64}=\\sqrt{80}=4\\sqrt{5}$. Simplify the radical fully."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Anchor chain",
+              "statement": "A chain's midpoint is $(-1, 2)$ with one shackle at $(3, -4)$ on the harbor floor. Divers must find the other shackle in murky water. Where is it?",
+              "options": ["$(1, -1)$", "$(-5, 8)$", "$(-4, 6)$", "$(2, -3)$"],
+              "answer": "B",
+              "explain": "Double and subtract: $(-2-3, 4+4)=(-5, 8)$. Signs survive doubling."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Plaza side",
+              "statement": "A square plaza's diagonal runs from $(0, 0)$ to $(6, 6)$ in the downtown plan. The pavers come in side-length boxes for the contractor. What is the side length?",
+              "options": ["$12$", "$6\\sqrt{2}$", "$6$", "$36$"],
+              "answer": "C",
+              "explain": "Diagonal $6\\sqrt{2}$ divided by $\\sqrt{2}$ gives side $6$. Diagonals exceed sides by root two."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Root distance",
+              "statement": "Two trail markers stand at $(2, -1)$ and $(-4, 5)$ deep in the national forest. A hiker paces the straight trail between them at dusk. How far is it, exactly?",
+              "options": ["$12$", "$72$", "$36$", "$6\\sqrt{2}$"],
+              "answer": "D",
+              "explain": "Gaps $-6$ and $6$: $\\sqrt{36+36}=\\sqrt{72}=6\\sqrt{2}$. Squares erase the signs."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Circumcenter spot",
+              "statement": "A right triangle's hypotenuse runs from $(0, 0)$ to $(6, 8)$ on the architect's grid. Its circumcenter sits at the hypotenuse midpoint for the dome footing. Where is that point?",
+              "options": ["$(3, 4)$", "$5$ units out", "$(6, 8)$", "$(0, 0)$"],
+              "answer": "A",
+              "explain": "Midpoint $(3, 4)$. B gives a length, not the required point."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Ferry halfway",
+              "statement": "Two island docks sit at $(-4, 6)$ and $(12, -2)$ on the harbor chart used by the ferry cooperative, one beside the cannery and the other below the lighthouse bluff. The cooperative moors a fuel barge exactly halfway between them so both routes refuel equally, a plan debated across three town meetings and complicated by lobster-trap lines, tidal schedules, and the harbormaster's famous chowder fundraiser. The barge crew needs only the chart position to drop anchor before the tide turns. Where on the chart does the barge go?",
+              "options": ["$(8, 4)$", "$(4, 2)$", "$(2, 4)$", "$(16, -8)$"],
+              "answer": "B",
+              "explain": "Average each axis: $((-4+12)\\div 2, (6-2)\\div 2)=(4, 2)$. Tides and traps never move a midpoint."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Orchard rows",
+              "statement": "Two orchard gates stand at $(-3, 7)$ and $(5, 1)$ on the farm map. The owner paves a straight lane between them for harvest trucks. How long is the lane?",
+              "options": ["$14$", "$8$", "$10$", "$\\sqrt{28}$"],
+              "answer": "C",
+              "explain": "Gaps $8$ and $-6$ root to $10$. The $6$-$8$-$10$ triangle again."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Vertical pair",
+              "statement": "A cable's midpoint is $(4, -2)$ with one end at $(4, 6)$ on the elevator shaft wall. The engineer needs the other end's position for the counterweight. Where is it?",
+              "options": ["$(4, 2)$", "$(-4, -10)$", "$(12, -2)$", "$(4, -10)$"],
+              "answer": "D",
+              "explain": "The $x$ matches ($4$); $y$ doubles minus known: $-4-6=-10$. Shared coordinates stay put."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Short hop",
+              "statement": "A rabbit warren entrance at $(7, 1)$ connects straight to a burrow at $(3, -2)$ under the meadow fence. The ecologist tracking the colony maps the tunnel length. How long is it?",
+              "options": ["$5$", "$7$", "$25$", "$4$"],
+              "answer": "A",
+              "explain": "Gaps $-4$ and $-3$ root to $5$. Small $3$-$4$-$5$ in the wild."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Park benches",
+              "statement": "Benches at $(0, -5)$ and $(10, 15)$ anchor the new botanical walk. The designer centers a fountain exactly between them for the dedication ceremony. Where does the fountain go?",
+              "options": ["$(10, 10)$", "$(5, 5)$", "$(5, 10)$", "$(0, 5)$"],
+              "answer": "B",
+              "explain": "Average each axis: $(5, 5)$. Centers average — never add."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Court area",
+              "statement": "A court has corners $(1, 2)$, $(7, 2)$, and $(7, 6)$ on the school survey, with the fourth implied. The booster club buys turf by area before fall practice. What is the area?",
+              "options": ["$10$", "$12$", "$24$", "$48$"],
+              "answer": "C",
+              "explain": "Length $6$, width $4$: area $24$. Shared coordinates reveal sides."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Relay exchange",
+              "statement": "A cross-country relay exchange sits exactly halfway between stations at $(0, 10)$ on the stadium's north curve and $(16, 4)$ by the south gate, a placement argued over by rival coaches for weeks. Volunteers string banners, chalk arrows, and timing mats along both approaches while the announcer rehearses names, and the principal frets about parking. The head referee needs only the exchange point to certify the course before the starting gun. Where on the grid does the exchange sit?",
+              "options": ["$(16, 14)$", "$(8, 14)$", "$(0, 4)$", "$(8, 7)$"],
+              "answer": "D",
+              "explain": "Average each axis: $(8, 7)$. Banners and parking never shift a midpoint."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Pond span",
+              "statement": "A pond's opposite docks sit at $(6, 2)$ and $(-2, -4)$ on the county map. The crew strings lights straight across the water for the festival. How long is the span?",
+              "options": ["$10$", "$14$", "$100$", "$6$"],
+              "answer": "A",
+              "explain": "Gaps $-8$ and $-6$ root to $10$. Another $6$-$8$-$10$."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Mirror endpoint",
+              "statement": "A segment's midpoint is $(0, 0)$ with one end at $(5, -12)$ on the radar screen. The operator needs the opposite blip's coordinates. Where is it?",
+              "options": ["$(5, 12)$", "$(-5, 12)$", "$(-5, -12)$", "$(2.5, -6)$"],
+              "answer": "B",
+              "explain": "Through the origin both signs flip: $(-5, 12)$. D halves instead of mirroring."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Tower radius",
+              "statement": "A radio tower at $(2, 3)$ reaches a farmhouse at $(5, 7)$ at the edge of its range. The engineer reports the broadcast radius from that reach. What is the radius?",
+              "options": ["$8$", "$25$", "$5$", "$7$"],
+              "answer": "C",
+              "explain": "Gaps $3$ and $4$ root to $5$. Range is a distance."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Lake crossing",
+              "statement": "A lake's widest points sit at $(-6, 0)$ and $(0, -8)$ on the surveyor's plat. The crew ferries equipment straight across at dawn. How wide is the crossing?",
+              "options": ["$14$", "$100$", "$48$", "$10$"],
+              "answer": "D",
+              "explain": "Gaps $6$ and $-8$ root to $10$. Widest means straight-line."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Trail midpoint",
+              "statement": "A trail's ends sit at $(-2, -5)$ and $(8, 3)$ in the state forest registry. The crew builds a shelter exactly between them for thru-hikers. Where does it go?",
+              "options": ["$(3, -1)$", "$(5, 4)$", "$(-5, -4)$", "$(6, -2)$"],
+              "answer": "A",
+              "explain": "Average each axis: $(3, -1)$. Ends average into middles."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Aid station",
+              "statement": "A marathon's aid station must sit exactly halfway between checkpoints at $(-6, 2)$ near the old mill and $(14, 10)$ by the covered bridge, a rule the race director enforces after last year's misplacement fiasco cost runners precious minutes. Organizers stock cups, gels, and medical kits at both ends while police close cross streets and the timing company calibrates mats. The course certifier needs only the station's grid point to approve the route before race morning. Where on the grid does the aid station go?",
+              "options": ["$(20, 12)$", "$(4, 6)$", "$(-10, -4)$", "$(8, 12)$"],
+              "answer": "B",
+              "explain": "Average each axis: $((-6+14)\\div 2, (2+10)\\div 2)=(4, 6)$. Cups and closures never move a midpoint."
+            }
+          ]
+        },
+        {
+          "id": "MATH-MINI-6-2",
+          "title": "Slope / Lines",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Rise over run",
+                "blocks": [
+                  { "p": "Slope divides vertical change by horizontal change, so every line's tilt reads off two points. Parallel lines share slopes exactly; perpendicular lines flip to opposite reciprocals." },
+                  { "list": [
+                    "Subtract in matching order top and bottom — flipped orders flip the sign.",
+                    "Zero slope runs flat; undefined slope stands vertical with zero run.",
+                    "Parallel copies the slope; perpendicular negates its reciprocal.",
+                    "Steeper means larger absolute slope, regardless of direction."
+                  ] },
+                  { "math": "m=\\frac{\\Delta y}{\\Delta x} \\qquad m_\\perp=-\\frac{1}{m}" }
+                ]
+              },
+              {
+                "heading": "Writing lines",
+                "blocks": [
+                  { "p": "Equations package slope with a point: slope-intercept starts at the axis, point-slope starts anywhere known, and intercepts come from zeroing the other variable." },
+                  { "list": [
+                    "Slope-intercept needs slope plus the starting height on the axis.",
+                    "Point-slope carries any known point with the slope — then simplify.",
+                    "Intercepts zero the other variable; standard form surrenders both fast.",
+                    "Horizontal lines fix $y$; vertical lines fix $x$."
+                  ] },
+                  { "math": "y=mx+b \\qquad y-y_1=m(x-x_1)" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Playground slide",
+              "statement": "A slide runs from $(0, 0)$ to $(4, 3)$ on the park blueprint, drawn to scale for the contractor. The inspector checks its slope for safety compliance. What is the slope?",
+              "options": ["$3/4$", "$4/3$", "$7$", "$1/3$"],
+              "answer": "A",
+              "explain": "Rise $3$ over run $4$. Order matters — flipped gives the reciprocal."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Through a point",
+              "statement": "A bike path with slope $3$ passes through $(2, 5)$ on the city grid. Planners need its equation for the paving contract. Which equation fits?",
+              "options": ["$y=3x+5$", "$y=3x-1$", "$y=3x+1$", "$y=x+3$"],
+              "answer": "B",
+              "explain": "$5=3(2)+b$ gives $b=-1$. The point fixes the intercept."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Parallel lane",
+              "statement": "A new lane runs parallel to $y=2x+5$ through $(0, 1)$ on the highway plan. Which equation describes it?",
+              "options": ["$y=2x+5$", "$y=-\\frac{1}{2}x+1$", "$y=2x+1$", "$y=\\frac{1}{2}x+1$"],
+              "answer": "C",
+              "explain": "Parallel copies slope $2$; the point sets intercept $1$."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Square corner",
+              "statement": "A plaza corner needs a line through the origin perpendicular to $y=2x+5$. Which equation works?",
+              "options": ["$y=2x$", "$y=-2x$", "$y=\\frac{1}{2}x$", "$y=-\\frac{1}{2}x$"],
+              "answer": "D",
+              "explain": "Perpendicular flips to $-\\frac{1}{2}$; through the origin the intercept is zero."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Downhill grade",
+              "statement": "A ski run drops from $(-1, 4)$ to $(3, -2)$ on the resort map. Patrollers rate its steepness by slope. What is the slope?",
+              "options": ["$-3/2$", "$-2/3$", "$3/2$", "$2/3$"],
+              "answer": "A",
+              "explain": "$(-2-4)\\div(3+1)=-3/2$. Matching order top and bottom."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Mountain road",
+              "statement": "A mountain access road climbs from base camp at $(0, 800)$ to a fire lookout at $(6, 2600)$, with elevations in feet and horizontal distance in miles on the forestry survey. Engineers rate road grades by slope to decide whether supply trucks need chains, a rule written after three rigs slid off the old logging spur in the winter of the big freeze. The survey also notes switchback counts, guardrail gaps, and the lookout's paint color, none of which changes the grade math. The district office needs the average grade — rise over run — for the permit. What is the slope of the road?",
+              "options": ["$300$ ft/mi", "$1800$ ft/mi", "$200$ ft/mi", "$433$ ft/mi"],
+              "answer": "A",
+              "explain": "Rise $1800$ over run $6$: $300$ ft/mi. Switchbacks and paint never enter rise-over-run."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Axis crossing",
+              "statement": "A supply line $3x-2y=12$ crosses the $x$-axis at the depot gate. What is the crossing's $x$-coordinate?",
+              "options": ["$6$", "$-6$", "$4$", "$-4$"],
+              "answer": "C",
+              "explain": "Zero $y$: $3x=12$, so $x=4$. Intercepts zero the other variable."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Starting height",
+              "statement": "A descent track follows $y=-4x+7$. What height does it start at when $x=0$?",
+              "options": ["$-4$", "$4$", "$7$", "$-7$"],
+              "answer": "C",
+              "explain": "The $y$-intercept is $7$. Slope never affects the starting height."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Level canal",
+              "statement": "A canal runs perfectly level through $(3, -5)$ on the irrigation survey. Which equation describes it?",
+              "options": ["$y=-5$", "$x=3$", "$y=3$", "$x=-5$"],
+              "answer": "A",
+              "explain": "Level means slope zero: $y$ stays $-5$. Vertical would be $x=3$."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Fence line",
+              "statement": "A fence runs straight up through $(3, -5)$ on the ranch plat. Which equation describes it?",
+              "options": ["$y=-5$", "$x=3$", "$y=3$", "$y=x-8$"],
+              "answer": "B",
+              "explain": "Straight up means undefined slope: $x$ stays $3$."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Flat pick",
+              "statement": "Four routes are drawn: $y=7$, $x=7$, $y=7x$, $y=x+7$. Which one has slope zero?",
+              "options": ["$x=7$", "$y=7x$", "$y=7$", "$y=x+7$"],
+              "answer": "C",
+              "explain": "Only the flat line $y=7$ has zero rise. $x=7$ has undefined slope."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Water billing",
+              "statement": "A town bills water as $C=30+0.1g$ dollars for $g$ gallons, a formula the council adopted after a drought surcharge fight that packed the chambers for three straight meetings. A homeowner comparing bills with neighbors across the fence wants the rate of increase per gallon — the slope — to forecast summer costs, while the clerk also mentions meter fees, billing cycles, and a rebate program for low users. The forecast needs only the per-gallon rate from the formula. What is the slope of the cost line?",
+              "options": ["$30$", "$0.1$", "$10$", "$3$"],
+              "answer": "B",
+              "explain": "In $C=mg+b$, the slope is $m=0.1$ dollars per gallon. The $30$ base never affects the rate."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Steep reciprocal",
+              "statement": "A ramp must run perpendicular to $y=\\frac{2}{3}x-1$ for drainage code. What slope does it need?",
+              "options": ["$-3/2$", "$2/3$", "$3/2$", "$-2/3$"],
+              "answer": "A",
+              "explain": "Flip and negate: $-3/2$. Fractions flip numerator with denominator."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Two-point line",
+              "statement": "A trail passes through $(1, 1)$ and $(5, 9)$ on the hiking map. The guidebook prints its equation. Which one fits?",
+              "options": ["$y=2x+1$", "$y=2x-1$", "$y=x+4$", "$y=4x-3$"],
+              "answer": "B",
+              "explain": "Slope $(9-1)\\div(5-1)=2$; intercept $1-2=-1$. Two points fix slope, one fixes height."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Standard read",
+              "statement": "A boundary $2x+5y=20$ meets the $y$-axis at the corner monument. What is that point's $y$-coordinate?",
+              "options": ["$10$", "$20$", "$4$", "$2.5$"],
+              "answer": "C",
+              "explain": "Zero $x$: $5y=20$, so $y=4$. Standard form surrenders intercepts fast."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Wall line",
+              "statement": "Four walls are drawn: $y=3$, $y=3x$, $x=-2$, $y=x-2$. Which one has undefined slope?",
+              "options": ["$y=3$", "$y=3x$", "$y=x-2$", "$x=-2$"],
+              "answer": "D",
+              "explain": "Only the vertical $x=-2$ has zero run. Flats have zero slope instead."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Falling line",
+              "statement": "A chute with slope $-3$ passes through $(0, 4)$ in the warehouse plan. Which equation runs the chute?",
+              "options": ["$y=-3x+4$", "$y=3x+4$", "$y=-3x-4$", "$y=-4x+3$"],
+              "answer": "A",
+              "explain": "Slope plus starting height: $y=-3x+4$. Through $(0,4)$ the intercept shows itself."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Chairlift grade",
+              "statement": "A chairlift climbs from the lodge at $(0, 1200)$ to the summit station at $(4, 3600)$, with elevations in feet and cable distance in miles on the resort's expansion survey. The lift company rates climbs by average slope to size the motors, a calculation the engineers double-check after last season's overheating shutdown stranded skiers for an hour. The survey packet also lists tower counts, cable sag, and the summit's new paint scheme, none of which enters the grade. The permit application needs the average slope — total rise over total run. What is the slope of the lift line?",
+              "options": ["$600$ ft/mi", "$2400$ ft/mi", "$900$ ft/mi", "$300$ ft/mi"],
+              "answer": "A",
+              "explain": "Rise $2400$ over run $4$: $600$ ft/mi. Towers and paint never enter rise-over-run."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Copy slope",
+              "statement": "A path must parallel $3x-y=7$ through $(1, 1)$ in the garden design. Which equation fits?",
+              "options": ["$y=3x+1$", "$y=-3x+4$", "$y=3x-2$", "$y=x$"],
+              "answer": "C",
+              "explain": "Slope $3$ copies over; $1=3+b$ gives $b=-2$. Rearrange standard form first."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Flat rate",
+              "statement": "A subscription $y=5$ never changes with use. What is its slope?",
+              "options": ["$5$", "$1$", "Undefined", "$0$"],
+              "answer": "D",
+              "explain": "Flat lines have zero rise over any run. Undefined belongs to verticals."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Gentle climb",
+              "statement": "A ramp through $(-2, 6)$ rises with slope $1/2$ in the accessibility plan. Which equation fits?",
+              "options": ["$y=\\frac{x}{2}+7$", "$y=2x+10$", "$y=\\frac{x}{2}-7$", "$y=-\\frac{x}{2}+7$"],
+              "answer": "A",
+              "explain": "$6=-1+b$ gives $b=7$. Gentle slopes still use point-slope."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Level through",
+              "statement": "A water main runs level through $(2, 3)$ on the utility map, perpendicular to the vertical riser at $x=4$. Which equation fits the main?",
+              "options": ["$x=2$", "$y=3$", "$y=4$", "$x=4$"],
+              "answer": "B",
+              "explain": "Perpendicular to vertical runs flat: $y=3$ through the point."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Quarry slope",
+              "statement": "A conveyor climbs from $(6, 1)$ to $(-2, -5)$ in the quarry section. What is its slope?",
+              "options": ["$4/3$", "$3/4$", "$3/4$ down", "$4/3$ down"],
+              "answer": "B",
+              "explain": "$(-5-1)\\div(-2-6)=(-6)\\div(-8)=3/4$. Double negatives resolve upward."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Reservoir drop",
+              "statement": "A reservoir's level falls from $(0, 640)$ to $(8, 560)$, with volume in acre-feet and time in weeks on the water district's drought chart. Managers compute the average drop rate — the slope — to schedule rationing stages, a decision delayed twice by board debates over golf-course exemptions that packed the hearing room. The chart margin also tracks rainfall guesses, evaporation estimates, and the secretary's vacation dates, none of which changes the two endpoints. The order needs the average rate of fall per week. What is the slope of the level line?",
+              "options": ["$-80$/week", "$80$/week", "$-10$/week", "$-640$/week"],
+              "answer": "C",
+              "explain": "Drop $80$ over $8$ weeks: $-10$ per week. Exemptions and vacations never enter rise-over-run."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Fraction intercepts",
+              "statement": "A lot line reads $\\frac{x}{3}+\\frac{y}{4}=1$ on the deed. What is its $x$-intercept?",
+              "options": ["$3$", "$4$", "$12$", "$7$"],
+              "answer": "A",
+              "explain": "Intercept form exposes $3$ directly. Zero $y$ to verify."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Steep start",
+              "statement": "A spillway with slope $5$ passes through $(0, -2)$ in the dam schematic. Which equation fits?",
+              "options": ["$y=5x+2$", "$y=5x-2$", "$y=-5x-2$", "$y=2x-5$"],
+              "answer": "B",
+              "explain": "Slope plus starting depth: $y=5x-2$. Below-zero starts keep their sign."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Match parallel",
+              "statement": "Four tracks are drawn: $y=-2x+3$, $y=2x+3$, $y=-\\frac{1}{2}x+3$, $y=x+3$. Which parallels $4x+2y=10$?",
+              "options": ["$y=2x+3$", "$y=-\\frac{1}{2}x+3$", "$y=-2x+3$", "$y=x+3$"],
+              "answer": "C",
+              "explain": "$4x+2y=10$ has slope $-2$. Only the matching slope parallels."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Gentle perpendicular",
+              "statement": "A path through the origin runs perpendicular to $y=-5x+2$ in the campus plan. Which equation fits?",
+              "options": ["$y=-5x$", "$y=5x$", "$y=\\frac{x}{5}$", "$y=-\\frac{x}{5}$"],
+              "answer": "C",
+              "explain": "Perpendicular flips to $1/5$; origin zeroes the intercept."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Flat pair",
+              "statement": "A beam through $(-4, -1)$ and $(2, -1)$ supports the deck. What is its slope?",
+              "options": ["$0$", "Undefined", "$-1$", "$1$"],
+              "answer": "A",
+              "explain": "Zero rise over run $6$: flat. Same heights always flatten."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Glide path",
+              "statement": "A jet descends from $(0, 9000)$ to $(30, 0)$, with altitude in feet and ground distance in miles on the approach chart the tower uses every evening. Controllers check the average descent rate — the slope — against the safe glide envelope, a routine tightened after a low-fuel incident diverted two flights last winter. The chart border also logs wind aloft, runway lighting, and the controller's coffee breaks, none of which alters the two endpoints. The log needs the average feet lost per mile. What is the slope of the descent?",
+              "options": ["$-9000$/mi", "$-300$/mi", "$300$/mi", "$-30$/mi"],
+              "answer": "B",
+              "explain": "Drop $9000$ over $30$ miles: $-300$ per mile. Wind and breaks never enter rise-over-run."
+            }
+          ]
+        },
+        {
+          "id": "MATH-MINI-6-3",
+          "title": "Parabolas / Circles",
+          "done": true,
+          "timeMinutes": 30,
+          "theory": {
+            "slides": [
+              {
+                "heading": "Vertex form",
+                "blocks": [
+                  { "p": "Vertex form exposes a parabola's peak or valley with zero algebra: the inside zero gives the axis, the outside constant gives the extreme height. Standard form surrenders the same point through the axis formula." },
+                  { "list": [
+                    "Read $(h,k)$ straight from vertex form — signs flip inside only.",
+                    "Upward shapes bottom out; downward shapes top out at the vertex.",
+                    "The axis formula drops onto the same $x$ from standard coefficients.",
+                    "Zeros come from setting the rule to zero; symmetric roots straddle the axis."
+                  ] },
+                  { "math": "a(x-h)^2+k\\Rightarrow(h,k) \\qquad x=-\\frac{b}{2a}" }
+                ]
+              },
+              {
+                "heading": "Circle center and radius",
+                "blocks": [
+                  { "p": "Standard circle form centers on its subtracted point with the rooted constant as radius. Expanded equations complete two squares — one per variable — to reveal the same shape." },
+                  { "list": [
+                    "Center signs flip inside the squares; the radius roots the constant.",
+                    "Complete each square separately, balancing constants on the other side.",
+                    "Diameter endpoints average into the center and halve into the radius.",
+                    "Circumference and area run on the radius: double-$\\pi$ around, $\\pi$-squared inside."
+                  ] },
+                  { "math": "(x-h)^2+(y-k)^2=r^2 \\qquad C=2\\pi r \\qquad A=\\pi r^2" }
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 1,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Dish low point",
+              "statement": "A satellite dish follows $y=(x-2)^2+3$ in the installer's alignment grid. The mount bolts at the lowest point. What is that point's height?",
+              "options": ["$3$", "$2$", "$-2$", "$7$"],
+              "answer": "A",
+              "explain": "Vertex $(2,3)$ reads straight off — height $3$. Inside signs flip, outside never."
+            },
+            {
+              "n": 2,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Tower center",
+              "statement": "A tower's coverage follows $(x-1)^2+(y+2)^2=25$ on the county radio map. Where is the tower itself?",
+              "options": ["$(1, 2)$", "$(1, -2)$", "$(-1, 2)$", "$(-1, -2)$"],
+              "answer": "B",
+              "explain": "Center signs flip: $(1,-2)$. The constant belongs to the radius."
+            },
+            {
+              "n": 3,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Coverage reach",
+              "statement": "The same tower's signal follows $(x-1)^2+(y+2)^2=25$. How far does the signal reach?",
+              "options": ["$25$", "$12.5$", "$5$", "$10$"],
+              "answer": "C",
+              "explain": "Radius roots the constant: $5$. Squaring works the other direction."
+            },
+            {
+              "n": 4,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Ridge axis",
+              "statement": "A ridge follows $y=-x^2+6x-1$ on the survey plat. The engineer needs its axis of symmetry for the drainage plan. What is it?",
+              "options": ["$x=-3$", "$x=6$", "$x=-6$", "$x=3$"],
+              "answer": "D",
+              "explain": "$x=-6\\div(-2)=3$. The constant never enters the axis."
+            },
+            {
+              "n": 5,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Hilltop height",
+              "statement": "A hill is modeled by $y=-(x-4)^2+9$ for the overlook platform design. What is the highest elevation?",
+              "options": ["$9$", "$4$", "$-4$", "$13$"],
+              "answer": "A",
+              "explain": "Downward opening peaks at the vertex height $9$."
+            },
+            {
+              "n": 6,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Observatory dome",
+              "statement": "An observatory dome follows $y=-2(x-5)^2+40$ in the architect's section drawing, with heights in feet above the mountaintop pad. The dome must clear a $35$-foot telescope that swings through the center on its tracking mount, a clearance checked twice after the first design failed inspection and delayed the project into mud season. The drawings also note snow load ratings, access stair counts, and the director's preferred paint finish, none of which changes the curve's peak. The builders need the dome's maximum height to order steel. What is the maximum height of the dome?",
+              "options": ["$40$", "$35$", "$5$", "$80$"],
+              "answer": "A",
+              "explain": "Vertex $(5,40)$ with downward opening peaks at $40$ ft — clearing the $35$-foot scope. Paint and stairs never move a vertex."
+            },
+            {
+              "n": 7,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Gateway zeros",
+              "statement": "A gateway arch follows $y=x^2-9$ in the entrance plan. Where does it meet the ground on the positive side?",
+              "options": ["$-3$", "$9$", "$3$", "$0$"],
+              "answer": "C",
+              "explain": "$x^2=9$ gives $\\pm 3$. Positive: $3$."
+            },
+            {
+              "n": 8,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Hidden center",
+              "statement": "A pipe's path follows $x^2+y^2-6x+4y-12=0$ in the plant schematic. Where is its circular center?",
+              "options": ["$(-3, 2)$", "$(6, -4)$", "$(-6, 4)$", "$(3, -2)$"],
+              "answer": "D",
+              "explain": "Complete squares: $(x-3)^2+(y+2)^2=25$. Center $(3,-2)$."
+            },
+            {
+              "n": 9,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Hidden radius",
+              "statement": "The same pipe's circle follows $x^2+y^2-6x+4y-12=0$. What is its radius?",
+              "options": ["$12$", "$25$", "$5$", "$\\sqrt{12}$"],
+              "answer": "C",
+              "explain": "Completing gives constant $25$; radius $5$. Balance constants to the far side."
+            },
+            {
+              "n": 10,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Valley floor",
+              "statement": "A valley trail follows $y=(x+5)^2-1$ on the topographic overlay. What is the trail's lowest $x$-position?",
+              "options": ["$5$", "$-5$", "$-1$", "$1$"],
+              "answer": "B",
+              "explain": "Inside zero at $x=-5$. The outside $-1$ is the height, not the place."
+            },
+            {
+              "n": 11,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Range ring",
+              "statement": "A sprinkler at the origin waters the circle $x^2+y^2=36$ in the grounds plan. Which point lies exactly on the wet edge?",
+              "options": ["$(5, 5)$", "$(-6, 0)$", "$(6, 0)$", "$(3, 3)$"],
+              "answer": "C",
+              "explain": "$36+0=36$ qualifies; $25+25=50$ overshoots. Test candidates in the rule."
+            },
+            {
+              "n": 12,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Stone arch",
+              "statement": "A historic stone arch follows $y=-x^2+10x-16$ in the preservation survey, with height and span in feet measured by laser last autumn. The arch must clear $9$-foot tour boats that pass beneath it at high tide, a requirement that sank the first restoration proposal and sent engineers back to the drawing board for a month. The survey file also logs mortar composition, pigeon counts, and the mayor's dedication speech draft, none of which affects where the curve peaks. The crew needs the arch's maximum clearance to approve boat traffic. What is the maximum height of the arch?",
+              "options": ["$5$", "$10$", "$16$", "$9$"],
+              "answer": "D",
+              "explain": "Axis $x=5$; height $-25+50-16=9$ ft — exactly clearing the boats. Mortar and speeches never move a vertex."
+            },
+            {
+              "n": 13,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Trough bottom",
+              "statement": "A drainage trough follows $y=x^2-4x+7$ behind the warehouse. How deep is its lowest point?",
+              "options": ["$3$", "$2$", "$7$", "$-1$"],
+              "answer": "A",
+              "explain": "Axis $x=2$; value $4-8+7=3$. Evaluate at the axis."
+            },
+            {
+              "n": 14,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Pond center",
+              "statement": "A pond follows $(x+2)^2+(y-5)^2=16$ on the landscape plan. Where is its center?",
+              "options": ["$(2, -5)$", "$(-2, 5)$", "$(2, 5)$", "$(-2, -5)$"],
+              "answer": "B",
+              "explain": "Flip both inside signs: $(-2,5)$."
+            },
+            {
+              "n": 15,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Pond radius",
+              "statement": "The same pond follows $(x+2)^2+(y-5)^2=16$. What is its radius?",
+              "options": ["$16$", "$8$", "$4$", "$2$"],
+              "answer": "C",
+              "explain": "Radius roots $16$ to $4$. Halving belongs to diameters."
+            },
+            {
+              "n": 16,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Fountain top",
+              "statement": "A fountain arc follows $y=-x^2+8x$ over the plaza. How high does the water get?",
+              "options": ["$4$", "$8$", "$32$", "$16$"],
+              "answer": "D",
+              "explain": "Axis $x=4$; height $-16+32=16$. Water peaks at the vertex."
+            },
+            {
+              "n": 17,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Factored axis",
+              "statement": "A ramp follows $y=(x-1)(x-7)$ in the skate-park plan. Where is its axis of symmetry?",
+              "options": ["$x=4$", "$x=1$", "$x=7$", "$x=-4$"],
+              "answer": "A",
+              "explain": "Zeros $1$ and $7$ midpoint at $4$. Symmetric roots straddle the axis."
+            },
+            {
+              "n": 18,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Round garden",
+              "statement": "A circular garden is ringed by $44$ m of fencing on the estate plan approved after months of committee debate over hedge species, gravel colors, and the placement of exactly three stone benches. The gardener, ordering soil for the spring planting inside the ring, needs the radius from the circumference using $22/7$ for $\\pi$. The plan's margin notes the committee's lunch orders and the head gardener's vacation dates, none of which changes the fence length. What is the radius of the garden?",
+              "options": ["$14\\text{ m}$", "$7\\text{ m}$", "$22\\text{ m}$", "$44\\text{ m}$"],
+              "answer": "B",
+              "explain": "$2\\cdot\\frac{22}{7}r=44$ gives $r=7$ m. Hedges and lunches never enter circumference math."
+            },
+            {
+              "n": 19,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Radar radius",
+              "statement": "A radar ring follows $x^2+y^2=49$ on the controller's scope. How far out does it reach?",
+              "options": ["$49$", "$14$", "$7$", "$3.5$"],
+              "answer": "C",
+              "explain": "Radius roots $49$ to $7$. Diameter would double it."
+            },
+            {
+              "n": 20,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Steep valley",
+              "statement": "A spillway follows $y=2(x-3)^2-8$ in the dam retrofit. What is its lowest $y$-value?",
+              "options": ["$3$", "$6$", "$-3$", "$-8$"],
+              "answer": "D",
+              "explain": "Vertex $(3,-8)$ bottoms at $-8$. Stretch never moves the vertex."
+            },
+            {
+              "n": 21,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Pipe diameter",
+              "statement": "A pipe's circular section has diameter endpoints $(0, 0)$ and $(8, 6)$ on the scan. What is its radius?",
+              "options": ["$5$", "$10$", "$14$", "$7$"],
+              "answer": "A",
+              "explain": "Diameter $10$ halves to radius $5$. Endpoints average into the center."
+            },
+            {
+              "n": 22,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Capped peak",
+              "statement": "A tent peak follows $y=-2(x+1)^2+18$ in the expo design. How high is the peak?",
+              "options": ["$-1$", "$18$", "$16$", "$36$"],
+              "answer": "B",
+              "explain": "Downward opening tops at the vertex height $18$."
+            },
+            {
+              "n": 23,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Shifted circle",
+              "statement": "A track follows $x^2+4x+y^2-2y=11$ on the school field plan. Where is its center?",
+              "options": ["$(2, -1)$", "$(-4, 2)$", "$(-2, 1)$", "$(4, -2)$"],
+              "answer": "C",
+              "explain": "Complete: $(x+2)^2+(y-1)^2=16$. Center $(-2,1)$."
+            },
+            {
+              "n": 24,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Stadium arc",
+              "statement": "A stadium roof arc follows $y=-x^2+12x-20$ in the structural model that the engineering firm defends before the city council. The design must clear $16$-foot lighting rigs hung beneath it, a constraint added late after the rigging contractor flagged the original drawings and forced a redesign through the holidays. The model appendix lists steel grades, bolt counts, and the architect's award citations, none of which moves the curve's peak. The council needs the arc's maximum height to approve the rigs. What is the maximum height of the arc?",
+              "options": ["$6$", "$12$", "$20$", "$16$"],
+              "answer": "D",
+              "explain": "Axis $x=6$; height $-36+72-20=16$ ft — exactly clearing the rigs. Steel and citations never move a vertex."
+            },
+            {
+              "n": 25,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Fit coefficient",
+              "statement": "A slide $y=a(x-2)^2+1$ passes through $(0, 5)$ on the playground plan. What is $a$?",
+              "options": ["$1$", "$5$", "$2$", "$-1$"],
+              "answer": "A",
+              "explain": "$4a+1=5$ gives $a=1$. Points on the curve satisfy its rule."
+            },
+            {
+              "n": 26,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Loop length",
+              "statement": "A running loop of radius $5$ m circles the park pavilion. How long is one lap?",
+              "options": ["$25\\pi\\text{ m}$", "$10\\pi\\text{ m}$", "$5\\pi\\text{ m}$", "$20\\pi\\text{ m}$"],
+              "answer": "B",
+              "explain": "$2\\pi(5)=10\\pi$ m. Circumference doubles the radius with $\\pi$."
+            },
+            {
+              "n": 27,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Pond area",
+              "statement": "A circular pond of radius $6$ m anchors the garden design. How much surface does it cover?",
+              "options": ["$12\\pi$", "$6\\pi$", "$36\\pi$", "$18\\pi$"],
+              "answer": "C",
+              "explain": "$\\pi(6^2)=36\\pi$. Area squares the radius."
+            },
+            {
+              "n": 28,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Gate zeros",
+              "statement": "A gate arch follows $y=x^2+2x-8$ in the courtyard plan. What is its larger zero?",
+              "options": ["$-4$", "$8$", "$4$", "$2$"],
+              "answer": "D",
+              "explain": "$(x+4)(x-2)=0$ gives $-4$ and $2$. Larger: $2$."
+            },
+            {
+              "n": 29,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Ring point",
+              "statement": "A ring follows $(x-3)^2+(y-3)^2=9$ around the plaza fountain. Does point $(3, 6)$ lie on it?",
+              "options": ["Yes", "No, inside", "No, outside", "On the center"],
+              "answer": "A",
+              "explain": "$0+9=9$ satisfies the rule exactly. Test candidates in the equation."
+            },
+            {
+              "n": 30,
+              "tag": "Math; Coordinate Geometry",
+              "short": "Fountain vertex",
+              "statement": "A museum fountain follows $y=-2(x-4)^2+18$ in the courtyard redesign that the donors' committee approved after touring three competing proposals across the state. The design must clear an $18$-foot glass sculpture misted by the jets, a requirement the sculptor insisted on after the first maquette came back too tall and delayed casting by a month. The proposal packet lists pump models, tile samples, and the gala's catering menu, none of which affects the water's peak. The committee needs the fountain's maximum height to sign off. What is the maximum height of the fountain?",
+              "options": ["$4$", "$18$", "$8$", "$36$"],
+              "answer": "B",
+              "explain": "Vertex $(4,18)$ with downward opening peaks at $18$ ft — exactly misting the sculpture. Pumps and menus never move a vertex."
+            }
+          ]
+        }
       ]
     },
     {

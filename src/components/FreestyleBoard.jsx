@@ -238,7 +238,7 @@ export default function FreestyleBoard({ qkey, store }) {
       ? clone(store.current[qkey])
       : []
   );
-  const [tool, setTool] = useState("select");
+  const [tool, setTool] = useState("pen");
   const [color, setColor] = useState(INK);
   const [selectedIds, setSelectedIds] = useState([]);
   const [cam, setCam] = useState({ x: 0, y: 0, zoom: 1 });

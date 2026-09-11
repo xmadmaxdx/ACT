@@ -261,6 +261,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [paused, setPaused] = useState(false);
   const [calcOpen, setCalcOpen] = useState(false);
   const [calcMode, setCalcMode] = useState("graph");
+  const [calcFull, setCalcFull] = useState(false);
   const [calcW, setCalcW] = useState(440);
 
   const togglePause = () => {
@@ -561,6 +562,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
   useEffect(() => {
     const onKey = (e) => {
+      if (calcFull) return;
       const tag = (e.target && e.target.tagName) || "";
       if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable)) return;
       const inIntro = needIntro && !introDoneRef.current;
@@ -769,7 +771,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
         </aside>
         )}
-        {calcOpen && showCalc && (
+        {calcOpen && showCalc && !calcFull && (
           <div
             className="calc-divider"
             onPointerDown={startDrag}
@@ -777,7 +779,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             title="Drag to resize (double-click to reset)"
           />
         )}
-        {calcOpen && showCalc && (
+        {calcOpen && showCalc && !calcFull && (
           <section className="calc-panel" style={{ width: calcW }} aria-label="Calculator">
             <div className="calc-head">
               <div className="calc-tabs" role="tablist" aria-label="Calculator type">
@@ -802,6 +804,20 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               </div>
               <button
                 type="button"
+                className="calc-full-btn"
+                aria-label="Fullscreen calculator"
+                title="Fullscreen"
+                onClick={() => setCalcFull(true)}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="15 3 21 3 21 9" />
+                  <polyline points="9 21 3 21 3 15" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                  <line x1="3" y1="21" x2="10" y2="14" />
+                </svg>
+              </button>
+              <button
+                type="button"
                 className="modal-close"
                 aria-label="Close calculator"
                 onClick={() => setCalcOpen(false)}
@@ -823,6 +839,60 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             )}
           </section>
         )}
+      {calcOpen && showCalc && calcFull && (
+        <div className="calc-fullscreen" role="dialog" aria-label="Calculator fullscreen">
+          <div className="calc-full-head">
+            <div className="calc-tabs" role="tablist" aria-label="Calculator type">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={calcMode === "graph"}
+                className={calcMode === "graph" ? "calc-tab active" : "calc-tab"}
+                onClick={() => setCalcMode("graph")}
+              >
+                Graph
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={calcMode === "board"}
+                className={calcMode === "board" ? "calc-tab active" : "calc-tab"}
+                onClick={() => setCalcMode("board")}
+              >
+                Board
+              </button>
+            </div>
+            <button
+              type="button"
+              className="calc-full-exit"
+              aria-label="Exit fullscreen"
+              title="Back to split view"
+              onClick={() => setCalcFull(false)}
+            >
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polyline points="4 14 10 14 10 20" />
+                <polyline points="20 10 14 10 14 4" />
+                <line x1="3" y1="21" x2="10" y2="14" />
+                <line x1="21" y1="3" x2="14" y2="10" />
+              </svg>
+            </button>
+          </div>
+          <div className="calc-full-body">
+            {calcMode === "board" ? (
+              <FreestyleBoard qkey={activeQ.n} store={boardStore} />
+            ) : (
+              <DesmosCalc
+                mode={calcMode}
+                apiRef={calcApiRef}
+                initialState={desmosStates.current[desmosQRef.current]}
+                onSnapshot={(s) => {
+                  if (desmosQRef.current !== null) desmosStates.current[desmosQRef.current] = s;
+                }}
+              />
+            )}
+          </div>
+        </div>
+      )}
           </>
         )}
       </div>
