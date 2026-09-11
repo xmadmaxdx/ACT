@@ -830,12 +830,43 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       <div className="test-nav">
         <div className="test-nav-inner">
           <button
-            className={copied ? "nav-btn copied" : "nav-btn"}
+            className={copied ? "copy-icon-btn copied" : "copy-icon-btn"}
             type="button"
             onClick={copyScreen}
             title="Copy question, options and Desmos equations"
+            aria-label="Copy question to clipboard"
           >
-            {copied ? "COPIED ✓" : "COPY"}
+            {copied ? (
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                <path
+                  d="M3 9.5l4 4 8-9"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                <rect
+                  x="6"
+                  y="6"
+                  width="9"
+                  height="9"
+                  rx="2"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                />
+                <path
+                  d="M12 6V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                />
+              </svg>
+            )}
           </button>
           <button
             className="nav-btn"

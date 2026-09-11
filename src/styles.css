@@ -1755,7 +1755,29 @@ button {
   box-shadow: none;
 }
 
-.nav-btn.copied {
+.copy-icon-btn {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 10px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.copy-icon-btn:hover {
+  color: var(--ink-soft);
+}
+
+.copy-icon-btn.copied {
   color: var(--green-dark);
   border-color: #bfe37a;
 }
