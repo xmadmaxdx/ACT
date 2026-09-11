@@ -451,7 +451,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         .map((e) => e && e.latex)
         .filter((l) => typeof l === "string" && l.trim() !== "");
       if (latex.length > 0) {
-        lines.push("Desmos:");
+        lines.push("The user tried the math by the following equations on Desmos:");
         latex.forEach((l) => lines.push(`  ${l}`));
       }
     } catch (err) {
