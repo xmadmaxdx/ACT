@@ -376,6 +376,14 @@ export default function FreestyleBoard({ qkey, store }) {
     }
   }, [qkey, store]);
 
+  useEffect(() => {
+    return () => {
+      if (store && prevBoardKey.current !== undefined && prevBoardKey.current !== null) {
+        store.current[prevBoardKey.current] = clone(objectsRef.current);
+      }
+    };
+  }, []);
+
   const boardPoint = useCallback((clientX, clientY) => {
     const rect = svgRef.current.getBoundingClientRect();
     const c = camRef.current;
