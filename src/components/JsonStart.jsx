@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { lettersFor } from "../scoring.js";
+import readingPrompt from "../data/reading-prompt.md?raw";
+import englishPrompt from "../data/english-prompt.md?raw";
 
 const SAMPLE_READING = `{
   "id": "JSON-READING-1",
@@ -190,6 +192,23 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   const [text, setText] = useState("");
   const [mode, setMode] = useState("untimed");
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const copyPrompt = async () => {
+    const prompt = tab === "reading" ? readingPrompt : englishPrompt;
+    try {
+      await navigator.clipboard.writeText(prompt);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = prompt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   const start = () => {
     let raw;
@@ -243,6 +262,9 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
           }}
         >
           LOAD SAMPLE
+        </button>
+        <button type="button" className="footer-link" onClick={copyPrompt}>
+          {copied ? "PROMPT COPIED ✓" : "COPY PROMPT"}
         </button>
         <div className="mode-toggle" role="group" aria-label="Timing">
           {["untimed", "timed"].map((m) => (

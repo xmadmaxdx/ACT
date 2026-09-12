@@ -1157,7 +1157,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               </div>
             )}
         </aside>
-        )}
         </div>
       )}
     </div>
