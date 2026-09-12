@@ -1210,6 +1210,13 @@ button {
   margin: 0 0 12px;
 }
 
+.jsonstart-note {
+  color: var(--green-dark);
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
 .jsonstart .btn-primary {
   width: 100%;
 }

@@ -293,6 +293,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
         spellCheck={false}
       />
       {error && <p className="jsonstart-error">{error}</p>}
+      {fixNote && !error && <p className="jsonstart-note">{fixNote}</p>}
       <button type="button" className="btn-primary" onClick={start} disabled={!text.trim()}>
         START EXAM
       </button>
