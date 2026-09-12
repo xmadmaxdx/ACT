@@ -79,3 +79,5 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 3. Every answer letter belongs to its question's set (odd=A–D, even=F–J).
 4. Every ref quote exists verbatim in its paragraph.
 5. Answers distributed across letters.
+6. The format given as json using codeblock using the three backticks
+7. No option numbering!! Don't number option as "A. " or "F. ". Don't.

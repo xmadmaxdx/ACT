@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { lettersFor } from "../scoring.js";
+import { tolerantParse, fixSummary } from "../tolerantJson.js";
 import readingPrompt from "../data/reading-prompt.md?raw";
 import englishPrompt from "../data/english-prompt.md?raw";
 
@@ -193,6 +194,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   const [mode, setMode] = useState("untimed");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [fixNote, setFixNote] = useState("");
 
   const copyPrompt = async () => {
     const prompt = tab === "reading" ? readingPrompt : englishPrompt;
@@ -213,9 +215,12 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   const start = () => {
     let raw;
     try {
-      raw = JSON.parse(text);
-    } catch {
-      setError("Invalid JSON — check commas and quotes.");
+      const parsed = tolerantParse(text);
+      raw = parsed.value;
+      setFixNote(fixSummary(parsed.fixes));
+    } catch (e) {
+      setFixNote("");
+      setError(e.message);
       return;
     }
     try {

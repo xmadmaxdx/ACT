@@ -95,3 +95,5 @@ Standard stems to reuse: correction types → "Which choice makes the sentence m
 3. Every `{u: n}` and every `{box}` referenced correctly; every question has its anchor.
 4. All answers A–D, distributed across letters.
 5. No span type other than t / u / box (/ fig only with a figures map).
+6. The format given as json using codeblock using the three backticks.
+7. No option numbering!! Don't number option as "A. " or "F. ". Don't.
