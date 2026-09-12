@@ -81,3 +81,4 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 5. Answers distributed across letters.
 6. The format given as json using codeblock using the three backticks
 7. No option numbering!! Don't number option as "A. " or "F. ". Don't.
+8. For general question, DO NOT highlight the texts. The user need to find things from the passage do not highlight.
