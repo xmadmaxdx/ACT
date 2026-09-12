@@ -72,6 +72,15 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 - Correct answers must vary across letters — never make all 9 the same letter.
 - Prose quality: literary but readable, roughly 500–700 words total, one coherent scene or argument.
 
+
+## Content Rules:
+
+1. For general question, DO NOT highlight the texts. The user need to find things from the passage do not highlight.
+2. First qs should be main idea of the passage, or related theory qs.
+3. For the qs involving mentioning nth paragraph, or line numbers, make the complete paragraph highlighted. But for those does not mention specific portion, should not highlight any sentence or even word unless it is vocab qs.
+4. Dont't make qs too obvious to find in passage. in real exam, the infomation finding qs, are a bit difficult to find the qs thing in the passage.
+
+
 ## Self-check before outputting
 
 1. Valid JSON (parseable, commas correct).
@@ -79,6 +88,5 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 3. Every answer letter belongs to its question's set (odd=A–D, even=F–J).
 4. Every ref quote exists verbatim in its paragraph.
 5. Answers distributed across letters.
-6. The format given as json using codeblock using the three backticks
+6. The format given as json using codeblock using the three backticks.
 7. No option numbering!! Don't number option as "A. " or "F. ". Don't.
-8. For general question, DO NOT highlight the texts. The user need to find things from the passage do not highlight.
