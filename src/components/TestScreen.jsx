@@ -276,7 +276,7 @@ function dropSelection() {
 }
 
 const PT_DEFAULT_TOTAL = 600;
-const PT_CIRC = 2 * Math.PI * 72;
+const PT_CIRC = 2 * Math.PI * 54;
 
 function ptBlank() {
   return { total: PT_DEFAULT_TOTAL, remaining: PT_DEFAULT_TOTAL, running: false };
@@ -295,34 +295,35 @@ function ensureAudio() {
   }
 }
 
-function blip(freq, dur, vol, delay) {
+function tickSound() {
   const ctx = ensureAudio();
   if (!ctx) return;
   try {
-    const t = ctx.currentTime + (delay || 0);
-    const o = ctx.createOscillator();
+    const dur = 0.035;
+    const len = Math.max(1, Math.floor(ctx.sampleRate * dur));
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const f = ctx.createBiquadFilter();
+    f.type = "highpass";
+    f.frequency.value = 3500;
     const g = ctx.createGain();
-    o.type = "sine";
-    o.frequency.value = freq;
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g);
+    g.gain.value = 0.6;
+    src.connect(f);
+    f.connect(g);
     g.connect(ctx.destination);
-    o.start(t);
-    o.stop(t + dur + 0.02);
+    src.start();
   } catch (err) {
-    window.console.debug("audio blip skipped", err);
+    window.console.debug("tick skipped", err);
   }
 }
 
-function softTick() {
-  blip(1250, 0.06, 0.03, 0);
-}
-
-function chime() {
-  blip(880, 0.14, 0.05, 0);
-  blip(1318, 0.2, 0.05, 0.13);
+function tripleTick() {
+  tickSound();
+  setTimeout(tickSound, 110);
+  setTimeout(tickSound, 220);
 }
 
 function ElimIcon({ off }) {
@@ -463,6 +464,12 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [hlPop, setHlPop] = useState(null);
   const [ptimeOpen, setPtimeOpen] = useState(false);
   const [ptimers, setPtimers] = useState({});
+  const [hoverCap] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      !!window.matchMedia &&
+      window.matchMedia("(hover: hover)").matches
+  );
   const passageWrapRef = useRef(null);
   const paraRefs = useRef(new Map());
   const pendingHl = useRef(null);
@@ -517,14 +524,18 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       const next = { ...cur };
       ids.forEach((k) => {
         const t = next[k];
-        const remaining = Math.max(0, t.remaining - 1);
-        next[k] = { ...t, remaining, running: remaining > 0 };
-        if (remaining === 0) chime();
-        else softTick();
+        const remaining = Math.max(0, Math.round((t.remaining - 0.5) * 10) / 10);
+        if (remaining === 0) {
+          next[k] = { ...t, remaining, running: false };
+          tripleTick();
+        } else {
+          next[k] = { ...t, remaining };
+          tickSound();
+        }
       });
       ptimersRef.current = next;
       setPtimers(next);
-    }, 1000);
+    }, 500);
     return () => clearInterval(id);
   }, []);
 
@@ -1124,26 +1135,87 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         )}
         <div className="test-right">
           {isReading && (
-            <button
-              className={ptimeOpen ? "ptime-btn on" : "ptime-btn"}
-              type="button"
-              onClick={() => setPtimeOpen((v) => !v)}
-              title="Passage timer"
-              aria-label="Passage timer"
-              aria-expanded={ptimeOpen}
+            <div
+              className="ptime-wrap"
+              onMouseEnter={hoverCap ? () => setPtimeOpen(true) : undefined}
+              onMouseLeave={hoverCap ? () => setPtimeOpen(false) : undefined}
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-                <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
-                <path
-                  d="M8 4.8V8l2.4 1.4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span>{formatClock(ptTop.remaining)}</span>
-            </button>
+              <button
+                className={ptimeOpen ? "ptime-btn on" : "ptime-btn"}
+                type="button"
+                onClick={() => setPtimeOpen((v) => !v)}
+                title="Passage timer"
+                aria-label="Passage timer"
+                aria-expanded={ptimeOpen}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                  <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                  <path
+                    d="M8 4.8V8l2.4 1.4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span>{formatClock(Math.ceil(ptTop.remaining))}</span>
+              </button>
+              {ptimeOpen && (
+                <>
+                  {!hoverCap && (
+                    <div className="ptime-catcher" onClick={() => setPtimeOpen(false)} />
+                  )}
+                  <div
+                    className={pt.remaining <= 60 ? "ptime-card low" : "ptime-card"}
+                    role="dialog"
+                    aria-label="Passage timer"
+                  >
+                    <div className="ptime-ring-wrap">
+                      <svg
+                        className="ptime-ring"
+                        width="132"
+                        height="132"
+                        viewBox="0 0 132 132"
+                        aria-hidden="true"
+                      >
+                        <circle cx="66" cy="66" r="54" className="ptime-track" />
+                        <circle
+                          cx="66"
+                          cy="66"
+                          r="54"
+                          className="ptime-arc"
+                          style={{ strokeDashoffset: PT_CIRC * (1 - ptFrac) }}
+                        />
+                      </svg>
+                      <div className="ptime-center">
+                        <span className="ptime-digits">{formatClock(Math.ceil(pt.remaining))}</span>
+                        <span className="ptime-cap">
+                          {pt.running ? "ticking" : pt.remaining === 0 ? "time's up" : "paused"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="ptime-controls">
+                      <button type="button" className="ptime-adj" onClick={() => bumpPtime(-60)}>
+                        −1:00
+                      </button>
+                      <button
+                        type="button"
+                        className={pt.running ? "ptime-main pause" : "ptime-main"}
+                        onClick={togglePtime}
+                      >
+                        {pt.running ? "PAUSE" : "START"}
+                      </button>
+                      <button type="button" className="ptime-adj" onClick={() => bumpPtime(60)}>
+                        +1:00
+                      </button>
+                    </div>
+                    <button type="button" className="ptime-reset" onClick={resetPtime}>
+                      Reset to {formatClock(pt.total)}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           )}
           <div className="test-progress">
             <span className="test-progress-label">
@@ -1525,63 +1597,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           )}
         </div>
       </div>
-
-      {ptimeOpen && isReading && (
-        <div className="ptime-overlay" onClick={() => setPtimeOpen(false)}>
-          <div
-            className={pt.remaining <= 60 ? "ptime-card low" : "ptime-card"}
-            role="dialog"
-            aria-label="Passage timer"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              className="modal-close ptime-x"
-              aria-label="Close timer"
-              onClick={() => setPtimeOpen(false)}
-            >
-              ✕
-            </button>
-            <div className="ptime-ring-wrap">
-              <svg className="ptime-ring" width="176" height="176" viewBox="0 0 176 176" aria-hidden="true">
-                <circle cx="88" cy="88" r="72" className="ptime-track" />
-                <circle
-                  cx="88"
-                  cy="88"
-                  r="72"
-                  className="ptime-arc"
-                  style={{ strokeDashoffset: PT_CIRC * (1 - ptFrac) }}
-                />
-              </svg>
-              <div className="ptime-center">
-                <span className="ptime-digits">{formatClock(pt.remaining)}</span>
-                <span className="ptime-cap">
-                  {pt.running ? "ticking" : pt.remaining === 0 ? "time's up" : "paused"}
-                </span>
-              </div>
-            </div>
-            <p className="ptime-sub">This passage only — keeps running across its questions</p>
-            <div className="ptime-controls">
-              <button type="button" className="ptime-adj" onClick={() => bumpPtime(-60)}>
-                −1:00
-              </button>
-              <button
-                type="button"
-                className={pt.running ? "ptime-main pause" : "ptime-main"}
-                onClick={togglePtime}
-              >
-                {pt.running ? "PAUSE" : "START"}
-              </button>
-              <button type="button" className="ptime-adj" onClick={() => bumpPtime(60)}>
-                +1:00
-              </button>
-            </div>
-            <button type="button" className="ptime-reset" onClick={resetPtime}>
-              Reset to {formatClock(pt.total)}
-            </button>
-          </div>
-        </div>
-      )}
 
       {hlPop && (
         <button

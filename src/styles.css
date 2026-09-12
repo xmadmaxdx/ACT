@@ -1591,35 +1591,50 @@ button {
   background: var(--blue-light-bg);
 }
 
-.ptime-overlay {
+.ptime-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ptime-catcher {
   position: fixed;
   inset: 0;
-  z-index: 80;
-  background: rgba(18, 20, 32, 0.45);
-  backdrop-filter: blur(3px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  animation: ptime-fade 0.18s ease;
+  z-index: 55;
+  background: transparent;
 }
 
 .ptime-card {
-  position: relative;
-  width: min(360px, 92vw);
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 60;
+  width: min(296px, 86vw);
   background: #fff;
-  border-radius: 22px;
+  border-radius: 18px;
   border: 2px solid var(--line);
-  box-shadow: 0 24px 70px rgba(10, 15, 40, 0.35);
-  padding: 30px 26px 24px;
+  box-shadow: 0 18px 50px rgba(10, 15, 40, 0.28);
+  padding: 20px 18px 16px;
   text-align: center;
-  animation: ptime-spring 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: ptime-spring 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ptime-card::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 34px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-left: 2px solid var(--line);
+  border-top: 2px solid var(--line);
+  transform: rotate(45deg);
 }
 
 .ptime-ring-wrap {
   position: relative;
-  width: 176px;
-  height: 176px;
+  width: 132px;
+  height: 132px;
   margin: 0 auto 10px;
 }
 
@@ -1640,8 +1655,8 @@ button {
 .ptime-arc {
   stroke: var(--blue);
   stroke-linecap: round;
-  stroke-dasharray: 452.39;
-  transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+  stroke-dasharray: 339.29;
+  transition: stroke-dashoffset 0.5s linear, stroke 0.3s ease;
 }
 
 .ptime-center {
@@ -1655,7 +1670,7 @@ button {
 }
 
 .ptime-digits {
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 900;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
@@ -1671,18 +1686,15 @@ button {
 }
 
 .ptime-sub {
-  margin: 0 0 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
+  display: none;
 }
 
 .ptime-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .ptime-adj {
@@ -1771,23 +1783,14 @@ button {
   }
 }
 
-@keyframes ptime-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes ptime-spring {
   from {
     opacity: 0;
-    transform: scale(0.85) translateY(14px);
+    transform: translateY(-8px) scale(0.94);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -2377,7 +2380,7 @@ button {
   .test-timer.danger {
     animation: none;
   }
-  .ptime-overlay,
+  .ptime-catcher,
   .ptime-card,
   .ptime-card.low .ptime-digits {
     animation: none;
