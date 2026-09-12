@@ -68,12 +68,7 @@ function stemRefs(paras, stem) {
   }
   return refs;
 }
-   own highlights, painted in a single boundary sweep so overlaps blend.
-   {para, text}      → highlight the exact quote (or best matching word-run)
-   {para} (no text)  → highlight the whole paragraph
-   {para, text: ""}  → tolerated, no highlight (avoids highlighting wrong words)
-   userHits: [{s, e}] resolved offsets → mint user-mark (tap to remove);
-   segments carrying both become ref-mark user-mark. */
+
 function renderParaText(text, refs, userHits, onUnmark) {
   const full = String(text);
   const paraRefs = (refs || []).filter((r) => r && Number.isInteger(r.para));
