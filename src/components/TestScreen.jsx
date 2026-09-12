@@ -275,6 +275,56 @@ function dropSelection() {
   if (sel) sel.removeAllRanges();
 }
 
+const PT_DEFAULT_TOTAL = 600;
+const PT_CIRC = 2 * Math.PI * 72;
+
+function ptBlank() {
+  return { total: PT_DEFAULT_TOTAL, remaining: PT_DEFAULT_TOTAL, running: false };
+}
+
+let audioCtx = null;
+
+function ensureAudio() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  } catch (err) {
+    window.console.debug("audio unavailable", err);
+    return null;
+  }
+}
+
+function blip(freq, dur, vol, delay) {
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  try {
+    const t = ctx.currentTime + (delay || 0);
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  } catch (err) {
+    window.console.debug("audio blip skipped", err);
+  }
+}
+
+function softTick() {
+  blip(1250, 0.06, 0.03, 0);
+}
+
+function chime() {
+  blip(880, 0.14, 0.05, 0);
+  blip(1318, 0.2, 0.05, 0.13);
+}
+
 function ElimIcon({ off }) {
   if (off) {
     return (
@@ -411,10 +461,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [elims, setElims] = useState({});
   const [marks, setMarks] = useState({});
   const [hlPop, setHlPop] = useState(null);
+  const [ptimeOpen, setPtimeOpen] = useState(false);
+  const [ptimers, setPtimers] = useState({});
   const passageWrapRef = useRef(null);
   const paraRefs = useRef(new Map());
   const pendingHl = useRef(null);
   const marksRef = useRef({});
+  const ptimersRef = useRef({});
 
   const togglePause = () => {
     setPaused((p) => {
@@ -455,6 +508,25 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   useEffect(() => {
     marksRef.current = marks;
   }, [marks]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      const cur = ptimersRef.current;
+      const ids = Object.keys(cur).filter((k) => cur[k].running && cur[k].remaining > 0);
+      if (ids.length === 0) return;
+      const next = { ...cur };
+      ids.forEach((k) => {
+        const t = next[k];
+        const remaining = Math.max(0, t.remaining - 1);
+        next[k] = { ...t, remaining, running: remaining > 0 };
+        if (remaining === 0) chime();
+        else softTick();
+      });
+      ptimersRef.current = next;
+      setPtimers(next);
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const hide = () => setHlPop((p) => (p ? null : p));
@@ -521,9 +593,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     if (((testData && testData.section) || "").toLowerCase() !== "reading") return;
     const cur = questions[Math.min(qIndex, total - 1)];
     if (!cur) return;
-    const list = marksRef.current[cur.p] || [];
-    if (list.length === 0) return;
-    const target = list.reduce((m, h) => Math.min(m, h.para), Infinity);
+    const refs = cur.refs || [];
+    let target = refs.length > 0 ? refs[0].para : null;
+    if (!Number.isInteger(target)) {
+      const mine = marksRef.current[cur.p] || [];
+      if (mine.length === 0) return;
+      target = mine.reduce((m, h) => Math.min(m, h.para), Infinity);
+    }
     const el = paraRefs.current.get(`${cur.p}-${target}`);
     if (el) {
       try {
@@ -601,6 +677,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const flagged = !!flags[activeQ.n];
   const marksHere = marks[passage.id] || [];
   const passageMarkCount = marksHere.length;
+  const isReading = ((testData && testData.section) || "").toLowerCase() === "reading";
+  const pt = ptimers[passage.id] || ptBlank();
+  const ptTop = pt;
+  const ptFrac = pt.total > 0 ? pt.remaining / pt.total : 0;
   const showAnswers = review;
   const answeredCount = questions.filter((q) => picks[q.n]).length;
   const answeredFrac = total ? answeredCount / total : 0;
@@ -682,6 +762,34 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       marksRef.current = { ...m, [passage.id]: [] };
       return marksRef.current;
     });
+  };
+
+  const setPt = (pid, patch) => {
+    const cur = ptimersRef.current[pid] || ptBlank();
+    const next = { ...ptimersRef.current, [pid]: { ...cur, ...patch } };
+    ptimersRef.current = next;
+    setPtimers(next);
+  };
+
+  const bumpPtime = (delta) => {
+    if (!passage) return;
+    const t = ptimersRef.current[passage.id] || ptBlank();
+    const total = Math.min(3600, Math.max(60, t.total + delta));
+    setPt(passage.id, { total, remaining: Math.min(Math.max(0, t.remaining + delta), total) });
+  };
+
+  const togglePtime = () => {
+    if (!passage) return;
+    ensureAudio();
+    const t = ptimersRef.current[passage.id] || ptBlank();
+    if (t.remaining === 0) setPt(passage.id, { remaining: t.total, running: true });
+    else setPt(passage.id, { running: !t.running });
+  };
+
+  const resetPtime = () => {
+    if (!passage) return;
+    const t = ptimersRef.current[passage.id] || ptBlank();
+    setPt(passage.id, { remaining: t.total, running: false });
   };
 
   const toggleFlag = () => {
@@ -1014,16 +1122,40 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             <span>Calculator</span>
           </button>
         )}
-        <div className="test-progress">
-          <span className="test-progress-label">
-            Answered {answeredCount} of {total}
-          </span>
-          <span className="test-progress-track">
-            <span
-              className={`test-progress-fill ${fillClass}`}
-              style={{ width: `${answeredFrac * 100}%` }}
-            />
-          </span>
+        <div className="test-right">
+          {isReading && (
+            <button
+              className={ptimeOpen ? "ptime-btn on" : "ptime-btn"}
+              type="button"
+              onClick={() => setPtimeOpen((v) => !v)}
+              title="Passage timer"
+              aria-label="Passage timer"
+              aria-expanded={ptimeOpen}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                <path
+                  d="M8 4.8V8l2.4 1.4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span>{formatClock(ptTop.remaining)}</span>
+            </button>
+          )}
+          <div className="test-progress">
+            <span className="test-progress-label">
+              Answered {answeredCount} of {total}
+            </span>
+            <span className="test-progress-track">
+              <span
+                className={`test-progress-fill ${fillClass}`}
+                style={{ width: `${answeredFrac * 100}%` }}
+              />
+            </span>
+          </div>
         </div>
       </header>
 
@@ -1393,6 +1525,63 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           )}
         </div>
       </div>
+
+      {ptimeOpen && isReading && (
+        <div className="ptime-overlay" onClick={() => setPtimeOpen(false)}>
+          <div
+            className={pt.remaining <= 60 ? "ptime-card low" : "ptime-card"}
+            role="dialog"
+            aria-label="Passage timer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="modal-close ptime-x"
+              aria-label="Close timer"
+              onClick={() => setPtimeOpen(false)}
+            >
+              ✕
+            </button>
+            <div className="ptime-ring-wrap">
+              <svg className="ptime-ring" width="176" height="176" viewBox="0 0 176 176" aria-hidden="true">
+                <circle cx="88" cy="88" r="72" className="ptime-track" />
+                <circle
+                  cx="88"
+                  cy="88"
+                  r="72"
+                  className="ptime-arc"
+                  style={{ strokeDashoffset: PT_CIRC * (1 - ptFrac) }}
+                />
+              </svg>
+              <div className="ptime-center">
+                <span className="ptime-digits">{formatClock(pt.remaining)}</span>
+                <span className="ptime-cap">
+                  {pt.running ? "ticking" : pt.remaining === 0 ? "time's up" : "paused"}
+                </span>
+              </div>
+            </div>
+            <p className="ptime-sub">This passage only — keeps running across its questions</p>
+            <div className="ptime-controls">
+              <button type="button" className="ptime-adj" onClick={() => bumpPtime(-60)}>
+                −1:00
+              </button>
+              <button
+                type="button"
+                className={pt.running ? "ptime-main pause" : "ptime-main"}
+                onClick={togglePtime}
+              >
+                {pt.running ? "PAUSE" : "START"}
+              </button>
+              <button type="button" className="ptime-adj" onClick={() => bumpPtime(60)}>
+                +1:00
+              </button>
+            </div>
+            <button type="button" className="ptime-reset" onClick={resetPtime}>
+              Reset to {formatClock(pt.total)}
+            </button>
+          </div>
+        </div>
+      )}
 
       {hlPop && (
         <button

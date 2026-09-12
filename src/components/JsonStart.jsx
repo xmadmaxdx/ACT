@@ -170,18 +170,24 @@ function normalize(section, raw) {
         paras: src.paras,
       },
     ],
-    questions: questions.map((q, i) => ({
-      n: q.n ?? i + 1,
-      p: q.p || pid,
-      tag: q.tag || "Custom",
-      stem: q.stem || "",
-      short: q.short || q.stem || `Question ${q.n ?? i + 1}`,
-      options: q.options,
-      answer: q.answer,
-      explain: q.explain || "",
-      refs: q.refs || [],
-      point: q.point,
-    })),
+    questions: questions.map((q, i) => {
+      const n = q.n ?? i + 1;
+      const ok = lettersFor(n, section);
+      return {
+        n,
+        p: q.p || pid,
+        tag: q.tag || "Custom",
+        stem: q.stem || "",
+        short: q.short || q.stem || `Question ${n}`,
+        options: q.options.map((opt, k) =>
+          String(opt).replace(new RegExp(`^${ok[k]}[.):]\\s*`), "")
+        ),
+        answer: q.answer,
+        explain: q.explain || "",
+        refs: q.refs || [],
+        point: q.point,
+      };
+    }),
   };
 }
 
