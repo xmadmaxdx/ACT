@@ -295,26 +295,46 @@ function ensureAudio() {
   }
 }
 
+let tickBright = false;
+
 function tickSound() {
   const ctx = ensureAudio();
   if (!ctx) return;
   try {
-    const dur = 0.035;
+    tickBright = !tickBright;
+    const t = ctx.currentTime;
+    const bright = tickBright;
+    const dur = 0.025;
     const len = Math.max(1, Math.floor(ctx.sampleRate * dur));
     const buf = ctx.createBuffer(1, len, ctx.sampleRate);
     const d = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    for (let i = 0; i < len; i++) {
+      const k = 1 - i / len;
+      d[i] = (Math.random() * 2 - 1) * k * k;
+    }
     const src = ctx.createBufferSource();
     src.buffer = buf;
-    const f = ctx.createBiquadFilter();
-    f.type = "highpass";
-    f.frequency.value = 3500;
-    const g = ctx.createGain();
-    g.gain.value = 0.6;
-    src.connect(f);
-    f.connect(g);
-    g.connect(ctx.destination);
-    src.start();
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = bright ? 3900 : 2900;
+    bp.Q.value = 0.9;
+    const gClick = ctx.createGain();
+    gClick.gain.value = 1.0;
+    src.connect(bp);
+    bp.connect(gClick);
+    gClick.connect(ctx.destination);
+    src.start(t);
+    const o = ctx.createOscillator();
+    o.type = "sine";
+    o.frequency.value = bright ? 640 : 490;
+    const gBody = ctx.createGain();
+    gBody.gain.setValueAtTime(0.0001, t);
+    gBody.gain.exponentialRampToValueAtTime(0.4, t + 0.004);
+    gBody.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+    o.connect(gBody);
+    gBody.connect(ctx.destination);
+    o.start(t);
+    o.stop(t + 0.08);
   } catch (err) {
     window.console.debug("tick skipped", err);
   }
