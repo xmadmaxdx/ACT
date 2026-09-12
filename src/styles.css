@@ -1766,6 +1766,36 @@ button {
   background: var(--blue-light-bg);
 }
 
+.ptime-sound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.ptime-sound:hover {
+  color: var(--blue);
+  background: var(--blue-light-bg);
+}
+
+.ptime-sound.off {
+  color: #e5484d;
+}
+
+.ptime-sound.off:hover {
+  color: #d33131;
+  background: #fff0f0;
+}
+
 .ptime-card.low .ptime-arc {
   stroke: #d33131;
 }

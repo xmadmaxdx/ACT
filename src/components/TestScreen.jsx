@@ -484,6 +484,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [hlPop, setHlPop] = useState(null);
   const [ptimeOpen, setPtimeOpen] = useState(false);
   const [ptimers, setPtimers] = useState({});
+  const [ptimeMuted, setPtimeMuted] = useState(false);
+  const ptimeMutedRef = useRef(false);
   const [hoverCap] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -568,10 +570,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         const remaining = Math.max(0, Math.round((t.remaining - 0.5) * 10) / 10);
         if (remaining === 0) {
           next[k] = { ...t, remaining, running: false };
-          tripleTick();
+          if (!ptimeMutedRef.current) tripleTick();
         } else {
           next[k] = { ...t, remaining };
-          tickSound();
+          if (!ptimeMutedRef.current) tickSound();
         }
       });
       ptimersRef.current = next;
@@ -842,6 +844,12 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     if (!passage) return;
     const t = ptimersRef.current[passage.id] || ptBlank();
     setPt(passage.id, { remaining: t.total, running: false });
+  };
+
+  const togglePtimeMute = () => {
+    const v = !ptimeMutedRef.current;
+    ptimeMutedRef.current = v;
+    setPtimeMuted(v);
   };
 
   const toggleFlag = () => {
@@ -1252,6 +1260,32 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                     </div>
                     <button type="button" className="ptime-reset" onClick={resetPtime}>
                       Reset to {formatClock(pt.total)}
+                    </button>
+                    <button
+                      type="button"
+                      className={ptimeMuted ? "ptime-sound off" : "ptime-sound"}
+                      onClick={togglePtimeMute}
+                      aria-pressed={!ptimeMuted}
+                    >
+                      {ptimeMuted ? (
+                        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                          <path d="M2 5v4h2.5L8 12V2L4.5 5H2z" fill="currentColor" />
+                          <line x1="9.5" y1="4.5" x2="12.5" y2="9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                          <line x1="12.5" y1="4.5" x2="9.5" y2="9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        </svg>
+                      ) : (
+                        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                          <path d="M2 5v4h2.5L8 12V2L4.5 5H2z" fill="currentColor" />
+                          <path
+                            d="M9.5 4.5a3.5 3.5 0 0 1 0 5M11.5 2.8a6 6 0 0 1 0 8.4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      )}
+                      <span>{ptimeMuted ? "Sound off" : "Sound on"}</span>
                     </button>
                   </div>
                 </>
