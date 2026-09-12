@@ -148,7 +148,7 @@ function normalize(section, raw) {
       if (!Number.isInteger(r.para) || r.para < 0 || r.para >= src.paras.length) {
         throw new Error(`Q${n} ref ${j}: bad para index.`);
       }
-      if (!r.text) throw new Error(`Q${n} ref ${j}: needs exact quote text.`);
+      if (typeof r.text !== "string" || r.text.length === 0) return;
       if (isReading && typeof src.paras[r.para] === "string" && !src.paras[r.para].includes(r.text)) {
         throw new Error(`Q${n} ref ${j}: quote not found in para ${r.para}.`);
       }

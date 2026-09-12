@@ -36,7 +36,7 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
       "options": ["exactly 4 strings"],
       "answer": "single letter, must belong to this question's letter set (see letters rule)",
       "explain": "string, 1–2 sentences: why the answer is right AND why the best distractor is wrong",
-      "refs": [{ "para": 0, "text": "exact verbatim quote from that paragraph" }]
+      "refs": [ { "para": 0, "text": "exact verbatim quote" } ]   // OPTIONAL key — see "refs rule" below
     }
   ]
 }
@@ -46,13 +46,16 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 - Odd-numbered questions (1,3,5,7,9): options labeled A, B, C, D — answer must be one of A/B/C/D.
 - Even-numbered questions (2,4,6,8): options labeled F, G, H, J (there is NO E or I) — answer must be one of F/G/H/J.
 
-## refs rule (strict — this drives the digital highlighter)
+## refs rule (drives the digital highlighter — read WITH Content Rules)
 
-- Every question MUST have at least 1 ref: `{"para": <0-based paragraph index>, "text": "<exact quote>}"`.
-- The quote must appear VERBATIM (character-for-character, including punctuation) in that paragraph. Never paraphrase quotes.
+- `refs` is OPTIONAL. Omit the key entirely when the question points to no specific portion (Content Rule 1/3). Never invent quotes, and NEVER output `"text": ""`.
+- Exactly two allowed shapes — nothing else:
+  - `{"para": 0, "text": "exact verbatim quote"}` → highlights the quoted words. Use for vocabulary questions and precise phrase/sentence questions.
+  - `{"para": 2}` — NO text key → highlights the ENTIRE paragraph. Use ONLY for questions that explicitly mention a paragraph or line range (the "nth paragraph" style, Content Rule 3).
+- A ref with a text quote must appear VERBATIM (character-for-character, including punctuation) in that paragraph. Never paraphrase quotes.
 - For "line" style questions, quote the precise phrase (a few words), not the whole paragraph.
 - For vocabulary questions, quote just the target word plus 1–2 surrounding words.
-- The renderer highlights exactly the quoted text for the active question, so short precise quotes beat long ones.
+- The renderer highlights exactly what the shape says: quote-shaped = the words, para-shaped = the whole paragraph, no refs = nothing. Short precise quotes beat long ones.
 
 ## Question-type coverage (use at least 6 different tags across the 9)
 
@@ -86,7 +89,7 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 1. Valid JSON (parseable, commas correct).
 2. 1 passage, 7–9 paras, 9 questions numbered 1–9.
 3. Every answer letter belongs to its question's set (odd=A–D, even=F–J).
-4. Every ref quote exists verbatim in its paragraph.
+4. Every ref with a text quote exists verbatim in its paragraph; para-only refs carry `{"para": N}` with NO text key; refs omitted entirely for questions that highlight nothing.
 5. Answers distributed across letters.
 6. The format given as json using codeblock using the three backticks.
 7. No option numbering!! Don't number option as "A. " or "F. ". Don't.

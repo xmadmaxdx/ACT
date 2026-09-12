@@ -5,10 +5,16 @@ import { lettersFor } from "../scoring.js";
 
 const LETTERS = ["A", "B", "C", "D"];
 
-/* Split a plain-text paragraph on the active question's exact-quote refs,
-   wrapping each match in a <mark>. Refs that don't match are ignored. */
+/* Split a plain-text paragraph on the active question's refs.
+   {para, text}      → highlight the exact quote
+   {para} (no text)  → highlight the whole paragraph
+   {para, text: ""}  → tolerated, no highlight (avoids highlighting wrong words) */
 function renderParaText(text, refs) {
-  const live = (refs || []).filter((r) => r && r.text);
+  const paraRefs = (refs || []).filter((r) => r && Number.isInteger(r.para));
+  if (paraRefs.some((r) => r.text == null)) {
+    return <mark className="ref-mark">{mathRich(text)}</mark>;
+  }
+  const live = paraRefs.filter((r) => typeof r.text === "string" && r.text.length > 0);
   if (live.length === 0) return mathRich(text);
   const hits = [];
   live.forEach((r) => {
