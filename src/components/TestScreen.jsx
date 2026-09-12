@@ -25,47 +25,76 @@ function findQuote(text, quote, from) {
   return null;
 }
 
-/* Split a plain-text paragraph on the active question's refs.
+/* Split a plain-text paragraph on the active question's refs plus the user's
+   own highlights, painted in a single boundary sweep so overlaps blend.
    {para, text}      → highlight the exact quote (or best matching word-run)
    {para} (no text)  → highlight the whole paragraph
-   {para, text: ""}  → tolerated, no highlight (avoids highlighting wrong words) */
-function renderParaText(text, refs) {
+   {para, text: ""}  → tolerated, no highlight (avoids highlighting wrong words)
+   userHits: [{s, e}] resolved offsets → mint user-mark (tap to remove);
+   segments carrying both become ref-mark user-mark. */
+function renderParaText(text, refs, userHits, onUnmark) {
+  const full = String(text);
   const paraRefs = (refs || []).filter((r) => r && Number.isInteger(r.para));
+  const refHits = [];
   if (paraRefs.some((r) => r.text == null)) {
-    return <mark className="ref-mark">{mathRich(text)}</mark>;
+    refHits.push([0, full.length]);
+  } else {
+    const live = paraRefs.filter((r) => typeof r.text === "string" && r.text.length > 0);
+    live.forEach((r) => {
+      let from = 0;
+      for (;;) {
+        const hit = findQuote(full, r.text, from);
+        if (!hit) break;
+        refHits.push(hit);
+        from = hit[1];
+      }
+    });
   }
-  const live = paraRefs.filter((r) => typeof r.text === "string" && r.text.length > 0);
-  if (live.length === 0) return mathRich(text);
-  const hits = [];
-  live.forEach((r) => {
-    let from = 0;
-    for (;;) {
-      const hit = findQuote(text, r.text, from);
-      if (!hit) break;
-      hits.push(hit);
-      from = hit[1];
-    }
+  const uh = (userHits || [])
+    .filter((h) => h && Number.isFinite(h.s) && Number.isFinite(h.e) && h.e > h.s)
+    .map((h) => [Math.max(0, h.s), Math.min(full.length, h.e)])
+    .filter(([s, e]) => e > s);
+  if (refHits.length === 0 && uh.length === 0) return mathRich(text);
+  const bounds = new Set([0, full.length]);
+  refHits.forEach(([s, e]) => {
+    bounds.add(Math.max(0, s));
+    bounds.add(Math.min(full.length, e));
   });
-  if (hits.length === 0) return mathRich(text);
-  hits.sort((a, b) => a[0] - b[0]);
-  const merged = [];
-  hits.forEach(([s, e]) => {
-    const last = merged[merged.length - 1];
-    if (last && s <= last[1]) last[1] = Math.max(last[1], e);
-    else merged.push([s, e]);
+  uh.forEach(([s, e]) => {
+    bounds.add(s);
+    bounds.add(e);
   });
+  const pts = [...bounds].sort((a, b) => a - b);
+  const covers = (segs, a, b) => segs.some(([s, e]) => s < b && e > a);
   const out = [];
-  let pos = 0;
-  merged.forEach(([s, e], i) => {
-    if (s > pos) out.push(<span key={`t${i}`}>{mathRich(String(text).slice(pos, s))}</span>);
-    out.push(
-      <mark key={`m${i}`} className="ref-mark">
-        {mathRich(String(text).slice(s, e))}
-      </mark>
-    );
-    pos = e;
-  });
-  if (pos < String(text).length) out.push(<span key="tail">{mathRich(String(text).slice(pos))}</span>);
+  for (let k = 0; k + 1 < pts.length; k++) {
+    const a = pts[k];
+    const b = pts[k + 1];
+    if (b <= a) continue;
+    const isRef = covers(refHits, a, b);
+    const isUser = covers(uh, a, b);
+    const slice = full.slice(a, b);
+    if (isUser) {
+      out.push(
+        <mark
+          key={`u${a}-${b}`}
+          className={isRef ? "ref-mark user-mark" : "user-mark"}
+          onClick={() => onUnmark && onUnmark(a, b)}
+          title="Tap to remove this highlight"
+        >
+          {mathRich(slice)}
+        </mark>
+      );
+    } else if (isRef) {
+      out.push(
+        <mark key={`m${a}-${b}`} className="ref-mark">
+          {mathRich(slice)}
+        </mark>
+      );
+    } else {
+      out.push(<span key={`t${a}`}>{mathRich(slice)}</span>);
+    }
+  }
   return out;
 }
 const FILTERS = ["All", "Marked", "Unanswered", "Answered"];
@@ -240,7 +269,36 @@ function DesmosCalc({ mode, apiRef, initialState, onSnapshot }) {
   );
 }
 
-function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag, letters }) {
+function dropSelection() {
+  if (typeof window === "undefined") return;
+  const sel = window.getSelection();
+  if (sel) sel.removeAllRanges();
+}
+
+function ElimIcon({ off }) {
+  if (off) {
+    return (
+      <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true">
+        <path
+          d="M2.5 7.5h6.5M8.2 4.3l3.2 3.2-3.2 3.2"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true">
+      <circle cx="7.5" cy="7.5" r="5.6" fill="none" stroke="currentColor" strokeWidth="1.9" />
+      <line x1="3.9" y1="11.1" x2="11.1" y2="3.9" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag, letters, elimActive, elimSet, onToggleElim }) {
   const L = letters && letters.length === 4 ? letters : LETTERS;
   return (
     <>
@@ -260,23 +318,43 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
       {paused && (
         <p className="paused-note">Paused — answer choices are locked. Tap play to resume.</p>
       )}
-      <div className={paused ? "q-options locked" : "q-options"}>
+      <div className={paused ? "q-options locked" : elimActive ? "q-options elim-mode" : "q-options"}>
           {q.options.map((opt, i) => {
             const letter = L[i];
+          const eliminated = elimSet ? elimSet.includes(letter) : false;
           const cls = ["q-option"];
           if (picked === letter) cls.push("selected");
+          if (eliminated) cls.push("eliminated");
           if (showAnswers && letter === q.answer) cls.push("correct");
           if (showAnswers && picked === letter && letter !== q.answer) cls.push("wrong");
           return (
-            <button
-              key={letter}
-              type="button"
-              className={cls.join(" ")}
-              onClick={() => onPick(letter)}
-            >
-              <span className="q-letter">{letter}</span>
-              <span className="q-text">{optText(opt)}</span>
-            </button>
+            <div key={letter} className="q-option-row">
+              <button
+                type="button"
+                className={cls.join(" ")}
+                onClick={() => onPick(letter)}
+              >
+                <span className="q-letter">{letter}</span>
+                <span className="q-text">{optText(opt)}</span>
+              </button>
+              {elimActive && (
+                <button
+                  key={eliminated ? "restore" : "elim"}
+                  type="button"
+                  className={eliminated ? "elim-btn is-off" : "elim-btn"}
+                  style={{ animationDelay: `${i * 45}ms` }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleElim(letter);
+                  }}
+                  title={eliminated ? `Restore option ${letter}` : `Eliminate option ${letter}`}
+                  aria-label={eliminated ? `Restore option ${letter}` : `Eliminate option ${letter}`}
+                  aria-pressed={eliminated}
+                >
+                  <ElimIcon off={eliminated} />
+                </button>
+              )}
+            </div>
           );
         })}
       </div>
@@ -329,6 +407,14 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [calcMode, setCalcMode] = useState("graph");
   const [calcFull, setCalcFull] = useState(false);
   const [calcW, setCalcW] = useState(440);
+  const [elimOn, setElimOn] = useState(false);
+  const [elims, setElims] = useState({});
+  const [marks, setMarks] = useState({});
+  const [hlPop, setHlPop] = useState(null);
+  const passageWrapRef = useRef(null);
+  const paraRefs = useRef(new Map());
+  const pendingHl = useRef(null);
+  const marksRef = useRef({});
 
   const togglePause = () => {
     setPaused((p) => {
@@ -365,6 +451,88 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     const mathTest = /^MATH-/i.test(test.id) || ((testData && testData.section) || "").toLowerCase() === "math";
     if (mathTest) preloadDesmos();
   }, []);
+
+  useEffect(() => {
+    marksRef.current = marks;
+  }, [marks]);
+
+  useEffect(() => {
+    const hide = () => setHlPop((p) => (p ? null : p));
+    const onSel = () => {
+      const wrap = passageWrapRef.current;
+      const sel = typeof window !== "undefined" ? window.getSelection() : null;
+      if (!wrap || !sel || sel.isCollapsed || sel.rangeCount === 0) {
+        hide();
+        return;
+      }
+      let range = null;
+      try {
+        range = sel.getRangeAt(0);
+      } catch {
+        hide();
+        return;
+      }
+      if (!wrap.contains(range.commonAncestorContainer)) {
+        hide();
+        return;
+      }
+      const paraOf = (node) => {
+        const el = node.nodeType === 1 ? node : node.parentElement;
+        return el && el.closest ? el.closest("[data-para]") : null;
+      };
+      const startP = paraOf(range.startContainer);
+      const endP = paraOf(range.endContainer);
+      if (!startP || startP !== endP) {
+        hide();
+        return;
+      }
+      const text = range.toString();
+      if (!text || text.trim().length < 2) {
+        hide();
+        return;
+      }
+      let rect = null;
+      try {
+        rect = range.getBoundingClientRect();
+      } catch {
+        hide();
+        return;
+      }
+      if (!rect || (rect.width === 0 && rect.height === 0)) {
+        hide();
+        return;
+      }
+      pendingHl.current = { para: Number(startP.dataset.para), text };
+      const vw = window.innerWidth || 400;
+      setHlPop({
+        x: Math.min(Math.max(rect.left + rect.width / 2, 76), vw - 76),
+        y: Math.max(rect.top, 64),
+      });
+    };
+    document.addEventListener("selectionchange", onSel);
+    window.addEventListener("scroll", hide, { capture: true, passive: true });
+    return () => {
+      document.removeEventListener("selectionchange", onSel);
+      window.removeEventListener("scroll", hide, { capture: true });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (((testData && testData.section) || "").toLowerCase() !== "reading") return;
+    const cur = questions[Math.min(qIndex, total - 1)];
+    if (!cur) return;
+    const list = marksRef.current[cur.p] || [];
+    if (list.length === 0) return;
+    const target = list.reduce((m, h) => Math.min(m, h.para), Infinity);
+    const el = paraRefs.current.get(`${cur.p}-${target}`);
+    if (el) {
+      try {
+        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } catch {
+        el.scrollIntoView();
+      }
+    }
+  }, [qIndex]);
 
   useEffect(() => {
     /* Leaving a question: bank the time spent on it into its pace. */
@@ -431,6 +599,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const qLetters = lettersFor(activeQ.n, testData.section);
   const picked = picks[activeQ.n] || null;
   const flagged = !!flags[activeQ.n];
+  const marksHere = marks[passage.id] || [];
+  const passageMarkCount = marksHere.length;
   const showAnswers = review;
   const answeredCount = questions.filter((q) => picks[q.n]).length;
   const answeredFrac = total ? answeredCount / total : 0;
@@ -443,7 +613,75 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const pick = (letter) => {
     if (review || paused) return;
     const n = activeQ.n;
-    setPicks((p) => ({ ...p, [n]: letter }));
+    setPicks((p) => {
+      if (p[n] === letter) {
+        const next = { ...p };
+        delete next[n];
+        return next;
+      }
+      return { ...p, [n]: letter };
+    });
+    setElims((m) => {
+      const cur = m[n] || [];
+      if (!cur.includes(letter)) return m;
+      return { ...m, [n]: cur.filter((l) => l !== letter) };
+    });
+  };
+
+  const toggleElim = (letter) => {
+    if (review || paused) return;
+    const n = activeQ.n;
+    setElims((m) => {
+      const cur = m[n] || [];
+      return {
+        ...m,
+        [n]: cur.includes(letter) ? cur.filter((l) => l !== letter) : [...cur, letter],
+      };
+    });
+  };
+
+  const elimActive = elimOn && !review && !paused;
+  const elimSet = elims[activeQ.n] || [];
+
+  const addHighlight = () => {
+    const pend = pendingHl.current;
+    setHlPop(null);
+    pendingHl.current = null;
+    if (!pend || !passage) return;
+    const paraText = passage.paras[pend.para];
+    if (typeof paraText !== "string") return;
+    const list = marksRef.current[passage.id] || [];
+    if (list.length >= 40) return;
+    const hit = findQuote(paraText, pend.text, 0);
+    if (!hit) return;
+    if (list.some((h) => h.para === pend.para && h.s === hit[0] && h.e === hit[1])) {
+      dropSelection();
+      return;
+    }
+    const entry = { para: pend.para, text: pend.text, s: hit[0], e: hit[1] };
+    marksRef.current = { ...marksRef.current, [passage.id]: [...list, entry] };
+    setMarks(marksRef.current);
+    dropSelection();
+  };
+
+  const unmarkRange = (para, a, b) => {
+    if (!passage) return;
+    setMarks((m) => {
+      const list = m[passage.id] || [];
+      const next = list.filter((h) => !(h.para === para && h.s < b && h.e > a));
+      if (next.length === list.length) return m;
+      marksRef.current = { ...m, [passage.id]: next };
+      return marksRef.current;
+    });
+  };
+
+  const clearPassageMarks = () => {
+    if (!passage) return;
+    setMarks((m) => {
+      if (!(m[passage.id] || []).length) return m;
+      marksRef.current = { ...m, [passage.id]: [] };
+      return marksRef.current;
+    });
   };
 
   const toggleFlag = () => {
@@ -514,6 +752,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     activeQ.options.forEach((opt, i) => {
       lines.push(`${qLetters[i]}. ${clean(opt)}`);
     });
+    const elimHere = elims[activeQ.n] || [];
+    if (elimHere.length > 0) lines.push(`Eliminated: ${elimHere.join(", ")}`);
     try {
       const api = calcApiRef.current;
       const st = api && api.getState ? api.getState() : null;
@@ -824,14 +1064,35 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           <>
         <article className="passage">
           {!merged && <h1 className="passage-title">{passage.title}</h1>}
-          <div className="passage-text">
-            {passage.paras.map((pa, i) => (
-              <p key={`${passage.id}-${i}`}>
-                {typeof pa === "string"
-                  ? renderParaText(pa, (activeQ.refs || []).filter((r) => r.para === i))
-                  : renderSpans(pa, activeQ, testData.figures)}
-              </p>
-            ))}
+          {passageMarkCount > 0 && (
+            <div className="hl-bar">
+              <button type="button" className="hl-clear" onClick={clearPassageMarks}>
+                Clear highlights · {passageMarkCount}
+              </button>
+            </div>
+          )}
+          <div className="passage-text" ref={passageWrapRef}>
+            {passage.paras.map((pa, i) =>
+              typeof pa === "string" ? (
+                <p
+                  key={`${passage.id}-${i}`}
+                  data-para={i}
+                  ref={(el) => {
+                    if (el) paraRefs.current.set(`${passage.id}-${i}`, el);
+                    else paraRefs.current.delete(`${passage.id}-${i}`);
+                  }}
+                >
+                  {renderParaText(
+                    pa,
+                    (activeQ.refs || []).filter((r) => r.para === i),
+                    marksHere.filter((h) => h.para === i),
+                    (a, b) => unmarkRange(i, a, b)
+                  )}
+                </p>
+              ) : (
+                <p key={`${passage.id}-${i}`}>{renderSpans(pa, activeQ, testData.figures)}</p>
+              )
+            )}
           </div>
           {merged && (
             <>
@@ -846,6 +1107,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 letters={qLetters}
                 onPick={pick}
                 onToggleFlag={toggleFlag}
+                elimActive={elimActive}
+                elimSet={elimSet}
+                onToggleElim={toggleElim}
               />
             </>
           )}
@@ -864,6 +1128,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               letters={qLetters}
               onPick={pick}
               onToggleFlag={toggleFlag}
+              elimActive={elimActive}
+              elimSet={elimSet}
+              onToggleElim={toggleElim}
             />
           </section>
 
@@ -1070,8 +1337,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 RESULT
               </button>
             </>
-          ) : !onIntro && qIndex === total - 1 ? (
-            <button
+          ) : !onIntro && qIndex === total - 1 ? (            <button
               className="nav-btn primary"
               type="button"
               onClick={handleFinish}
@@ -1098,11 +1364,52 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   NEXT
                 </button>
               )}
+          {!review && (
+            <button
+              className={elimOn ? "elim-toggle on" : "elim-toggle"}
+              type="button"
+              onClick={() => setElimOn((v) => !v)}
+              title={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
+              aria-label={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
+              aria-pressed={elimOn}
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <line x1="2.5" y1="5" x2="10" y2="5" />
+                  <line x1="2.5" y1="9" x2="10" y2="9" />
+                  <line x1="2.5" y1="13" x2="7.5" y2="13" />
+                </g>
+                <line
+                  x1="4"
+                  y1="15.5"
+                  x2="15"
+                  y2="3"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
-      {overviewOpen && (
-        <div className="overview-overlay" onClick={() => setOverviewOpen(false)}>
+      {hlPop && (
+        <button
+          type="button"
+          className="hl-pop"
+          style={{ left: hlPop.x, top: hlPop.y }}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={addHighlight}
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+            <path d="M9.7 1.3l3 3L5.2 11.8l-3.7.7.7-3.7z" fill="currentColor" />
+          </svg>
+          <span>Highlight</span>
+        </button>
+      )}
+
+      {overviewOpen && (        <div className="overview-overlay" onClick={() => setOverviewOpen(false)}>
           <aside
             className="overview-drawer"
             aria-label="Test overview"
