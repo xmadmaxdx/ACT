@@ -474,17 +474,19 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       lines.push(
         passage.paras
           .map((pa) =>
-            pa
-              .map((s) => (s.box !== undefined ? ` [${s.box}]` : clean(s.t)))
-              .join("")
-              .replace(/\s+/g, " ")
-              .trim()
+            typeof pa === "string"
+              ? clean(pa)
+              : pa
+                  .map((s) => (s.box !== undefined ? ` [${s.box}]` : clean(s.t)))
+                  .join("")
+                  .replace(/\s+/g, " ")
+                  .trim()
           )
           .join("\n")
       );
     }
     activeQ.options.forEach((opt, i) => {
-      lines.push(`${LETTERS[i]}. ${clean(opt)}`);
+      lines.push(`${qLetters[i]}. ${clean(opt)}`);
     });
     try {
       const api = calcApiRef.current;
@@ -797,8 +799,12 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         <article className="passage">
           {!merged && <h1 className="passage-title">{passage.title}</h1>}
           <div className="passage-text">
-            {passage.paras.map((spans, i) => (
-              <p key={`${passage.id}-${i}`}>{renderSpans(spans, activeQ, testData.figures)}</p>
+            {passage.paras.map((pa, i) => (
+              <p key={`${passage.id}-${i}`}>
+                {typeof pa === "string"
+                  ? renderParaText(pa, (activeQ.refs || []).filter((r) => r.para === i))
+                  : renderSpans(pa, activeQ, testData.figures)}
+              </p>
             ))}
           </div>
           {merged && (
@@ -811,6 +817,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 paused={paused}
                 flagged={flagged}
                 serifStem
+                letters={qLetters}
                 onPick={pick}
                 onToggleFlag={toggleFlag}
               />
@@ -828,6 +835,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               paused={paused}
               flagged={flagged}
               serifStem={false}
+              letters={qLetters}
               onPick={pick}
               onToggleFlag={toggleFlag}
             />

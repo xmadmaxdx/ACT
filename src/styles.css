@@ -1164,6 +1164,64 @@ button {
   margin-bottom: 22px;
 }
 
+.tab.small {
+  font-size: 12px;
+  padding: 8px 14px;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.jsonstart-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+.jsonstart-input {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  background: #fbfdff;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 180px;
+  margin-bottom: 14px;
+}
+
+.jsonstart-input:focus {
+  outline: none;
+  border-color: var(--blue-light-border);
+}
+
+.jsonstart-error {
+  color: #d33131;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.jsonstart .btn-primary {
+  width: 100%;
+}
+
+.ref-mark {
+  background: linear-gradient(180deg, rgba(255, 228, 94, 0) 6%, #ffe45e 6%, #ffe45e 94%, rgba(255, 228, 94, 0) 94%);
+  border-radius: 3px;
+  padding: 1px 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 .mode-option {
   display: flex;
   align-items: center;

@@ -30,7 +30,7 @@ function ScoreRing({ value }) {
   );
 }
 
-export default function Results({ session, testData, onGo, onRetake, onExit }) {
+export default function Results({ session, testData, onGo, onRetake, onExit, showAdd, showCombo, onAddSection, onShowCombo }) {
   const { picks, paces } = session;
   const qs = testData.questions;
   const correct = qs.filter((q) => picks[q.n] === q.answer).length;
@@ -110,6 +110,16 @@ export default function Results({ session, testData, onGo, onRetake, onExit }) {
           <button className="btn-primary" type="button" onClick={onRetake}>
             RETAKE TEST
           </button>
+          {showAdd && (
+            <button className="btn-primary" type="button" onClick={onAddSection}>
+              ADD SECTION
+            </button>
+          )}
+          {showCombo && (
+            <button className="btn-primary" type="button" onClick={onShowCombo}>
+              VIEW COMBO
+            </button>
+          )}
           <button className="action-card slim" type="button" onClick={onExit}>
             Back to practice
           </button>

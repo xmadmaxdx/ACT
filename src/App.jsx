@@ -9,6 +9,8 @@ import Chapters from "./components/Chapters.jsx";
 import TestInfo from "./components/TestInfo.jsx";
 import TestScreen from "./components/TestScreen.jsx";
 import Results from "./components/Results.jsx";
+import ComboResults from "./components/ComboResults.jsx";
+import JsonStart from "./components/JsonStart.jsx";
 import Loader, { LoaderError } from "./components/Loader.jsx";
 import { fetchCatalog, fetchMinis } from "./supabase.js";
 import "./styles.css";
@@ -32,6 +34,7 @@ function routeFromPath(path) {
   if (path === "/practice") return "practice";
   if (path === "/test-info") return "info";
   if (path === "/chapters") return "chapters";
+  if (path === "/combo") return "combo";
   if (path.startsWith("/practice-test-")) return "test";
   return "home";
 }
@@ -55,10 +58,17 @@ export default function App() {
   const [loadError, setLoadError] = useState(null);
   const [customTestData, setCustomTestData] = useState(null);
   const [infoCourseOpen, setInfoCourseOpen] = useState(false);
+  const [combo, setCombo] = useState([]);
+  const [jsonOpen, setJsonOpen] = useState(false);
+  const [jsonSection, setJsonSection] = useState("reading");
   const sessionRef = useRef(null);
   sessionRef.current = session;
   const customRef = useRef(null);
   customRef.current = customTestData;
+  const catalogRef = useRef(null);
+  catalogRef.current = catalog;
+  const comboRef = useRef([]);
+  comboRef.current = combo;
 
   useEffect(() => {
     let live = true;
@@ -159,6 +169,28 @@ export default function App() {
         sessionRef.current = next;
         return next;
       });
+      const s = sessionRef.current;
+      const custom = customRef.current;
+      const t =
+        custom && custom.id === s.skill.id
+          ? custom
+          : (catalogRef.current || []).find((x) => x.id === s.skill.id);
+      if (t) {
+        const snap = { ...s, ...data };
+        setCombo((c) => {
+          const rest = c.filter((r) => r.skill.id !== s.skill.id);
+          return [
+            ...rest,
+            {
+              skill: s.skill,
+              mode: s.mode,
+              session: snap,
+              testData: t,
+              isCustom: !!(custom && custom.id === s.skill.id),
+            },
+          ];
+        });
+      }
       window.history.pushState({}, "", `${slugFor(sessionRef.current.skill)}/results`);
       setRoute("results");
       window.scrollTo(0, 0);
@@ -166,6 +198,40 @@ export default function App() {
     []
   );
 
+  const onGoCombo = useCallback(
+    (runIdx, n) => {
+      const run = comboRef.current[runIdx];
+      if (!run) return;
+      if (run.isCustom) {
+        setCustomTestData(run.testData);
+        customRef.current = run.testData;
+      } else {
+        setCustomTestData(null);
+        customRef.current = null;
+      }
+      setSession(run.session);
+      sessionRef.current = run.session;
+      goReview(n);
+    },
+    [goReview]
+  );
+
+  const onRetakeRun = useCallback(
+    (runIdx) => {
+      const run = comboRef.current[runIdx];
+      if (!run) return;
+      if (run.isCustom) startLessonTest(run.testData, run.mode);
+      else startTest(run.skill, run.mode);
+    },
+    [goReview]
+  );
+
+  const missingSection = () => {
+    const secs = comboRef.current.map((r) => (r.testData.section || "").toLowerCase());
+    if (secs.includes("english") && !secs.includes("reading")) return "reading";
+    if (secs.includes("reading") && !secs.includes("english")) return "english";
+    return "reading";
+  };
   const goReview = useCallback(
     (n) => {
       const s = sessionRef.current;
@@ -236,15 +302,77 @@ export default function App() {
       navigate("practice");
       return null;
     }
+    const isCustom = !!(customTestData && customTestData.id === session.skill.id);
     return (
-      <Results
-        session={session}
-        testData={testData}
-        onGo={goReview}
-        onRetake={() => startTest(session.skill, session.mode)}
-        onExit={() => navigate("practice")}
-      />
+      <>
+        <Results
+          session={session}
+          testData={testData}
+          onGo={goReview}
+          onRetake={() =>
+            isCustom
+              ? startLessonTest(customTestData, session.mode)
+              : startTest(session.skill, session.mode)
+          }
+          onExit={() => navigate("practice")}
+          showAdd={combo.length < 2}
+          showCombo={combo.length >= 2}
+          onAddSection={() => {
+            setJsonSection(missingSection());
+            setJsonOpen(true);
+          }}
+          onShowCombo={() => {
+            window.history.pushState({}, "", "/combo");
+            setRoute("combo");
+            window.scrollTo(0, 0);
+          }}
+        />
+        {jsonOpen && (
+          <JsonStart
+            variant="modal"
+            defaultSection={jsonSection}
+            onStart={(t, m) => {
+              setJsonOpen(false);
+              startLessonTest(t, m);
+            }}
+            onClose={() => setJsonOpen(false)}
+          />
+        )}
+      </>
     );
+  }
+
+  if (route === "combo" && combo.length > 0) {
+    return (
+      <>
+        <ComboResults
+          runs={combo}
+          onGo={onGoCombo}
+          onRetakeRun={onRetakeRun}
+          onExit={() => navigate("home")}
+          onAddSection={() => {
+            setJsonSection(missingSection());
+            setJsonOpen(true);
+          }}
+        />
+        {jsonOpen && (
+          <JsonStart
+            variant="modal"
+            defaultSection={jsonSection}
+            onStart={(t, m) => {
+              setJsonOpen(false);
+              startLessonTest(t, m);
+            }}
+            onClose={() => setJsonOpen(false)}
+          />
+        )}
+      </>
+    );
+  }
+
+  if (route === "combo") {
+    navigate("home");
+    return null;
   }
 
   return (
@@ -269,6 +397,7 @@ export default function App() {
               <Hero />
               <hr className="divider" />
               <ActionCards onPractice={() => navigate("practice")} />
+              <JsonStart variant="page" onStart={(t, m) => startLessonTest(t, m)} />
             </>
           )}
         </main>

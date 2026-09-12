@@ -1,12 +1,12 @@
 import { englishScaled, composite, formatPace } from "../scoring.js";
 
 function MiniRing({ value }) {
-  const r = 40;
+  const r = 54;
   const c = 2 * Math.PI * r;
   const frac = Math.min(1, Math.max(0, value / 36));
   return (
-    <div className="score-ring small">
-      <svg width="110" height="110" viewBox="0 0 150 150" aria-hidden="true">
+    <div className="score-ring">
+      <svg width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
         <circle cx="75" cy="75" r={r} fill="none" stroke="#e5e5e5" strokeWidth="13" />
         <circle
           cx="75"
