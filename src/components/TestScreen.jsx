@@ -692,12 +692,21 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     if (hits.length === 0) return;
     const target = Math.min(...hits);
     const el = paraRefs.current.get(`${cur.p}-${target}`);
-    if (el) {
-      try {
-        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      } catch {
-        el.scrollIntoView();
-      }
+    if (!el) return;
+    try {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || 800;
+      if (rect.top >= 96 && rect.bottom <= vh - 40) return;
+      const reduce =
+        typeof window !== "undefined" &&
+        !!window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({
+        top: Math.max(0, rect.top + window.scrollY - 96),
+        behavior: reduce ? "auto" : "smooth",
+      });
+    } catch {
+      el.scrollIntoView();
     }
   }, [qIndex]);
 
