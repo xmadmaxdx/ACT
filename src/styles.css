@@ -1594,6 +1594,8 @@ button {
 .ptime-wrap {
   position: relative;
   flex-shrink: 0;
+  padding-bottom: 12px;
+  margin-bottom: -12px;
 }
 
 .ptime-catcher {
@@ -1605,7 +1607,7 @@ button {
 
 .ptime-card {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% - 2px);
   right: 0;
   z-index: 60;
   width: min(296px, 86vw);

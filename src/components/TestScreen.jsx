@@ -475,6 +475,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const pendingHl = useRef(null);
   const marksRef = useRef({});
   const ptimersRef = useRef({});
+  const ptimeCloseT = useRef(null);
 
   const togglePause = () => {
     setPaused((p) => {
@@ -515,6 +516,26 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   useEffect(() => {
     marksRef.current = marks;
   }, [marks]);
+
+  useEffect(() => () => {
+    if (ptimeCloseT.current) clearTimeout(ptimeCloseT.current);
+  }, []);
+
+  const openPtime = () => {
+    if (ptimeCloseT.current) {
+      clearTimeout(ptimeCloseT.current);
+      ptimeCloseT.current = null;
+    }
+    setPtimeOpen(true);
+  };
+
+  const schedulePtimeClose = () => {
+    if (ptimeCloseT.current) clearTimeout(ptimeCloseT.current);
+    ptimeCloseT.current = setTimeout(() => {
+      setPtimeOpen(false);
+      ptimeCloseT.current = null;
+    }, 220);
+  };
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -1137,8 +1158,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           {isReading && (
             <div
               className="ptime-wrap"
-              onMouseEnter={hoverCap ? () => setPtimeOpen(true) : undefined}
-              onMouseLeave={hoverCap ? () => setPtimeOpen(false) : undefined}
+              onMouseEnter={hoverCap ? openPtime : undefined}
+              onMouseLeave={hoverCap ? schedulePtimeClose : undefined}
             >
               <button
                 className={ptimeOpen ? "ptime-btn on" : "ptime-btn"}
