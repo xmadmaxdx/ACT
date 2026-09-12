@@ -1,8 +1,47 @@
 import { useEffect, useRef, useState } from "react";
 import MathText, { mathRich } from "./MathText.jsx";
 import FreestyleBoard from "./FreestyleBoard.jsx";
+import { lettersFor } from "../scoring.js";
 
 const LETTERS = ["A", "B", "C", "D"];
+
+/* Split a plain-text paragraph on the active question's exact-quote refs,
+   wrapping each match in a <mark>. Refs that don't match are ignored. */
+function renderParaText(text, refs) {
+  const live = (refs || []).filter((r) => r && r.text);
+  if (live.length === 0) return mathRich(text);
+  const hits = [];
+  live.forEach((r) => {
+    let from = 0;
+    for (;;) {
+      const at = String(text).indexOf(r.text, from);
+      if (at < 0) break;
+      hits.push([at, at + r.text.length]);
+      from = at + r.text.length;
+    }
+  });
+  if (hits.length === 0) return mathRich(text);
+  hits.sort((a, b) => a[0] - b[0]);
+  const merged = [];
+  hits.forEach(([s, e]) => {
+    const last = merged[merged.length - 1];
+    if (last && s <= last[1]) last[1] = Math.max(last[1], e);
+    else merged.push([s, e]);
+  });
+  const out = [];
+  let pos = 0;
+  merged.forEach(([s, e], i) => {
+    if (s > pos) out.push(<span key={`t${i}`}>{mathRich(String(text).slice(pos, s))}</span>);
+    out.push(
+      <mark key={`m${i}`} className="ref-mark">
+        {mathRich(String(text).slice(s, e))}
+      </mark>
+    );
+    pos = e;
+  });
+  if (pos < String(text).length) out.push(<span key="tail">{mathRich(String(text).slice(pos))}</span>);
+  return out;
+}
 const FILTERS = ["All", "Marked", "Unanswered", "Answered"];
 const STATUS_LABEL = { marked: "Marked", answered: "Answered", unanswered: "Unanswered" };
 
@@ -175,7 +214,8 @@ function DesmosCalc({ mode, apiRef, initialState, onSnapshot }) {
   );
 }
 
-function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag }) {
+function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag, letters }) {
+  const L = letters && letters.length === 4 ? letters : LETTERS;
   return (
     <>
       <div className="q-head">
@@ -195,8 +235,8 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
         <p className="paused-note">Paused — answer choices are locked. Tap play to resume.</p>
       )}
       <div className={paused ? "q-options locked" : "q-options"}>
-        {q.options.map((opt, i) => {
-          const letter = LETTERS[i];
+          {q.options.map((opt, i) => {
+            const letter = L[i];
           const cls = ["q-option"];
           if (picked === letter) cls.push("selected");
           if (showAnswers && letter === q.answer) cls.push("correct");
@@ -362,6 +402,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
   const activeQ = questions[Math.min(qIndex, total - 1)];
   const passage = testData.passages.find((p) => p.id === activeQ.p);
+  const qLetters = lettersFor(activeQ.n, testData.section);
   const picked = picks[activeQ.n] || null;
   const flagged = !!flags[activeQ.n];
   const showAnswers = review;

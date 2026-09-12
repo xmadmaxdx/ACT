@@ -20,3 +20,12 @@ export function formatPace(sec) {
   const s = sec % 60;
   return `${m}:${String(s).padStart(2, "0")}`;
 }
+
+/* Option letters. Reading sections alternate A–D / F–J per question
+   (odd n → A–D, even n → F–J); everything else uses A–D. */
+export function lettersFor(n, section) {
+  if ((section || "").toLowerCase() === "reading" && n % 2 === 0) {
+    return ["F", "G", "H", "J"];
+  }
+  return ["A", "B", "C", "D"];
+}
