@@ -198,6 +198,22 @@ export default function App() {
     []
   );
 
+  const goReview = useCallback(
+    (n) => {
+      const s = sessionRef.current;
+      if (!s) return;
+      const custom = customRef.current;
+      const t =
+        custom && custom.id === s.skill.id ? custom : findTest(s.skill.id);
+      const idx = t ? t.questions.findIndex((q) => q.n === n) : -1;
+      setReviewIndex(idx >= 0 ? idx : 0);
+      window.history.pushState({}, "", slugFor(s.skill));
+      setRoute("test");
+      window.scrollTo(0, 0);
+    },
+    [findTest]
+  );
+
   const onGoCombo = useCallback(
     (runIdx, n) => {
       const run = comboRef.current[runIdx];
@@ -232,21 +248,6 @@ export default function App() {
     if (secs.includes("reading") && !secs.includes("english")) return "english";
     return "reading";
   };
-  const goReview = useCallback(
-    (n) => {
-      const s = sessionRef.current;
-      if (!s) return;
-      const custom = customRef.current;
-      const t =
-        custom && custom.id === s.skill.id ? custom : findTest(s.skill.id);
-      const idx = t ? t.questions.findIndex((q) => q.n === n) : -1;
-      setReviewIndex(idx >= 0 ? idx : 0);
-      window.history.pushState({}, "", slugFor(s.skill));
-      setRoute("test");
-      window.scrollTo(0, 0);
-    },
-    [findTest]
-  );
 
   useEffect(() => {
     const onPop = () => {
