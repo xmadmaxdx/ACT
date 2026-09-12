@@ -149,9 +149,6 @@ function normalize(section, raw) {
         throw new Error(`Q${n} ref ${j}: bad para index.`);
       }
       if (typeof r.text !== "string" || r.text.length === 0) return;
-      if (isReading && typeof src.paras[r.para] === "string" && !src.paras[r.para].includes(r.text)) {
-        throw new Error(`Q${n} ref ${j}: quote not found in para ${r.para}.`);
-      }
     });
   });
   const total = questions.length;
