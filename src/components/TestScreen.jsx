@@ -25,7 +25,49 @@ function findQuote(text, quote, from) {
   return null;
 }
 
-/* Split a plain-text paragraph on the active question's refs plus the user's
+const ORDINAL = {
+  first: 1, second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6,
+  seventh: 7, eighth: 8, ninth: 9, tenth: 10, eleventh: 11, twelfth: 12,
+  thirteenth: 13, fourteenth: 14, fifteenth: 15, sixteenth: 16,
+  seventeenth: 17, eighteenth: 18, nineteenth: 19, twentieth: 20,
+};
+
+/* Official highlights derived from the question stem itself — no JSON refs.
+   Quoted "words" light up wherever they appear in the passage; ordinal
+   mentions (6th paragraph, sixth paragraph, final/last paragraph) light the
+   whole paragraph. Returns refs-shaped entries for renderParaText. */
+function stemRefs(paras, stem) {
+  const refs = [];
+  if (!stem) return refs;
+  const s = String(stem);
+  const seen = new Set();
+  const qre = /"([^"]+)"|“([^”]+)”/g;
+  let m;
+  while ((m = qre.exec(s)) !== null) {
+    const q = (m[1] || m[2] || "").trim();
+    if (q.length < 2) continue;
+    const key = q.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    paras.forEach((p, i) => {
+      if (typeof p === "string" && findQuote(p, q, 0)) refs.push({ para: i, text: q });
+    });
+  }
+  const whole = new Set();
+  const ore = /\b(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth|thirteenth|fourteenth|fifteenth|sixteenth|seventeenth|eighteenth|nineteenth|twentieth|last|final|\d+(?:st|nd|rd|th))\s+paragraphs?\b/gi;
+  let o;
+  while ((o = ore.exec(s)) !== null) {
+    const word = o[1].toLowerCase();
+    let n = ORDINAL[word];
+    if (word === "last" || word === "final") n = paras.length;
+    else if (n === undefined) n = parseInt(word, 10);
+    if (!Number.isInteger(n) || n < 1 || n > paras.length) continue;
+    if (whole.has(n - 1)) continue;
+    whole.add(n - 1);
+    refs.push({ para: n - 1 });
+  }
+  return refs;
+}
    own highlights, painted in a single boundary sweep so overlaps blend.
    {para, text}      → highlight the exact quote (or best matching word-run)
    {para} (no text)  → highlight the whole paragraph
@@ -279,7 +321,7 @@ const PT_DEFAULT_TOTAL = 600;
 const PT_CIRC = 2 * Math.PI * 54;
 
 function ptBlank() {
-  return { total: PT_DEFAULT_TOTAL, remaining: PT_DEFAULT_TOTAL, running: false };
+  return { total: PT_DEFAULT_TOTAL, remaining: PT_DEFAULT_TOTAL, running: false, started: false };
 }
 
 let audioCtx = null;
@@ -647,13 +689,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     if (((testData && testData.section) || "").toLowerCase() !== "reading") return;
     const cur = questions[Math.min(qIndex, total - 1)];
     if (!cur) return;
-    const refs = cur.refs || [];
-    let target = refs.length > 0 ? refs[0].para : null;
-    if (!Number.isInteger(target)) {
-      const mine = marksRef.current[cur.p] || [];
-      if (mine.length === 0) return;
-      target = mine.reduce((m, h) => Math.min(m, h.para), Infinity);
-    }
+    const pd = (testData.passages || []).find((p) => p.id === cur.p);
+    const paras = pd ? pd.paras : [];
+    const auto = stemRefs(paras, cur.stem).map((r) => r.para);
+    const mine = (marksRef.current[cur.p] || []).map((h) => h.para);
+    const hits = auto.concat(mine);
+    if (hits.length === 0) return;
+    const target = Math.min(...hits);
     const el = paraRefs.current.get(`${cur.p}-${target}`);
     if (el) {
       try {
@@ -836,14 +878,14 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     if (!passage) return;
     ensureAudio();
     const t = ptimersRef.current[passage.id] || ptBlank();
-    if (t.remaining === 0) setPt(passage.id, { remaining: t.total, running: true });
-    else setPt(passage.id, { running: !t.running });
+    if (t.remaining === 0) setPt(passage.id, { remaining: t.total, running: true, started: true });
+    else setPt(passage.id, { running: !t.running, started: true });
   };
 
   const resetPtime = () => {
     if (!passage) return;
     const t = ptimersRef.current[passage.id] || ptBlank();
-    setPt(passage.id, { remaining: t.total, running: false });
+    setPt(passage.id, { remaining: t.total, running: false, started: false });
   };
 
   const togglePtimeMute = () => {
@@ -1207,7 +1249,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                     strokeLinecap="round"
                   />
                 </svg>
-                <span>{formatClock(Math.ceil(ptTop.remaining))}</span>
+                {ptTop.started && <span>{formatClock(Math.ceil(ptTop.remaining))}</span>}
               </button>
               {ptimeOpen && (
                 <>
@@ -1363,7 +1405,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 >
                   {renderParaText(
                     pa,
-                    (activeQ.refs || []).filter((r) => r.para === i),
+                    stemRefs(passage.paras, activeQ.stem).filter((r) => r.para === i),
                     marksHere.filter((h) => h.para === i),
                     (a, b) => unmarkRange(i, a, b)
                   )}
