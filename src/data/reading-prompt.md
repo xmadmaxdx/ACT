@@ -52,7 +52,7 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 - Exactly two allowed shapes — nothing else:
   - `{"para": 0, "text": "exact verbatim quote"}` → highlights the quoted words. Use for vocabulary questions and precise phrase/sentence questions.
   - `{"para": 2}` — NO text key → highlights the ENTIRE paragraph. Use ONLY for questions that explicitly mention a paragraph or line range (the "nth paragraph" style, Content Rule 3).
-- A ref with a text quote must appear VERBATIM (character-for-character, including punctuation) in that paragraph. Never paraphrase quotes.
+- A ref with a text quote must appear VERBATIM (character-for-character, including punctuation) in that paragraph. Never paraphrase quotes. The renderer falls back to the longest matching word-run only as a safety net for small drift — do not rely on it.
 - For "line" style questions, quote the precise phrase (a few words), not the whole paragraph.
 - For vocabulary questions, quote just the target word plus 1–2 surrounding words.
 - The renderer highlights exactly what the shape says: quote-shaped = the words, para-shaped = the whole paragraph, no refs = nothing. Short precise quotes beat long ones.

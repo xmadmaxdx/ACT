@@ -5,8 +5,28 @@ import { lettersFor } from "../scoring.js";
 
 const LETTERS = ["A", "B", "C", "D"];
 
+/* Exact match first; otherwise the longest consecutive word-run of the quote
+   present in the text (case-insensitive). Tolerates AI quote drift without
+   highlighting an unrelated word. */
+function findQuote(text, quote, from) {
+  const full = String(text);
+  const at = full.indexOf(String(quote), from);
+  if (at >= 0) return [at, at + String(quote).length];
+  const words = String(quote).trim().split(/\s+/);
+  if (words.length < 2) return null;
+  const region = full.toLowerCase().slice(from);
+  for (let size = words.length - 1; size >= 2; size--) {
+    for (let start = 0; start + size <= words.length; start++) {
+      const frag = words.slice(start, start + size).join(" ");
+      const i = region.indexOf(frag.toLowerCase());
+      if (i >= 0) return [from + i, from + i + frag.length];
+    }
+  }
+  return null;
+}
+
 /* Split a plain-text paragraph on the active question's refs.
-   {para, text}      → highlight the exact quote
+   {para, text}      → highlight the exact quote (or best matching word-run)
    {para} (no text)  → highlight the whole paragraph
    {para, text: ""}  → tolerated, no highlight (avoids highlighting wrong words) */
 function renderParaText(text, refs) {
@@ -20,10 +40,10 @@ function renderParaText(text, refs) {
   live.forEach((r) => {
     let from = 0;
     for (;;) {
-      const at = String(text).indexOf(r.text, from);
-      if (at < 0) break;
-      hits.push([at, at + r.text.length]);
-      from = at + r.text.length;
+      const hit = findQuote(text, r.text, from);
+      if (!hit) break;
+      hits.push(hit);
+      from = hit[1];
     }
   });
   if (hits.length === 0) return mathRich(text);
