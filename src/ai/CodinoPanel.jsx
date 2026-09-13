@@ -65,7 +65,7 @@ export default function CodinoPanel({ open, defaultPinned, context, onClose }) {
   const explain = useMemo(
     () => (ctx && ctx.q ? buildExplanation({ q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters }) : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [ctx ? ctx.testData.id : null, ctx ? ctx.q.n : null, ctx ? ctx.pickedLetter : null]
+    [ctx?.testData?.id ?? null, ctx?.q?.n ?? null, ctx?.pickedLetter ?? null]
   );
 
   // Adopt a thread for this question (or general) whenever the panel opens.
@@ -74,7 +74,7 @@ export default function CodinoPanel({ open, defaultPinned, context, onClose }) {
     setTab(ctx && ctx.tab ? ctx.tab : "ask");
     setError("");
     setThreads((prev) => {
-      const hit = prev.find((t) => t.testId === (ctx?.testData.id || null) && (t.qn ?? null) === (ctx?.q.n ?? null));
+      const hit = prev.find((t) => t.testId === (ctx?.testData.id || null) && (t.qn ?? null) === (ctx?.q?.n ?? null));
       if (hit) {
         setActiveId(hit.id);
         return prev;
@@ -82,7 +82,7 @@ export default function CodinoPanel({ open, defaultPinned, context, onClose }) {
       const base = ctx?.q
         ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters })
         : generalContext(ctx?.testData.section);
-      const fresh = makeThread({ title: base.title, testId: ctx?.testData.id || null, qn: ctx?.q.n ?? null });
+      const fresh = makeThread({ title: base.title, testId: ctx?.testData.id || null, qn: ctx?.q?.n ?? null });
       const next = [fresh, ...prev];
       persistThreads(next);
       setActiveId(fresh.id);
@@ -235,7 +235,7 @@ export default function CodinoPanel({ open, defaultPinned, context, onClose }) {
     const base = ctx?.q
       ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters })
       : generalContext(ctx?.testData.section);
-    const fresh = makeThread({ title: base.title, testId: ctx?.testData.id || null, qn: ctx?.q.n ?? null });
+    const fresh = makeThread({ title: base.title, testId: ctx?.testData.id || null, qn: ctx?.q?.n ?? null });
     setThreads((prev) => {
       const next = [fresh, ...prev];
       persistThreads(next);
