@@ -25,9 +25,25 @@ export function loadThreads() {
 }
 
 export function persistThreads(threads) {
+  const slim = (list) => (list || []).slice(0, MAX_THREADS);
   try {
-    window.localStorage.setItem(KEY, JSON.stringify((threads || []).slice(0, MAX_THREADS)));
+    window.localStorage.setItem(KEY, JSON.stringify(slim(threads)));
+    return;
   } catch {
-    /* storage full or blocked — chat still works for this session */
+    /* quota hit (image data) — retry without attached images */
+  }
+  try {
+    const stripped = slim(threads).map((t) => ({
+      ...t,
+      messages: (t.messages || []).map((m) => {
+        if (!m.images) return m;
+        const next = { ...m };
+        delete next.images;
+        return next;
+      }),
+    }));
+    window.localStorage.setItem(KEY, JSON.stringify(stripped));
+  } catch {
+    /* storage blocked — chat still works for this session */
   }
 }

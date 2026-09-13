@@ -580,6 +580,24 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [aiOpen, setAiOpen] = useState(false);
   const [aiPinned, setAiPinned] = useState(true);
   const [aiCtx, setAiCtx] = useState(null);
+
+  /* While Codino is open, follow the active question so every chat message
+     carries the current stem, options, pick, answer, explanation + passage. */
+  useEffect(() => {
+    if (!aiOpen || !testData || !testData.questions.length) return;
+    const cur = testData.questions[Math.min(qIndex, testData.questions.length - 1)];
+    if (!cur) return;
+    setAiCtx((prev) => {
+      if (!prev || !prev.q || prev.q.n === cur.n) return prev;
+      return {
+        ...prev,
+        q: cur,
+        pickedLetter: (picks || {})[cur.n] || null,
+        letters: lettersFor(cur.n, testData.section),
+        autoAsk: undefined,
+      };
+    });
+  }, [aiOpen, qIndex, picks, testData]);
   const [ovFilter, setOvFilter] = useState("All");
   const [paused, setPaused] = useState(false);
   const [calcOpen, setCalcOpen] = useState(false);
@@ -901,7 +919,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       q: qq,
       pickedLetter: picks[qq.n] || null,
       letters: lettersFor(qq.n, testData.section),
-      autoAsk: "Explain this step by step",
+      autoAsk: `Explain question ${qq.n} (${qq.tag}) step by step: name the correct choice, apply it to this exact passage, and show why each of the other three choices fails.`,
     });
     setAiPinned(false);
     setAiOpen(true);
@@ -1210,6 +1228,12 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       if (calcFull) return;
       const tag = (e.target && e.target.tagName) || "";
       if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable)) return;
+      if ((e.ctrlKey || e.metaKey || e.shiftKey) && (e.key === "a" || e.key === "A")) {
+        e.preventDefault();
+        if (aiOpen) setAiOpen(false);
+        else openAsk();
+        return;
+      }
       const inIntro = needIntro && !introDoneRef.current;
       if (e.key === "ArrowRight") {
         e.preventDefault();

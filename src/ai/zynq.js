@@ -3,7 +3,43 @@
 // no fallback values. If env is missing, every call throws CodinoNotConfigured
 // and the panel shows its offline state instead of failing silently.
 
-export const CODINO_MODEL = "command-a-plus-05-2026";
+export const CODINO_MODEL = "openai/gpt-oss-120b-g";
+export const VISION_MODEL = "c4ai-aya-vision-32b";
+
+// Ordered fallback pool (provider slug lists). Tried in order after the
+// requested model until one answers or 5 attempts fail.
+const FALLBACK_MODELS = [
+  "gpt-oss-120b-c",
+  "command-a-plus-05-2026",
+  "command-a-plus-cc",
+  "command-a-reasoning-cc",
+  "mistral-large-latest-m",
+  "gemma-4-31b-it-gg",
+  "mistral-small-latest-m",
+  "openai/gpt-oss-20b-g",
+  "qwen-3-32b-c",
+];
+
+const MAX_ATTEMPTS = 5;
+
+function candidatesFor(model, messages) {
+  const hasImages = (messages || []).some(
+    (m) => Array.isArray(m.content) && m.content.some((p) => p && p.type === "image_url")
+  );
+  // Image turns only run on the vision model: text fallbacks would 400.
+  if (hasImages) return [model];
+  const seen = new Set();
+  const out = [];
+  for (const name of [model, ...FALLBACK_MODELS]) {
+    if (!name || seen.has(name)) continue;
+    seen.add(name);
+    out.push(name);
+    if (out.length >= MAX_ATTEMPTS) break;
+  }
+  return out;
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const CHAT_PATH = "/v1/chat/completions";
 
 function config() {
@@ -64,39 +100,87 @@ function baseBody(model, messages, fixedProvider) {
   };
 }
 
-export async function sendCodinoMessage({ messages, signal, fixedProvider = true }) {
+export async function sendCodinoMessage({ messages, signal, fixedProvider = true, model = CODINO_MODEL }) {
   const { url, secret } = config();
-  const timestamp = Date.now().toString();
-  const signature = await signPayload("POST", CHAT_PATH, timestamp, CODINO_MODEL, secret);
-  const res = await fetch(`${url}${CHAT_PATH}`, {
-    method: "POST",
-    headers: headers(signature, timestamp),
-    body: JSON.stringify({ ...baseBody(CODINO_MODEL, messages, fixedProvider), stream: false }),
-    signal,
-  });
-  if (!res.ok) throw new Error(await readError(res));
-  const data = await res.json();
-  const msg = data?.choices?.[0]?.message;
-  const text = (msg && msg.content) || "";
-  if (!text) throw new Error("Codino returned an empty answer. Try again.");
-  return text;
+  let lastErr = "Codino hiccuped. Try again.";
+  for (const name of candidatesFor(model, messages)) {
+    const timestamp = Date.now().toString();
+    const signature = await signPayload("POST", CHAT_PATH, timestamp, name, secret);
+    let res;
+    try {
+      res = await fetch(`${url}${CHAT_PATH}`, {
+        method: "POST",
+        headers: headers(signature, timestamp),
+        body: JSON.stringify({ ...baseBody(name, messages, fixedProvider), stream: false }),
+        signal,
+      });
+    } catch (e) {
+      if (e && e.name === "AbortError") throw e;
+      lastErr = (e && e.message) || lastErr;
+      await sleep(1200);
+      continue;
+    }
+    if (res.ok) {
+      const data = await res.json();
+      const msg = data?.choices?.[0]?.message;
+      const text = (msg && msg.content) || "";
+      if (text) return text;
+      lastErr = "Codino returned an empty answer. Try again.";
+      continue;
+    }
+    // Wrong secret: every model would fail the same way — stop immediately.
+    if (res.status === 401) throw new Error(await readError(res));
+    lastErr = await readError(res);
+    await sleep(1200);
+  }
+  throw new Error(lastErr);
 }
 
 // Streams token deltas via onToken(text). Resolves with the full text.
+// Tries up to 5 models in order (requested first, then the fallback pool).
 // Chunk boundaries never line up with SSE frames: buffer until "\n\n",
 // keep the trailing fragment, decode multibyte chars with stream:true.
-export async function streamCodinoMessage({ messages, signal, onToken, fixedProvider = true }) {
+export async function streamCodinoMessage({ messages, signal, onToken, fixedProvider = true, model = CODINO_MODEL }) {
   const { url, secret } = config();
-  const timestamp = Date.now().toString();
-  const signature = await signPayload("POST", CHAT_PATH, timestamp, CODINO_MODEL, secret);
-  const res = await fetch(`${url}${CHAT_PATH}`, {
-    method: "POST",
-    headers: headers(signature, timestamp),
-    body: JSON.stringify({ ...baseBody(CODINO_MODEL, messages, fixedProvider), stream: true }),
-    signal,
-  });
-  if (!res.ok || !res.body) throw new Error(await readError(res));
-  const reader = res.body.getReader();
+  let lastErr = "Codino hiccuped. Try again.";
+  for (const name of candidatesFor(model, messages)) {
+    const timestamp = Date.now().toString();
+    const signature = await signPayload("POST", CHAT_PATH, timestamp, name, secret);
+    let res;
+    try {
+      res = await fetch(`${url}${CHAT_PATH}`, {
+        method: "POST",
+        headers: headers(signature, timestamp),
+        body: JSON.stringify({ ...baseBody(name, messages, fixedProvider), stream: true }),
+        signal,
+      });
+    } catch (e) {
+      if (e && e.name === "AbortError") throw e;
+      lastErr = (e && e.message) || lastErr;
+      await sleep(1200);
+      continue;
+    }
+    if (!res.ok || !res.body) {
+      if (res.status === 401) throw new Error(await readError(res));
+      lastErr = await readError(res);
+      try {
+        if (res.body) await res.body.cancel();
+      } catch {
+        /* body already consumed */
+      }
+      await sleep(1200);
+      continue;
+    }
+    const full = await readStreamBody(res.body, onToken, signal);
+    if (full) return full;
+    lastErr = "Codino returned an empty answer. Try again.";
+    await sleep(1200);
+  }
+  throw new Error(lastErr);
+}
+
+async function readStreamBody(body, onToken, signal) {
+  const reader = body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
   let full = "";

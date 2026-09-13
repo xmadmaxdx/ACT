@@ -23,7 +23,7 @@
   width: min(400px, 94vw);
   background: #fff;
   border-left: 2px solid var(--line);
-  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.14);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   animation: cod-rail-in 0.28s cubic-bezier(0.34, 1.4, 0.64, 1);
@@ -76,9 +76,9 @@
   border-radius: 8px;
 }
 
-.cod-ghost:hover {
-  color: var(--ink-soft);
-  background: #f7f7f7;
+.cod-head-clean .modal-close {
+  position: static;
+  flex: none;
 }
 
 /* ---------- Docked layout: test content resizes, panel is not an overlay --- */
@@ -149,7 +149,6 @@
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-  animation: cod-msg-in 0.18s ease-out;
   white-space: nowrap;
 }
 
@@ -218,6 +217,32 @@
   justify-content: flex-end;
 }
 
+.cod-msg.cod-ai {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.cod-ai-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.cod-ai-body {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  overflow-wrap: break-word;
+}
+
+.cod-ai-body > :last-child {
+  margin-bottom: 0;
+}
+
 .cod-bubble {
   max-width: 82%;
   padding: 10px 14px;
@@ -234,17 +259,15 @@
   color: var(--ink);
 }
 
-.cod-ai .cod-bubble {
-  background: #f7f7f7;
-  border: 2px solid var(--line);
-  border-radius: 18px 18px 18px 6px;
-  color: var(--ink);
-}
-
-.cod-ai-dot {
-  flex: none;
-  width: 28px;
-  height: 28px;
+.cod-newmsg-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
 }
 
 .cod-typing {
@@ -300,7 +323,7 @@
 
 .cod-input-row {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
   padding: 12px 14px 16px;
   border-top: 2px solid var(--line);
@@ -308,24 +331,114 @@
 }
 
 .cod-input {
-  flex: 1;
-  min-width: 0;
+  flex: none;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 96px;
   font-family: var(--font);
   font-size: 14.5px;
   line-height: 1.45;
   color: var(--ink);
   background: #fbfdff;
   border: 2px solid var(--line);
-  border-radius: 20px;
-  padding: 10px 16px;
+  border-radius: 16px;
+  padding: 12px 14px;
   outline: none;
   resize: none;
-  max-height: 140px;
+  max-height: 200px;
   overflow-y: auto;
 }
 
 .cod-input:focus {
   border-color: var(--blue-light-border);
+}
+
+.cod-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cod-attach {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.cod-attach:hover {
+  background: #f7f7f7;
+}
+
+.cod-model-tag {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--faint);
+}
+
+.cod-spacer {
+  flex: 1;
+}
+
+.cod-thumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cod-thumb {
+  position: relative;
+  display: inline-block;
+  animation: cod-msg-in 0.18s ease-out;
+}
+
+.cod-thumb img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+}
+
+.cod-thumb-x {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1c1c1c;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.cod-img-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.cod-img-row img {
+  display: block;
+  max-width: 180px;
+  max-height: 140px;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  object-fit: cover;
 }
 
 .cod-send {
@@ -416,6 +529,10 @@
   color: var(--blue);
   border-color: var(--blue-light-border);
   background: var(--blue-light-bg);
+}
+
+.q-option-row:has(> .cod-explain-pill) > .q-option {
+  padding-right: 92px;
 }
 
 .cod-explain-pill {
