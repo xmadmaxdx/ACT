@@ -688,9 +688,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     const paras = pd ? pd.paras : [];
     const auto = stemRefs(paras, cur.stem).map((r) => r.para);
     const mine = (marksRef.current[cur.p] || []).map((h) => h.para);
-    const hits = auto.concat(mine);
-    if (hits.length === 0) return;
-    const target = Math.min(...hits);
+    const pool = auto.length > 0 ? auto : mine;
+    if (pool.length === 0) return;
+    const target = Math.min(...pool);
     const el = paraRefs.current.get(`${cur.p}-${target}`);
     if (!el) return;
     try {
