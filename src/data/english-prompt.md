@@ -84,6 +84,7 @@ Default 10Q recipe: 5–6 correction (at least one each of Punctuation, Sentence
 ## 8. Make the options hard (strict)
 
 - All 4 options must be plausible at first glance: same length family (within ~3 words of each other), same register, no joke options, no obviously ungrammatical throwaways.
+- Grammar-question options stay SHORT: the underlined slot and every option should tend to be small — best if under 6 words (a verb, a phrase, one transition word). Test one tight thing per question, not whole rewritten sentences. Only rhetoric questions (Purpose, Add/Delete, Placement, Add Detail) may use long options, since their options carry reasons.
 - Distractors must each break a DIFFERENT rule or miss the rhetorical goal differently: one punctuation error, one agreement error, one wordiness error — never three variants of the same mistake.
 - The best distractor must be genuinely tempting: a comma-vs-semicolon near-miss, an its/it's/their trap, a "moreover" that almost works, a vivid but off-goal rhetoric choice. A strong student should have to apply the rule, not just hear the error.
 - Keep the tested slot identical across options (section 5): no option may add, drop, or reorder words outside the underlined slot. Do not give the answer away by making it the only option with correct surrounding punctuation.

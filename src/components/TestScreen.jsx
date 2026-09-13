@@ -148,6 +148,23 @@ function optText(opt) {
   return opt === "No Change" ? <strong>No Change</strong> : mathRich(opt);
 }
 
+/* Placement / add-detail stems carry the proposed sentence as an *italic*
+   insert between a lead-in and a trailing question. Render that insert as an
+   indented block so it reads as a quotation. Matches ONLY a single *...*
+   pair with non-blank text on both sides — anything else falls back to the
+   normal inline mathRich render. */
+function renderStem(stem) {
+  const m = /^([^*]+)\*([^*]+)\*([^*]+)$/.exec(String(stem));
+  if (!m || !m[1].trim() || !m[2].trim() || !m[3].trim()) return mathRich(stem);
+  return (
+    <>
+      <span className="q-stem-lead">{mathRich(m[1].trimEnd())}</span>
+      <span className="q-stem-quote">{mathRich(`*${m[2].trim()}*`)}</span>
+      <span className="q-stem-tail">{mathRich(m[3].trimStart())}</span>
+    </>
+  );
+}
+
 /* Passage spans: {t} plain text (may include $LaTeX$), {u, t} tested
    underline keyed by question number, {box} reference point, {fig}
    embedded SVG figure id resolved from the test's figures map. The active
@@ -417,10 +434,10 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
       {q.stem ? (
         serifStem ? (
           <div className="passage-text merged-stem">
-            <p>{mathRich(q.stem)}</p>
+            <p>{renderStem(q.stem)}</p>
           </div>
         ) : (
-          <p className="q-stem">{mathRich(q.stem)}</p>
+          <p className="q-stem">{renderStem(q.stem)}</p>
         )
       ) : null}
       {paused && (

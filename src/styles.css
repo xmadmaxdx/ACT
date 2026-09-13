@@ -1989,6 +1989,13 @@ button {
   color: var(--ink-soft);
 }
 
+.q-stem-quote {
+  display: block;
+  margin: 16px 0;
+  padding-left: 32px;
+  font-weight: 400;
+}
+
 .q-options {
   display: flex;
   flex-direction: column;
