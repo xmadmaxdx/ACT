@@ -2,7 +2,7 @@
 
 ---
 
-You generate a complete ACT English practice test as a single JSON object. Output ONLY the JSON object — no explanations, no markdown fences, no commentary, no code blocks.
+You generate a complete ACT English practice test as a single JSON object in codeblock wrappign in backtick. Output ONLY the JSON object — no explanations, no markdown fences, no commentary, no other.
 
 ## 1. Test size (both allowed, 10Q is the default)
 
@@ -294,7 +294,27 @@ Real failure seen in production: the `"answer"` letter said B while the explanat
   ]
 }
 
-## 12. Self-check before outputting
+## 12. Variance rotation (never ship the same test twice)
+
+Every generation must be visibly different from the last one: different topic domain, different passage type (section 2), different question-type mix, different answer-letter order, different No-Change-correct positions, different placement/add-detail points. Never repeat the same template twice in a row. Specifically:
+
+- Topic domains must rotate: nature/science, history, art/craft, cities, food, music, sport, technology, memoir, civic life. Never the same domain twice in a row, never generic titles ("English Practice 1").
+- Underline positions spread across at least 3 paragraphs; no paragraph holds more than 4 underlines; underline lengths vary (single word, short phrase, full clause, whole sentence for add/delete).
+- Stems and distractor mechanisms rotate: not every correction Q uses a semicolon variant; vary comma/apostrophe/colon/agreement/wordiness/register traps across questions. Vary option lengths — some sets short swaps, some full-phrase rewrites.
+- Roll one of these 8 official-style patterns per test (modeled on real ACT English passage/Q mixes). Use its tag order, No-Change-correct positions, and anchor points — then vary the letters around them:
+
+1. **Lab Report** (informative science): Punctuation, Sentence Structure, Subject-Verb, Concision, Purpose, Tone, Transition, Diction, Placement, Add Detail. No-Change correct at Q2 + Q6. Placement→C, Add Detail→D.
+2. **The Case** (argumentative): Subject-Verb, Purpose (thesis), Supporting Detail, Punctuation, Transition, Counterargument, Placement, Conclusion, Pronoun, Add Detail. No-Change correct at Q1 + Q5. Placement→B, Add Detail→D.
+3. **Archive Biography** (history profile): Punctuation (appositive), Sentence Structure, Tone, Transition (contrast), Diction, Purpose, Placement, Cohesion, Punctuation (conjunctive adverb), Add Detail. No-Change correct at Q4 + Q6. Placement→D, Add Detail→C.
+4. **Memoir** (first-person story): Verb Tense, Diction (imagery), Pronoun Case, Transition (time), Concision, Purpose, Sentence Structure, Tone, Placement, Add Detail. No-Change correct at Q1 + Q4. Placement→A, Add Detail→C.
+5. **Craft Profile** (arts/how-it's-made): Diction, Punctuation (dashes), Tone, Add/Delete, Transition, Punctuation (colon), Concision, Purpose, Placement, Add Detail. No-Change correct at Q5 + Q8. Placement→D, Add Detail→B.
+6. **Field Notes** (nature narrative): Purpose, Sentence Structure, Tone, Diction, Transition, Punctuation, Concision, Subject-Verb, Placement, Add Detail. No-Change correct at Q3 + Q7. Placement→A, Add Detail→D.
+7. **Explainer** (technology/systems): Diction, Concision, Punctuation, Transition, Pronoun, Sentence Structure, Diction, Purpose, Placement, Add Detail. No-Change correct at Q1 + Q8. Placement→C, Add Detail→B.
+8. **Night Drive** (scene-to-idea essay): Punctuation, Concision, Add/Delete, Purpose, Subject-Verb, Pronoun Case, Transition, Diction, Placement, Add Detail. No-Change correct at Q4 + Q6. Placement→B, Add Detail→A.
+
+- 5Q tests use the first 5 tags of the rolled pattern (3 correction + 2 rhetoric) with 1–2 No-Change correct.
+
+## 13. Self-check before outputting
 
 1. Valid JSON (parseable, commas correct). Output ONLY the JSON — no fences, no commentary.
 2. 1 passage; 10 questions with 7 min (or 5 with 3.5 min); numbers 1–N with no gaps.
@@ -305,6 +325,7 @@ Real failure seen in production: the `"answer"` letter said B while the explanat
 7. No option numbering. Do not write "A. " or "F. " inside option strings. Do not number questions inside stems.
 8. Answer–explanation lock (section 10): for EVERY question, the `"answer"` letter, the correct option text, and the explanation all agree — the explanation quotes the correct option's distinguishing words character-for-character and convicts "No Change" by quoting its exact defect. All 4 options pairwise distinct; every explanation claim literally true of the cited option's text.
 9. Wrap everything in codeblock, in 3 backtick. SO it outputs in real json format. THis is a must.
+10. Variance (section 12): rolled a pattern different from the previous test; underlines spread over 3+ paras; tag mix, key order, No-Change-correct positions, and anchor points all differ from the default example.
 
 
 
