@@ -87,6 +87,7 @@ Default 10Q recipe: 5–6 correction (at least one each of Punctuation, Sentence
 - Distractors must each break a DIFFERENT rule or miss the rhetorical goal differently: one punctuation error, one agreement error, one wordiness error — never three variants of the same mistake.
 - The best distractor must be genuinely tempting: a comma-vs-semicolon near-miss, an its/it's/their trap, a "moreover" that almost works, a vivid but off-goal rhetoric choice. A strong student should have to apply the rule, not just hear the error.
 - Keep the tested slot identical across options (section 5): no option may add, drop, or reorder words outside the underlined slot. Do not give the answer away by making it the only option with correct surrounding punctuation.
+- No twin options: no two options may be synonymous or express the same logic such that both would be equally right or equally wrong — on the real ACT, twins are both automatically wrong, so a key with a twin is a broken question. Transitions: if the correct connector is additive ("In addition"), no other option may be additive ("Furthermore", "Moreover", "Also") — the three distractors must each signal a DIFFERENT logic (contrast, cause-effect, sequence). Mirror this for contrast or cause-effect keys. Same ban for Diction/Tone: never offer two equally precise, equally formal paraphrases of the same meaning.
 - Explanations name the rule ("comma splice joins two independent clauses…", "singular subject 'row' needs 'shades'…") AND say why the best distractor fails. 1–2 sentences.
 
 ## 9. Output JSON schema (exact keys, exact types)
@@ -125,7 +126,20 @@ Default 10Q recipe: 5–6 correction (at least one each of Punctuation, Sentence
 - Never number the option strings ("A. …", "F. …"). Options are bare text; letters come from position.
 - `$LaTeX$` and `*italics*` may appear in prose/options/explanations; they render formatted.
 
-## 10. Full worked example (10Q, 7 min — imitate this shape exactly, NEVER reuse its content)
+## 10. Answer–explanation lock (anti-bug — the #1 failure mode)
+
+Real failure seen in production: the `"answer"` letter said B while the explanation's own reasoning proved A ("No Change") correct — letter, option text, and explanation disagreed. This must NEVER happen. Enforce this lock on every question:
+
+- Correct TEXT first, letter second, explanation last. Decide which option text is correct from grammar alone. Then note its letter. Then write the explanation FOR that letter. Never pick a letter first and justify it afterwards.
+- The explanation must quote or uniquely describe the correct option's distinguishing words AND explain exactly why every other option fails — naming "No Change" explicitly when it is wrong (quote the underlined defect as written). If the explanation's reasoning points at any option other than the `"answer"` letter, the question is broken: fix it, do not ship it.
+- No-Change consistency: if `"answer"` is `"A"`, the explanation must state the underlined original is already correct and why the three replacements are worse. If `"answer"` is not `"A"`, the explanation must state precisely what is wrong with the EXACT "No Change" text as written — never describe an imagined variant ("A lacks the comma" is forbidden when option A contains a comma; re-read the options as written, not as intended).
+- One correct only: test-fit EACH of the 4 options into the underlined slot. Exactly one must be fully grammatical and goal-satisfying. Zero or two passing = rewrite the options.
+- All 4 option strings must be pairwise DISTINCT as literal text — every character, comma, and capital letter. Never ship two options with identical wording, including "No Change" duplicating another letter (A and C with the same text while the explanation claims they differ is a failure). If two options would read identically, rewrite one until all four visibly differ.
+- "No Change" must reproduce the `{u: n}` text character-for-character. No Change means "keep this exact text" — the explanation may never describe No Change as containing or lacking a word or mark that the underlined text does not contain or lack.
+- Every claim the explanation makes about an option must be literally true of that option's text. "A and B isolate the clause with a comma" is writable only if A and B both actually contain that comma — verify each claim against the option strings as written.
+- Silent per-question sign-off before outputting: (1) correct option pasted into the sentence reads correctly; (2) No Change pasted in fails for the stated reason; (3) explanation names the correct letter plus its exact distinguishing text; (4) `"answer"` equals that letter.
+
+## 11. Full worked example (10Q, 7 min — imitate this shape exactly, NEVER reuse its content)
 
 - Do NOT output this exact example. It is a shape reference only — always invent a fresh topic, title, passage prose, and questions. Any test reusing "The Rooftop Gardens of Chicago" or its sentences verbatim is a failure.
 
@@ -280,7 +294,7 @@ Default 10Q recipe: 5–6 correction (at least one each of Punctuation, Sentence
   ]
 }
 
-## 11. Self-check before outputting
+## 12. Self-check before outputting
 
 1. Valid JSON (parseable, commas correct). Output ONLY the JSON — no fences, no commentary.
 2. 1 passage; 10 questions with 7 min (or 5 with 3.5 min); numbers 1–N with no gaps.
@@ -289,4 +303,13 @@ Default 10Q recipe: 5–6 correction (at least one each of Punctuation, Sentence
 5. All answers A–D and spread across letters (at least one of each in 10Q); correction/underlined-rhetoric option A is exactly "No Change" with only 2–4 correct A answers.
 6. No span type other than t / u / box (/ fig only with a figures map).
 7. No option numbering. Do not write "A. " or "F. " inside option strings. Do not number questions inside stems.
-8. Wrap everything in codeblock, in 3 backtick. SO it outputs in real json format. THis is a must.
+8. Answer–explanation lock (section 10): for EVERY question, the `"answer"` letter, the correct option text, and the explanation all agree — the explanation quotes the correct option's distinguishing words character-for-character and convicts "No Change" by quoting its exact defect. All 4 options pairwise distinct; every explanation claim literally true of the cited option's text.
+9. Wrap everything in codeblock, in 3 backtick. SO it outputs in real json format. THis is a must.
+
+
+
+
+
+
+
+
