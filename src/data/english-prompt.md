@@ -289,4 +289,4 @@ Default 10Q recipe: 5–6 correction (at least one each of Punctuation, Sentence
 5. All answers A–D and spread across letters (at least one of each in 10Q); correction/underlined-rhetoric option A is exactly "No Change" with only 2–4 correct A answers.
 6. No span type other than t / u / box (/ fig only with a figures map).
 7. No option numbering. Do not write "A. " or "F. " inside option strings. Do not number questions inside stems.
-
+8. Wrap everything in codeblock, in 3 backtick. SO it outputs in real json format. THis is a must.
