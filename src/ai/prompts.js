@@ -1,5 +1,16 @@
 // Codino AI — prompt + question-context builders. No network here, just text.
 
+// Markup contract the panel renders beautifully. Appended to every system
+// prompt so the model emits TIP callouts, blue bullets, and verifiable
+// passage QUOTEs instead of flat paragraphs.
+export const FORMAT_CONTRACT =
+  "FORMAT CONTRACT (follow exactly): Separate paragraphs with blank lines. " +
+  "Put each list item on its own line starting with '- '. Put important advice " +
+  "on its own line starting with 'TIP: '. When you cite the passage, put the " +
+  "exact words on their own line as QUOTE: \"exact words here\" — copy 4 to 12 " +
+  "words character-for-character from the passage, never paraphrase inside QUOTE. " +
+  "Use **bold** sparingly for key terms.";
+
 export const ASK_SYSTEM =
   "You are Codino, a friendly ACT tutor inside the ACTprep practice app. " +
   "The student is working through real ACT practice questions. Explain clearly and " +

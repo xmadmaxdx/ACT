@@ -9,10 +9,13 @@ import { isCodinoConfigured, streamCodinoMessage } from "./zynq.js";
 import {
   ASK_SYSTEM,
   EXPLAIN_SYSTEM,
+  FORMAT_CONTRACT,
   buildExplanation,
   buildQuestionContext,
   generalContext,
+  passageText,
 } from "./prompts.js";
+import { renderAiText } from "./rich.jsx";
 import { loadThreads, makeThread, persistThreads } from "./history.js";
 
 const NARROW = "(max-width: 980px)";
@@ -93,6 +96,11 @@ export default function CodinoPanel({ open, defaultPinned, context, onClose }) {
 
   const active = threads.find((t) => t.id === activeId) || null;
   const messages = active ? active.messages : [];
+  const passageStr = useMemo(() => {
+    if (!ctx || !ctx.q) return "";
+    const pg = (ctx.testData.passages || []).find((p) => p.id === ctx.q.p);
+    return passageText(pg);
+  }, [ctx?.testData?.id ?? null, ctx?.q?.n ?? null, ctx?.q?.p ?? null]);
 
   const pushMessages = (id, updater) => {
     setThreads((prev) => {
@@ -144,7 +152,7 @@ export default function CodinoPanel({ open, defaultPinned, context, onClose }) {
     if (el && stickRef.current) el.scrollTop = el.scrollHeight;
   }, [messages.length, messages.length > 0 ? messages[messages.length - 1].content.length : 0]);
 
-  const systemFor = () => (ctx?.q ? EXPLAIN_SYSTEM : ASK_SYSTEM);
+  const systemFor = () => `${ctx?.q ? EXPLAIN_SYSTEM : ASK_SYSTEM}\n\n${FORMAT_CONTRACT}`;
 
   const historyFor = (extraUser) => {
     const base = ctx?.q
@@ -410,7 +418,11 @@ export default function CodinoPanel({ open, defaultPinned, context, onClose }) {
                   </span>
                 )}
                 <span className="cod-bubble">
-                  {m.content || (streaming && i === messages.length - 1 ? <span className="cod-typing" aria-label="Codino is typing"><span /><span /><span /></span> : null)}
+                  {m.content ? (
+                    renderAiText(m.content, passageStr)
+                  ) : streaming && i === messages.length - 1 ? (
+                    <span className="cod-typing" aria-label="Codino is typing"><span /><span /><span /></span>
+                  ) : null}
                 </span>
               </div>
             ))}
