@@ -394,6 +394,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
               </>
             )}
           </div>
+        </div>
           <div className="cod-input-row">
             <textarea
               ref={inputRef}
