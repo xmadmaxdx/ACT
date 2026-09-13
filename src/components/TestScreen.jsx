@@ -901,7 +901,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       q: qq,
       pickedLetter: picks[qq.n] || null,
       letters: lettersFor(qq.n, testData.section),
-      tab: "explain",
+      autoAsk: "Explain this step by step",
     });
     setAiPinned(false);
     setAiOpen(true);
@@ -914,7 +914,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         q: activeQ,
         pickedLetter: picks[activeQ.n] || null,
         letters: qLetters,
-        tab: "ask",
       });
     } else {
       setAiCtx({ testData, q: null, pickedLetter: null, letters: null, tab: "ask" });
@@ -1259,7 +1258,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   });
 
   return (
-    <div className="test">
+    <div className={aiOpen && aiPinned ? "test cod-docked" : "test"}>
       <header className="test-topbar">
         <button className="test-exit" type="button" aria-label="Exit test" onClick={onExit}>
           ✕
@@ -1860,7 +1859,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
       <CodinoPanel
         open={aiOpen}
-        defaultPinned={aiPinned}
+        pinned={aiPinned}
+        onTogglePin={() => setAiPinned((v) => !v)}
         context={aiCtx}
         onClose={() => setAiOpen(false)}
       />
