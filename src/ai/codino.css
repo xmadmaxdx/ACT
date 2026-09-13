@@ -84,7 +84,13 @@
 /* ---------- Docked layout: test content resizes, panel is not an overlay --- */
 
 @media (min-width: 981px) {
-  .cod-docked .test-body,
+  .cod-docked .test-body {
+    width: auto;
+    max-width: none;
+    margin: 0 400px 0 0;
+    transition: margin-right 0.28s ease;
+  }
+
   .cod-docked .test-topbar {
     margin-right: 400px;
     transition: margin-right 0.28s ease;
