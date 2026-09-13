@@ -105,32 +105,39 @@ const SAMPLE_ENGLISH = `{
   ]
 }`;
 
-function normalize(section, raw) {
+function normalize(section, raw, expectedCount) {
+  const want = expectedCount && expectedCount > 0 ? expectedCount : 1;
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
     throw new Error("Top level must be a JSON object.");
   }
   const passages = raw.passages;
-  if (!Array.isArray(passages) || passages.length !== 1) {
-    throw new Error("Must contain exactly 1 passage.");
-  }
-  const src = passages[0];
-  if (!Array.isArray(src.paras) || src.paras.length === 0) {
-    throw new Error("Passage needs a non-empty paras array.");
+  if (!Array.isArray(passages) || passages.length !== want) {
+    throw new Error(
+      `Must contain exactly ${want} passage${want === 1 ? "" : "s"} for the selected passage count.`
+    );
   }
   const isReading = section === "reading";
-  src.paras.forEach((pa, i) => {
-    if (isReading && typeof pa !== "string") {
-      throw new Error(`Para ${i} must be a plain string for reading.`);
+  passages.forEach((src, i) => {
+    if (!Array.isArray(src.paras) || src.paras.length === 0) {
+      throw new Error(`Passage ${i + 1} needs a non-empty paras array.`);
     }
-    if (!isReading && !Array.isArray(pa)) {
-      throw new Error(`Para ${i} must be a span array for english (same as practice files).`);
-    }
+    src.paras.forEach((pa, j) => {
+      if (isReading && typeof pa !== "string") {
+        throw new Error(`Passage ${i + 1} para ${j} must be a plain string for reading.`);
+      }
+      if (!isReading && !Array.isArray(pa)) {
+        throw new Error(
+          `Passage ${i + 1} para ${j} must be a span array for english (same as practice files).`
+        );
+      }
+    });
   });
+  const byId = new Map(passages.map((src, i) => [src.id || `p${i + 1}`, { src, index: i }]));
+  const firstPid = passages[0].id || "p1";
   const questions = raw.questions;
   if (!Array.isArray(questions) || questions.length === 0) {
     throw new Error("Need at least 1 question.");
   }
-  const pid = src.id || "p1";
   const seen = new Set();
   questions.forEach((q, i) => {
     const n = q.n ?? i + 1;
@@ -144,8 +151,10 @@ function normalize(section, raw) {
       throw new Error(`Q${n}: answer must be one of ${ok.join(", ")}.`);
     }
     if (isReading && !q.stem) throw new Error(`Q${n}: reading questions need a stem.`);
+    const entry = byId.get(q.p || firstPid);
+    if (!entry) throw new Error(`Q${n}: unknown passage id "${q.p}".`);
     (q.refs || []).forEach((r, j) => {
-      if (!Number.isInteger(r.para) || r.para < 0 || r.para >= src.paras.length) {
+      if (!Number.isInteger(r.para) || r.para < 0 || r.para >= entry.src.paras.length) {
         throw new Error(`Q${n} ref ${j}: bad para index.`);
       }
       if (typeof r.text !== "string" || r.text.length === 0) return;
@@ -154,7 +163,7 @@ function normalize(section, raw) {
   const total = questions.length;
   let timeMinutes = Number(raw.timeMinutes);
   if (!timeMinutes || timeMinutes <= 0) {
-    timeMinutes = isReading ? 10 : total >= 10 ? 7 : 3.5;
+    timeMinutes = isReading ? 10 * passages.length : Math.round(total * 0.7 * 2) / 2;
   }
   return {
     id: raw.id || (isReading ? "JSON-READING-1" : "JSON-ENGLISH-1"),
@@ -163,19 +172,17 @@ function normalize(section, raw) {
     total,
     timeMinutes,
     figures: raw.figures || {},
-    passages: [
-      {
-        id: pid,
-        title: src.title || raw.title || "Passage 1",
-        paras: src.paras,
-      },
-    ],
+    passages: passages.map((src, i) => ({
+      id: src.id || `p${i + 1}`,
+      title: src.title || raw.title || `Passage ${i + 1}`,
+      paras: src.paras,
+    })),
     questions: questions.map((q, i) => {
       const n = q.n ?? i + 1;
       const ok = lettersFor(n, section);
       return {
         n,
-        p: q.p || pid,
+        p: q.p || firstPid,
         tag: q.tag || "Custom",
         stem: q.stem || "",
         short: q.short || q.stem || `Question ${n}`,
@@ -193,6 +200,8 @@ function normalize(section, raw) {
 
 export default function JsonStart({ variant, defaultSection, onStart, onClose }) {
   const [tab, setTab] = useState(defaultSection || "reading");
+  const [count, setCount] = useState(1);
+  const maxCount = tab === "reading" ? 4 : 6;
   const [text, setText] = useState("");
   const [mode, setMode] = useState("untimed");
   const [error, setError] = useState("");
@@ -227,7 +236,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
       return;
     }
     try {
-      const test = normalize(tab, raw);
+      const test = normalize(tab, raw, count);
       setError("");
       onStart(test, mode);
       if (variant === "modal") onClose();
@@ -249,6 +258,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
             className={tab === t ? "tab active" : "tab"}
             onClick={() => {
               setTab(t);
+              setCount(1);
               setError("");
             }}
           >
@@ -257,9 +267,28 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
         ))}
       </div>
       <p className="muted-text">
-        Paste 1 {tab} passage ({tab === "reading" ? "9 questions · 10 min" : "5 or 10 questions"}).
+        {tab === "reading"
+          ? `Paste ${count} reading passage${count === 1 ? "" : "s"} (${count * 9} questions · ${count * 10} min). `
+          : `Paste ${count} english passage${count === 1 ? "" : "s"} (5 or 10 questions each). `}
         Reading paras are plain strings + exact-quote refs; English paras use span arrays like the practice files.
       </p>
+      <div className="jsonstart-row">
+        <div className="mode-toggle" role="group" aria-label="Passage count">
+          {Array.from({ length: maxCount }, (_, i) => i + 1).map((c) => (
+            <button
+              key={c}
+              type="button"
+              className={count === c ? "tab active small" : "tab small"}
+              onClick={() => {
+                setCount(c);
+                setError("");
+              }}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="jsonstart-row">
         <button
           type="button"

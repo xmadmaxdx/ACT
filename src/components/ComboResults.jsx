@@ -66,9 +66,14 @@ export default function ComboResults({ runs, onGo, onRetakeRun, onExit, onAddSec
 
         {stats.map((s, i) => (
           <section className="rise d2" key={runs[i].skill.id + i}>
-            <h2 className="section-title">
-              {s.subj} — {s.scaled}/36
-              {s.missed.length > 0 && <span className="count-pill">{s.missed.length}</span>}
+            <h2 className="section-title combo-section-title">
+              <span>
+                {s.subj} — {s.scaled}/36
+                {s.missed.length > 0 && <span className="count-pill">{s.missed.length}</span>}
+              </span>
+              <button type="button" className="retake-inline" onClick={() => onRetakeRun(i)}>
+                RETAKE
+              </button>
             </h2>
             <div className="stat-grid">
               <div className="stat-card">
@@ -82,11 +87,6 @@ export default function ComboResults({ runs, onGo, onRetakeRun, onExit, onAddSec
               <div className="stat-card">
                 <span className="stat-value">{formatPace(s.avgPace)}</span>
                 <span className="stat-label">Avg pace</span>
-              </div>
-              <div className="stat-card">
-                <button type="button" className="footer-link" onClick={() => onRetakeRun(i)}>
-                  RETAKE
-                </button>
               </div>
             </div>
             {s.missed.length > 0 && (

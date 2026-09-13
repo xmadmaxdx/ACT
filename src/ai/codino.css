@@ -1,0 +1,698 @@
+/* ---------- Codino AI ---------- */
+/* Self-contained panel styles. Global app tokens reused via var(); every
+   class below is cod-* prefixed so nothing leaks into the rest of the app. */
+
+.cod-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(60, 60, 60, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  animation: cod-fade 0.18s ease-out;
+}
+
+.cod-rail {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 46;
+  width: min(400px, 94vw);
+  background: #fff;
+  border-left: 2px solid var(--line);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.14);
+  display: flex;
+  flex-direction: column;
+  animation: cod-rail-in 0.28s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.cod-modal {
+  position: relative;
+  width: min(480px, 94vw);
+  max-height: 86vh;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: cod-modal-pop 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.cod-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 0 14px;
+}
+
+.cod-pin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 6px 4px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.cod-checkbox {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--faint);
+  border-radius: 5px;
+  background: #fff;
+}
+
+.cod-checkbox.on {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.cod-tabs {
+  border-bottom: 2px solid var(--line);
+  padding: 4px 14px 0;
+}
+
+.cod-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.cod-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-right: auto;
+}
+
+.cod-tab {
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.cod-tab.active {
+  color: var(--blue);
+  background: var(--blue-light-bg);
+  border-color: var(--blue-light-border);
+}
+
+.cod-tab:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cod-new {
+  margin-left: auto;
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 6px 4px;
+}
+
+.cod-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.cod-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 26px 8px 8px;
+  gap: 6px;
+}
+
+.cod-hero-title {
+  margin: 10px 0 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.cod-hero-sub {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.cod-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.cod-chips-center {
+  justify-content: center;
+}
+
+.cod-chip {
+  background: #fff;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.cod-chip:hover {
+  background: #f7f7f7;
+}
+
+.cod-chip:active {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+
+.cod-msg {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  animation: cod-msg-in 0.22s ease-out;
+}
+
+.cod-user {
+  justify-content: flex-end;
+}
+
+.cod-bubble {
+  max-width: 82%;
+  padding: 10px 14px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cod-user .cod-bubble {
+  background: var(--blue-light-bg);
+  border: 2px solid var(--blue-light-border);
+  border-radius: 18px 18px 6px 18px;
+  color: var(--ink);
+}
+
+.cod-ai .cod-bubble {
+  background: #f7f7f7;
+  border: 2px solid var(--line);
+  border-radius: 18px 18px 18px 6px;
+  color: var(--ink);
+}
+
+.cod-ai-dot {
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+
+.cod-typing {
+  display: inline-flex;
+  gap: 5px;
+  padding: 4px 2px;
+}
+
+.cod-typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--faint);
+  animation: cod-typing 1s infinite;
+}
+
+.cod-typing span:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.cod-typing span:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+.cod-error-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cod-error {
+  font-size: 13px;
+  font-weight: 700;
+  color: #d33131;
+}
+
+.cod-retry {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--blue);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.cod-empty {
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  margin: 18px 0;
+}
+
+.cod-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px 16px;
+  border-top: 2px solid var(--line);
+  background: #fff;
+}
+
+.cod-input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font);
+  font-size: 14.5px;
+  color: var(--ink);
+  background: #fbfdff;
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 10px 16px;
+  outline: none;
+}
+
+.cod-input:focus {
+  border-color: var(--blue-light-border);
+}
+
+.cod-send {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--blue);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--blue-dark);
+}
+
+.cod-send:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+.cod-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cod-stop {
+  background: var(--ink-soft);
+  box-shadow: 0 3px 0 var(--ink);
+}
+
+.cod-verdict-row {
+  display: flex;
+}
+
+.cod-verdict {
+  font-size: 13.5px;
+  font-weight: 800;
+  border-radius: 20px;
+  padding: 6px 14px;
+}
+
+.cod-verdict.good {
+  color: var(--green-dark);
+  background: #f0f9df;
+  border: 2px solid #bfe37a;
+}
+
+.cod-verdict.bad {
+  color: #d33131;
+  background: #fff0f0;
+  border: 2px solid #f3b8b8;
+}
+
+.cod-verdict.neutral {
+  color: var(--muted);
+  background: #f7f7f7;
+  border: 2px solid var(--line);
+}
+
+.cod-opt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cod-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  font-size: 14px;
+}
+
+.cod-opt-correct {
+  border-color: var(--green-dark);
+  background: #f0f9df;
+}
+
+.cod-opt-picked {
+  border-color: #e5484d;
+  background: #fff0f0;
+}
+
+.cod-opt-text {
+  flex: 1;
+  color: var(--ink-soft);
+}
+
+.cod-opt-flag {
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.cod-rule {
+  margin: 2px 0 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.cod-thread {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.cod-thread.active {
+  background: var(--blue-light-bg);
+  border-color: var(--blue-light-border);
+}
+
+.cod-thread-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
+.cod-thread-meta {
+  flex: none;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+/* ---------- TestScreen touch points (kept here, not in styles.css) ---------- */
+
+.cod-nav-btn {
+  position: absolute;
+  right: 62px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+
+.cod-nav-btn:hover {
+  color: var(--ink-soft);
+}
+
+.cod-nav-btn:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.cod-nav-btn.on {
+  color: var(--blue);
+  border-color: var(--blue-light-border);
+  background: var(--blue-light-bg);
+}
+
+.cod-explain-pill {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #1c1c1c;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  animation: cod-msg-in 0.18s ease-out;
+}
+
+/* ---------- Codino mascot ---------- */
+
+.cod-mascot {
+  display: block;
+}
+
+.cod-m-body {
+  fill: var(--blue);
+  stroke: var(--blue-dark);
+  stroke-width: 3;
+}
+
+.cod-m-belly {
+  fill: var(--blue-light-bg);
+  opacity: 0.9;
+}
+
+.cod-m-bolt {
+  fill: #f5c044;
+  stroke: #b25e09;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.cod-m-eye-white {
+  fill: #fff;
+}
+
+.cod-m-pupil {
+  fill: #3c3c3c;
+}
+
+.cod-m-glint {
+  fill: #fff;
+}
+
+.cod-m-foot {
+  fill: var(--blue-dark);
+}
+
+.cod-m-shadow {
+  fill: rgba(60, 60, 60, 0.12);
+}
+
+.cod-mascot.is-idle .cod-m-bob {
+  animation: cod-bob 3.2s ease-in-out infinite;
+}
+
+.cod-mascot.is-idle .cod-m-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cod-blink 4.6s infinite;
+}
+
+.cod-mascot.is-idle .cod-m-shadow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cod-shadow 3.2s ease-in-out infinite;
+}
+
+.cod-mascot.is-thinking .cod-m-bob {
+  animation: cod-think 0.9s ease-in-out infinite;
+}
+
+/* ---------- Codino motion ---------- */
+
+@keyframes cod-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cod-rail-in {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes cod-modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes cod-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cod-typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+@keyframes cod-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-1.5deg);
+  }
+}
+
+@keyframes cod-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes cod-shadow {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(0.82);
+    opacity: 0.7;
+  }
+}
+
+@keyframes cod-think {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+@media (max-width: 700px) {
+  .cod-modal {
+    width: 94vw;
+  }
+
+  .cod-input-row {
+    padding-bottom: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cod-overlay,
+  .cod-rail,
+  .cod-modal,
+  .cod-msg,
+  .cod-typing span,
+  .cod-mascot.is-idle .cod-m-bob,
+  .cod-mascot.is-idle .cod-m-eyes,
+  .cod-mascot.is-idle .cod-m-shadow,
+  .cod-mascot.is-thinking .cod-m-bob,
+  .cod-chip,
+  .cod-send {
+    animation: none;
+    transition: none;
+  }
+}

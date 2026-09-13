@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import MathText, { mathRich } from "./MathText.jsx";
 import FreestyleBoard from "./FreestyleBoard.jsx";
+import CodinoPanel from "../ai/CodinoPanel.jsx";
 import { lettersFor } from "../scoring.js";
 
 const LETTERS = ["A", "B", "C", "D"];
@@ -461,7 +462,7 @@ function ElimIcon({ off }) {
   );
 }
 
-function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag, letters, elimActive, elimSet, onToggleElim }) {
+function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag, letters, elimActive, elimSet, onToggleElim, onExplain }) {
   const L = letters && letters.length === 4 ? letters : LETTERS;
   return (
     <>
@@ -500,6 +501,18 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
                 <span className="q-letter">{letter}</span>
                 <span className="q-text">{optText(opt)}</span>
               </button>
+              {showAnswers && picked === letter && onExplain && (
+                <button
+                  type="button"
+                  className="cod-explain-pill"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onExplain();
+                  }}
+                >
+                  Explain
+                </button>
+              )}
               {elimActive && (
                 <button
                   key={eliminated ? "restore" : "elim"}
@@ -564,6 +577,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [paces, setPaces] = useState((session && session.paces) || {});
   const [elapsed, setElapsed] = useState(0);
   const [overviewOpen, setOverviewOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiPinned, setAiPinned] = useState(true);
+  const [aiCtx, setAiCtx] = useState(null);
   const [ovFilter, setOvFilter] = useState("All");
   const [paused, setPaused] = useState(false);
   const [calcOpen, setCalcOpen] = useState(false);
@@ -877,6 +893,35 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
   const elimActive = elimOn && !review && !paused;
   const elimSet = elims[activeQ.n] || [];
+
+  const openExplain = (qq) => {
+    if (!review) return;
+    setAiCtx({
+      testData,
+      q: qq,
+      pickedLetter: picks[qq.n] || null,
+      letters: lettersFor(qq.n, testData.section),
+      tab: "explain",
+    });
+    setAiPinned(false);
+    setAiOpen(true);
+  };
+
+  const openAsk = () => {
+    if (review) {
+      setAiCtx({
+        testData,
+        q: activeQ,
+        pickedLetter: picks[activeQ.n] || null,
+        letters: qLetters,
+        tab: "ask",
+      });
+    } else {
+      setAiCtx({ testData, q: null, pickedLetter: null, letters: null, tab: "ask" });
+    }
+    setAiPinned(true);
+    setAiOpen(true);
+  };
 
   const addHighlight = () => {
     const pend = pendingHl.current;
@@ -1490,6 +1535,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 elimActive={elimActive}
                 elimSet={elimSet}
                 onToggleElim={toggleElim}
+                onExplain={() => openExplain(activeQ)}
               />
             </>
           )}
@@ -1504,14 +1550,15 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               showAnswers={showAnswers}
               paused={paused}
               flagged={flagged}
-              serifStem={false}
-              letters={qLetters}
-              onPick={pick}
-              onToggleFlag={toggleFlag}
-              elimActive={elimActive}
-              elimSet={elimSet}
-              onToggleElim={toggleElim}
-            />
+                serifStem={false}
+                letters={qLetters}
+                onPick={pick}
+                onToggleFlag={toggleFlag}
+                elimActive={elimActive}
+                elimSet={elimSet}
+                onToggleElim={toggleElim}
+                onExplain={() => openExplain(activeQ)}
+              />
           </section>
 
         </aside>
@@ -1744,6 +1791,28 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   NEXT
                 </button>
               )}
+          <button
+            className={aiOpen ? "cod-nav-btn on" : "cod-nav-btn"}
+            type="button"
+            onClick={() => (aiOpen ? setAiOpen(false) : openAsk())}
+            title={aiOpen ? "Close Codino AI" : "Ask Codino AI"}
+            aria-label={aiOpen ? "Close Codino AI" : "Ask Codino AI"}
+            aria-pressed={aiOpen}
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+              <path
+                d="M9 1.5c-3.6 0-6 2.8-6 6 0 1.9.9 3.5 2.3 4.6L4.8 15l2.9-1.3c.4.1.8.1 1.3.1 3.6 0 6-2.8 6-6s-2.4-6.3-6-6.3z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M10.2 5.2l-2.4 3.1h1.7l-.6 2.5 2.4-3.1H9.6z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
           {!review && (
             <button
               className={elimOn ? "elim-toggle on" : "elim-toggle"}
@@ -1789,6 +1858,12 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         </button>
       )}
 
+      <CodinoPanel
+        open={aiOpen}
+        defaultPinned={aiPinned}
+        context={aiCtx}
+        onClose={() => setAiOpen(false)}
+      />
       {overviewOpen && (        <div className="overview-overlay" onClick={() => setOverviewOpen(false)}>
           <aside
             className="overview-drawer"
@@ -1855,7 +1930,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 <p className="ov-empty">No questions match this filter.</p>
               )}
             </div>
-            {!review && (
+          {!review && (
               <div className="ov-finish">
                 <button
                   className="finish-btn"
