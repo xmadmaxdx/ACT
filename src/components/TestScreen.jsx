@@ -148,21 +148,59 @@ function optText(opt) {
   return opt === "No Change" ? <strong>No Change</strong> : mathRich(opt);
 }
 
-/* Placement / add-detail stems carry the proposed sentence as an *italic*
-   insert between a lead-in and a trailing question. Render that insert as an
-   indented block so it reads as a quotation. Matches ONLY a single *...*
-   pair with non-blank text on both sides — anything else falls back to the
-   normal inline mathRich render. */
-function renderStem(stem) {
-  const m = /^([^*]+)\*([^*]+)\*([^*]+)$/.exec(String(stem));
-  if (!m || !m[1].trim() || !m[2].trim() || !m[3].trim()) return mathRich(stem);
+/* Placement / add-detail stems carry the proposed sentence as an *italic* (or
+   _italic_) insert between a lead-in and a trailing question. The insert
+   renders as an indented block; a multi-sentence lead-in splits after its
+   first sentence so "asks about the passage as a whole" stands on its own
+   line. Matches ONLY when an insert pair has non-blank text on both sides —
+   anything else falls back to the normal inline mathRich render. */
+function stemQuote(stem) {
+  const s = String(stem);
+  const grab = (re) => {
+    const m = re.exec(s);
+    if (!m || !m[1].trim() || !m[2].trim() || !m[3].trim()) return null;
+    return { pre: m[1], inner: m[2].trim(), post: m[3] };
+  };
   return (
-    <>
-      <span className="q-stem-lead">{mathRich(m[1].trimEnd())}</span>
-      <span className="q-stem-quote">{mathRich(`*${m[2].trim()}*`)}</span>
-      <span className="q-stem-tail">{mathRich(m[3].trimStart())}</span>
-    </>
+    grab(/^(.*)\*([^*]+)\*([^*]*)$/) ||
+    (!s.includes("__") ? grab(/^(.*)_([^_]+)_([^_]*)$/) : null)
   );
+}
+function renderStem(stem) {
+  const q = stemQuote(stem);
+  if (!q) return mathRich(stem);
+  const pre = q.pre.trim();
+  const sent = pre.length > 50 ? /^([^.?!]+[.?!])(\s+[\s\S]+)?$/.exec(pre) : null;
+  const blocks = [];
+  if (sent && sent[2]) {
+    blocks.push(
+      <span key="l1" className="q-stem-lead">
+        {mathRich(sent[1])}
+      </span>
+    );
+    blocks.push(
+      <span key="l2" className="q-stem-lead">
+        {mathRich(sent[2].trim())}
+      </span>
+    );
+  } else {
+    blocks.push(
+      <span key="l1" className="q-stem-lead">
+        {mathRich(pre)}
+      </span>
+    );
+  }
+  blocks.push(
+    <span key="q" className="q-stem-quote">
+      {mathRich(`*${q.inner}*`)}
+    </span>
+  );
+  blocks.push(
+    <span key="t" className="q-stem-tail">
+      {mathRich(q.post.trim())}
+    </span>
+  );
+  return <>{blocks}</>;
 }
 
 /* Passage spans: {t} plain text (may include $LaTeX$), {u, t} tested

@@ -1989,11 +1989,21 @@ button {
   color: var(--ink-soft);
 }
 
+.q-stem-lead {
+  display: block;
+  margin: 0 0 12px;
+}
+
 .q-stem-quote {
   display: block;
-  margin: 16px 0;
+  margin: 0 0 12px;
   padding-left: 32px;
   font-weight: 400;
+}
+
+.q-stem-tail {
+  display: block;
+  margin: 0;
 }
 
 .q-options {
