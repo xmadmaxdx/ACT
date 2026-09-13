@@ -532,7 +532,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [calcMode, setCalcMode] = useState("graph");
   const [calcFull, setCalcFull] = useState(false);
   const [calcW, setCalcW] = useState(440);
-  const [elimOn, setElimOn] = useState(false);
+  const [elimOn, setElimOn] = useState(true);
   const [elims, setElims] = useState({});
   const [marks, setMarks] = useState({});
   const [hlPop, setHlPop] = useState(null);
