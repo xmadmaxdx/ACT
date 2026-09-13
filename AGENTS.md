@@ -1,6 +1,6 @@
 # ACTprep KNOWLEDGE BASE
 
-**Checkpoint:** 13.9.26. This file describes ACTprep as of that checkpoint. The app may have
+**Checkpoint:** 13.09.2026 (git 8cc0faa). This file describes ACTprep as of that checkpoint. The app may have
 been enhanced or modified since — always open and search the relevant file(s) to confirm the
 current shape before changing anything. Never assume a selector, prop, or schema is unchanged.
 
