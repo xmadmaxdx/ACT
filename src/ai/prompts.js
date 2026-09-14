@@ -15,6 +15,8 @@ export const FORMAT_CONTRACT =
   "(X is the choice letter exactly as shown: A, B, C, D — or F, G, H, J on " +
   "reading questions that use those letters) right before your comment explaining " +
   "why it is right or wrong. " +
+  "Write math with full braces inside $...$ or $$...$$ kept on one line " +
+  "(\\frac{1}{2}, never \\frac12) and never leave a lone $ or $$ on its own line. " +
   "Use **bold** sparingly for key terms.";
 
 export const ASK_SYSTEM =

@@ -49,7 +49,7 @@ function splitSentences(text) {
   return parts.length ? parts : [String(text || "").trim()].filter(Boolean);
 }
 
-function Evidence({ quote, passage }) {
+function Evidence({ quote, passage, label }) {
   const qi = String(quote || "").trim();
   const sents = splitSentences(passage);
   const needle = qi.toLowerCase().slice(0, 48);
@@ -61,19 +61,19 @@ function Evidence({ quote, passage }) {
   const at = window.toLowerCase().indexOf(qi.toLowerCase());
   let body;
   if (at < 0) {
-    body = <span>{window}</span>;
+    body = <span>{mathRich(window)}</span>;
   } else {
     body = (
       <>
-        <span>{window.slice(0, at)}</span>
-        <mark className="cod-ev-hit">{window.slice(at, at + qi.length)}</mark>
-        <span>{window.slice(at + qi.length)}</span>
+        <span>{mathRich(window.slice(0, at))}</span>
+        <mark className="cod-ev-hit">{mathRich(window.slice(at, at + qi.length))}</mark>
+        <span>{mathRich(window.slice(at + qi.length))}</span>
       </>
     );
   }
   return (
     <figure className="cod-ev" key={qi}>
-      <figcaption className="cod-ev-top">From the passage</figcaption>
+      <figcaption className="cod-ev-top">{label || "From the passage"}</figcaption>
       <blockquote className="cod-ev-body">{body}</blockquote>
     </figure>
   );
@@ -136,9 +136,25 @@ const isQuote = (t) => /^QUOTE:\s*".*"\s*$/.test(t);
 const isOption = (t) => /^OPTION:\s*[A-Za-z]\s*$/.test(t);
 const isBullet = (t) => /^[-•]\s+\S/.test(t);
 
-export function renderAiText(text, passage, opts) {
+export function renderAiText(text, passage, opts, evidenceLabel) {
   const byLetter = new Map((opts || []).map((o) => [String(o.letter).toUpperCase(), o]));
-  const lines = String(text || "").split("\n");
+  const rawLines = String(text || "").split("\n");
+  // Rejoin $$...$$ display-math fences split across lines, drop stray lone-$ lines.
+  const lines = [];
+  for (let j = 0; j < rawLines.length; j++) {
+    if (rawLines[j].trim() === "$$") {
+      let block = "";
+      j += 1;
+      while (j < rawLines.length && rawLines[j].trim() !== "$$") {
+        block += `${rawLines[j]}\n`;
+        j += 1;
+      }
+      if (block.trim()) lines.push(`$$${block.trim()}$$`);
+      continue;
+    }
+    if (rawLines[j].trim() === "$") continue;
+    lines.push(rawLines[j]);
+  }
   const out = [];
   let bullets = [];
   let k = 0;
@@ -162,7 +178,7 @@ export function renderAiText(text, passage, opts) {
     }
     if (isQuote(t)) {
       flushBullets();
-      out.push(<Evidence key={`q${k++}`} quote={t.replace(/^QUOTE:\s*"/, "").replace(/"\s*$/, "")} passage={passage} />);
+      out.push(<Evidence key={`q${k++}`} quote={t.replace(/^QUOTE:\s*"/, "").replace(/"\s*$/, "")} passage={passage} label={evidenceLabel} />);
       continue;
     }
     if (isOption(t)) {

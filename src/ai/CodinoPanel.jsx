@@ -484,7 +484,12 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
                   </span>
                   <div className="cod-ai-body">
                     {m.content ? (
-                      renderAiText(m.content, passageStr, answerOpts)
+                      renderAiText(
+                        m.content,
+                        passageStr,
+                        answerOpts,
+                        ctx?.testData?.section === "math" ? "From the question" : "From the passage"
+                      )
                     ) : streaming && i === messages.length - 1 ? (
                       <span className="cod-typing" aria-label="Codino is typing"><span /><span /><span /></span>
                     ) : null}
