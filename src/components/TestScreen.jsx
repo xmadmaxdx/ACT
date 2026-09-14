@@ -44,6 +44,7 @@ function stemRefs(paras, stem) {
   const seen = new Set();
   const qre = /"([^"]+)"|“([^”]+)”/g;
   let m;
+  const cands = [];
   while ((m = qre.exec(s)) !== null) {
     const q = (m[1] || m[2] || "").trim();
     if (q.length < 2) continue;
@@ -51,8 +52,18 @@ function stemRefs(paras, stem) {
     if (seen.has(key)) continue;
     seen.add(key);
     paras.forEach((p, i) => {
-      if (typeof p === "string" && findQuote(p, q, 0)) refs.push({ para: i, text: q });
+      if (typeof p !== "string") return;
+      const hit = findQuote(p, q, 0);
+      if (hit) cands.push({ para: i, text: q, len: hit[1] - hit[0] });
     });
+  }
+  // Many paras can contain the quote: light only the single largest match.
+  if (cands.length > 0) {
+    let best = cands[0];
+    for (let k = 1; k < cands.length; k++) {
+      if (cands[k].len > best.len) best = cands[k];
+    }
+    refs.push({ para: best.para, text: best.text });
   }
   const whole = new Set();
   const ore = /\b(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth|thirteenth|fourteenth|fifteenth|sixteenth|seventeenth|eighteenth|nineteenth|twentieth|last|final|\d+(?:st|nd|rd|th))\s+paragraphs?\b/gi;
@@ -776,10 +787,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     const pd = (testData.passages || []).find((p) => p.id === cur.p);
     const paras = pd ? pd.paras : [];
     const auto = stemRefs(paras, cur.stem).map((r) => r.para);
-    const mine = (marksRef.current[cur.p] || []).map((h) => h.para);
-    const pool = auto.length > 0 ? auto : mine;
-    if (pool.length === 0) return;
-    const target = Math.min(...pool);
+    if (auto.length === 0) return;
+    const target = Math.min(...auto);
     const el = paraRefs.current.get(`${cur.p}-${target}`);
     if (!el) return;
     try {

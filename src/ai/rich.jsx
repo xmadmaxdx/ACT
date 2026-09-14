@@ -9,6 +9,8 @@
 //                                        present, so partial streams fall back
 //                                        to plain paragraphs safely.
 
+import { mathRich } from "../components/MathText.jsx";
+
 function renderInline(text, keyBase) {
   const parts = String(text).split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
   return parts.map((p, i) => {
@@ -22,8 +24,19 @@ function renderInline(text, keyBase) {
         </code>
       );
     }
-    return <span key={`${keyBase}-t${i}`}>{p}</span>;
+    return <span key={`${keyBase}-t${i}`}>{mathRich(p)}</span>;
   });
+}
+
+// Models emit \(...\) / \[...\] and leak \uXXXX escapes; the app renders
+// $...$ / $$...$$. Normalize AI lines into the app's dialect first.
+function decodeModelLine(line) {
+  return String(line)
+    .replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/\\\[/g, "$$")
+    .replace(/\\\]/g, "$$")
+    .replace(/\\\(/g, "$")
+    .replace(/\\\)/g, "$");
 }
 
 function splitSentences(text) {
@@ -100,7 +113,8 @@ export function renderAiText(text, passage) {
     bullets = [];
   };
   for (let i = 0; i < lines.length; i++) {
-    const t = lines[i].trim();
+    const decoded = decodeModelLine(lines[i]);
+    const t = decoded.trim();
     if (!t) {
       flushBullets();
       continue;
@@ -114,9 +128,10 @@ export function renderAiText(text, passage) {
       flushBullets();
       const tipLines = [t.replace(/^TIP:\s*/, "")];
       while (i + 1 < lines.length) {
-        const nx = lines[i + 1].trim();
+        const nx = decodeModelLine(lines[i + 1]).trim();
         if (!nx || isTip(nx) || isQuote(nx) || isBullet(nx)) break;
-        tipLines.push(lines[++i].trim());
+        i += 1;
+        tipLines.push(decodeModelLine(lines[i]).trim());
       }
       out.push(
         <div key={`t${k++}`} className="cod-tip">
@@ -133,7 +148,7 @@ export function renderAiText(text, passage) {
     flushBullets();
     out.push(
       <p key={`p${k++}`} className="cod-ai-p">
-        {renderInline(lines[i].trim(), `p${k}`)}
+        {renderInline(t, `p${k}`)}
       </p>
     );
   }
