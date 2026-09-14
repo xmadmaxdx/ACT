@@ -652,6 +652,83 @@
   padding: 0 3px;
 }
 
+/* ---------- OPTION: cards ---------- */
+
+.cod-optcard {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 8px;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  animation: cod-msg-in 0.22s ease-out;
+}
+
+.cod-optcard-badge {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  background: #f0f2f5;
+  border: 2px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.cod-optcard-text {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.cod-optcard.is-correct {
+  border-color: var(--green-dark);
+  background: #f0f9df;
+}
+
+.cod-optcard.is-correct .cod-optcard-badge {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: #fff;
+  animation: cod-check-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cod-check-path {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  animation: cod-check-draw 0.5s 0.1s ease-out forwards;
+}
+
+.cod-optcard.is-picked {
+  border-color: #e5484d;
+  background: #fff0f0;
+}
+
+.cod-optcard.is-picked .cod-optcard-badge {
+  background: #e5484d;
+  border-color: #e5484d;
+  color: #fff;
+  animation: cod-check-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cod-optcard.is-picked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(229, 72, 77, 0.28) 50%, transparent 80%);
+  transform: translateX(-100%);
+  animation: cod-elim-sweep 0.6s ease-out;
+  pointer-events: none;
+}
+
 /* ---------- Codino mascot ---------- */
 
 .cod-mascot {
@@ -827,6 +904,27 @@
   }
 }
 
+@keyframes cod-check-pop {
+  from {
+    transform: scale(0.4);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes cod-check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes cod-elim-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
 @media (max-width: 700px) {
   .cod-modal {
     width: 94vw;
@@ -850,7 +948,10 @@
   .cod-chip,
   .cod-send,
   .cod-ev,
-  .cod-tip {
+  .cod-tip,
+  .cod-optcard,
+  .cod-optcard-badge,
+  .cod-optcard.is-picked::after {
     animation: none;
     transition: none;
   }

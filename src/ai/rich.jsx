@@ -3,11 +3,13 @@
 //   TIP: advice on its own line      -> amber tip callout
 //   - point on its own line          -> blue bullet list
 //   QUOTE: "exact passage words"     -> evidence card verified against the
-//                                        real passage: +/-2 sentences shown,
-//                                        cited words highlighted. Only renders
-//                                        as a card when the closing quote is
-//                                        present, so partial streams fall back
-//                                        to plain paragraphs safely.
+//                                        real passage (+/-2 sentences shown,
+//                                        cited words highlighted)
+//   OPTION: B on its own line        -> designed option card; review mode
+//                                        animates it (check-draw when right,
+//                                        elimination sweep when wrong)
+// Markers ONLY work standing alone on their own line. Inside a bullet, tip,
+// or paragraph they are denied and render as literal text — never a card.
 
 import { mathRich } from "../components/MathText.jsx";
 
@@ -92,11 +94,50 @@ function TipBulb() {
   );
 }
 
+function OptCard({ letter, text, state }) {
+  return (
+    <div className={`cod-optcard is-${state}`}>
+      <span className="cod-optcard-badge" aria-hidden="true">
+        {state === "correct" ? (
+          <svg width="14" height="14" viewBox="0 0 16 16">
+            <path
+              className="cod-check-path"
+              d="M3 8.5l3.2 3.2L13 5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        ) : state === "picked" ? (
+          <svg width="13" height="13" viewBox="0 0 16 16">
+            <path
+              d="M4 4l8 8M12 4l-8 8"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+            />
+          </svg>
+        ) : (
+          letter
+        )}
+      </span>
+      <span className="cod-optcard-text">
+        <b>{letter}.</b> {text}
+      </span>
+    </div>
+  );
+}
+
 const isTip = (t) => /^TIP:\s*\S/.test(t);
 const isQuote = (t) => /^QUOTE:\s*".*"\s*$/.test(t);
+const isOption = (t) => /^OPTION:\s*[A-Za-z]\s*$/.test(t);
 const isBullet = (t) => /^[-•]\s+\S/.test(t);
 
-export function renderAiText(text, passage) {
+export function renderAiText(text, passage, opts) {
+  const byLetter = new Map((opts || []).map((o) => [String(o.letter).toUpperCase(), o]));
   const lines = String(text || "").split("\n");
   const out = [];
   let bullets = [];
@@ -122,6 +163,21 @@ export function renderAiText(text, passage) {
     if (isQuote(t)) {
       flushBullets();
       out.push(<Evidence key={`q${k++}`} quote={t.replace(/^QUOTE:\s*"/, "").replace(/"\s*$/, "")} passage={passage} />);
+      continue;
+    }
+    if (isOption(t)) {
+      flushBullets();
+      const letter = t.replace(/^OPTION:\s*/i, "").trim().toUpperCase();
+      const found = byLetter.get(letter);
+      if (!found) {
+        out.push(
+          <p key={`p${k++}`} className="cod-ai-p">
+            {renderInline(t, `p${k}`)}
+          </p>
+        );
+      } else {
+        out.push(<OptCard key={`o${k++}`} letter={found.letter} text={found.text} state={found.state} />);
+      }
       continue;
     }
     if (isTip(t)) {

@@ -10,6 +10,7 @@ import {
   ASK_SYSTEM,
   EXPLAIN_SYSTEM,
   FORMAT_CONTRACT,
+  buildExplanation,
   buildQuestionContext,
   generalContext,
   passageText,
@@ -87,7 +88,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
       return;
     }
     const base = ctx?.q
-      ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters })
+      ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters, reveal: ctx.reveal })
       : generalContext(ctx?.testData?.section);
     const fresh = makeThread({ title: base.title, testId: ctx?.testData?.id || null, qn: ctx?.q?.n ?? null });
     const next = [fresh, ...prev];
@@ -109,6 +110,14 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
     const pg = (ctx.testData.passages || []).find((p) => p.id === ctx.q.p);
     return passageText(pg);
   }, [ctx?.testData?.id ?? null, ctx?.q?.n ?? null, ctx?.q?.p ?? null]);
+  // Option truth for OPTION: cards. Hidden mid-exam: every card neutral so
+  // the panel can never leak the key through styling.
+  const answerOpts = useMemo(() => {
+    if (!ctx || !ctx.q) return null;
+    const built = buildExplanation({ q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters });
+    if (ctx.reveal === false) return built.options.map((o) => ({ ...o, state: "other" }));
+    return built.options;
+  }, [ctx?.testData?.id ?? null, ctx?.q?.n ?? null, ctx?.pickedLetter ?? null, ctx?.reveal ?? null]);
 
   const pushMessages = (id, updater) => {
     setThreads((prev) => {
@@ -183,7 +192,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
   // question block; stored threads stay clean for display.
   const baseContext = () =>
     ctx?.q
-      ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters })
+      ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters, reveal: ctx.reveal })
       : generalContext(ctx?.testData?.section);
 
   const toApiUser = (content, images, base) => {
@@ -202,7 +211,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
 
   const historyFor = (id) => {
     const base = baseContext();
-    const sys = `${ctx?.q ? EXPLAIN_SYSTEM : ASK_SYSTEM}\n\n${FORMAT_CONTRACT}`;
+    const sys = `${ctx?.q && ctx.reveal !== false ? EXPLAIN_SYSTEM : ASK_SYSTEM}\n\n${FORMAT_CONTRACT}`;
     const t = threadsRef.current.find((x) => x.id === id);
     const prior = (t ? t.messages : []).map((m) => {
       if (m.role !== "user") return { role: m.role, content: m.content };
@@ -354,7 +363,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
 
   const startNew = () => {
     const base = ctx?.q
-      ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters })
+      ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters, reveal: ctx.reveal })
       : generalContext(ctx?.testData.section);
     const fresh = makeThread({ title: base.title, testId: ctx?.testData.id || null, qn: ctx?.q?.n ?? null });
     setThreads((prev) => {
@@ -367,7 +376,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
 
   if (!open) return null;
   const chips = ctx?.q
-    ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters }).chips
+    ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters, reveal: ctx.reveal }).chips
     : generalContext(ctx?.testData.section).chips;
 
   const panel = (
@@ -475,7 +484,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
                   </span>
                   <div className="cod-ai-body">
                     {m.content ? (
-                      renderAiText(m.content, passageStr)
+                      renderAiText(m.content, passageStr, answerOpts)
                     ) : streaming && i === messages.length - 1 ? (
                       <span className="cod-typing" aria-label="Codino is typing"><span /><span /><span /></span>
                     ) : null}

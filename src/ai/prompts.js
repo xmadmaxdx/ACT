@@ -9,6 +9,12 @@ export const FORMAT_CONTRACT =
   "on its own line starting with 'TIP: '. When you cite the passage, put the " +
   "exact words on their own line as QUOTE: \"exact words here\" — copy 4 to 12 " +
   "words character-for-character from the passage, never paraphrase inside QUOTE. " +
+  "QUOTE:, TIP:, and OPTION: markers must always stand alone on their own line — " +
+  "never inside bullets, tips, or paragraphs, where they render as plain text. " +
+  "When you discuss an answer choice, put OPTION: X alone on its own line " +
+  "(X is the choice letter exactly as shown: A, B, C, D — or F, G, H, J on " +
+  "reading questions that use those letters) right before your comment explaining " +
+  "why it is right or wrong. " +
   "Use **bold** sparingly for key terms.";
 
 export const ASK_SYSTEM =
@@ -48,12 +54,12 @@ export function passageText(passage) {
     .join("\n\n");
 }
 
-export function optionLines(q, letters, pickedLetter) {
+export function optionLines(q, letters, pickedLetter, reveal) {
   const L = letters && letters.length === 4 ? letters : ["A", "B", "C", "D"];
   return q.options
     .map((opt, i) => {
       const marks = [];
-      if (L[i] === q.answer) marks.push("correct");
+      if (reveal !== false && L[i] === q.answer) marks.push("correct");
       if (pickedLetter && L[i] === pickedLetter) marks.push("student picked");
       const tag = marks.length ? ` (${marks.join(", ")})` : "";
       return `${L[i]}. ${stripMarks(opt)}${tag}`;
@@ -61,14 +67,19 @@ export function optionLines(q, letters, pickedLetter) {
     .join("\n");
 }
 
-// Full chat context for one question. Returns { title, brief, contextText, chips }.
-export function buildQuestionContext({ testData, q, pickedLetter, letters }) {
+// Full chat context for one question. reveal=false hides the answer key +
+// official explanation (in-exam mode) while still feeding passage, stem,
+// options, and the student's pick.
+export function buildQuestionContext({ testData, q, pickedLetter, letters, reveal }) {
+  const show = reveal !== false;
   const passage = (testData.passages || []).find((p) => p.id === q.p);
   const contextText =
     `Section: ${testData.section} — ${testData.title}\n` +
     `Question ${q.n} (${q.tag}): ${stripMarks(q.stem)}\n` +
-    `${optionLines(q, letters, pickedLetter)}\n` +
-    `Official explanation: ${stripMarks(q.explain)}\n` +
+    `${optionLines(q, letters, pickedLetter, reveal)}\n` +
+    (show
+      ? `Official explanation: ${stripMarks(q.explain)}\n`
+      : `The correct answer and official explanation are hidden — this exam is still in progress. Coach the reasoning, never name or hint the correct choice.\n`) +
     (passage ? `Passage "${passage.title}":\n${passageText(passage)}` : "");
   return {
     title: `Q${q.n} · ${q.tag}`,

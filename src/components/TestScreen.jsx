@@ -935,16 +935,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   };
 
   const openAsk = () => {
-    if (review) {
-      setAiCtx({
-        testData,
-        q: activeQ,
-        pickedLetter: picks[activeQ.n] || null,
-        letters: qLetters,
-      });
-    } else {
-      setAiCtx({ testData, q: null, pickedLetter: null, letters: null, tab: "ask" });
-    }
+    setAiCtx({
+      testData,
+      q: activeQ,
+      pickedLetter: picks[activeQ.n] || null,
+      letters: qLetters,
+      reveal: review,
+    });
     setAiPinned(true);
     setAiOpen(true);
   };
