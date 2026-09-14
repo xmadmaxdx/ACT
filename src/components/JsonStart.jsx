@@ -198,11 +198,61 @@ function normalize(section, raw, expectedCount) {
   };
 }
 
+function mergeTests(section, tests) {
+  if (tests.length === 1) return tests[0];
+  let qn = 0;
+  const passages = [];
+  const questions = [];
+  tests.forEach((t, si) => {
+    const pidMap = {};
+    t.passages.forEach((p, pi) => {
+      const nid = `s${si + 1}p${pi + 1}`;
+      pidMap[p.id] = nid;
+      passages.push({ ...p, id: nid });
+    });
+    t.questions.forEach((q) => {
+      qn += 1;
+      const ok = lettersFor(qn, section);
+      const idx = lettersFor(q.n, section).indexOf(q.answer);
+      questions.push({
+        ...q,
+        n: qn,
+        p: pidMap[q.p] || Object.values(pidMap)[0],
+        short: /^Question \d+$/.test(q.short || "") ? `Question ${qn}` : q.short,
+        answer: idx >= 0 ? ok[idx] : q.answer,
+      });
+    });
+  });
+  const total = questions.length;
+  const summed = tests.reduce((a, t) => a + (Number(t.timeMinutes) || 0), 0);
+  return {
+    id: tests[0].id,
+    title: `${tests[0].title} (+${tests.length - 1} more)`,
+    section,
+    total,
+    timeMinutes:
+      summed > 0 ? summed : section === "reading" ? 10 * passages.length : (Math.round(total * 0.7 * 2) / 2),
+    figures: Object.assign({}, ...tests.map((t) => t.figures || {})),
+    passages,
+    questions,
+  };
+}
+
 export default function JsonStart({ variant, defaultSection, onStart, onClose }) {
   const [tab, setTab] = useState(defaultSection || "reading");
   const [count, setCount] = useState(1);
+  // One independent textarea per slot: switching numbers never leaks text.
+  const [texts, setTexts] = useState([""]);
+  const text = texts[count - 1] || "";
+  const setText = (v) =>
+    setTexts((prev) => {
+      const next = prev.slice();
+      while (next.length < count) next.push("");
+      next[count - 1] = v;
+      return next;
+    });
   const maxCount = tab === "reading" ? 4 : 6;
-  const [text, setText] = useState("");
+  const filledCount = texts.filter((t) => t && t.trim()).length;
   const [mode, setMode] = useState("untimed");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
@@ -225,22 +275,48 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   };
 
   const start = () => {
-    let raw;
+    const filled = texts
+      .map((t, i) => ({ text: t, slot: i + 1 }))
+      .filter((x) => x.text && x.text.trim());
+    if (!filled.length) {
+      setFixNote("");
+      setError("Paste at least 1 set.");
+      return;
+    }
+    let raws;
     try {
-      const parsed = tolerantParse(text);
-      raw = parsed.value;
-      setFixNote(fixSummary(parsed.fixes));
+      const notes = [];
+      raws = filled.map(({ text: t, slot }) => {
+        try {
+          const parsed = tolerantParse(t);
+          const note = fixSummary(parsed.fixes);
+          if (note) notes.push(`Slot ${slot}: ${note}`);
+          return { raw: parsed.value, slot };
+        } catch (e) {
+          throw new Error(`Slot ${slot}: ${e.message}`);
+        }
+      });
+      setFixNote(notes.join(" "));
     } catch (e) {
       setFixNote("");
       setError(e.message);
       return;
     }
     try {
-      const test = normalize(tab, raw, count);
+      const singles = raws.map(({ raw, slot }) => {
+        const n = Array.isArray(raw.passages) ? raw.passages.length : 0;
+        if (!n) throw new Error(`Slot ${slot}: need at least 1 passage.`);
+        try {
+          return normalize(tab, raw, n);
+        } catch (e) {
+          throw new Error(`Slot ${slot}: ${e.message}`);
+        }
+      });
+      const test = mergeTests(tab, singles);
       setError("");
       onStart(test, mode);
       if (variant === "modal") onClose();
-      else setText("");
+      else setTexts([""]);
     } catch (e) {
       setError(e.message);
     }
@@ -259,6 +335,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
             onClick={() => {
               setTab(t);
               setCount(1);
+              setTexts([""]);
               setError("");
             }}
           >
@@ -268,8 +345,9 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
       </div>
       <p className="muted-text">
         {tab === "reading"
-          ? `Paste ${count} reading passage${count === 1 ? "" : "s"} (${count * 9} questions · ${count * 10} min). `
-          : `Paste ${count} english passage${count === 1 ? "" : "s"} (5 or 10 questions each). `}
+          ? `Slot ${count} of ${maxCount} — paste one reading set here (9 questions · 10 min). `
+          : `Slot ${count} of ${maxCount} — paste one english set here (5 or 10 questions). `}
+        Each number keeps its own text. Filled slots ({filledCount}) merge on start and totals add up.
         Reading paras are plain strings + exact-quote refs; English paras use span arrays like the practice files.
       </p>
       <div className="jsonstart-row">
@@ -326,7 +404,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
       />
       {error && <p className="jsonstart-error">{error}</p>}
       {fixNote && !error && <p className="jsonstart-note">{fixNote}</p>}
-      <button type="button" className="btn-primary" onClick={start} disabled={!text.trim()}>
+      <button type="button" className="btn-primary" onClick={start} disabled={!filledCount}>
         START EXAM
       </button>
     </div>
