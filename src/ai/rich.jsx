@@ -139,20 +139,24 @@ const isBullet = (t) => /^[-•]\s+\S/.test(t);
 export function renderAiText(text, passage, opts, evidenceLabel) {
   const byLetter = new Map((opts || []).map((o) => [String(o.letter).toUpperCase(), o]));
   const rawLines = String(text || "").split("\n");
-  // Rejoin $$...$$ display-math fences split across lines, drop stray lone-$ lines.
+  // Rejoin fenced math split across lines: a lone $ or $$ line opens a fence
+  // closed by the next lone $ or $$ line; the joined block renders as one
+  // KaTeX span. Unclosed fences still get wrapped so nothing shows literally.
   const lines = [];
   for (let j = 0; j < rawLines.length; j++) {
-    if (rawLines[j].trim() === "$$") {
+    const fence = rawLines[j].trim();
+    if (fence === "$" || fence === "$$") {
       let block = "";
       j += 1;
-      while (j < rawLines.length && rawLines[j].trim() !== "$$") {
+      while (j < rawLines.length) {
+        const edge = rawLines[j].trim();
+        if (edge === "$" || edge === "$$") break;
         block += `${rawLines[j]}\n`;
         j += 1;
       }
-      if (block.trim()) lines.push(`$$${block.trim()}$$`);
+      if (block.trim()) lines.push(`${fence}${block.trim()}${fence}`);
       continue;
     }
-    if (rawLines[j].trim() === "$") continue;
     lines.push(rawLines[j]);
   }
   const out = [];
