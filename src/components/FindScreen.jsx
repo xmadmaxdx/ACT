@@ -394,6 +394,57 @@ export default function FindScreen({ testData, mode, onExit }) {
     []
   );
 
+  const autoDoneRef = useRef(false);
+  const limit = Math.max(60, Math.round(Number(testData && testData.timeMinutes) || 8) * 60);
+  const remaining = Math.max(0, limit - elapsed);
+
+  // Hooks must all run before any early return below: finishing only flips
+  // phase, so the done view renders with an identical hook order.
+  useEffect(() => {
+    if (timed && remaining === 0 && !autoDoneRef.current && total > 0) {
+      autoDoneRef.current = true;
+      const activeN = prevQRef.current;
+      const delta = elapsedRef.current - enterRef.current;
+      if (activeN !== null && activeN !== undefined && delta > 0) {
+        pacesRef.current = { ...pacesRef.current, [activeN]: (pacesRef.current[activeN] || 0) + delta };
+        setPaces({ ...pacesRef.current });
+      }
+      enterRef.current = elapsedRef.current;
+      setPhase("done");
+    }
+  }, [timed, remaining, total]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      const tag = (e.target && e.target.tagName) || "";
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable)) return;
+      if ((e.ctrlKey || e.metaKey || e.shiftKey) && (e.key === "a" || e.key === "A")) {
+        e.preventDefault();
+        if (aiOpen) setAiOpen(false);
+        else openAsk();
+        return;
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setQIndex((i) => Math.min(i + 1, total - 1));
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        setQIndex((i) => Math.max(i - 1, 0));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setOverviewOpen((v) => !v);
+      } else if (e.key === "ArrowDown") {
+        if (e.shiftKey || e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          setPhase("done");
+          window.scrollTo(0, 0);
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
   useEffect(() => () => {
     if (ptimeCloseT.current) clearTimeout(ptimeCloseT.current);
   }, []);
@@ -623,8 +674,6 @@ export default function FindScreen({ testData, mode, onExit }) {
   const fillClass = answeredFrac < 0.34 ? "fill-low" : answeredFrac < 0.67 ? "fill-mid" : "";
   const solvedCount = questions.filter((q) => verdicts[q.n] && verdicts[q.n].ok).length;
 
-  const limit = testData.timeMinutes * 60;
-  const remaining = Math.max(0, limit - elapsed);
   const expired = timed && remaining === 0;
 
   const choosePick = () => {
@@ -830,46 +879,6 @@ export default function FindScreen({ testData, mode, onExit }) {
     const running = elapsed - enterRef.current;
     return (paces[n] || 0) + Math.max(0, running);
   };
-
-  const autoDoneRef = useRef(false);
-
-  useEffect(() => {
-    if (timed && remaining === 0 && !autoDoneRef.current) {
-      autoDoneRef.current = true;
-      commitActivePace();
-      setPhase("done");
-    }
-  }, [timed, remaining]);
-
-  useEffect(() => {
-    const onKey = (e) => {
-      const tag = (e.target && e.target.tagName) || "";
-      if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable)) return;
-      if ((e.ctrlKey || e.metaKey || e.shiftKey) && (e.key === "a" || e.key === "A")) {
-        e.preventDefault();
-        if (aiOpen) setAiOpen(false);
-        else openAsk();
-        return;
-      }
-      if (e.key === "ArrowRight") {
-        e.preventDefault();
-        setQIndex((i) => Math.min(i + 1, total - 1));
-      } else if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        setQIndex((i) => Math.max(i - 1, 0));
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        setOverviewOpen((v) => !v);
-      } else if (e.key === "ArrowDown") {
-        if (e.shiftKey || e.ctrlKey || e.metaKey) {
-          e.preventDefault();
-          handleFinish();
-        }
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  });
 
   return (
     <div className={aiOpen && aiPinned ? "test cod-docked" : "test"}>
