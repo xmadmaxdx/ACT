@@ -3,6 +3,26 @@ import { mathRich } from "./MathText.jsx";
 import CodinoPanel from "../ai/CodinoPanel.jsx";
 import { scoreSelection } from "../detailScore.js";
 
+/* Exact match first; otherwise the longest consecutive word-run of the quote
+   present in the text (case-insensitive). Used only to locate JSON hint
+   refs — picks use exact DOM offsets, never this. */
+function findQuote(text, quote, from) {
+  const full = String(text);
+  const at = full.indexOf(String(quote), from);
+  if (at >= 0) return [at, at + String(quote).length];
+  const words = String(quote).trim().split(/\s+/);
+  if (words.length < 2) return null;
+  const region = full.toLowerCase().slice(from);
+  for (let size = words.length - 1; size >= 2; size--) {
+    for (let start = 0; start + size <= words.length; start++) {
+      const frag = words.slice(start, start + size).join(" ");
+      const i = region.indexOf(frag.toLowerCase());
+      if (i >= 0) return [from + i, from + i + frag.length];
+    }
+  }
+  return null;
+}
+
 function renderParaText(text, refs, userHits, onUnmark) {
   const full = String(text);
   const paraRefs = (refs || []).filter((r) => r && Number.isInteger(r.para));
