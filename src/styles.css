@@ -3444,7 +3444,7 @@ button {
 }
 
 .detail-solved-note {
-  margin: 0;
+  margin: 8px 0 0;
   text-align: center;
   font-weight: 900;
   color: var(--green-dark);
@@ -3488,13 +3488,19 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: none;
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: currentColor;
+  background: var(--green-dark);
   color: #fff;
-  font-size: 17px;
+  font-size: 18px;
+  font-weight: 900;
   line-height: 1;
+}
+
+.detail-flash.no .detail-flash-mark {
+  background: #d33131;
 }
 
 .detail-done {

@@ -3,10 +3,10 @@
 // way-too-long picks and wrong-region picks.
 
 export const FIND_THRESHOLDS = {
-  minRecall: 0.7,
-  minPrecision: 0.35,
-  maxLenRatio: 3,
-  maxExtraSentences: 1,
+  minOverlap: 2,
+  maxMissingWords: 6,
+  maxExtraWords: 6,
+  maxExtraSentences: 2,
 };
 
 // Lowercase, punctuation → space, collapse whitespace. Punctuation is
@@ -119,6 +119,7 @@ export function scoreSelection(paras, answers, picked) {
       loc,
       expLen: expToks.length,
       pickLen: pickToks.length,
+      overlap: o,
       recall: o / expToks.length,
       precision: o / pickToks.length,
     });
@@ -127,18 +128,20 @@ export function scoreSelection(paras, answers, picked) {
   cands.sort((x, y) => y.recall - x.recall || y.precision - x.precision);
 
   const t = FIND_THRESHOLDS;
-  let firstReason = "recall";
+  let firstReason = "overlap";
   for (const c of cands) {
-    if (c.recall < t.minRecall) {
-      firstReason = "recall";
+    const missing = c.expLen - c.overlap;
+    const extra = c.pickLen - c.overlap;
+    if (c.overlap < t.minOverlap) {
+      firstReason = "overlap";
       continue;
     }
-    if (c.precision < t.minPrecision) {
-      firstReason = "precision";
+    if (missing > t.maxMissingWords) {
+      firstReason = "missing";
       continue;
     }
-    if (c.pickLen > t.maxLenRatio * c.expLen) {
-      firstReason = "length";
+    if (extra > t.maxExtraWords) {
+      firstReason = "extra";
       continue;
     }
     if (picked.para !== c.answer.para) {
