@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { lettersFor } from "../scoring.js";
 import { tolerantParse, fixSummary } from "../tolerantJson.js";
+import { containsAnswer } from "../detailScore.js";
 import readingPrompt from "../data/reading-prompt.md?raw";
 import englishPrompt from "../data/english-prompt.md?raw";
+import findPrompt from "../data/find-prompt.md?raw";
 
 const SAMPLE_READING = `{
   "id": "JSON-READING-1",
@@ -105,6 +107,42 @@ const SAMPLE_ENGLISH = `{
   ]
 }`;
 
+const SAMPLE_FIND = `{
+  "id": "JSON-FIND-1",
+  "title": "The Night Shift",
+  "section": "find",
+  "total": 2,
+  "timeMinutes": 4,
+  "passages": [
+    {
+      "id": "p1",
+      "title": "The Night Shift",
+      "paras": [
+        "Mara had worked the night shift at the observatory for eleven years, and she still loved the hour after midnight best. The dome smelled faintly of oil and cold air.",
+        "On the night of the storm, the power failed at half past one. Mara lit the emergency lantern and kept watching the sky through the small round window."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "n": 1,
+      "p": "p1",
+      "tag": "Explicit detail",
+      "stem": "Select the words that tell when the power failed.",
+      "answers": [{ "para": 1, "text": "the power failed at half past one" }],
+      "explain": "The outage time is stated directly: the power failed at half past one on the storm night."
+    },
+    {
+      "n": 2,
+      "p": "p1",
+      "tag": "Inference support",
+      "stem": "Select the sentence that shows Mara stayed dedicated to her watch.",
+      "answers": [{ "para": 1, "text": "Mara lit the emergency lantern and kept watching the sky through the small round window." }],
+      "explain": "Lighting the lantern and keeping watch through the outage proves dedication beyond duty."
+    }
+  ]
+}`;
+
 function normalize(section, raw, expectedCount) {
   const want = expectedCount && expectedCount > 0 ? expectedCount : 1;
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
@@ -198,6 +236,100 @@ function normalize(section, raw, expectedCount) {
   };
 }
 
+// Detail-finding sets: plain-string paras, stems, and verbatim answer
+// spans. No options/answer keys — those belong to MCQ sections.
+function normalizeFind(raw, expectedCount) {
+  const want = expectedCount && expectedCount > 0 ? expectedCount : 1;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error("Top level must be a JSON object.");
+  }
+  const passages = raw.passages;
+  if (!Array.isArray(passages) || passages.length !== want) {
+    throw new Error(
+      `Must contain exactly ${want} passage${want === 1 ? "" : "s"} for the selected passage count.`
+    );
+  }
+  passages.forEach((src, i) => {
+    if (!Array.isArray(src.paras) || src.paras.length === 0) {
+      throw new Error(`Passage ${i + 1} needs a non-empty paras array.`);
+    }
+    src.paras.forEach((pa, j) => {
+      if (typeof pa !== "string") {
+        throw new Error(`Passage ${i + 1} para ${j} must be a plain string for find.`);
+      }
+    });
+  });
+  const byId = new Map(passages.map((src, i) => [src.id || `p${i + 1}`, { src, index: i }]));
+  const firstPid = passages[0].id || "p1";
+  const questions = raw.questions;
+  if (!Array.isArray(questions) || questions.length === 0) {
+    throw new Error("Need at least 1 question.");
+  }
+  const seen = new Set();
+  questions.forEach((q, i) => {
+    const n = q.n ?? i + 1;
+    if (seen.has(n)) throw new Error(`Duplicate question number ${n}.`);
+    seen.add(n);
+    if (q.options !== undefined || q.answer !== undefined) {
+      throw new Error(`Q${n}: find questions use answers spans, not options/answer.`);
+    }
+    if (!q.stem) throw new Error(`Q${n}: find questions need a stem.`);
+    if (!Array.isArray(q.answers) || q.answers.length === 0) {
+      throw new Error(`Q${n}: need at least 1 answers entry.`);
+    }
+    const entry = byId.get(q.p || firstPid);
+    if (!entry) throw new Error(`Q${n}: unknown passage id "${q.p}".`);
+    q.answers.forEach((a, j) => {
+      if (!Number.isInteger(a.para) || a.para < 0 || a.para >= entry.src.paras.length) {
+        throw new Error(`Q${n} answers ${j}: bad para index.`);
+      }
+      if (typeof a.text !== "string" || a.text.length === 0) {
+        throw new Error(`Q${n} answers ${j}: text must be a non-empty string.`);
+      }
+      if (!containsAnswer(entry.src.paras[a.para], a.text)) {
+        throw new Error(`Q${n} answers ${j}: text not found verbatim in para ${a.para}.`);
+      }
+    });
+    (q.refs || []).forEach((r, j) => {
+      if (!Number.isInteger(r.para) || r.para < 0 || r.para >= entry.src.paras.length) {
+        throw new Error(`Q${n} ref ${j}: bad para index.`);
+      }
+      if (typeof r.text !== "string" || r.text.length === 0) return;
+    });
+  });
+  const total = questions.length;
+  let timeMinutes = Number(raw.timeMinutes);
+  if (!timeMinutes || timeMinutes <= 0) {
+    timeMinutes = total + 3;
+  }
+  return {
+    id: raw.id || "JSON-FIND-1",
+    title: raw.title || "Custom Finding Set",
+    section: "find",
+    total,
+    timeMinutes,
+    figures: {},
+    passages: passages.map((src, i) => ({
+      id: src.id || `p${i + 1}`,
+      title: src.title || raw.title || `Passage ${i + 1}`,
+      paras: src.paras,
+    })),
+    questions: questions.map((q, i) => {
+      const n = q.n ?? i + 1;
+      return {
+        n,
+        p: q.p || firstPid,
+        tag: q.tag || "Detail",
+        stem: q.stem || "",
+        short: q.short || q.stem || `Question ${n}`,
+        answers: q.answers.map((a) => ({ para: a.para, text: a.text })),
+        explain: q.explain || "",
+        refs: q.refs || [],
+      };
+    }),
+  };
+}
+
 function mergeTests(section, tests) {
   if (tests.length === 1) return tests[0];
   let qn = 0;
@@ -213,7 +345,7 @@ function mergeTests(section, tests) {
     t.questions.forEach((q) => {
       qn += 1;
       const ok = lettersFor(qn, section);
-      const idx = lettersFor(q.n, section).indexOf(q.answer);
+      const idx = q.answer === undefined ? -1 : lettersFor(q.n, section).indexOf(q.answer);
       questions.push({
         ...q,
         n: qn,
@@ -251,7 +383,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
       next[count - 1] = v;
       return next;
     });
-  const maxCount = tab === "reading" ? 4 : 6;
+  const maxCount = tab === "english" ? 6 : 4;
   const filledCount = texts.filter((t) => t && t.trim()).length;
   const [mode, setMode] = useState("untimed");
   const [error, setError] = useState("");
@@ -259,7 +391,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   const [fixNote, setFixNote] = useState("");
 
   const copyPrompt = async () => {
-    const prompt = tab === "reading" ? readingPrompt : englishPrompt;
+    const prompt = tab === "reading" ? readingPrompt : tab === "english" ? englishPrompt : findPrompt;
     try {
       await navigator.clipboard.writeText(prompt);
     } catch {
@@ -307,7 +439,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
         const n = Array.isArray(raw.passages) ? raw.passages.length : 0;
         if (!n) throw new Error(`Slot ${slot}: need at least 1 passage.`);
         try {
-          return normalize(tab, raw, n);
+          return tab === "find" ? normalizeFind(raw, n) : normalize(tab, raw, n);
         } catch (e) {
           throw new Error(`Slot ${slot}: ${e.message}`);
         }
@@ -325,7 +457,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   const body = (
     <div className="jsonstart">
       <div className="tabs rise d3" role="tablist" aria-label="JSON section">
-        {["reading", "english"].map((t) => (
+        {["reading", "english", "find"].map((t) => (
           <button
             key={t}
             role="tab"
@@ -346,9 +478,13 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
       <p className="muted-text">
         {tab === "reading"
           ? `Slot ${count} of ${maxCount} — paste one reading set here (9 questions · 10 min). `
-          : `Slot ${count} of ${maxCount} — paste one english set here (5 or 10 questions). `}
+          : tab === "english"
+            ? `Slot ${count} of ${maxCount} — paste one english set here (5 or 10 questions). `
+            : `Slot ${count} of ${maxCount} — paste one finding set here (5 questions · 8 min). `}
         Each number keeps its own text. Filled slots ({filledCount}) merge on start and totals add up.
-        Reading paras are plain strings + exact-quote refs; English paras use span arrays like the practice files.
+        {tab === "find"
+          ? "Finding paras are plain strings; each question carries verbatim answers spans — no options."
+          : "Reading paras are plain strings + exact-quote refs; English paras use span arrays like the practice files."}
       </p>
       <div className="jsonstart-row">
         <div className="mode-toggle" role="group" aria-label="Passage count">
@@ -372,7 +508,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
           type="button"
           className="footer-link"
           onClick={() => {
-            setText(tab === "reading" ? SAMPLE_READING : SAMPLE_ENGLISH);
+            setText(tab === "reading" ? SAMPLE_READING : tab === "english" ? SAMPLE_ENGLISH : SAMPLE_FIND);
             setError("");
           }}
         >

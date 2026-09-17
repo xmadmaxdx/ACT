@@ -8,6 +8,7 @@ import Practice from "./components/Practice.jsx";
 import Chapters from "./components/Chapters.jsx";
 import TestInfo from "./components/TestInfo.jsx";
 import TestScreen from "./components/TestScreen.jsx";
+import DetailScreen from "./components/DetailScreen.jsx";
 import Results from "./components/Results.jsx";
 import ComboResults from "./components/ComboResults.jsx";
 import JsonStart from "./components/JsonStart.jsx";
@@ -285,6 +286,19 @@ export default function App() {
 
   if (route === "test" && session) {
     const reviewing = reviewIndex !== null;
+    const custom = customTestData;
+    if (custom && custom.id === session.skill.id && (custom.section || "").toLowerCase() === "find" && !reviewing) {
+      return (
+        <DetailScreen
+          key={`${session.skill.id}-find`}
+          testData={custom}
+          mode={session.mode}
+          onExit={() => {
+            window.history.back();
+          }}
+        />
+      );
+    }
     return (
       <TestScreen
         key={`${session.skill.id}-${reviewing ? `r${reviewIndex}` : "take"}`}
