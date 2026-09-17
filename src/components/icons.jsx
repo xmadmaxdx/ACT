@@ -91,3 +91,23 @@ export function ListIcon() {
     </svg>
   );
 }
+
+export function CalculatorIcon() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+      <rect x="7" y="3" width="16" height="24" rx="3" fill="#1cb0f6" stroke="#1899d6" strokeWidth="2" />
+      <rect x="10.5" y="6.5" width="9" height="4.5" rx="1" fill="#ddf4ff" />
+      <g fill="#fff">
+        <circle cx="11.5" cy="15" r="1.3" />
+        <circle cx="15" cy="15" r="1.3" />
+        <circle cx="18.5" cy="15" r="1.3" />
+        <circle cx="11.5" cy="19" r="1.3" />
+        <circle cx="15" cy="19" r="1.3" />
+        <circle cx="18.5" cy="19" r="1.3" />
+        <circle cx="11.5" cy="23" r="1.3" />
+        <circle cx="15" cy="23" r="1.3" />
+        <circle cx="18.5" cy="23" r="1.3" />
+      </g>
+    </svg>
+  );
+}

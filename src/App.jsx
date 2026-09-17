@@ -11,6 +11,7 @@ import TestScreen from "./components/TestScreen.jsx";
 import Results from "./components/Results.jsx";
 import ComboResults from "./components/ComboResults.jsx";
 import JsonStart from "./components/JsonStart.jsx";
+import Calculator from "./components/Calculator.jsx";
 import Loader, { LoaderError } from "./components/Loader.jsx";
 import { fetchCatalog, fetchMinis } from "./supabase.js";
 import "./styles.css";
@@ -35,6 +36,7 @@ function routeFromPath(path) {
   if (path === "/test-info") return "info";
   if (path === "/chapters") return "chapters";
   if (path === "/combo") return "combo";
+  if (path === "/calculator" || path === "/calc" || path === "/cal") return "calculator";
   if (path.startsWith("/practice-test-")) return "test";
   return "home";
 }
@@ -135,6 +137,11 @@ export default function App() {
     } else if (r === "chapters") {
       window.history.pushState({}, "", "/chapters");
       setRoute("chapters");
+    } else if (r === "calculator") {
+      window.history.pushState({}, "", "/calculator");
+      setRoute("calculator");
+      window.scrollTo(0, 0);
+      return;
     } else {
       window.history.pushState({}, "", "/");
       setRoute("home");
@@ -371,6 +378,10 @@ export default function App() {
     );
   }
 
+  if (route === "calculator") {
+    return <Calculator onClose={() => navigate("home")} />;
+  }
+
   if (route === "combo") {
     navigate("home");
     return null;
@@ -397,7 +408,7 @@ export default function App() {
             <>
               <Hero />
               <hr className="divider" />
-              <ActionCards onPractice={() => navigate("practice")} />
+              <ActionCards onPractice={() => navigate("practice")} onCalculator={() => navigate("calculator")} />
               <JsonStart variant="page" onStart={(t, m) => startLessonTest(t, m)} />
             </>
           )}
