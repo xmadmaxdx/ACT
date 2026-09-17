@@ -726,6 +726,9 @@ export default function FindScreen({ testData, mode, onExit }) {
       delete next[n];
       return next;
     });
+    if (flashT.current) clearTimeout(flashT.current);
+    flashT.current = null;
+    setFlash(null);
     dropSelection();
   };
 
@@ -743,6 +746,9 @@ export default function FindScreen({ testData, mode, onExit }) {
       delete next[n];
       return next;
     });
+    if (flashT.current) clearTimeout(flashT.current);
+    flashT.current = null;
+    setFlash(null);
   };
 
   const check = () => {
@@ -753,11 +759,8 @@ export default function FindScreen({ testData, mode, onExit }) {
     setVerdicts((m) => ({ ...m, [n]: { ok: r.correct } }));
     if (!r.correct) {
       if (flashT.current) clearTimeout(flashT.current);
+      flashT.current = null;
       setFlash({ ok: false, key: `${n}-${Date.now()}` });
-      flashT.current = setTimeout(() => {
-        setFlash(null);
-        flashT.current = null;
-      }, 1400);
     }
     window.console.debug("find check", { n, correct: r.correct, recall: r.recall, precision: r.precision });
   };
@@ -853,6 +856,9 @@ export default function FindScreen({ testData, mode, onExit }) {
   const goTo = (n) => {
     const idx = questions.findIndex((q) => q.n === n);
     if (idx >= 0) setQIndex(idx);
+    if (flashT.current) clearTimeout(flashT.current);
+    flashT.current = null;
+    setFlash(null);
   };
 
   const commitActivePace = () => {

@@ -160,7 +160,10 @@ export function scoreSelection(paras, answers, picked) {
       firstReason = "missing";
       continue;
     }
-    if (extra > t.maxExtraWords) {
+    // Containment: the pick holds (nearly) the whole answer, so extra words
+    // are fine — the sentence cage below still caps runaway picks.
+    const contained = c.recall >= 0.9;
+    if (!contained && extra > t.maxExtraWords) {
       firstReason = "extra";
       continue;
     }
