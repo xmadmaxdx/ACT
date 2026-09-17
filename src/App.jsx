@@ -8,7 +8,7 @@ import Practice from "./components/Practice.jsx";
 import Chapters from "./components/Chapters.jsx";
 import TestInfo from "./components/TestInfo.jsx";
 import TestScreen from "./components/TestScreen.jsx";
-import DetailScreen from "./components/DetailScreen.jsx";
+import FindScreen from "./components/FindScreen.jsx";
 import Results from "./components/Results.jsx";
 import ComboResults from "./components/ComboResults.jsx";
 import JsonStart from "./components/JsonStart.jsx";
@@ -289,7 +289,7 @@ export default function App() {
     const custom = customTestData;
     if (custom && custom.id === session.skill.id && (custom.section || "").toLowerCase() === "find" && !reviewing) {
       return (
-        <DetailScreen
+        <FindScreen
           key={`${session.skill.id}-find`}
           testData={custom}
           mode={session.mode}

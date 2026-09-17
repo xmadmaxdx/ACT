@@ -3365,6 +3365,15 @@ button {
   width: 100%;
 }
 
+.detail-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.detail-actions .detail-check {
+  flex: 1;
+}
+
 .detail-check:disabled {
   opacity: 0.45;
   cursor: not-allowed;
