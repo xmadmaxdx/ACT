@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getStroke } from "perfect-freehand";
-import BoardTextEditor from "./BoardTextEditor.jsx";
 
 const INK = "#1f2937";
 const COLORS = ["#1f2937", "#1cb0f6", "#16a34a", "#ea580c"];
@@ -69,12 +68,6 @@ function rotatedBox(obj) {
   const xs = corners.map((p) => p[0]);
   const ys = corners.map((p) => p[1]);
   return { minX: Math.min(...xs), minY: Math.min(...ys), maxX: Math.max(...xs), maxY: Math.max(...ys) };
-}
-
-function textMetrics(t) {
-  const lines = String(t.text || "").split("\n");
-  const longest = lines.reduce((m, l) => Math.max(m, l.length), 0);
-  return { w: Math.max(40, longest * t.fontSize * 0.55 + 16), h: lines.length * t.fontSize * 1.25 + 12 };
 }
 
 function shapeBody(shape, w, h, stroke) {
@@ -253,11 +246,13 @@ function ShapeIcon({ id }) {
 const clone = (o) => JSON.parse(JSON.stringify(o));
 
 export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
-  const [objects, setObjects] = useState(() =>
-    store && qkey !== undefined && qkey !== null && Array.isArray(store.current[qkey])
-      ? clone(store.current[qkey])
-      : []
-  );
+  const [objects, setObjects] = useState(() => {
+    if (store && qkey !== undefined && qkey !== null && Array.isArray(store.current[qkey])) {
+      const saved = clone(store.current[qkey]);
+      return saved.filter((o) => o && o.type !== "text");
+    }
+    return [];
+  });
   const [tool, setTool] = useState("pen");
   const [color, setColor] = useState(INK);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -265,17 +260,13 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
   const [marquee, setMarquee] = useState(null);
   const [penSize, setPenSize] = useState(7);
   const [activePath, setActivePath] = useState("");
-  const [polyPreview, setPolyPreview] = useState(null);
-  const [editing, setEditing] = useState(null);
   const [history, setHistory] = useState([]);
-  const editorRef = useRef(null);
 
   const svgRef = useRef(null);
   const pointsRef = useRef([]);
   const rafRef = useRef(0);
   const drawingRef = useRef(false);
   const gestureRef = useRef(null);
-  const chainRef = useRef(null);
   const spaceRef = useRef(false);
   const lastTouchEndRef = useRef(0);
   const panRef = useRef(null);
@@ -302,7 +293,6 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
       if (h.length === 0) return h;
       setObjects(clone(h[h.length - 1]));
       setSelectedIds([]);
-      setEditing(null);
       return h.slice(0, -1);
     });
   }, []);
@@ -310,7 +300,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
   useEffect(() => {
     const onKey = (e) => {
       const tag = (e.target && e.target.tagName) || "";
-      if (editing || /^(INPUT|TEXTAREA|SELECT)$/.test(tag)) return;
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag)) return;
       if ((e.key === "Delete" || e.key === "Backspace") && selectedIdsRef.current.length > 0) {
         e.preventDefault();
         pushHistory();
@@ -323,7 +313,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [editing, undo, pushHistory]);
+  }, [undo, pushHistory]);
 
   useEffect(() => {
     const dn = (e) => {
@@ -393,7 +383,9 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
           store.current[prevBoardKey.current] = clone(objectsRef.current);
         }
         const saved = store.current[qkey];
-        setObjects(Array.isArray(saved) ? clone(saved) : []);
+        setObjects(
+          Array.isArray(saved) ? clone(saved).filter((o) => o && o.type !== "text") : []
+        );
       }
       setSelectedIds([]);
       setHistory([]);
@@ -408,14 +400,6 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
       }
     };
   }, []);
-
-  // Leaving Lines mode abandons the open chain instead of committing a stub.
-  useEffect(() => {
-    if (tool !== "poly" && chainRef.current) {
-      chainRef.current = null;
-      setPolyPreview(null);
-    }
-  }, [tool]);
 
   const boardPoint = useCallback((clientX, clientY) => {
     const rect = svgRef.current.getBoundingClientRect();
@@ -456,42 +440,12 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
       if (b.minX <= x1 && b.maxX >= x0 && b.minY <= y1 && b.maxY >= y0) hits.push(o.id);
     }
     setSelectedIds(hits);
-    setEditingId(null);
   }, []);
 
   const selectedId = selectedIds.length === 1 ? selectedIds[0] : null;
   const selected = objects.find((o) => o.id === selectedId) || null;
   const selectedIdRef = useRef(null);
   selectedIdRef.current = selectedId;
-
-  const finishChain = useCallback(
-    (commit) => {
-      const ch = chainRef.current;
-      chainRef.current = null;
-      setPolyPreview(null);
-      if (!commit || !ch || ch.points.length < 2) return;
-      const xs = ch.points.map((p) => p[0]);
-      const ys = ch.points.map((p) => p[1]);
-      const x0 = Math.min(...xs);
-      const y0 = Math.min(...ys);
-      setObjects((o) => [
-        ...o,
-        {
-          id: nid("poly"),
-          type: "poly",
-          points: ch.points,
-          color: ch.color,
-          width: 3.5,
-          x: x0,
-          y: y0,
-          w: Math.max(1, Math.max(...xs) - x0),
-          h: Math.max(1, Math.max(...ys) - y0),
-          rotation: 0,
-        },
-      ]);
-    },
-    []
-  );
 
   const onPointerDown = useCallback(
     (e) => {
@@ -502,9 +456,6 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
         if (e.isPrimary !== false) svg.setPointerCapture(e.pointerId);
       } catch {
         /* Emulated or duplicate pointer: events still bubble to the svg. */
-      }
-      if (editorRef.current) {
-        editorRef.current.commit();
       }
       const [px, py] = boardPoint(e.clientX, e.clientY);
 
@@ -518,60 +469,6 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
         pointsRef.current = [[px, py, e.nativeEvent.pressure || 0.5]];
         scheduleRender();
         return;
-      }
-
-      if (tool === "text") {
-        pushHistory();
-        const id = nid("txt");
-        setObjects((o) => [
-          ...o,
-          { id, type: "text", x: px, y: py, w: 120, h: 32, rotation: 0, text: "", fontSize: 19, color },
-        ]);
-        setSelectedIds([id]);
-        setEditing({
-          key: `${id}-new`,
-          id,
-          x: px,
-          y: py,
-          fontSize: 19,
-          color,
-          initial: "",
-          isNew: true,
-        });
-        return;
-      }
-
-      if (tool === "poly" && e.button === 0 && !spaceRef.current) {
-        const hit = e.target && e.target.closest ? e.target.closest("[data-handle],[data-id]") : null;
-        const ch = chainRef.current;
-        if (ch && !hit) {
-          const now = Date.now();
-          const [sx0, sy0] = ch.points[0];
-          if (now - ch.lastTap < 350 || Math.hypot(px - sx0, py - sy0) < 12) {
-            finishChain(true);
-          } else {
-            ch.points.push([px, py]);
-            ch.lastTap = now;
-            setPolyPreview(null);
-          }
-          return;
-        }
-        if (!ch && !hit) {
-          const polys = objectsRef.current.filter((o) => o.type === "poly");
-          const prev = polys[polys.length - 1];
-          let start = [px, py];
-          if (prev) {
-            const ep = prev.points[prev.points.length - 1];
-            if (Math.hypot(px - ep[0], py - ep[1]) < 14) start = [ep[0], ep[1]];
-          }
-          pushHistory();
-          chainRef.current = { points: [start], color: colorRef.current, lastTap: Date.now() };
-          setPolyPreview([
-            [start[0], start[1]],
-            [px, py],
-          ]);
-          return;
-        }
       }
 
       const handleEl = e.target && e.target.closest ? e.target.closest("[data-handle]") : null;
@@ -614,7 +511,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
       setMarquee({ x0: px, y0: py, x1: px, y1: py });
       setSelectedIds([]);
     },
-    [tool, color, boardPoint, scheduleRender, pushHistory]
+    [tool, boardPoint, scheduleRender, pushHistory]
   );
 
   const onPointerMove = useCallback(
@@ -625,14 +522,6 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
         pointsRef.current.push([px, py, e.nativeEvent.pressure || 0.5]);
         scheduleRender();
         return;
-      }
-
-      if (tool === "poly" && chainRef.current && chainRef.current.points.length > 0) {
-        const last = chainRef.current.points[chainRef.current.points.length - 1];
-        setPolyPreview([
-          [last[0], last[1]],
-          [px, py],
-        ]);
       }
 
       const g = gestureRef.current;
@@ -842,47 +731,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
     [pushHistory]
   );
 
-  const handleEditorCommit = useCallback(
-    (value) => {
-      if (!editing) return;
-      const text = value.trim();
-      const { id, isNew } = editing;
-      pushHistory();
-      if (!text) {
-        setObjects((o) => o.filter((x) => x.id !== id));
-      } else {
-        setObjects((o) =>
-          o.map((x) => {
-            if (x.id !== id) return x;
-            const m = textMetrics({ text, fontSize: x.fontSize });
-            return { ...x, text, w: m.w, h: m.h };
-          })
-        );
-      }
-      setEditing(null);
-      if (!text && !isNew) {
-        setSelectedIds((s) => s.filter((sid) => sid !== id));
-      }
-    },
-    [editing, pushHistory]
-  );
-
-  const handleEditorCancel = useCallback(() => {
-    if (!editing) return;
-    if (editing.isNew) {
-      pushHistory();
-      const id = editing.id;
-      setObjects((o) => o.filter((x) => x.id !== id));
-      setSelectedIds((s) => s.filter((sid) => sid !== id));
-    }
-    setEditing(null);
-  }, [editing, pushHistory]);
-
   const deleteSelected = useCallback(() => {
-    if (editorRef.current) {
-      editorRef.current.commit();
-      return;
-    }
     if (selectedIdsRef.current.length === 0) return;
     pushHistory();
     setObjects((o) => o.filter((x) => !selectedIdsRef.current.includes(x.id)));
@@ -890,14 +739,10 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
   }, [pushHistory]);
 
   const clearAll = useCallback(() => {
-    if (editorRef.current) {
-      editorRef.current.commit();
-    }
     if (objectsRef.current.length === 0) return;
     pushHistory();
     setObjects([]);
     setSelectedIds([]);
-    setEditing(null);
   }, [pushHistory]);
 
   const nudge = useCallback((fx, fy) => {
@@ -925,22 +770,6 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
     }
   }, []);
 
-  const startEdit = useCallback((id) => {
-    const obj = objectsRef.current.find((o) => o.id === id);
-    if (!obj || obj.type !== "text") return;
-    setSelectedIds([id]);
-    setEditing({
-      key: `${id}-${Date.now()}`,
-      id,
-      x: obj.x,
-      y: obj.y,
-      fontSize: obj.fontSize,
-      color: obj.color,
-      initial: obj.text,
-      isNew: false,
-    });
-  }, []);
-
   const selBox = selected && selected.type !== "pen" ? rotatedBox(selected) : null;
 
   return (
@@ -965,29 +794,13 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
           </button>
           <button
             type="button"
-            className={tool === "text" ? "board-tool active" : "board-tool"}
-            onClick={() => setTool("text")}
-            title="Text: click anywhere to write"
-          >
-            Text
-          </button>
-          <button
-            type="button"
             className={tool === "move" ? "board-tool active" : "board-tool"}
             onClick={() => setTool("move")}
             title="Move: drag anywhere to pan the view"
           >
             Move
           </button>
-          <button
-            type="button"
-            className={tool === "poly" ? "board-tool active" : "board-tool"}
-            onClick={() => setTool("poly")}
-            title="Lines: click to drop joints and chain segments, double-click to finish"
-          >
-            Lines
-          </button>
-        </div>
+          </div>
         <div className="board-tool-group board-shapes">
           {SHAPES.map((s) => (
             <button
@@ -1059,15 +872,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerCancel}
           onPointerLeave={onPointerLeave}
-          onDoubleClick={(e) => {
-            if (tool === "poly") {
-              finishChain(true);
-              return;
-            }
-            const g = e.target && e.target.closest ? e.target.closest("[data-id]") : null;
-            if (g && tool === "select") startEdit(g.getAttribute("data-id"));
-          }}
-          style={{ touchAction: "none", cursor: tool === "move" ? "grab" : tool === "pen" || tool === "poly" ? "crosshair" : "default" }}
+          style={{ touchAction: "none", cursor: tool === "move" ? "grab" : tool === "pen" ? "crosshair" : "default" }}
         >
           <defs>
             <pattern
@@ -1096,47 +901,6 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
                 </g>
               );
             }
-            if (o.type === "text") {
-              if (editing && editing.id === o.id) return <g key={o.id} data-id={o.id} />;
-              const lines = String(o.text || "").split("\n");
-              return (
-                <g
-                  key={o.id}
-                  data-id={o.id}
-                  transform={`translate(${o.x},${o.y}) rotate(${o.rotation})`}
-                >
-                  <text fontSize={o.fontSize} fill={o.color} dominantBaseline="hanging" pointerEvents="all">
-                    {lines.map((line, i) => (
-                      <tspan key={i} x={0} dy={i === 0 ? 0 : o.fontSize * 1.2}>
-                        {line}
-                      </tspan>
-                    ))}
-                  </text>
-                </g>
-              );
-            }
-            if (o.type === "poly") {
-              const pts = o.points.map((p) => `${p[0]},${p[1]}`).join(" ");
-              return (
-                <g key={o.id} data-id={o.id}>
-                  <polyline points={pts} fill="none" stroke="#ffffff" strokeOpacity={0} strokeWidth={18} pointerEvents="stroke" />
-                  <polyline
-                    points={pts}
-                    fill="none"
-                    stroke={o.color}
-                    strokeWidth={o.width || 3.5}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    pathLength={1}
-                    className="poly-seg"
-                    pointerEvents="stroke"
-                  />
-                  {o.points.map((p, i) => (
-                    <circle key={i} cx={p[0]} cy={p[1]} r={3.5} fill={o.color} pointerEvents="none" />
-                  ))}
-                </g>
-              );
-            }
             return (
               <g
                 key={o.id}
@@ -1151,43 +915,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
 
           {activePath && <path d={activePath} fill={color} pointerEvents="none" />}
 
-          {(() => {
-            const ch = chainRef.current;
-            if (!ch || ch.points.length === 0) return null;
-            const pts = ch.points.map((p) => `${p[0]},${p[1]}`).join(" ");
-            return (
-              <g pointerEvents="none">
-                <polyline
-                  points={pts}
-                  fill="none"
-                  stroke={ch.color}
-                  strokeWidth={3.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  pathLength={1}
-                  className="poly-seg"
-                />
-                {ch.points.map((p, i) => (
-                  <circle key={i} cx={p[0]} cy={p[1]} r={3.5} fill={ch.color} />
-                ))}
-                {polyPreview && (
-                  <line
-                    x1={polyPreview[0][0]}
-                    y1={polyPreview[0][1]}
-                    x2={polyPreview[1][0]}
-                    y2={polyPreview[1][1]}
-                    stroke={ch.color}
-                    strokeWidth={3.5}
-                    strokeLinecap="round"
-                    strokeDasharray="7 6"
-                    className="poly-preview"
-                  />
-                )}
-              </g>
-            );
-          })()}
-
-          {selected && selected.type !== "pen" && selected.type !== "poly" && selBox && (
+          {selected && selected.type !== "pen" && selBox && (
             <g pointerEvents="none">
               <rect
                 x={selBox.minX}
@@ -1243,7 +971,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
             );
           })()}
 
-          {selected && selected.type !== "pen" && selected.type !== "poly" && (
+          {selected && selected.type !== "pen" && (
             <g
               transform={`translate(${selected.x},${selected.y}) rotate(${selected.rotation},${selected.w / 2},${selected.h / 2})`}
             >
@@ -1286,19 +1014,6 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
           </g>
         </svg>
 
-        {editing && (
-          <BoardTextEditor
-            key={editing.key}
-            ref={editorRef}
-            x={(editing.x - cam.x) * cam.zoom}
-            y={(editing.y - cam.y) * cam.zoom}
-            fontSize={editing.fontSize * cam.zoom}
-            color={editing.color}
-            initialValue={editing.initial}
-            onCommit={handleEditorCommit}
-            onCancel={handleEditorCancel}
-          />
-        )}
         <div className="board-dpad" role="group" aria-label="Pan view">
           <span />
           <button
