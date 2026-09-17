@@ -31,13 +31,14 @@ function slugToId(path) {
 }
 
 function routeFromPath(path) {
-  if (path.endsWith("/results")) return "results";
-  if (path === "/practice") return "practice";
-  if (path === "/test-info") return "info";
-  if (path === "/chapters") return "chapters";
-  if (path === "/combo") return "combo";
-  if (path === "/calculator" || path === "/calc" || path === "/cal") return "calculator";
-  if (path.startsWith("/practice-test-")) return "test";
+  const clean = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+  if (clean.endsWith("/results")) return "results";
+  if (clean === "/practice") return "practice";
+  if (clean === "/test-info") return "info";
+  if (clean === "/chapters") return "chapters";
+  if (clean === "/combo") return "combo";
+  if (clean === "/calculator" || clean === "/calc" || clean === "/cal") return "calculator";
+  if (clean.startsWith("/practice-test-")) return "test";
   return "home";
 }
 
