@@ -751,12 +751,14 @@ export default function FindScreen({ testData, mode, onExit }) {
     const n = activeQ.n;
     setAttempts((m) => ({ ...m, [n]: (m[n] || 0) + 1 }));
     setVerdicts((m) => ({ ...m, [n]: { ok: r.correct } }));
-    if (flashT.current) clearTimeout(flashT.current);
-    setFlash({ ok: r.correct, key: `${n}-${Date.now()}` });
-    flashT.current = setTimeout(() => {
-      setFlash(null);
-      flashT.current = null;
-    }, 1400);
+    if (!r.correct) {
+      if (flashT.current) clearTimeout(flashT.current);
+      setFlash({ ok: false, key: `${n}-${Date.now()}` });
+      flashT.current = setTimeout(() => {
+        setFlash(null);
+        flashT.current = null;
+      }, 1400);
+    }
     window.console.debug("find check", { n, correct: r.correct, recall: r.recall, precision: r.precision });
   };
 

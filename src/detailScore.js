@@ -136,7 +136,27 @@ export function scoreSelection(paras, answers, picked) {
       firstReason = "overlap";
       continue;
     }
-    if (missing > t.maxMissingWords) {
+    // Sentence family: the pick sits inside the answer's own sentence(s),
+    // so a short sub-span is right even when it misses many words.
+    let inFamily = false;
+    let sets = null;
+    if (picked.para === c.answer.para) {
+      const paraText = paras[picked.para];
+      const sents = sentencesOf(paraText);
+      if (sents.length > 0) {
+        const s = Math.max(0, picked.s);
+        const e = Math.min(paraText.length, picked.e);
+        const expSet = sentIndexes(sents, c.loc[0], c.loc[1]);
+        const pickSet = sentIndexes(sents, s, e);
+        let inter = 0;
+        pickSet.forEach((i) => {
+          if (expSet.has(i)) inter++;
+        });
+        sets = { expSet, pickSet };
+        inFamily = inter > 0 && pickSet.size > 0 && [...pickSet].every((i) => expSet.has(i));
+      }
+    }
+    if (!inFamily && missing > t.maxMissingWords) {
       firstReason = "missing";
       continue;
     }
@@ -151,10 +171,11 @@ export function scoreSelection(paras, answers, picked) {
     const paraText = paras[picked.para];
     const sents = sentencesOf(paraText);
     if (sents.length > 0) {
-      const s = Math.max(0, picked.s);
-      const e = Math.min(paraText.length, picked.e);
-      const expSet = sentIndexes(sents, c.loc[0], c.loc[1]);
-      const pickSet = sentIndexes(sents, s, e);
+      const { expSet, pickSet } = sets || (() => {
+        const s = Math.max(0, picked.s);
+        const e = Math.min(paraText.length, picked.e);
+        return { expSet: sentIndexes(sents, c.loc[0], c.loc[1]), pickSet: sentIndexes(sents, s, e) };
+      })();
       let inter = 0;
       pickSet.forEach((i) => {
         if (expSet.has(i)) inter++;
