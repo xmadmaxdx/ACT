@@ -407,9 +407,12 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   };
 
   const start = () => {
-    const filled = texts
-      .map((t, i) => ({ text: t, slot: i + 1 }))
-      .filter((x) => x.text && x.text.trim());
+    const filled =
+      tab === "find"
+        ? (texts[0] && texts[0].trim() ? [{ text: texts[0], slot: 1 }] : [])
+        : texts
+            .map((t, i) => ({ text: t, slot: i + 1 }))
+            .filter((x) => x.text && x.text.trim());
     if (!filled.length) {
       setFixNote("");
       setError("Paste at least 1 set.");
@@ -480,12 +483,12 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
           ? `Slot ${count} of ${maxCount} — paste one reading set here (9 questions · 10 min). `
           : tab === "english"
             ? `Slot ${count} of ${maxCount} — paste one english set here (5 or 10 questions). `
-            : `Slot ${count} of ${maxCount} — paste one finding set here (5 questions · 8 min). `}
-        Each number keeps its own text. Filled slots ({filledCount}) merge on start and totals add up.
+            : "Paste one finding set here (5 questions · 8 min). "}
         {tab === "find"
           ? "Finding paras are plain strings; each question carries verbatim answers spans — no options."
-          : "Reading paras are plain strings + exact-quote refs; English paras use span arrays like the practice files."}
+          : `Each number keeps its own text. Filled slots ({filledCount}) merge on start and totals add up. Reading paras are plain strings + exact-quote refs; English paras use span arrays like the practice files.`}
       </p>
+      {tab !== "find" && (
       <div className="jsonstart-row">
         <div className="mode-toggle" role="group" aria-label="Passage count">
           {Array.from({ length: maxCount }, (_, i) => i + 1).map((c) => (
@@ -503,6 +506,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
           ))}
         </div>
       </div>
+      )}
       <div className="jsonstart-row">
         <button
           type="button"
