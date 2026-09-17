@@ -3323,7 +3323,7 @@ button {
 }
 
 .detail-answer {
-  min-height: 190px;
+  min-height: 110px;
   border: 2px dashed var(--faint);
   border-radius: 10px;
   background: #fbfcfe;
@@ -3332,6 +3332,7 @@ button {
   flex-direction: column;
   justify-content: center;
   gap: 8px;
+  margin-bottom: 8px;
   transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -3368,6 +3369,7 @@ button {
 .detail-actions {
   display: flex;
   gap: 8px;
+  margin-bottom: 4px;
 }
 
 .detail-actions .detail-check {
