@@ -3484,6 +3484,29 @@ button {
   border-bottom-width: 2px;
 }
 
+.calc-cross {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 0 var(--blue-dark);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.calc-cross:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
 .calc-full-body {
   flex: 1;
   min-height: 0;

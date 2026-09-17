@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { DesmosCalc } from "./DesmosCalc.jsx";
 import FreestyleBoard from "./FreestyleBoard.jsx";
 
-const MODES = ["graph", "scientific", "board"];
-const LABELS = { graph: "Graph", scientific: "Scientific", board: "Board" };
+const MODES = ["graph", "board"];
+const LABELS = { graph: "Graph", board: "Board" };
 
 /* Standalone calculator studio: fullscreen Desmos + whiteboard. Params all
    degrade gracefully — bad initialMode falls back to graph, missing onClose
@@ -43,7 +43,7 @@ export default function Calculator({ initialMode, onClose, showTabs }) {
           ))}
         </div>
         {onClose && (
-          <button type="button" className="modal-close" aria-label="Close calculator" onClick={onClose}>
+          <button type="button" className="calc-cross" aria-label="Close calculator" onClick={onClose}>
             ✕
           </button>
         )}
