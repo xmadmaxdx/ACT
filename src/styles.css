@@ -3432,8 +3432,8 @@ button {
 }
 
 .find-arrow {
-  font-weight: 900;
-  font-size: 15px;
+  font-weight: 800;
+  font-size: 20px;
   line-height: 1;
   color: var(--faint);
 }

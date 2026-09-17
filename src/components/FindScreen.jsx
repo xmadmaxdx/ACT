@@ -263,12 +263,12 @@ function FindBits({ q, pick, paused, flagged, tried, verdict, onToggleFlag, onCh
         )}
       </div>
       <div className="detail-actions">
-        <FindBtn className="detail-check" onClick={onCheck} disabled={!pick || paused}>
-          CHECK
+        <FindBtn className="detail-check light" onClick={onCheck} disabled={!pick || paused}>
+          Check
         </FindBtn>
         {pick && (
-          <FindBtn onClick={onClearPick}>
-            CLEAR
+          <FindBtn className="light" onClick={onClearPick}>
+            Clear
           </FindBtn>
         )}
       </div>
