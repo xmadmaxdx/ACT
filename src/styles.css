@@ -3417,6 +3417,27 @@ button {
   cursor: not-allowed;
 }
 
+.find-btn.light {
+  background: #fff;
+  border-color: rgba(60, 60, 60, 0.18);
+  font-weight: 800;
+}
+
+.find-btn.light:hover:not(:disabled) {
+  background: #fff;
+}
+
+.find-btn.light:hover:not(:disabled) .find-arrow {
+  color: var(--blue);
+}
+
+.find-arrow {
+  font-weight: 900;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--faint);
+}
+
 .detail-check:disabled {
   opacity: 0.45;
   cursor: not-allowed;

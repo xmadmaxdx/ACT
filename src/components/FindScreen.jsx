@@ -1097,10 +1097,11 @@ export default function FindScreen({ testData, mode, onExit }) {
       <div className="test-nav">
         <div className="test-nav-inner">
           <FindBtn
+            className="light"
             onClick={() => setQIndex(qIndex - 1)}
             disabled={qIndex === 0}
           >
-            BACK
+            <span className="find-arrow" aria-hidden="true">‹</span> Back
           </FindBtn>
           <span className="nav-count">
             {`${qIndex + 1} of ${total}`}
@@ -1114,8 +1115,8 @@ export default function FindScreen({ testData, mode, onExit }) {
               FINISH
             </button>
           ) : (
-            <FindBtn onClick={() => setQIndex(qIndex + 1)}>
-              NEXT
+            <FindBtn className="light" onClick={() => setQIndex(qIndex + 1)}>
+              Next <span className="find-arrow" aria-hidden="true">›</span>
             </FindBtn>
           )}
           <button
