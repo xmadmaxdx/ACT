@@ -3068,6 +3068,13 @@ button {
   padding-left: 8px;
 }
 
+.board-collapse {
+  margin-left: auto;
+  border-left: 2px solid var(--line);
+  padding-left: 8px;
+  display: flex;
+}
+
 .board-tool {
   background: #fff;
   border: 2px solid transparent;

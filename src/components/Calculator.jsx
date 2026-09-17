@@ -12,6 +12,7 @@ export default function Calculator({ initialMode, onClose, showTabs }) {
   const start = MODES.includes(initialMode) ? initialMode : "graph";
   const tabs = showTabs === false ? [start] : MODES;
   const [mode, setMode] = useState(start);
+  const [headHidden, setHeadHidden] = useState(false);
   const boardStore = useRef({});
   const boardApiRef = useRef(null);
   const desmosApiRef = useRef(null);
@@ -27,6 +28,7 @@ export default function Calculator({ initialMode, onClose, showTabs }) {
 
   return (
     <div className="calc-fullscreen" role="dialog" aria-label="Calculator studio">
+      {!headHidden && (
       <div className="calc-full-head">
         <div className="calc-tabs" role="tablist" aria-label="Calculator type">
           {tabs.map((m) => (
@@ -48,9 +50,36 @@ export default function Calculator({ initialMode, onClose, showTabs }) {
           </button>
         )}
       </div>
+      )}
       <div className="calc-full-body">
         {mode === "board" ? (
-          <FreestyleBoard qkey="studio" store={boardStore} apiRef={boardApiRef} />
+          <FreestyleBoard
+            qkey="studio"
+            store={boardStore}
+            apiRef={boardApiRef}
+            toolbarExtra={
+              <span className="board-collapse">
+                <button
+                  type="button"
+                  className="board-tool"
+                  onClick={() => setHeadHidden((v) => !v)}
+                  title={headHidden ? "Show studio header" : "Hide studio header"}
+                  aria-label={headHidden ? "Show studio header" : "Hide studio header"}
+                  aria-pressed={headHidden}
+                >
+                  {headHidden ? (
+                    <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : (
+                    <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M3 10L8 5l5 5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </button>
+              </span>
+            }
+          />
         ) : (
           <DesmosCalc mode={mode} apiRef={desmosApiRef} />
         )}

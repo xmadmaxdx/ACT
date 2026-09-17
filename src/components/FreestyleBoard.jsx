@@ -232,7 +232,7 @@ function ShapeIcon({ id }) {
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 
-export default function FreestyleBoard({ qkey, store, apiRef }) {
+export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
   const [objects, setObjects] = useState(() =>
     store && qkey !== undefined && qkey !== null && Array.isArray(store.current[qkey])
       ? clone(store.current[qkey])
@@ -950,6 +950,7 @@ export default function FreestyleBoard({ qkey, store, apiRef }) {
             Clear
           </button>
         </div>
+        {toolbarExtra}
       </div>
 
       <div className="board-canvas-wrap">
