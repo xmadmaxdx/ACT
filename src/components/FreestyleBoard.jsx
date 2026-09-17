@@ -82,6 +82,12 @@ function shapeBody(shape, w, h, stroke) {
   const common = { fill: "#ffffff", stroke, strokeWidth: sw, strokeLinejoin: "round", strokeLinecap: "round" };
   const dash = { ...common, strokeDasharray: "7 5" };
   switch (shape) {
+    case "line":
+      return <line x1={0} y1={h / 2} x2={w} y2={h / 2} {...common} />;
+    case "hexagon": {
+      const pts = `${w / 2},0 ${w},${h / 4} ${w},${(3 * h) / 4} ${w / 2},${h} 0,${(3 * h) / 4} 0,${h / 4}`;
+      return <polygon points={pts} {...common} />;
+    }
     case "rtriangle":
       return <polygon points={`0,0 0,${h} ${w},${h}`} {...common} />;
     case "triangle":
@@ -160,7 +166,17 @@ function shapeBody(shape, w, h, stroke) {
 
 function hitArea(shape, w, h) {
   const hit = { fill: "#ffffff", fillOpacity: 0, stroke: "none", pointerEvents: "all" };
+  const hitLine = { stroke: "#ffffff", strokeOpacity: 0, strokeWidth: 20, pointerEvents: "stroke", fill: "none" };
   switch (shape) {
+    case "line":
+      return <line x1={0} y1={h / 2} x2={w} y2={h / 2} {...hitLine} />;
+    case "hexagon":
+      return (
+        <polygon
+          points={`${w / 2},0 ${w},${h / 4} ${w},${(3 * h) / 4} ${w / 2},${h} 0,${(3 * h) / 4} 0,${h / 4}`}
+          {...hit}
+        />
+      );
     case "rtriangle":
       return <polygon points={`0,0 0,${h} ${w},${h}`} {...hit} />;
     case "triangle":
@@ -192,6 +208,8 @@ const SHAPES = [  { id: "rtriangle", label: "Right triangle" },
   { id: "trapezoid", label: "Trapezoid" },
   { id: "square", label: "Square" },
   { id: "circle", label: "Circle" },
+  { id: "line", label: "Line" },
+  { id: "hexagon", label: "Hexagon" },
   { id: "cone", label: "Cone" },
   { id: "pyramid", label: "Pyramid" },
   { id: "prism", label: "Prism" },
@@ -206,6 +224,8 @@ function ShapeIcon({ id }) {
         {id === "trapezoid" && <polygon points="11,3 23,3 29,24 5,24" />}
         {id === "square" && <rect x="6" y="4" width="20" height="20" />}
         {id === "circle" && <circle cx="17" cy="14" r="11" />}
+        {id === "line" && <path d="M4 22 L30 6" />}
+        {id === "hexagon" && <polygon points="17,2 30,9 30,19 17,26 4,19 4,9" />}
         {id === "cone" && (
           <g>
             <path d="M17 2 L7 20 M17 2 L27 20" />
@@ -245,6 +265,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
   const [marquee, setMarquee] = useState(null);
   const [penSize, setPenSize] = useState(7);
   const [activePath, setActivePath] = useState("");
+  const [polyPreview, setPolyPreview] = useState(null);
   const [editing, setEditing] = useState(null);
   const [history, setHistory] = useState([]);
   const editorRef = useRef(null);
@@ -254,6 +275,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
   const rafRef = useRef(0);
   const drawingRef = useRef(false);
   const gestureRef = useRef(null);
+  const chainRef = useRef(null);
   const spaceRef = useRef(false);
   const lastTouchEndRef = useRef(0);
   const panRef = useRef(null);
@@ -387,6 +409,14 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
     };
   }, []);
 
+  // Leaving Lines mode abandons the open chain instead of committing a stub.
+  useEffect(() => {
+    if (tool !== "poly" && chainRef.current) {
+      chainRef.current = null;
+      setPolyPreview(null);
+    }
+  }, [tool]);
+
   const boardPoint = useCallback((clientX, clientY) => {
     const rect = svgRef.current.getBoundingClientRect();
     const c = camRef.current;
@@ -434,6 +464,35 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
   const selectedIdRef = useRef(null);
   selectedIdRef.current = selectedId;
 
+  const finishChain = useCallback(
+    (commit) => {
+      const ch = chainRef.current;
+      chainRef.current = null;
+      setPolyPreview(null);
+      if (!commit || !ch || ch.points.length < 2) return;
+      const xs = ch.points.map((p) => p[0]);
+      const ys = ch.points.map((p) => p[1]);
+      const x0 = Math.min(...xs);
+      const y0 = Math.min(...ys);
+      setObjects((o) => [
+        ...o,
+        {
+          id: nid("poly"),
+          type: "poly",
+          points: ch.points,
+          color: ch.color,
+          width: 3.5,
+          x: x0,
+          y: y0,
+          w: Math.max(1, Math.max(...xs) - x0),
+          h: Math.max(1, Math.max(...ys) - y0),
+          rotation: 0,
+        },
+      ]);
+    },
+    []
+  );
+
   const onPointerDown = useCallback(
     (e) => {
       const svg = svgRef.current;
@@ -480,6 +539,39 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
           isNew: true,
         });
         return;
+      }
+
+      if (tool === "poly" && e.button === 0 && !spaceRef.current) {
+        const hit = e.target && e.target.closest ? e.target.closest("[data-handle],[data-id]") : null;
+        const ch = chainRef.current;
+        if (ch && !hit) {
+          const now = Date.now();
+          const [sx0, sy0] = ch.points[0];
+          if (now - ch.lastTap < 350 || Math.hypot(px - sx0, py - sy0) < 12) {
+            finishChain(true);
+          } else {
+            ch.points.push([px, py]);
+            ch.lastTap = now;
+            setPolyPreview(null);
+          }
+          return;
+        }
+        if (!ch && !hit) {
+          const polys = objectsRef.current.filter((o) => o.type === "poly");
+          const prev = polys[polys.length - 1];
+          let start = [px, py];
+          if (prev) {
+            const ep = prev.points[prev.points.length - 1];
+            if (Math.hypot(px - ep[0], py - ep[1]) < 14) start = [ep[0], ep[1]];
+          }
+          pushHistory();
+          chainRef.current = { points: [start], color: colorRef.current, lastTap: Date.now() };
+          setPolyPreview([
+            [start[0], start[1]],
+            [px, py],
+          ]);
+          return;
+        }
       }
 
       const handleEl = e.target && e.target.closest ? e.target.closest("[data-handle]") : null;
@@ -533,6 +625,14 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
         pointsRef.current.push([px, py, e.nativeEvent.pressure || 0.5]);
         scheduleRender();
         return;
+      }
+
+      if (tool === "poly" && chainRef.current && chainRef.current.points.length > 0) {
+        const last = chainRef.current.points[chainRef.current.points.length - 1];
+        setPolyPreview([
+          [last[0], last[1]],
+          [px, py],
+        ]);
       }
 
       const g = gestureRef.current;
@@ -598,34 +698,11 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
       if (g.kind === "resize") {
         const S = g.S;
         const [lx, ly] = toLocal(S, px, py);
-        let nw = S.w;
-        let nh = S.h;
-        let fnx = 0;
-        let fny = 0;
-        if (g.corner === "br") {
-          nw = lx;
-          nh = ly;
-          fnx = 0;
-          fny = 0;
-        } else if (g.corner === "tl") {
-          nw = S.w - lx;
-          nh = S.h - ly;
-          fnx = nw;
-          fny = nh;
-        } else if (g.corner === "tr") {
-          nw = lx;
-          nh = S.h - ly;
-          fnx = 0;
-          fny = nh;
-        } else {
-          nw = S.w - lx;
-          nh = ly;
-          fnx = nw;
-          fny = 0;
-        }
-        nw = Math.max(MIN_SIZE, nw);
-        nh = Math.max(MIN_SIZE, nh);
-        const [ffx, ffy] =
+        // Anchored corner in S-local coords. The box spans it to the pointer,
+        // so dragging a handle through the far edge mirrors the shape (e.g. a
+        // triangle flips when pulled past its opposite side) instead of jamming
+        // at the minimum size.
+        const FIXED =
           g.corner === "br"
             ? [0, 0]
             : g.corner === "tl"
@@ -633,7 +710,17 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
               : g.corner === "tr"
                 ? [0, S.h]
                 : [S.w, 0];
-        const [Fpx, Fpy] = toParent(S, ffx, ffy);
+        const spanTo = (f, q) => {
+          const d = q - f;
+          return f + (Math.abs(d) < MIN_SIZE ? (d < 0 ? -1 : 1) * MIN_SIZE : d);
+        };
+        const qx = spanTo(FIXED[0], lx);
+        const qy = spanTo(FIXED[1], ly);
+        const nw = Math.abs(qx - FIXED[0]);
+        const nh = Math.abs(qy - FIXED[1]);
+        const fnx = qx < FIXED[0] ? nw : 0;
+        const fny = qy < FIXED[1] ? nh : 0;
+        const [Fpx, Fpy] = toParent(S, FIXED[0], FIXED[1]);
         const c = Math.cos(rad(S.rotation));
         const s = Math.sin(rad(S.rotation));
         const ox = Fpx - (nw / 2 + ((fnx - nw / 2) * c - (fny - nh / 2) * s));
@@ -730,9 +817,9 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
   const addShape = useCallback(
     (shape) => {
       pushHistory();
-      const squareLike = shape === "square" || shape === "circle";
-      const w = squareLike ? 110 : 150;
-      const h = squareLike ? 110 : 105;
+      const squareLike = shape === "square" || shape === "circle" || shape === "hexagon";
+      const w = shape === "line" ? 150 : squareLike ? 110 : 150;
+      const h = shape === "line" ? 36 : squareLike ? 110 : 105;
       const rect = svgRef.current.getBoundingClientRect();
       const id = nid("shp");
       setObjects((o) => [
@@ -892,6 +979,14 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
           >
             Move
           </button>
+          <button
+            type="button"
+            className={tool === "poly" ? "board-tool active" : "board-tool"}
+            onClick={() => setTool("poly")}
+            title="Lines: click to drop joints and chain segments, double-click to finish"
+          >
+            Lines
+          </button>
         </div>
         <div className="board-tool-group board-shapes">
           {SHAPES.map((s) => (
@@ -965,10 +1060,14 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
           onPointerCancel={onPointerCancel}
           onPointerLeave={onPointerLeave}
           onDoubleClick={(e) => {
+            if (tool === "poly") {
+              finishChain(true);
+              return;
+            }
             const g = e.target && e.target.closest ? e.target.closest("[data-id]") : null;
             if (g && tool === "select") startEdit(g.getAttribute("data-id"));
           }}
-          style={{ touchAction: "none", cursor: tool === "move" ? "grab" : tool === "pen" ? "crosshair" : "default" }}
+          style={{ touchAction: "none", cursor: tool === "move" ? "grab" : tool === "pen" || tool === "poly" ? "crosshair" : "default" }}
         >
           <defs>
             <pattern
@@ -1016,6 +1115,28 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
                 </g>
               );
             }
+            if (o.type === "poly") {
+              const pts = o.points.map((p) => `${p[0]},${p[1]}`).join(" ");
+              return (
+                <g key={o.id} data-id={o.id}>
+                  <polyline points={pts} fill="none" stroke="#ffffff" strokeOpacity={0} strokeWidth={18} pointerEvents="stroke" />
+                  <polyline
+                    points={pts}
+                    fill="none"
+                    stroke={o.color}
+                    strokeWidth={o.width || 3.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    pathLength={1}
+                    className="poly-seg"
+                    pointerEvents="stroke"
+                  />
+                  {o.points.map((p, i) => (
+                    <circle key={i} cx={p[0]} cy={p[1]} r={3.5} fill={o.color} pointerEvents="none" />
+                  ))}
+                </g>
+              );
+            }
             return (
               <g
                 key={o.id}
@@ -1030,7 +1151,43 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
 
           {activePath && <path d={activePath} fill={color} pointerEvents="none" />}
 
-          {selected && selected.type !== "pen" && selBox && (
+          {(() => {
+            const ch = chainRef.current;
+            if (!ch || ch.points.length === 0) return null;
+            const pts = ch.points.map((p) => `${p[0]},${p[1]}`).join(" ");
+            return (
+              <g pointerEvents="none">
+                <polyline
+                  points={pts}
+                  fill="none"
+                  stroke={ch.color}
+                  strokeWidth={3.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  pathLength={1}
+                  className="poly-seg"
+                />
+                {ch.points.map((p, i) => (
+                  <circle key={i} cx={p[0]} cy={p[1]} r={3.5} fill={ch.color} />
+                ))}
+                {polyPreview && (
+                  <line
+                    x1={polyPreview[0][0]}
+                    y1={polyPreview[0][1]}
+                    x2={polyPreview[1][0]}
+                    y2={polyPreview[1][1]}
+                    stroke={ch.color}
+                    strokeWidth={3.5}
+                    strokeLinecap="round"
+                    strokeDasharray="7 6"
+                    className="poly-preview"
+                  />
+                )}
+              </g>
+            );
+          })()}
+
+          {selected && selected.type !== "pen" && selected.type !== "poly" && selBox && (
             <g pointerEvents="none">
               <rect
                 x={selBox.minX}
@@ -1086,7 +1243,7 @@ export default function FreestyleBoard({ qkey, store, apiRef, toolbarExtra }) {
             );
           })()}
 
-          {selected && selected.type !== "pen" && (
+          {selected && selected.type !== "pen" && selected.type !== "poly" && (
             <g
               transform={`translate(${selected.x},${selected.y}) rotate(${selected.rotation},${selected.w / 2},${selected.h / 2})`}
             >
