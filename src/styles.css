@@ -3323,7 +3323,7 @@ button {
 }
 
 .detail-answer {
-  min-height: 110px;
+  min-height: 190px;
   border: 2px dashed var(--faint);
   border-radius: 10px;
   background: #fbfcfe;

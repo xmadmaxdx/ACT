@@ -610,7 +610,10 @@ export default function FindScreen({ testData, mode, onExit }) {
   const flagged = !!flags[activeQ.n];
   const verdict = verdicts[activeQ.n] || null;
   const tried = attempts[activeQ.n] || 0;
-  const hints = (activeQ.refs || []).filter((r) => r && Number.isInteger(r.para));
+  const answerParas = new Set((activeQ.answers || []).map((a) => a && a.para));
+  const hints = (activeQ.refs || []).filter(
+    (r) => r && Number.isInteger(r.para) && !answerParas.has(r.para)
+  );
   const isReading = true;
   const pt = ptimers[passage.id] || ptBlank();
   const ptTop = pt;
