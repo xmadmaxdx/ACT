@@ -3374,6 +3374,47 @@ button {
   flex: 1;
 }
 
+.find-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f1f2f4;
+  color: var(--ink-soft);
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-family: var(--font);
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.15s ease, outline-offset 0.12s ease, transform 0.08s ease;
+}
+
+.find-btn:hover:not(:disabled) {
+  background: #fff;
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.find-btn:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.find-btn:active:not(:disabled) {
+  transform: translateY(2px) scale(0.98);
+  background: var(--blue-light-bg);
+  outline-offset: 1px;
+}
+
+.find-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .detail-check:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -3577,8 +3618,12 @@ button {
   .detail-pick,
   .detail-answer.filled,
   .detail-flash,
-  .detail-flash.no {
+  .detail-flash.no,
+  .find-btn,
+  .find-btn:active:not(:disabled) {
     animation: none;
+    transition: none;
+    transform: none;
   }
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { mathRich } from "./MathText.jsx";
 import CodinoPanel from "../ai/CodinoPanel.jsx";
+import FindBtn from "./FindBtn.jsx";
 import { scoreSelection } from "../detailScore.js";
 
 /* Exact match first; otherwise the longest consecutive word-run of the quote
@@ -262,18 +263,13 @@ function FindBits({ q, pick, paused, flagged, tried, verdict, onToggleFlag, onCh
         )}
       </div>
       <div className="detail-actions">
-        <button
-          type="button"
-          className="btn-primary detail-check"
-          onClick={onCheck}
-          disabled={!pick || paused}
-        >
+        <FindBtn className="detail-check" onClick={onCheck} disabled={!pick || paused}>
           CHECK
-        </button>
+        </FindBtn>
         {pick && (
-          <button type="button" className="nav-btn" onClick={onClearPick}>
+          <FindBtn onClick={onClearPick}>
             CLEAR
-          </button>
+          </FindBtn>
         )}
       </div>
       {verdict && !verdict.ok && onExplain && (
@@ -1100,14 +1096,12 @@ export default function FindScreen({ testData, mode, onExit }) {
 
       <div className="test-nav">
         <div className="test-nav-inner">
-          <button
-            className="nav-btn"
-            type="button"
-            disabled={qIndex === 0}
+          <FindBtn
             onClick={() => setQIndex(qIndex - 1)}
+            disabled={qIndex === 0}
           >
             BACK
-          </button>
+          </FindBtn>
           <span className="nav-count">
             {`${qIndex + 1} of ${total}`}
           </span>
@@ -1120,13 +1114,9 @@ export default function FindScreen({ testData, mode, onExit }) {
               FINISH
             </button>
           ) : (
-            <button
-              className="nav-btn primary"
-              type="button"
-              onClick={() => setQIndex(qIndex + 1)}
-            >
+            <FindBtn onClick={() => setQIndex(qIndex + 1)}>
               NEXT
-            </button>
+            </FindBtn>
           )}
           <button
             className={aiOpen ? "cod-nav-btn on" : "cod-nav-btn"}
