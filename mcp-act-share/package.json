@@ -1,0 +1,18 @@
+{
+  "name": "mcp-act-share",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP server that stores ACTprep tests in Supabase and returns 24h-expiring share links.",
+  "bin": {
+    "mcp-act-share": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "zod": "^3.23.8"
+  }
+}

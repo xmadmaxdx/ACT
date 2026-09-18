@@ -193,3 +193,39 @@ export async function fetchMinis() {
   });
   return out;
 }
+
+/* Share links: 24h-expiring test payloads created by the MCP server.
+   Table: public.share_links (slug, section, title, test jsonb, expires_at).
+   RLS hides expired rows automatically, so an empty result means the link
+   is expired or never existed. Returns the normalized shared test shape. */
+export async function fetchSharedTest(slug) {
+  if (!URL || !KEY) throw new Error("Supabase env missing at build (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY)");
+  const clean = String(slug || "").trim();
+  if (!clean) throw new Error("Share link is empty.");
+  const sb = createClient(URL, KEY);
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Supabase request timed out after 15s")), 15000)
+  );
+  const query = (async () => {
+    const { data, error } = await sb
+      .from("share_links")
+      .select("slug, section, title, test, expires_at")
+      .eq("slug", clean)
+      .maybeSingle();
+    if (error) throw error;
+    return data;
+  })();
+  const row = await Promise.race([query, timeout]);
+  if (!row) {
+    const err = new Error("This share link has expired or does not exist. Links work for 1 day.");
+    err.code = "SHARE_EXPIRED";
+    throw err;
+  }
+  const test = row.test;
+  if (!test || typeof test !== "object" || !Array.isArray(test.questions) || test.questions.length === 0) {
+    const err = new Error("This share link is damaged (empty test). Ask the sender to regenerate it.");
+    err.code = "SHARE_DAMAGED";
+    throw err;
+  }
+  return test;
+}

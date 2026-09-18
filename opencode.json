@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "act-share": {
+      "type": "local",
+      "command": ["node", "mcp-act-share/src/index.js"],
+      "environment": {
+        "SUPABASE_URL": "{env:SUPABASE_URL}",
+        "SUPABASE_SERVICE_ROLE_KEY": "{env:SUPABASE_SERVICE_ROLE_KEY}",
+        "SUPABASE_ANON_KEY": "{env:SUPABASE_ANON_KEY}",
+        "SHARE_BASE_URL": "https://actprep.vercel.app"
+      },
+      "enabled": true
+    }
+  }
+}

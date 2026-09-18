@@ -14,7 +14,7 @@ import ComboResults from "./components/ComboResults.jsx";
 import JsonStart from "./components/JsonStart.jsx";
 import Calculator from "./components/Calculator.jsx";
 import Loader, { LoaderError } from "./components/Loader.jsx";
-import { fetchCatalog, fetchMinis } from "./supabase.js";
+import { fetchCatalog, fetchMinis, fetchSharedTest } from "./supabase.js";
 import "./styles.css";
 
 function slugFor(skill) {
@@ -31,8 +31,22 @@ function slugToId(path) {
   return `${m[2].toUpperCase()}-${m[1].toUpperCase()}`;
 }
 
+function parseShareSlug(path) {
+  const clean = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+  const short = /^\/s\/([A-Za-z0-9_-]{4,64})$/.exec(clean);
+  if (short) return short[1];
+  if (/^\/[A-Za-z0-9_-]{4,64}$/.test(clean)) {
+    const bare = clean.slice(1);
+    if (["practice", "chapters", "combo", "calculator", "calc", "cal", "test-info"].includes(bare)) return null;
+    if (clean.startsWith("/practice-test-")) return null;
+    return bare;
+  }
+  return null;
+}
+
 function routeFromPath(path) {
   const clean = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+  if (parseShareSlug(path)) return "share";
   if (clean.endsWith("/results")) return "results";
   if (clean === "/practice") return "practice";
   if (clean === "/test-info") return "info";
@@ -48,7 +62,7 @@ export default function App() {
     (() => {
       const p = window.location.pathname;
       const r = routeFromPath(p);
-      return r === "test" || r === "results" ? p : null;
+      return r === "test" || r === "results" || r === "share" ? p : null;
     })()
   );
   const minisRef = useRef([]);
@@ -76,14 +90,19 @@ export default function App() {
 
   useEffect(() => {
     let live = true;
+    const pendingShare = pendingRef.current ? parseShareSlug(pendingRef.current) : null;
+    const sharePromise = pendingShare
+      ? fetchSharedTest(pendingShare).catch((e) => ({ __shareError: e }))
+      : Promise.resolve(null);
     Promise.all([
       fetchCatalog(),
       fetchMinis().catch((e) => {
         window.console.debug("minis unavailable", e);
         return [];
       }),
+      sharePromise,
     ])
-      .then(([tests, minis]) => {
+      .then(([tests, minis, shared]) => {
         if (!live) return;
         console.info(`ACTprep catalog source: supabase (${tests.length} tests)`);
         setCatalog(tests);
@@ -91,6 +110,31 @@ export default function App() {
         const pending = pendingRef.current;
         pendingRef.current = null;
         if (pending && !sessionRef.current) {
+          if (pendingShare) {
+            if (shared && !shared.__shareError) {
+              const skill = {
+                id: shared.id,
+                title: shared.title,
+                meta: `${shared.total} questions · shared link`,
+              };
+              setCustomTestData(shared);
+              customRef.current = shared;
+              const params = new URLSearchParams(window.location.search);
+              const mode = params.get("mode") === "timed" ? "timed" : "untimed";
+              const fresh = { skill, mode, picks: {}, flags: {}, paces: {} };
+              sessionRef.current = fresh;
+              setSession(fresh);
+              setReviewIndex(null);
+              setRoute("test");
+            } else {
+              const msg =
+                shared && shared.__shareError && shared.__shareError.message
+                  ? shared.__shareError.message
+                  : "Share link failed to load.";
+              setLoadError(msg);
+            }
+            return;
+          }
           const id = slugToId(pending);
           const match = (x) => x.id === id || x.id.toLowerCase() === (id || "").toLowerCase();
           const t = id && tests.find(match);
@@ -261,6 +305,10 @@ export default function App() {
   useEffect(() => {
     const onPop = () => {
       const r = routeFromPath(window.location.pathname);
+      if (r === "share") {
+        window.location.reload();
+        return;
+      }
       if ((r === "test" || r === "results") && !sessionRef.current) {
         window.history.replaceState({}, "", "/practice");
         setRoute("practice");
