@@ -1,14 +1,41 @@
 #!/usr/bin/env node
 import { randomBytes } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { normalizeTest } from "./validate.js";
 
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-const ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
+function loadProjectEnv() {
+  const out = {};
+  try {
+    const here = dirname(fileURLToPath(import.meta.url));
+    const raw = readFileSync(resolve(here, "..", "..", ".env"), "utf8");
+    for (const line of raw.split("\n")) {
+      const t = line.trim();
+      if (!t || t.startsWith("#")) continue;
+      const eq = t.indexOf("=");
+      if (eq < 0) continue;
+      const k = t.slice(0, eq).trim();
+      let v = t.slice(eq + 1).trim();
+      if (v.length >= 2 && v.startsWith('"') && v.endsWith('"')) v = v.slice(1, -1);
+      if (k && !(k in process.env)) out[k] = v;
+    }
+  } catch {
+    console.error("act-share: no project .env found, using process env");
+  }
+  return out;
+}
+
+const fileEnv = loadProjectEnv();
+const pick = (k) => process.env[k] || fileEnv[k] || "";
+
+const SUPABASE_URL = pick("SUPABASE_URL") || pick("VITE_SUPABASE_URL");
+const SERVICE_KEY = pick("SUPABASE_SERVICE_ROLE_KEY");
+const ANON_KEY = pick("SUPABASE_ANON_KEY") || pick("VITE_SUPABASE_ANON_KEY");
 const SHARE_BASE_URL = (process.env.SHARE_BASE_URL || "https://actprep.vercel.app").replace(/\/$/, "");
 
 const SLUG_ALPHA = "abcdefghjkmnpqrstuvwxyz23456789";
@@ -140,6 +167,44 @@ server.registerTool(
           ].join("\n"),
         },
       ],
+    };
+  }
+);
+
+server.registerTool(
+  "delete_shared_test",
+  {
+    description: "Permanently delete a share link by slug. Requires SUPABASE_SERVICE_ROLE_KEY in the MCP server environment (anon keys cannot delete by design).",
+    inputSchema: {
+      slug: z.string().describe("The slug from the share URL (the part after actprep.vercel.app/ or /s/)."),
+    },
+  },
+  async ({ slug }) => {
+    if (!SERVICE_KEY) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Delete refused: the MCP server runs on an anon key, which has no delete grant by design (any visitor could otherwise destroy links). Set SUPABASE_SERVICE_ROLE_KEY and restart the server to enable deletion.",
+          },
+        ],
+        isError: true,
+      };
+    }
+    const clean = String(slug || "").trim().replace(/^.*\//, "");
+    const sb = supabase();
+    const { data, error } = await sb.from("share_links").delete().eq("slug", clean).select("slug");
+    if (error) {
+      return { content: [{ type: "text", text: `Delete failed: ${error.message}` }], isError: true };
+    }
+    if (!data || data.length === 0) {
+      return {
+        content: [{ type: "text", text: `No live share found for "${clean}". Already expired, deleted, or never existed.` }],
+        isError: true,
+      };
+    }
+    return {
+      content: [{ type: "text", text: `Deleted share link "${clean}" completely. Its URL now shows the expired-link page.` }],
     };
   }
 );
