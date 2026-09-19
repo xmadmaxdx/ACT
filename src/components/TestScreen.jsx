@@ -1178,16 +1178,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     window.scrollTo(0, 0);
   };
 
-  useEffect(() => {
-    if (!showCalc || review) return;
-    if (onIntro || activeBreak) {
-      setCalcOpen(false);
-      setCalcFull(false);
-    } else {
-      setCalcOpen(true);
-    }
-  }, [onIntro, brkId, qIndex]);
-
   const [copied, setCopied] = useState(false);
 
   const copyScreen = async () => {
@@ -1411,6 +1401,16 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   });
+
+  useEffect(() => {
+    if (!showCalc || review) return;
+    if (onIntro || activeBreak) {
+      setCalcOpen(false);
+      setCalcFull(false);
+    } else {
+      setCalcOpen(true);
+    }
+  }, [showCalc, review, onIntro, brkId, qIndex]);
 
   return (
     <div className={aiOpen && aiPinned ? "test cod-docked" : "test"}>
