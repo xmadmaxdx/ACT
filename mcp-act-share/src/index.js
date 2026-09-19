@@ -47,10 +47,20 @@ function makeSlug() {
   return `${s.slice(0, 5)}-${s.slice(5, 10)}-${s.slice(10, 15)}`;
 }
 
+function keyRole(key) {
+  try {
+    const payload = JSON.parse(Buffer.from(String(key).split(".")[1], "base64").toString("utf8"));
+    return payload.role || "unknown";
+  } catch {
+    return "unreadable";
+  }
+}
+
 function supabase() {
   if (!SUPABASE_URL) throw new Error("SUPABASE_URL (or VITE_SUPABASE_URL) is not set in the MCP server environment.");
   const key = SERVICE_KEY || ANON_KEY;
   if (!key) throw new Error("Set SUPABASE_SERVICE_ROLE_KEY (preferred) or SUPABASE_ANON_KEY in the MCP server environment.");
+  console.error(`act-share: supabase key role=${keyRole(key)} (service_role bypasses RLS; anon is bound by the 24h policy)`);
   return createClient(SUPABASE_URL, key);
 }
 
@@ -87,7 +97,7 @@ server.registerTool(
       };
     }
     const sb = supabase();
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const expiresAt = new Date(Date.now() + (24 * 60 - 10) * 60 * 1000).toISOString();
     let slug = "";
     let lastError = null;
     for (let attempt = 0; attempt < 4; attempt++) {
