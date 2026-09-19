@@ -1178,6 +1178,16 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     window.scrollTo(0, 0);
   };
 
+  useEffect(() => {
+    if (!showCalc || review) return;
+    if (onIntro || activeBreak) {
+      setCalcOpen(false);
+      setCalcFull(false);
+    } else {
+      setCalcOpen(true);
+    }
+  }, [onIntro, brkId, qIndex]);
+
   const [copied, setCopied] = useState(false);
 
   const copyScreen = async () => {
@@ -1391,9 +1401,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               ? { ...pacesRef.current, [n]: (pacesRef.current[n] || 0) + delta }
               : { ...pacesRef.current };
           finishRef.current({ ...snapshotRef.current, paces: finalPaces });
-        } else if (showCalc && !calcOpen) {
+        } else if (showCalc) {
           e.preventDefault();
-          openCalc();
+          if (calcOpen) setCalcOpen(false);
+          else openCalc();
         }
       }
     };
