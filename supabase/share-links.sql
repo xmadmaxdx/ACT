@@ -8,7 +8,7 @@
 create table if not exists public.share_links (
   id         uuid primary key default gen_random_uuid(),
   slug       text unique not null,
-  section    text not null check (section in ('reading', 'english', 'find')),
+  section    text not null check (section in ('reading', 'english', 'find', 'math')),
   title      text not null default 'Shared Test',
   test       jsonb not null,
   created_at timestamptz not null default now(),

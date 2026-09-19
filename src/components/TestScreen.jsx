@@ -1107,7 +1107,15 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       window.scrollTo(0, 0);
       return;
     }
-    if (qIndex === 0) return;
+    if (qIndex === 0) {
+      if (needIntro) {
+        setSlideIdx(slides.length - 1);
+        setIntroDone(false);
+        introDoneRef.current = false;
+        window.scrollTo(0, 0);
+      }
+      return;
+    }
     const prev = questions[qIndex - 1];
     const due = prev ? breaksAfter(prev.n) : [];
     if (due.length > 0) {
@@ -1661,6 +1669,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
         </aside>
         )}
+        </>
         {calcOpen && showCalc && !calcFull && (
           <div
             className="calc-divider"
@@ -1785,7 +1794,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
         </div>
       )}
-          </>
         )}
       </div>
 
@@ -1835,7 +1843,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           <button
             className="nav-btn"
             type="button"
-            disabled={onIntro ? slideIdx === 0 : !activeBreak && qIndex === 0}
+            disabled={onIntro ? slideIdx === 0 : !activeBreak && qIndex === 0 && !needIntro}
                 onClick={() => {
                   if (onIntro && slideIdx > 0) {
                     setSlideIdx(slideIdx - 1);
