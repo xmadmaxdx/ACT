@@ -218,13 +218,24 @@ function renderStem(stem) {
 
 /* Passage spans: {t} plain text (may include $LaTeX$), {u, t} tested
    underline keyed by question number, {box} reference point, {fig}
-   embedded SVG figure id resolved from the test's figures map. The active
+   embedded SVG figure id resolved from the test's figures map, {svg}
+   inline SVG code written directly in the span. The active
    question's span lights up; boxed points light up when the active question
    anchors to them via its "point" field — except Placement questions, which
    must never light a box (the lit box would give away the answer). */
 function renderSpans(spans, q, figures) {
   const isPlacement = /placement/i.test(q.tag || "");
   return spans.map((s, i) => {
+    if (s.svg !== undefined) {
+      if (typeof s.svg !== "string" || s.svg.indexOf("<svg") < 0) return null;
+      return (
+        <span
+          key={i}
+          className="passage-figure"
+          dangerouslySetInnerHTML={{ __html: s.svg }}
+        />
+      );
+    }
     if (s.fig !== undefined) {
       const svg = figures && figures[s.fig];
       if (!svg) return null;

@@ -31,6 +31,32 @@ export function containsAnswer(text, quote) {
   return locateSpan(text, quote) !== null;
 }
 
+function checkFigures(figures) {
+  if (figures === undefined) return {};
+  if (!figures || typeof figures !== "object" || Array.isArray(figures)) {
+    throw new Error("figures must be an object mapping ids to SVG strings.");
+  }
+  for (const [id, svg] of Object.entries(figures)) {
+    if (typeof svg !== "string" || svg.indexOf("<svg") < 0) {
+      throw new Error(`figures["${id}"] must be a string containing <svg.`);
+    }
+  }
+  return figures;
+}
+
+function checkFigRefs(passages, figures) {
+  passages.forEach((src, i) => {
+    (src.paras || []).forEach((pa) => {
+      if (!Array.isArray(pa)) return;
+      pa.forEach((sp) => {
+        if (sp && typeof sp === "object" && sp.fig !== undefined && !(figures && figures[sp.fig] !== undefined)) {
+          throw new Error(`Passage ${i + 1}: fig "${sp.fig}" has no matching entry in figures.`);
+        }
+      });
+    });
+  });
+}
+
 function stripLetterPrefix(opt, letters, k) {
   return String(opt).replace(new RegExp(`^${letters[k]}[.):]\\s*`), "");
 }
@@ -59,6 +85,18 @@ export function normalizeMcq(section, raw) {
       if (!isReading && Array.isArray(pa)) {
         pa.forEach((sp, k) => {
           if (!sp || typeof sp !== "object") throw new Error(`Passage ${i + 1} para ${j} span ${k} must be an object.`);
+          if (sp.svg !== undefined) {
+            if (typeof sp.svg !== "string" || sp.svg.indexOf("<svg") < 0) {
+              throw new Error(`Passage ${i + 1} para ${j} span ${k}: "svg" must be a string containing <svg.`);
+            }
+            return;
+          }
+          if (sp.fig !== undefined) {
+            if (typeof sp.fig !== "string" || sp.fig.length === 0) {
+              throw new Error(`Passage ${i + 1} para ${j} span ${k}: "fig" must be a non-empty id.`);
+            }
+            return;
+          }
           if (typeof sp.t !== "string") throw new Error(`Passage ${i + 1} para ${j} span ${k} needs a "t" string.`);
           if (sp.u !== undefined && !Number.isInteger(sp.u)) {
             throw new Error(`Passage ${i + 1} para ${j} span ${k}: "u" must be an integer question number.`);
@@ -100,13 +138,15 @@ export function normalizeMcq(section, raw) {
   if (!timeMinutes || timeMinutes <= 0) {
     timeMinutes = isReading ? 10 * passages.length : Math.round(total * 0.7 * 2) / 2;
   }
+  const figures = checkFigures(raw.figures);
+  if (!isReading) checkFigRefs(passages, figures);
   return {
     id: raw.id || (isReading ? "SHARED-READING-1" : "SHARED-ENGLISH-1"),
     title: raw.title || (isReading ? "Shared Reading" : "Shared English"),
     section,
     total,
     timeMinutes,
-    figures: raw.figures && typeof raw.figures === "object" ? raw.figures : {},
+    figures,
     passages: passages.map((src, i) => ({
       id: src.id || `p${i + 1}`,
       title: src.title || raw.title || `Passage ${i + 1}`,
@@ -319,7 +359,7 @@ export function normalizeMath(raw) {
     timeMinutes,
     intro: normalizeTheory(raw.theory !== undefined ? raw.theory : raw.intro),
     theoryBreaks,
-    figures: raw.figures && typeof raw.figures === "object" ? raw.figures : {},
+    figures: checkFigures(raw.figures),
     passages: questions.map((q, i) => {
       const n = q.n ?? i + 1;
       return { id: `q${n}`, title: `Problem ${n}`, paras: [[{ t: q.statement }]] };

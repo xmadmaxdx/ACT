@@ -164,6 +164,7 @@ export function buildMiniTest(mini) {
     timeMinutes: mini.timeMinutes || 10,
     intro: mini.theory || null,
     theoryBreaks: mini.theoryBreaks || [],
+    figures: mini.figures || {},
     figures: {},
     passages: mini.questions.map((q) => ({
       id: `q${q.n}`,
