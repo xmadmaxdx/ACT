@@ -1,4 +1,9 @@
 node_modules/
+node_module/
 dist/
 .netlify/
 .env
+.omo/
+.codegraph/
+.playwright-mcp/
+*.log
