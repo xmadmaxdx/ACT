@@ -165,7 +165,6 @@ export function buildMiniTest(mini) {
     intro: mini.theory || null,
     theoryBreaks: mini.theoryBreaks || [],
     figures: mini.figures || {},
-    figures: {},
     passages: mini.questions.map((q) => ({
       id: `q${q.n}`,
       title: `Problem ${q.n}`,

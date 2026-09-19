@@ -1706,6 +1706,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         </aside>
         )}
         </>
+        )}
         {calcOpen && showCalc && !calcFull && (
           <div
             className="calc-divider"
@@ -1830,7 +1831,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
         </div>
       )}
-        )}
       </div>
 
       <div className="test-nav">
