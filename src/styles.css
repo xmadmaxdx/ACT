@@ -879,6 +879,10 @@ button {
   margin-bottom: 22px;
 }
 
+.intro-blocks > :first-child {
+  margin-top: 0;
+}
+
 .intro-dots {
   display: flex;
   justify-content: center;
@@ -1080,6 +1084,46 @@ button {
 
 .tbox.def .tbox-label {
   color: var(--purple);
+}
+
+.versus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.versus-cell {
+  background: #fff;
+  border: 2px solid var(--card-border);
+  border-bottom-width: 4px;
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+.versus-figure {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.versus-figure svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.versus-title {
+  margin: 0 0 6px;
+  font-weight: 900;
+  font-size: 15px;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.versus-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
 }
 
 @media (max-width: 700px) {

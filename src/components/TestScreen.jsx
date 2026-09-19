@@ -4,6 +4,7 @@ import FreestyleBoard from "./FreestyleBoard.jsx";
 import CodinoPanel from "../ai/CodinoPanel.jsx";
 import { DesmosCalc, preloadDesmos } from "./DesmosCalc.jsx";
 import { lettersFor } from "../scoring.js";
+import { FIGURE_PRESETS } from "../theoryFigures.js";
 
 const LETTERS = ["A", "B", "C", "D"];
 
@@ -501,6 +502,41 @@ function renderTheoryBlock(b, i) {
         <MathText text={`$$${b.formula}$$`} />
       </div>
     );
+  }
+  if (b.versus && Array.isArray(b.versus)) {
+    const cells = b.versus.filter(
+      (s) => s && typeof s === "object" && (s.shape || s.svg || s.title || s.text)
+    );
+    if (cells.length >= 2) {
+      const shown = cells.slice(0, 3);
+      return (
+        <div key={i} className="versus-grid">
+          {shown.map((side, k) => {
+            const preset =
+              typeof side.shape === "string" ? FIGURE_PRESETS[side.shape] : null;
+            const svg =
+              preset ||
+              (typeof side.svg === "string" && side.svg.indexOf("<svg") >= 0
+                ? side.svg
+                : null);
+            return (
+              <div key={k} className="versus-cell">
+                {svg ? (
+                  <div
+                    className="versus-figure"
+                    dangerouslySetInnerHTML={{ __html: svg }}
+                  />
+                ) : null}
+                {side.title ? <p className="versus-title">{side.title}</p> : null}
+                {side.text ? (
+                  <div className="versus-text"><MathText text={String(side.text)} /></div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
   }
   if (b.table && Array.isArray(b.table.rows)) {
     const head = Array.isArray(b.table.head) ? b.table.head : [];

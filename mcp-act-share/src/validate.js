@@ -262,7 +262,7 @@ export function normalizeTest(section, raw) {
   return normalizeMcq(section, raw);
 }
 
-const THEORY_KEYS = ["h", "math", "list", "p", "formula", "table", "example", "tip", "warn", "note", "def"];
+const THEORY_KEYS = ["h", "math", "list", "p", "formula", "table", "example", "tip", "warn", "note", "def", "versus"];
 
 function checkBlocks(blocks, where) {
   if (!Array.isArray(blocks) || blocks.length === 0) {
@@ -287,6 +287,28 @@ function checkBlocks(blocks, where) {
       if (!b.example || typeof b.example !== "object" || typeof b.example.problem !== "string") {
         throw new Error(`${where} block ${i}: example needs a problem string.`);
       }
+    }
+    if (b.versus !== undefined) {
+      if (!Array.isArray(b.versus) || b.versus.length < 2 || b.versus.length > 3) {
+        throw new Error(`${where} block ${i}: versus needs 2 or 3 cells.`);
+      }
+      b.versus.forEach((side, k) => {
+        if (!side || typeof side !== "object") {
+          throw new Error(`${where} block ${i} cell ${k}: must be an object.`);
+        }
+        if (side.shape !== undefined && (typeof side.shape !== "string" || !/^[a-z0-9-]+$/.test(side.shape))) {
+          throw new Error(`${where} block ${i} cell ${k}: shape must be a preset name like triangle-right.`);
+        }
+        if (side.svg !== undefined && (typeof side.svg !== "string" || side.svg.indexOf("<svg") < 0)) {
+          throw new Error(`${where} block ${i} cell ${k}: svg must be a string containing <svg.`);
+        }
+        if (side.title !== undefined && typeof side.title !== "string") {
+          throw new Error(`${where} block ${i} cell ${k}: title must be a string.`);
+        }
+        if (side.text !== undefined && typeof side.text !== "string") {
+          throw new Error(`${where} block ${i} cell ${k}: text must be a string.`);
+        }
+      });
     }
   });
   return blocks;

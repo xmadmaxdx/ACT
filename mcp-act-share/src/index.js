@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 import { randomBytes } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { createClient } from "@supabase/supabase-js";
@@ -74,7 +77,32 @@ const TestPayload = z.object({
   theory: z.any().optional(),
   intro: z.any().optional(),
   theoryBreaks: z.array(z.any()).optional(),
-});
+}).optional().describe("Full test object (small payloads). Same shape as the app Start-from-JSON input.");
+
+function readTestFile(path) {
+  const abs = resolve(String(path));
+  const low = abs.toLowerCase();
+  if (!low.endsWith(".json") && !low.endsWith(".cjs")) {
+    throw new Error("testFile must point to a .json or .cjs file.");
+  }
+  const size = statSync(abs).size;
+  if (size > 2 * 1024 * 1024) throw new Error("testFile is larger than 2MB.");
+  if (low.endsWith(".cjs")) {
+    delete require.cache[require.resolve(abs)];
+    const mod = require(abs);
+    const value = mod && mod.__esModule && mod.default !== undefined ? mod.default : mod;
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new Error("testFile .cjs must export the test object (module.exports = {...}).");
+    }
+    return value;
+  }
+  const raw = readFileSync(abs, "utf8");
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    throw new Error(`testFile is not valid JSON: ${e.message}`);
+  }
+}
 
 const server = new McpServer({ name: "act-share", version: "1.0.0" });
 
@@ -82,17 +110,32 @@ server.registerTool(
   "generate_act_link",
   {
     description:
-      "Store an ACTprep test (reading, english, find, or math) in Supabase and return a share link that works for 24 hours, then auto-expires. Reading paras are plain strings; english paras are span arrays [{t}, {u:n,t}, {box}; find questions use answers spans, not options/answer; math questions use statement plus options, with optional theory intro and theoryBreaks between questions.",
+      "Store an ACTprep test (reading, english, find, or math) in Supabase and return a share link that works for 24 hours, then auto-expires. Reading paras are plain strings; english paras are span arrays [{t}, {u:n,t}, {box}; find questions use answers spans, not options/answer; math questions use statement plus options, with optional theory intro and theoryBreaks between questions. For big payloads, write the test JSON to a .json file and pass testFile instead of test.",
     inputSchema: {
       section: z.enum(["reading", "english", "find", "math"]).describe("Test section. Must match the JSON shape."),
-      test: TestPayload.describe("Full test object: {id?, title?, timeMinutes?, passages, questions}. Same shape as the app Start-from-JSON input."),
+      test: TestPayload.describe("Full test object, inline (small payloads only)."),
+      testFile: z.string().optional().describe("Absolute path to a .json or .cjs file holding the full test object (big payloads; .cjs uses module.exports = {...}). Takes precedence over test."),
       mode: z.enum(["untimed", "timed"]).optional().describe("Link timing mode. Default untimed."),
     },
   },
-  async ({ section, test, mode }) => {
+  async ({ section, test, testFile, mode }) => {
+    let raw = test;
+    if (testFile) {
+      try {
+        raw = readTestFile(testFile);
+      } catch (e) {
+        return { content: [{ type: "text", text: `Cannot read testFile: ${e.message}` }], isError: true };
+      }
+    }
+    if (!raw) {
+      return {
+        content: [{ type: "text", text: "Give either test (inline object) or testFile (path to .json)." }],
+        isError: true,
+      };
+    }
     let normalized;
     try {
-      normalized = normalizeTest(section, test);
+      normalized = normalizeTest(section, raw);
     } catch (e) {
       return {
         content: [{ type: "text", text: `Invalid ${section} test: ${e.message}` }],
