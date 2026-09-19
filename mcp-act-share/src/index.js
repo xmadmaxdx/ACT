@@ -69,8 +69,11 @@ const TestPayload = z.object({
   title: z.string().optional(),
   timeMinutes: z.number().optional(),
   figures: z.record(z.string()).optional(),
-  passages: z.array(z.any()).min(1, "Need at least 1 passage in passages."),
-  questions: z.array(z.any()).min(1, "Need at least 1 question."),
+  passages: z.array(z.any()).optional(),
+  questions: z.array(z.any()).optional(),
+  theory: z.any().optional(),
+  intro: z.any().optional(),
+  theoryBreaks: z.array(z.any()).optional(),
 });
 
 const server = new McpServer({ name: "act-share", version: "1.0.0" });
@@ -79,9 +82,9 @@ server.registerTool(
   "generate_act_link",
   {
     description:
-      "Store an ACTprep test (reading, english, or find) in Supabase and return a share link that works for 24 hours, then auto-expires. Reading paras are plain strings; english paras are span arrays [{t}, {u:n,t}, {box}; find questions use answers spans, not options/answer.",
+      "Store an ACTprep test (reading, english, find, or math) in Supabase and return a share link that works for 24 hours, then auto-expires. Reading paras are plain strings; english paras are span arrays [{t}, {u:n,t}, {box}; find questions use answers spans, not options/answer; math questions use statement plus options, with optional theory intro and theoryBreaks between questions.",
     inputSchema: {
-      section: z.enum(["reading", "english", "find"]).describe("Test section. Must match the JSON shape."),
+      section: z.enum(["reading", "english", "find", "math"]).describe("Test section. Must match the JSON shape."),
       test: TestPayload.describe("Full test object: {id?, title?, timeMinutes?, passages, questions}. Same shape as the app Start-from-JSON input."),
       mode: z.enum(["untimed", "timed"]).optional().describe("Link timing mode. Default untimed."),
     },

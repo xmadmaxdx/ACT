@@ -911,6 +911,190 @@ button {
   }
 }
 
+/* ---------- Theory content blocks ---------- */
+.formula-box {
+  margin: 14px 0;
+  padding: 14px 18px;
+  background: #f0f9df;
+  border: 2px solid #bfe37a;
+  border-bottom-width: 4px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  text-align: center;
+  font-size: 18px;
+}
+
+.theory-table-wrap {
+  margin: 14px 0;
+  overflow-x: auto;
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius);
+}
+
+.theory-table-cap {
+  margin: 0;
+  padding: 8px 12px;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--muted);
+  background: #f7f7f7;
+  border-bottom: 2px solid var(--card-border);
+}
+
+.theory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.theory-table th,
+.theory-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.theory-table thead th {
+  background: var(--blue-light-bg);
+  border-bottom: 2px solid var(--blue-light-border);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.theory-table tbody tr:last-child th,
+.theory-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.example-box {
+  margin: 14px 0;
+  background: #fffdf5;
+  border: 2px solid #f0d48a;
+  border-bottom-width: 4px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.example-kicker {
+  margin: 0;
+  padding: 8px 14px;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #b25e09;
+  background: #fff7e6;
+  border-bottom: 2px solid #f0d48a;
+}
+
+.example-problem {
+  padding: 12px 14px;
+}
+
+.example-solution {
+  border-top: 2px dashed #f0d48a;
+}
+
+.example-solution summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-weight: 800;
+  color: var(--blue-dark);
+  list-style: none;
+}
+
+.example-solution summary::-webkit-details-marker {
+  display: none;
+}
+
+.example-solution summary::before {
+  content: "▸ ";
+}
+
+.example-solution[open] summary::before {
+  content: "▾ ";
+}
+
+.example-solution summary:hover {
+  background: var(--blue-light-bg);
+}
+
+.example-answer {
+  padding: 4px 14px 14px;
+  background: #f0f9df;
+}
+
+.tbox {
+  margin: 14px 0;
+  border: 2px solid var(--card-border);
+  border-bottom-width: 4px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.tbox-label {
+  margin: 0;
+  padding: 7px 14px;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tbox-body {
+  padding: 10px 14px 12px;
+}
+
+.tbox.tip {
+  border-color: #bfe37a;
+  background: #f0f9df;
+}
+
+.tbox.tip .tbox-label {
+  color: var(--green-dark);
+}
+
+.tbox.warn {
+  border-color: #f5c044;
+  background: #fff7e6;
+}
+
+.tbox.warn .tbox-label {
+  color: #b25e09;
+}
+
+.tbox.note {
+  border-color: var(--blue-light-border);
+  background: var(--blue-light-bg);
+}
+
+.tbox.note .tbox-label {
+  color: var(--blue-dark);
+}
+
+.tbox.def {
+  border-color: #c9bdf0;
+  background: #f3effc;
+}
+
+.tbox.def .tbox-label {
+  color: var(--purple);
+}
+
+@media (max-width: 700px) {
+  .formula-box {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .theory-table th,
+  .theory-table td {
+    padding: 7px 9px;
+    font-size: 14px;
+  }
+}
+
 /* ---------- Worked examples ---------- */
 .example-q {
   background: #fffdf5;

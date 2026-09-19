@@ -471,6 +471,82 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
   );
 }
 
+function renderTheoryBlock(b, i) {
+  if (!b || typeof b !== "object") return null;
+  if (b.h) return <h4 key={i} className="lesson-h">{b.h}</h4>;
+  if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
+  if (b.list) {
+    return (
+      <ul key={i} className="lesson-list">
+        {b.list.map((t, j) => (
+          <li key={j}><MathText text={t} /></li>
+        ))}
+      </ul>
+    );
+  }
+  if (b.formula) {
+    return (
+      <div key={i} className="formula-box">
+        <MathText text={`$$${b.formula}$$`} />
+      </div>
+    );
+  }
+  if (b.table && Array.isArray(b.table.rows)) {
+    const head = Array.isArray(b.table.head) ? b.table.head : [];
+    return (
+      <figure key={i} className="theory-table-wrap">
+        {b.table.caption ? <figcaption className="theory-table-cap">{b.table.caption}</figcaption> : null}
+        <table className="theory-table">
+          {head.length > 0 && (
+            <thead>
+              <tr>
+                {head.map((h, j) => (
+                  <th key={j} scope="col"><MathText text={String(h)} /></th>
+                ))}
+              </tr>
+            </thead>
+          )}
+          <tbody>
+            {b.table.rows.map((row, r) => (
+              <tr key={r}>
+                {(Array.isArray(row) ? row : [row]).map((cell, j) => (
+                  <td key={j}><MathText text={String(cell)} /></td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </figure>
+    );
+  }
+  if (b.example) {
+    const ex = b.example;
+    return (
+      <div key={i} className="example-box">
+        <p className="example-kicker">{ex.title || "Worked example"}</p>
+        <div className="example-problem"><MathText text={String(ex.problem || "")} /></div>
+        {ex.solution ? (
+          <details className="example-solution">
+            <summary>Show solution</summary>
+            <div className="example-answer"><MathText text={String(ex.solution)} /></div>
+          </details>
+        ) : null}
+      </div>
+    );
+  }
+  if (b.tip || b.warn || b.note || b.def) {
+    const kind = b.tip ? "tip" : b.warn ? "warn" : b.note ? "note" : "def";
+    const label = b.tip ? "Tip" : b.warn ? "Watch out" : b.note ? "Note" : "Definition";
+    return (
+      <div key={i} className={`tbox ${kind}`}>
+        <p className="tbox-label">{label}</p>
+        <div className="tbox-body"><MathText text={String(b[kind])} /></div>
+      </div>
+    );
+  }
+  return <p key={i} className="lesson-p"><MathText text={b.p || ""} /></p>;
+}
+
 export default function TestScreen({ test, session, startIndex, review, findTest, customTestData, onFinish, onExit }) {
   const timed = test.mode === "timed" && !review;
   const testData =
@@ -942,22 +1018,108 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const goTo = (n) => {
     const idx = questions.findIndex((q) => q.n === n);
     if (idx >= 0) setQIndex(idx);
+    setBrkId(null);
     if (needIntro && !introDoneRef.current) {
       setIntroDone(true);
       introDoneRef.current = true;
     }
   };
 
-  const goToIntro = () => {
+  const goToTheory = () => {
     setSlideIdx(0);
     setIntroDone(false);
     introDoneRef.current = false;
+    setBrkId(null);
     window.scrollTo(0, 0);
   };
 
   const completeIntro = () => {
     setIntroDone(true);
     introDoneRef.current = true;
+    window.scrollTo(0, 0);
+  };
+
+  const [brkId, setBrkId] = useState(null);
+  const theoryBreaks =
+    !review && testData && Array.isArray(testData.theoryBreaks)
+      ? testData.theoryBreaks
+          .map((b, k) => ({ ...b, id: `b${b.after}:${k}`, after: b.after }))
+          .filter((b) => Number.isInteger(b.after) && Array.isArray(b.blocks))
+      : [];
+  const breakById = (id) => theoryBreaks.find((b) => b.id === id) || null;
+  const breaksAfter = (n) => theoryBreaks.filter((b) => b.after === n);
+  const activeBreak = brkId ? breakById(brkId) : null;
+  const qIdxOf = (n) => questions.findIndex((q) => q.n === n);
+
+  const stepForward = () => {
+    if (activeBreak) {
+      const same = breaksAfter(activeBreak.after);
+      const k = same.findIndex((b) => b.id === activeBreak.id);
+      if (k >= 0 && k < same.length - 1) {
+        setBrkId(same[k + 1].id);
+        window.scrollTo(0, 0);
+        return;
+      }
+      const next = qIdxOf(activeBreak.after) + 1;
+      setBrkId(null);
+      if (next < total) {
+        setQIndex(next);
+        window.scrollTo(0, 0);
+      } else {
+        handleFinish();
+      }
+      return;
+    }
+    const cur = questions[qIndex];
+    const due = cur ? breaksAfter(cur.n) : [];
+    if (due.length > 0) {
+      setBrkId(due[0].id);
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (qIndex < total - 1) {
+      setQIndex(qIndex + 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const stepBack = () => {
+    if (activeBreak) {
+      const same = breaksAfter(activeBreak.after);
+      const k = same.findIndex((b) => b.id === activeBreak.id);
+      if (k > 0) {
+        setBrkId(same[k - 1].id);
+        window.scrollTo(0, 0);
+        return;
+      }
+      setBrkId(null);
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (qIndex === 0) return;
+    const prev = questions[qIndex - 1];
+    const due = prev ? breaksAfter(prev.n) : [];
+    if (due.length > 0) {
+      setQIndex(qIndex - 1);
+      setBrkId(due[due.length - 1].id);
+      window.scrollTo(0, 0);
+      return;
+    }
+    setQIndex(qIndex - 1);
+    window.scrollTo(0, 0);
+  };
+
+  const goToBreak = (id) => {
+    const b = breakById(id);
+    if (!b) return;
+    if (needIntro && !introDoneRef.current) {
+      setIntroDone(true);
+      introDoneRef.current = true;
+    }
+    const idx = qIdxOf(b.after);
+    if (idx >= 0) setQIndex(idx);
+    setBrkId(id);
+    setOverviewOpen(false);
     window.scrollTo(0, 0);
   };
 
@@ -1149,7 +1311,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           }
           return;
         }
-        setQIndex((i) => Math.min(i + 1, total - 1));
+        stepForward();
       } else if (e.key === "ArrowLeft") {
         e.preventDefault();
         if (inIntro) {
@@ -1159,7 +1321,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           }
           return;
         }
-        setQIndex((i) => Math.max(i - 1, 0));
+        stepBack();
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         setOverviewOpen((v) => !v);
@@ -1383,24 +1545,11 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           <div className="intro-step">
             <div className="intro-card">
               <p className="results-kicker">
-                Before you start{slides.length > 1 ? ` · ${slideIdx + 1} of ${slides.length}` : ""}
+                Theory{slides.length > 1 ? ` · ${slideIdx + 1} of ${slides.length}` : ""}
               </p>
               <h1 className="intro-title">{(slides[slideIdx] && slides[slideIdx].heading) || testData.title}</h1>
               <div className="intro-blocks">
-                {((slides[slideIdx] && slides[slideIdx].blocks) || []).map((b, i) => {
-                  if (b.h) return <h4 key={i} className="lesson-h">{b.h}</h4>;
-                  if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
-                  if (b.list) {
-                    return (
-                      <ul key={i} className="lesson-list">
-                        {b.list.map((t, j) => (
-                          <li key={j}><MathText text={t} /></li>
-                        ))}
-                      </ul>
-                    );
-                  }
-                  return <p key={i} className="lesson-p"><MathText text={b.p || ""} /></p>;
-                })}
+                {((slides[slideIdx] && slides[slideIdx].blocks) || []).map((b, i) => renderTheoryBlock(b, i))}
               </div>
               {slides.length > 1 && (
                 <div className="intro-dots" aria-hidden="true">
@@ -1409,6 +1558,18 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        ) : activeBreak ? (
+          <div className="intro-step">
+            <div className="intro-card">
+              <p className="results-kicker">
+                Theory · after Question {activeBreak.after}
+              </p>
+              <h1 className="intro-title">{activeBreak.heading || testData.title}</h1>
+              <div className="intro-blocks">
+                {(activeBreak.blocks || []).map((b, i) => renderTheoryBlock(b, i))}
+              </div>
             </div>
           </div>
         ) : (
@@ -1619,6 +1780,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
       <div className="test-nav">
         <div className="test-nav-inner">
+          {!activeBreak && (
           <button
             className={copied ? "copy-icon-btn copied" : "copy-icon-btn"}
             type="button"
@@ -1658,23 +1820,24 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               </svg>
             )}
           </button>
+          )}
           <button
             className="nav-btn"
             type="button"
-            disabled={onIntro ? slideIdx === 0 : qIndex === 0}
+            disabled={onIntro ? slideIdx === 0 : !activeBreak && qIndex === 0}
                 onClick={() => {
                   if (onIntro && slideIdx > 0) {
                     setSlideIdx(slideIdx - 1);
                     window.scrollTo(0, 0);
                   } else {
-                    setQIndex(qIndex - 1);
+                    stepBack();
                   }
                 }}
               >
                 BACK
               </button>
           <span className="nav-count">
-            {onIntro ? "Intro" : `${qIndex + 1} of ${total}`}
+            {onIntro ? "Theory" : activeBreak ? "Theory" : `${qIndex + 1} of ${total}`}
           </span>
           {review ? (
             <>
@@ -1711,7 +1874,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                             completeIntro();
                           }
                         }
-                      : () => setQIndex(qIndex + 1)
+                      : () => stepForward()
                   }
                 >
                   NEXT
@@ -1739,7 +1902,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               />
             </svg>
           </button>
-          {!review && (
+          {!review && !activeBreak && (
             <button
               className={elimOn ? "elim-toggle on" : "elim-toggle"}
               type="button"
@@ -1822,14 +1985,28 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 <button
                   type="button"
                   className={onIntro ? "ov-row current" : "ov-row"}
-                  onClick={goToIntro}
+                  onClick={goToTheory}
                 >
                   <span className="ov-q-top">
-                    <span className="q-tag">INTRO</span>
-                    <span className="ov-stem">Start here — read the note slide</span>
+                    <span className="q-tag">THEORY</span>
+                    <span className="ov-stem">Start here — read the theory slide</span>
                   </span>
                 </button>
               )}
+              {ovFilter === "All" &&
+                theoryBreaks.map((b) => (
+                  <button
+                    key={b.id}
+                    type="button"
+                    className={brkId === b.id ? "ov-row current" : "ov-row"}
+                    onClick={() => goToBreak(b.id)}
+                  >
+                    <span className="ov-q-top">
+                      <span className="q-tag">THEORY</span>
+                      <span className="ov-stem">{(b.heading || `After Question ${b.after}`).replace(/\*/g, "")}</span>
+                    </span>
+                  </button>
+                ))}
               {visibleQs.map((q) => {
                 const st = statusOf(q.n);
                 return (

@@ -218,5 +218,125 @@ export function normalizeFind(raw) {
 
 export function normalizeTest(section, raw) {
   if (section === "find") return normalizeFind(raw);
+  if (section === "math") return normalizeMath(raw);
   return normalizeMcq(section, raw);
+}
+
+const THEORY_KEYS = ["h", "math", "list", "p", "formula", "table", "example", "tip", "warn", "note", "def"];
+
+function checkBlocks(blocks, where) {
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    throw new Error(`${where}: blocks must be a non-empty array.`);
+  }
+  blocks.forEach((b, i) => {
+    if (!b || typeof b !== "object" || Array.isArray(b)) {
+      throw new Error(`${where} block ${i}: must be an object.`);
+    }
+    if (!THEORY_KEYS.some((k) => b[k] !== undefined)) {
+      throw new Error(`${where} block ${i}: needs one of ${THEORY_KEYS.join(", ")}.`);
+    }
+    if (b.table !== undefined) {
+      if (!b.table || typeof b.table !== "object" || !Array.isArray(b.table.rows) || b.table.rows.length === 0) {
+        throw new Error(`${where} block ${i}: table needs a non-empty rows array.`);
+      }
+      if (b.table.head !== undefined && !Array.isArray(b.table.head)) {
+        throw new Error(`${where} block ${i}: table head must be an array.`);
+      }
+    }
+    if (b.example !== undefined) {
+      if (!b.example || typeof b.example !== "object" || typeof b.example.problem !== "string") {
+        throw new Error(`${where} block ${i}: example needs a problem string.`);
+      }
+    }
+  });
+  return blocks;
+}
+
+function normalizeTheory(theory) {
+  if (theory === null || theory === undefined) return null;
+  if (typeof theory !== "object" || Array.isArray(theory)) {
+    throw new Error("theory must be an object with blocks or slides.");
+  }
+  if (Array.isArray(theory.slides)) {
+    if (theory.slides.length === 0) throw new Error("theory.slides must be non-empty.");
+    return {
+      slides: theory.slides.map((s, i) => ({
+        heading: s.heading || "",
+        blocks: checkBlocks(s.blocks, `theory slide ${i + 1}`),
+      })),
+    };
+  }
+  return {
+    heading: theory.heading || "",
+    blocks: checkBlocks(theory.blocks, "theory"),
+  };
+}
+
+export function normalizeMath(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error("Test must be a JSON object with questions.");
+  }
+  const questions = raw.questions;
+  if (!Array.isArray(questions) || questions.length === 0) {
+    throw new Error("Need at least 1 question.");
+  }
+  const seen = new Set();
+  questions.forEach((q, i) => {
+    if (!q || typeof q !== "object") throw new Error(`Q${i + 1}: must be an object.`);
+    const n = q.n ?? i + 1;
+    if (seen.has(n)) throw new Error(`Duplicate question number ${n}.`);
+    seen.add(n);
+    if (typeof q.statement !== "string" || q.statement.length === 0) {
+      throw new Error(`Q${n}: math questions need a statement string.`);
+    }
+    if (!Array.isArray(q.options) || q.options.length !== 4) {
+      throw new Error(`Q${n}: need exactly 4 options.`);
+    }
+    if (!["A", "B", "C", "D"].includes(q.answer)) {
+      throw new Error(`Q${n}: answer must be one of A, B, C, D.`);
+    }
+  });
+  const total = questions.length;
+  let timeMinutes = Number(raw.timeMinutes);
+  if (!timeMinutes || timeMinutes <= 0) timeMinutes = 10;
+  const breaks = Array.isArray(raw.theoryBreaks) ? raw.theoryBreaks : [];
+  const theoryBreaks = breaks.map((b, i) => {
+    if (!b || typeof b !== "object") throw new Error(`theoryBreak ${i + 1}: must be an object.`);
+    if (!Number.isInteger(b.after) || b.after < 1 || b.after > total) {
+      throw new Error(`theoryBreak ${i + 1}: after must be a question number 1-${total}.`);
+    }
+    return {
+      after: b.after,
+      heading: b.heading || "",
+      blocks: checkBlocks(b.blocks, `theoryBreak ${i + 1}`),
+    };
+  });
+  return {
+    id: raw.id || "SHARED-MATH-1",
+    title: raw.title || "Shared Math",
+    section: "math",
+    total,
+    timeMinutes,
+    intro: normalizeTheory(raw.theory !== undefined ? raw.theory : raw.intro),
+    theoryBreaks,
+    figures: raw.figures && typeof raw.figures === "object" ? raw.figures : {},
+    passages: questions.map((q, i) => {
+      const n = q.n ?? i + 1;
+      return { id: `q${n}`, title: `Problem ${n}`, paras: [[{ t: q.statement }]] };
+    }),
+    questions: questions.map((q, i) => {
+      const n = q.n ?? i + 1;
+      return {
+        n,
+        p: `q${n}`,
+        tag: q.tag || "Custom",
+        stem: "",
+        stemSide: "left",
+        short: q.short || `Problem ${n}`,
+        options: q.options.map(String),
+        answer: q.answer,
+        explain: q.explain || "",
+      };
+    }),
+  };
 }
