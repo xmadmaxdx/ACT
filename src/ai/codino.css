@@ -1115,32 +1115,27 @@
   color: var(--muted);
 }
 
-.cod-call-log {
+.cod-call-captions {
+  position: relative;
   width: 100%;
-  max-height: 220px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--ink-soft);
+  height: 52px;
+  overflow: hidden;
+  margin-top: 4px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 40%);
+  mask-image: linear-gradient(to bottom, transparent, #000 40%);
 }
 
-.cod-call-user,
-.cod-call-ai,
-.cod-call-err {
-  margin: 0;
+.cod-cap {
+  margin: 0 0 2px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--faint);
+  text-align: center;
+  overflow-wrap: break-word;
 }
 
-.cod-call-ai {
-  color: var(--ink);
-}
-
-.cod-call-err {
-  color: #d33131;
-  font-weight: 700;
+.cod-cap-err {
+  color: #e5484d;
 }
 
 .cod-call-actions {

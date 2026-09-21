@@ -219,6 +219,12 @@ function CodinoCall({ context, onClose }) {
   const engineRef = useRef(null);
   const stateRef = useRef("listening");
   const levelRef = useRef(0);
+  const captionRef = useRef(null);
+
+  useEffect(() => {
+    const el = captionRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [log]);
 
   useEffect(() => {
     const eng = {
@@ -248,7 +254,7 @@ function CodinoCall({ context, onClose }) {
       stateRef.current = s;
       setCallState(s);
     };
-    const pushLog = (role, text) => setLog((prev) => [...prev.slice(-29), { role, text }]);
+    const pushLog = (role, text) => setLog((prev) => [...prev.slice(-4), { role, text }]);
 
     const stopAllAudio = () => {
       (eng.playNodes || []).forEach((n) => {
@@ -493,10 +499,10 @@ function CodinoCall({ context, onClose }) {
             Q{context.q.n} · {context.q.tag}
           </p>
         ) : null}
-        <div className="cod-call-log" aria-live="polite">
-          {log.length === 0 && <p className="cod-empty">Say something — Codino is listening.</p>}
+        <div className="cod-call-captions" ref={captionRef} aria-live="polite">
+          {log.length === 0 && <p className="cod-cap">Say something — Codino is listening.</p>}
           {log.map((m, i) => (
-            <p key={i} className={m.role === "user" ? "cod-call-user" : m.role === "assistant" ? "cod-call-ai" : "cod-call-err"}>
+            <p key={i} className={m.role === "error" ? "cod-cap cod-cap-err" : "cod-cap"}>
               {m.role === "user" ? "You: " : m.role === "assistant" ? "Codino: " : ""}{m.text}
             </p>
           ))}
