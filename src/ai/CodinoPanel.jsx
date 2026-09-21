@@ -661,7 +661,7 @@ function CodinoCall({ context, onClose }) {
             </button>
             <span className="cod-talk-label">{talking ? "Tap to send" : awaiting ? "Reply coming…" : "Tap to talk"}</span>
           </span>
-          <button type="button" className="cod-endcall" onClick={onClose}>
+          <button type="button" className="cod-ghost danger" onClick={onClose}>
             End call
           </button>
         </div>
@@ -689,6 +689,8 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
   const [micBusy, setMicBusy] = useState(false);
   const [dictOpen, setDictOpen] = useState(false);
   const [dictSecs, setDictSecs] = useState(0);
+  const [dictText, setDictText] = useState("");
+  const [dictReview, setDictReview] = useState(false);
   const [callOpen, setCallOpen] = useState(false);
   const audioRef = useRef(null);
   const speakKeyRef = useRef(0);
@@ -700,7 +702,6 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
   const dictTimerRef = useRef(null);
   const dictCtxRef = useRef(null);
   const dictCanvasRef = useRef(null);
-  const dictRingsRef = useRef(null);
   const abortRef = useRef(null);
   const frameRef = useRef(null);
   const pendingRef = useRef("");
@@ -876,9 +877,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
       !!window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const data = new Uint8Array(an.fftSize);
-    const paint = (level) => {
-      const rings = dictRingsRef.current;
-      if (rings) rings.classList.toggle("live", level > 0.03);
+    const paint = () => {
       const cv = dictCanvasRef.current;
       if (!cv) return;
       const ctx = cv.getContext("2d");
@@ -886,9 +885,10 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
       const W = cv.width;
       const H = cv.height;
       ctx.clearRect(0, 0, W, H);
-      const N = 48;
+      const N = 56;
       const gap = 3;
       const bw = (W - gap * (N - 1)) / N;
+      ctx.fillStyle = "#c3c3c3";
       for (let i = 0; i < N; i++) {
         const a = Math.floor((i / N) * data.length);
         const b = Math.max(a + 1, Math.floor(((i + 1) / N) * data.length));
@@ -900,13 +900,9 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
         const seg = Math.sqrt(s2 / (b - a));
         const h = Math.max(3, Math.min(H, seg * H * 3.4));
         const x = i * (bw + gap);
-        const g = ctx.createLinearGradient(0, H / 2 - h / 2, 0, H / 2 + h / 2);
-        g.addColorStop(0, "#22d3ee");
-        g.addColorStop(1, "#818cf8");
-        ctx.fillStyle = g;
         if (ctx.roundRect) {
           ctx.beginPath();
-          ctx.roundRect(x, H / 2 - h / 2, bw, h, Math.min(bw / 2, 3));
+          ctx.roundRect(x, H / 2 - h / 2, bw, h, Math.min(bw / 2, 2));
           ctx.fill();
         } else {
           ctx.fillRect(x, H / 2 - h / 2, bw, h);
@@ -915,13 +911,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
     };
     const draw = () => {
       an.getByteTimeDomainData(data);
-      let sum = 0;
-      for (let i = 0; i < data.length; i++) {
-        const v = (data[i] - 128) / 128;
-        sum += v * v;
-      }
-      const level = Math.min(1, Math.sqrt(sum / data.length) * 4);
-      paint(level);
+      paint();
       if (!calm) dictRafRef.current = requestAnimationFrame(draw);
     };
     draw();
@@ -955,6 +945,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
         micChunksRef.current = [];
         if (dictCancelRef.current || !chunks.length) {
           setDictOpen(false);
+          setDictReview(false);
           return;
         }
         const mime = (rec.mimeType || "audio/webm").split(";")[0];
@@ -963,12 +954,20 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
         setMicBusy(true);
         try {
           const text = await transcribeCodinoAudio({ blob, filename: `note.${ext}`, language: "en" });
-          if (text) setInput((prev) => (prev && !prev.endsWith(" ") ? `${prev} ${text}` : `${prev || ""}${text}`));
+          if (text) {
+            setDictText(text);
+            setDictReview(true);
+          } else {
+            setDictOpen(false);
+            setDictReview(false);
+            setError("Didn't catch that. Try again.");
+          }
         } catch (e) {
           setError((e && e.message) || "Dictation failed. Try again.");
+          setDictOpen(false);
+          setDictReview(false);
         } finally {
           setMicBusy(false);
-          setDictOpen(false);
         }
       };
       const AC = window.AudioContext || window.webkitAudioContext;
@@ -989,6 +988,8 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
       rec.start();
       setRecording(true);
       setDictSecs(0);
+      setDictText("");
+      setDictReview(false);
       setDictOpen(true);
       dictTimerRef.current = window.setInterval(() => setDictSecs((s) => s + 1), 1000);
     } catch {
@@ -1004,7 +1005,28 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
       setRecording(false);
       cleanupDictAudio();
       setDictOpen(false);
+      setDictReview(false);
     }
+  };
+
+  const cancelDictation = () => {
+    if (micBusy) return;
+    if (dictReview) {
+      setDictText("");
+      setDictReview(false);
+      setDictOpen(false);
+    } else {
+      stopDictation(true);
+    }
+  };
+
+  const sendDictation = async () => {
+    const t = dictText.trim();
+    if ((!t && !images.length) || streaming || !active) return;
+    await send(t);
+    setDictText("");
+    setDictReview(false);
+    setDictOpen(false);
   };
 
   useEffect(
@@ -1438,42 +1460,69 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
           </div>
         </div>
           <div className="cod-input-row">
-            {dictOpen && (
-              <div className="cod-dict" role="dialog" aria-label="Voice dictation">
-                <div className="cod-dict-stage">
-                  <span className="cod-dict-rings" ref={dictRingsRef} aria-hidden="true">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                  <span className="cod-dict-mic" aria-hidden="true">
-                    <svg width="26" height="26" viewBox="0 0 16 16">
-                      <rect x="6" y="1.5" width="4" height="7.5" rx="2" fill="currentColor" />
+            {dictOpen ? (
+              <div className="cod-dictbox">
+                <button
+                  type="button"
+                  className="cod-dict-x"
+                  onClick={cancelDictation}
+                  aria-label="Cancel dictation"
+                  disabled={micBusy}
+                >
+                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                    <path
+                      d="M3 3l8 8M11 3l-8 8"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+                {dictReview ? (
+                  <textarea
+                    className="cod-dict-text"
+                    rows={3}
+                    value={dictText}
+                    onChange={(e) => setDictText(e.target.value)}
+                    aria-label="Edit dictation"
+                    maxLength={1000}
+                  />
+                ) : (
+                  <div className="cod-dict-wavewrap">
+                    <canvas ref={dictCanvasRef} className="cod-dict-wave" width={320} height={40} aria-hidden="true" />
+                    <p className="cod-dict-hint">{micBusy ? "Writing it down…" : `Listening… ${dictSecs}s`}</p>
+                  </div>
+                )}
+                {dictReview ? (
+                  <button type="button" className="cod-send" onClick={sendDictation} aria-label="Send dictation">
+                    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
                       <path
-                        d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5"
+                        d="M9 14.5v-11M4.8 7.3L9 3l4.2 4.3"
                         fill="none"
                         stroke="currentColor"
-                        strokeWidth="1.8"
+                        strokeWidth="2.2"
                         strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
-                  </span>
-                </div>
-                <canvas ref={dictCanvasRef} className="cod-dict-wave" width={320} height={88} aria-hidden="true" />
-                <p className="cod-dict-hint">{micBusy ? "Writing it down…" : `Listening… ${dictSecs}s · speak freely`}</p>
-                <div className="cod-dict-actions">
-                  <button type="button" className="cod-dict-cancel" onClick={() => stopDictation(true)} disabled={micBusy}>
-                    Cancel
                   </button>
-                  <button type="button" className="cod-dict-stop" onClick={() => stopDictation(false)} disabled={micBusy}>
-                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                      <rect x="1.5" y="1.5" width="9" height="9" rx="2" fill="currentColor" />
+                ) : (
+                  <button
+                    type="button"
+                    className="cod-send"
+                    onClick={() => stopDictation(false)}
+                    aria-label="Stop dictation"
+                    disabled={micBusy}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                      <rect x="2.5" y="2.5" width="9" height="9" rx="2" fill="currentColor" />
                     </svg>
-                    Stop & insert
                   </button>
-                </div>
+                )}
               </div>
-            )}
+            ) : (
+              <>
             <textarea
               ref={inputRef}
               className="cod-input"
@@ -1487,7 +1536,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
                   send(input);
                 }
               }}
-              placeholder={recording ? "Listening… tap the mic to stop" : "Ask a question…"}
+              placeholder="Ask a question…"
               aria-label="Ask Codino a question"
               maxLength={1000}
             />
@@ -1593,6 +1642,8 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
               </button>
             )}
             </div>
+              </>
+            )}
           </div>
         </>
       )}

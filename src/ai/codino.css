@@ -322,7 +322,6 @@
 }
 
 .cod-input-row {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1039,157 +1038,88 @@
   box-shadow: 0 3px 0 var(--green-shadow);
 }
 
-/* ---------- Dictation takeover ---------- */
+/* ---------- Dictation box (same footprint as .cod-input) ---------- */
 
-.cod-dict {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
+.cod-dictbox {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 96px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 10px;
-  padding: 18px 16px;
-  background: linear-gradient(180deg, #141428 0%, #1e1e3a 100%);
-  border-top: 2px solid var(--line);
+  background: #fbfdff;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 14px;
   animation: cod-msg-in 0.2s ease-out;
 }
 
-.cod-dict-stage {
-  position: relative;
-  width: 104px;
-  height: 104px;
+.cod-dict-x {
+  flex: none;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.cod-dict-mic {
-  position: relative;
-  z-index: 1;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: radial-gradient(circle at 50% 35%, #22d3ee 0%, #1cb0f6 70%);
-  box-shadow: 0 0 28px rgba(28, 176, 246, 0.65);
-  animation: cod-dict-glow 1.6s ease-in-out infinite;
-}
-
-.cod-dict-rings {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.cod-dict-rings span {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid rgba(34, 211, 238, 0.7);
-  opacity: 0;
-}
-
-.cod-dict-rings.live span {
-  animation: cod-ring-out 1.8s ease-out infinite;
-}
-
-.cod-dict-rings.live span:nth-child(2) {
-  animation-delay: 0.6s;
-}
-
-.cod-dict-rings.live span:nth-child(3) {
-  animation-delay: 1.2s;
-}
-
-.cod-dict-wave {
-  width: 100%;
-  height: 88px;
-}
-
-.cod-dict-hint {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 800;
-  color: #a5b4fc;
-  font-variant-numeric: tabular-nums;
-}
-
-.cod-dict-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.cod-dict-cancel {
-  background: none;
+  background: #f0f2f5;
   border: none;
-  padding: 8px 10px;
-  font-family: var(--font);
-  font-size: 13.5px;
-  font-weight: 800;
-  color: #8b8ba3;
+  border-radius: 50%;
+  color: var(--muted);
   cursor: pointer;
 }
 
-.cod-dict-cancel:disabled {
+.cod-dict-x:hover {
+  background: #e4e4e4;
+}
+
+.cod-dict-x:disabled {
   cursor: default;
   opacity: 0.5;
 }
 
-.cod-dict-stop {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #e5484d;
-  border: none;
-  border-bottom: 4px solid #a11f1f;
-  border-radius: 999px;
-  padding: 10px 22px;
-  font-family: var(--font);
-  font-size: 14px;
+.cod-dict-wavewrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cod-dict-wave {
+  display: block;
+  width: 100%;
+  height: 40px;
+}
+
+.cod-dict-hint {
+  margin: 0;
+  text-align: center;
+  font-size: 11.5px;
   font-weight: 800;
-  color: #fff;
-  cursor: pointer;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
 }
 
-.cod-dict-stop:active {
-  transform: translateY(3px);
-  border-bottom-width: 1px;
-}
-
-.cod-dict-stop:disabled {
-  cursor: default;
-  opacity: 0.6;
-}
-
-@keyframes cod-ring-out {
-  0% {
-    transform: scale(0.55);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(1.28);
-    opacity: 0;
-  }
-}
-
-@keyframes cod-dict-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 18px rgba(28, 176, 246, 0.45);
-  }
-  50% {
-    box-shadow: 0 0 34px rgba(28, 176, 246, 0.8);
-  }
+.cod-dict-text {
+  flex: 1;
+  min-width: 0;
+  min-height: 68px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink);
 }
 
 .cod-ghost.on {
   color: var(--blue);
+}
+
+.cod-ghost.danger {
+  color: #d33131;
 }
 
 .cod-call-overlay {
@@ -1379,26 +1309,8 @@
   justify-self: center;
 }
 
-.cod-call-actions .cod-endcall {
+.cod-call-actions .danger {
   justify-self: start;
-}
-
-.cod-endcall {
-  background: #d33131;
-  color: #fff;
-  border: none;
-  border-bottom: 4px solid #a11f1f;
-  border-radius: var(--radius);
-  padding: 10px 22px;
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.cod-endcall:active {
-  transform: translateY(3px);
-  border-bottom-width: 1px;
 }
 
 @keyframes cod-spin {
@@ -1422,9 +1334,7 @@
   .cod-mic.recording,
   .cod-talk.recording,
   .cod-talk-ring,
-  .cod-dict,
-  .cod-dict-mic,
-  .cod-dict-rings.live span {
+  .cod-dictbox {
     animation: none;
   }
 }
