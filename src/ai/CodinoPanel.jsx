@@ -706,6 +706,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
   const [micBusy, setMicBusy] = useState(false);
   const [dictOpen, setDictOpen] = useState(false);
   const [dictSecs, setDictSecs] = useState(0);
+  const [dictReady, setDictReady] = useState(false);
   const [callOpen, setCallOpen] = useState(false);
   const audioRef = useRef(null);
   const speakKeyRef = useRef(0);
@@ -713,6 +714,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
   const micChunksRef = useRef([]);
   const micStreamRef = useRef(null);
   const dictCancelRef = useRef(false);
+  const dictSessionRef = useRef(0);
   const dictRafRef = useRef(null);
   const dictTimerRef = useRef(null);
   const dictCtxRef = useRef(null);
@@ -938,8 +940,32 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
       setError("Codino is not configured. Set VITE_ZYNQ_URL and VITE_ZYNQ_SECRET in .env (and Netlify) then rebuild.");
       return;
     }
+    const session = ++dictSessionRef.current;
+    setDictSecs(0);
+    setDictReady(false);
+    setDictOpen(true);
+    setRecording(true);
+    dictTimerRef.current = window.setInterval(() => setDictSecs((s) => s + 1), 1000);
+    let stream;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch {
+      if (dictSessionRef.current !== session) return;
+      setError("Microphone blocked. Allow mic access, then try again.");
+      setRecording(false);
+      cleanupDictAudio();
+      setDictOpen(false);
+      return;
+    }
+    if (dictSessionRef.current !== session) {
+      try {
+        stream.getTracks().forEach((t) => t.stop());
+      } catch {
+        /* tracks already stopped */
+      }
+      return;
+    }
+    try {
       micStreamRef.current = stream;
       const rec = new MediaRecorder(stream);
       micChunksRef.current = [];
@@ -996,20 +1022,42 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
       }
       recorderRef.current = rec;
       rec.start();
-      setRecording(true);
-      setDictSecs(0);
-      setDictOpen(true);
-      dictTimerRef.current = window.setInterval(() => setDictSecs((s) => s + 1), 1000);
+      if (dictSessionRef.current !== session) {
+        try {
+          rec.stop();
+        } catch {
+          /* already stopped */
+        }
+        return;
+      }
+      setDictReady(true);
     } catch {
-      setError("Microphone blocked. Allow mic access, then try again.");
+      if (dictSessionRef.current !== session) return;
+      setError("Could not start recording. Try again.");
+      try {
+        stream.getTracks().forEach((t) => t.stop());
+      } catch {
+        /* tracks already stopped */
+      }
+      setRecording(false);
+      cleanupDictAudio();
+      setDictOpen(false);
     }
   };
 
   const stopDictation = (cancel) => {
+    dictSessionRef.current += 1;
     dictCancelRef.current = !!cancel;
-    try {
-      recorderRef.current?.stop();
-    } catch {
+    const rec = recorderRef.current;
+    if (rec && rec.state === "recording") {
+      try {
+        rec.stop();
+      } catch {
+        setRecording(false);
+        cleanupDictAudio();
+        setDictOpen(false);
+      }
+    } else {
       setRecording(false);
       cleanupDictAudio();
       setDictOpen(false);
@@ -1018,6 +1066,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
 
   useEffect(
     () => () => {
+      dictSessionRef.current += 1;
       if (abortRef.current) abortRef.current.abort();
       if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
       speakKeyRef.current += 1;
@@ -1468,14 +1517,14 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
                 </button>
                 <div className="cod-dict-wavewrap">
                   <canvas ref={dictCanvasRef} className="cod-dict-wave" width={320} height={40} aria-hidden="true" />
-                  <p className="cod-dict-hint">{micBusy ? "Writing it down…" : `Listening… ${dictSecs}s`}</p>
+                  <p className="cod-dict-hint">{micBusy ? "Writing it down…" : !dictReady ? "Preparing mic…" : `Listening… ${dictSecs}s`}</p>
                 </div>
                 <button
                   type="button"
                   className="cod-send"
-                  onClick={() => stopDictation(false)}
-                  aria-label="Stop and insert dictation"
-                  disabled={micBusy}
+                    onClick={() => stopDictation(false)}
+                    aria-label="Stop and insert dictation"
+                    disabled={micBusy || !dictReady}
                 >
                   <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
                     <rect x="2.5" y="2.5" width="9" height="9" rx="2" fill="currentColor" />
