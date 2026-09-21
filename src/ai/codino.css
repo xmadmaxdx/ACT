@@ -1100,20 +1100,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.cod-dict-text {
-  flex: 1;
-  min-width: 0;
-  min-height: 68px;
-  border: none;
-  outline: none;
-  resize: none;
-  background: transparent;
-  font-family: var(--font);
-  font-size: 14.5px;
-  line-height: 1.45;
-  color: var(--ink);
-}
-
 .cod-ghost.on {
   color: var(--blue);
 }
