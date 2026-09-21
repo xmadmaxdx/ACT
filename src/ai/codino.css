@@ -1069,33 +1069,36 @@
   animation: cod-modal-pop 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
-.cod-orb {
-  position: relative;
-  width: 132px;
-  height: 132px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 42%, #ffffffee 0%, var(--blue-light-bg) 45%, var(--blue) 100%);
-  animation: cod-orb-breathe 2.4s ease-in-out infinite;
+.cod-orb-canvas {
+  width: 220px;
+  height: 220px;
+  display: block;
+  margin: 6px auto;
+  touch-action: none;
+  cursor: grab;
 }
 
-.cod-orb-core {
-  position: absolute;
-  inset: 34px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, var(--blue-light-bg) 60%, transparent 100%);
+.cod-ptt {
+  background: #fff;
+  color: var(--ink-soft);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: var(--radius);
+  padding: 10px 18px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
 }
 
-.cod-orb.is-listening {
-  background: radial-gradient(circle at 50% 42%, #ffffffee 0%, #cffafe 45%, #22d3ee 100%);
-}
-
-.cod-orb.is-thinking {
-  background: radial-gradient(circle at 50% 42%, #ffffffee 0%, #fef3c7 45%, #f59e0b 100%);
-  animation-duration: 0.8s;
-}
-
-.cod-orb.is-speaking {
-  background: radial-gradient(circle at 50% 42%, #ffffffee 0%, #fce7f3 45%, #f472b6 100%);
+.cod-ptt:active {
+  transform: translateY(3px);
+  border-bottom-width: 1px;
+  background: var(--blue-light-bg);
+  border-color: var(--blue-light-border);
+  color: var(--blue);
 }
 
 .cod-call-status {
@@ -1181,20 +1184,10 @@
   }
 }
 
-@keyframes cod-orb-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.06);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cod-speak-spin,
   .cod-mic.recording,
-  .cod-orb {
+  .cod-ptt:active {
     animation: none;
   }
 }

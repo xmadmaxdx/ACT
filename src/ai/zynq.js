@@ -261,7 +261,7 @@ const STT_PATH = "/v1/audio/transcriptions";
 export const TTS_MODEL = "zynq-tts-auto";
 export const STT_MODEL = "zynq-stt-auto";
 
-export async function speakCodinoText({ text, voice = "tara", speed = 1.0, signal }) {
+export async function speakCodinoText({ text, voice = "tara", speed = 1.0, stream, signal }) {
   const clean = String(text || "").trim();
   if (!clean) throw new Error("Nothing to speak yet.");
   const { url, secret } = config();
@@ -270,7 +270,13 @@ export async function speakCodinoText({ text, voice = "tara", speed = 1.0, signa
   const res = await fetch(`${url}${SPEECH_PATH}`, {
     method: "POST",
     headers: { ...headers(signature, timestamp) },
-    body: JSON.stringify({ model: TTS_MODEL, input: clean.slice(0, 4000), voice, speed }),
+    body: JSON.stringify({
+      model: TTS_MODEL,
+      input: clean.slice(0, 4000),
+      voice,
+      speed,
+      ...(stream !== undefined ? { stream } : {}),
+    }),
     signal,
   });
   if (!res.ok) throw new Error(await readError(res));

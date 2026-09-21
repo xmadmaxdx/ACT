@@ -47,6 +47,133 @@ function contextKey(ctx) {
 const CALL_SYSTEM =
   "You are a friendly voice tutor on a live call inside the ACTprep app. Reply in at most 35 words, plain speech only: no markdown, no lists, no emoji. Be warm and conversational.";
 const CALL_LLM = "openai/gpt-oss-20b-g";
+const CALL_MAX_TOKENS = 300;
+const CALL_FALLBACK = "Sorry, I didn't catch that — say it once more?";
+
+const ORB_COLORS = {
+  idle: ["#6d58ff", "#3b82f6", "#8b5cf6"],
+  listening: ["#22d3ee", "#38bdf6", "#818cf8"],
+  thinking: ["#fbbf24", "#f59e0b", "#fde68a"],
+  speaking: ["#f472b6", "#e879f9", "#818cf8"],
+};
+
+function CodinoOrb({ stateRef, levelRef }) {
+  const canvasRef = useRef(null);
+  const dragRef = useRef(null);
+  const offRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const cv = canvasRef.current;
+    if (!cv) return undefined;
+    const ctx = cv.getContext("2d");
+    const orb = { smooth: 0, t: 0 };
+    const calm =
+      typeof window !== "undefined" &&
+      !!window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let raf = 0;
+    const draw = () => {
+      const state = stateRef.current;
+      const W = cv.width;
+      const cx = W / 2 + offRef.current.x;
+      const cy = W / 2 + offRef.current.y;
+      orb.t += 0.03;
+      orb.smooth += (levelRef.current - orb.smooth) * 0.12;
+      const st = ORB_COLORS[state] || ORB_COLORS.idle;
+      const speedMul = state === "thinking" ? 3 : 1;
+      ctx.clearRect(0, 0, W, W);
+      ctx.globalCompositeOperation = "lighter";
+      const g0 = ctx.createRadialGradient(cx, cy, 10, cx, cy, 150);
+      g0.addColorStop(0, `${st[0]}44`);
+      g0.addColorStop(1, `${st[0]}00`);
+      ctx.fillStyle = g0;
+      ctx.fillRect(0, 0, W, W);
+      const base = 58 + Math.sin(orb.t * 1.2 * speedMul) * 4 + orb.smooth * 44;
+      ctx.beginPath();
+      for (let a = 0; a <= 72; a++) {
+        const th = (a / 72) * Math.PI * 2;
+        const wob =
+          (Math.sin(th * 3 + orb.t * 1.7 * speedMul) * 7 +
+            Math.sin(th * 5 - orb.t * 1.1 * speedMul) * 5) *
+          (0.35 + orb.smooth);
+        const r = base + wob;
+        const x = cx + Math.cos(th) * r;
+        const y = cy + Math.sin(th) * r;
+        if (a) ctx.lineTo(x, y);
+        else ctx.moveTo(x, y);
+      }
+      ctx.closePath();
+      const g1 = ctx.createRadialGradient(cx, cy, 6, cx, cy, base + 30);
+      g1.addColorStop(0, "#ffffffee");
+      g1.addColorStop(0.35, `${st[0]}dd`);
+      g1.addColorStop(0.7, `${st[1]}77`);
+      g1.addColorStop(1, `${st[2]}00`);
+      ctx.fillStyle = g1;
+      ctx.fill();
+      if (ctx.createConicGradient) {
+        const cg = ctx.createConicGradient(orb.t * 0.5 * speedMul, cx, cy);
+        cg.addColorStop(0, "rgba(255,255,255,0)");
+        cg.addColorStop(0.1, "rgba(255,255,255,0.30)");
+        cg.addColorStop(0.2, "rgba(255,255,255,0)");
+        ctx.fillStyle = cg;
+        ctx.beginPath();
+        ctx.arc(cx, cy, base * 0.95, 0, 7);
+        ctx.fill();
+      }
+      if (state === "listening") {
+        for (let i = 0; i < 2; i++) {
+          const ph = (orb.t * 0.5 + i * 0.5) % 1;
+          ctx.strokeStyle = `rgba(103,232,249,${((1 - ph) * 0.5).toFixed(3)})`;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(cx, cy, base + 10 + ph * 48, 0, 7);
+          ctx.stroke();
+        }
+      }
+      if (state === "speaking") {
+        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        for (let i = 0; i < 7; i++) {
+          const bx = cx - 48 + i * 16;
+          const bh = 8 + Math.abs(Math.sin(orb.t * 3.2 + i * 1.4)) * (10 + orb.smooth * 30);
+          ctx.fillRect(bx - 3, cy - bh / 2, 6, bh);
+        }
+      }
+      if (!calm) raf = requestAnimationFrame(draw);
+    };
+    if (calm) draw();
+    else raf = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(raf);
+  }, [stateRef, levelRef]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="cod-orb-canvas"
+      width={300}
+      height={300}
+      aria-hidden="true"
+      onPointerDown={(e) => {
+        dragRef.current = { x: e.clientX, y: e.clientY, ox: offRef.current.x, oy: offRef.current.y };
+        try {
+          e.currentTarget.setPointerCapture(e.pointerId);
+        } catch {
+          /* pointer capture unsupported */
+        }
+      }}
+      onPointerMove={(e) => {
+        const d = dragRef.current;
+        if (!d) return;
+        offRef.current = { x: d.ox + (e.clientX - d.x), y: d.oy + (e.clientY - d.y) };
+      }}
+      onPointerUp={() => {
+        dragRef.current = null;
+      }}
+      onPointerCancel={() => {
+        dragRef.current = null;
+      }}
+    />
+  );
+}
 
 function flattenF32(chunks) {
   const n = chunks.reduce((a, c) => a + c.length, 0);
@@ -87,17 +214,18 @@ function wav16Bytes(f32, sr) {
 function CodinoCall({ context, onClose }) {
   const [callState, setCallState] = useState("listening");
   const [log, setLog] = useState([]);
-  const [level, setLevel] = useState(0);
   const [muted, setMuted] = useState(false);
   const [callError, setCallError] = useState("");
   const engineRef = useRef(null);
+  const stateRef = useRef("listening");
+  const levelRef = useRef(0);
 
   useEffect(() => {
     const eng = {
       active: true,
       speaking: false,
       muted: false,
-      speakingAbort: null,
+      ptt: false,
       turnId: 0,
       buf: [],
       bufSpeech: false,
@@ -106,8 +234,9 @@ function CodinoCall({ context, onClose }) {
       bargeCount: 0,
       bargeAt: 0,
       speakStart: 0,
+      outLevel: 0,
+      playNodes: [],
       history: [{ role: "system", content: CALL_SYSTEM }],
-      audio: null,
     };
     engineRef.current = eng;
     let mic = null;
@@ -116,24 +245,33 @@ function CodinoCall({ context, onClose }) {
 
     const setState = (s) => {
       if (!engineRef.current) return;
+      stateRef.current = s;
       setCallState(s);
     };
     const pushLog = (role, text) => setLog((prev) => [...prev.slice(-29), { role, text }]);
 
-    const stopAudio = () => {
-      try {
-        eng.audio?.pause();
-      } catch {
-        /* already stopped */
-      }
-      eng.audio = null;
+    const stopAllAudio = () => {
+      (eng.playNodes || []).forEach((n) => {
+        try {
+          n.src.stop();
+        } catch {
+          /* already stopped */
+        }
+        try {
+          n.ctx.close();
+        } catch {
+          /* already closed */
+        }
+      });
+      eng.playNodes = [];
     };
 
     const interruptAgent = () => {
       eng.turnId += 1;
       eng.speaking = false;
+      eng.outLevel = 0;
       eng.bargeAt = performance.now();
-      stopAudio();
+      stopAllAudio();
       setState("listening");
     };
     eng.interruptAgent = interruptAgent;
@@ -141,26 +279,58 @@ function CodinoCall({ context, onClose }) {
     const playReply = async (blob, myTurn) => {
       if (myTurn !== eng.turnId || !eng.active) return;
       const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      eng.audio = audio;
       eng.speaking = true;
       eng.speakStart = performance.now();
       eng.bargeCount = 0;
       setState("speaking");
+      const pctx = new AudioContext();
+      const src = pctx.createBufferSource();
       try {
-        await audio.play();
+        src.buffer = await pctx.decodeAudioData(await blob.arrayBuffer());
       } catch {
-        eng.speaking = false;
-        setState("listening");
         URL.revokeObjectURL(url);
+        try {
+          pctx.close();
+        } catch {
+          /* already closed */
+        }
+        if (eng.speaking && myTurn === eng.turnId) {
+          eng.speaking = false;
+          if (eng.active) setState("listening");
+        }
         return;
       }
+      eng.playNodes.push({ src, ctx: pctx });
+      const an = pctx.createAnalyser();
+      an.fftSize = 256;
+      src.connect(an);
+      an.connect(pctx.destination);
+      const data = new Uint8Array(an.frequencyBinCount);
+      const tick = () => {
+        if (!eng.speaking) return;
+        an.getByteTimeDomainData(data);
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) {
+          const x = (data[i] - 128) / 128;
+          sum += x * x;
+        }
+        const out = Math.min(1, Math.sqrt(sum / data.length) * 5);
+        eng.outLevel = out;
+        levelRef.current = out;
+        requestAnimationFrame(tick);
+      };
+      tick();
       await new Promise((resolve) => {
-        audio.onended = resolve;
-        audio.onerror = resolve;
+        src.onended = resolve;
+        src.start();
       });
+      eng.playNodes = eng.playNodes.filter((n) => n.src !== src);
       URL.revokeObjectURL(url);
-      if (eng.audio === audio) eng.audio = null;
+      try {
+        pctx.close();
+      } catch {
+        /* already closed */
+      }
       if (eng.speaking && myTurn === eng.turnId && eng.active) {
         eng.speaking = false;
         setState("listening");
@@ -186,23 +356,19 @@ function CodinoCall({ context, onClose }) {
         eng.history.push({ role: "user", content: userText });
         if (eng.history.length > 17) eng.history = [eng.history[0], ...eng.history.slice(-16)];
         let reply = "";
-        for (let attempt = 0; attempt < 2 && !reply && eng.active; attempt++) {
+        for (let attempt = 0; attempt < 3 && !reply && eng.active; attempt++) {
           const data = await sendCodinoMessage({
             model: CALL_LLM,
             messages: eng.history,
-            extra: { max_tokens: 200, reasoning_effort: "low" },
+            extra: { max_tokens: CALL_MAX_TOKENS, reasoning_effort: "low" },
           });
           reply = String(data?.choices?.[0]?.message?.content || "").trim();
         }
-        if (!reply) {
-          pushLog("error", "Empty reply — speak again.");
-          if (eng.active) setState("listening");
-          return;
-        }
+        if (!reply) reply = CALL_FALLBACK;
         if (myTurn !== eng.turnId || !eng.active) return;
         eng.history.push({ role: "assistant", content: reply });
         pushLog("assistant", reply);
-        const audioBlob = await speakCodinoText({ text: reply, voice: "flux-alexis-en" });
+        const audioBlob = await speakCodinoText({ text: reply, voice: "flux-alexis-en", stream: true });
         await playReply(audioBlob, myTurn);
       } catch (e) {
         if (!eng.active) return;
@@ -211,20 +377,19 @@ function CodinoCall({ context, onClose }) {
       }
     };
 
+    eng.endUtterance = endUtterance;
+
     const onFrame = (e) => {
       if (!eng.active) return;
       const f32 = e.inputBuffer.getChannelData(0);
+      const live = !eng.muted || eng.ptt;
       let sum = 0;
       for (let i = 0; i < f32.length; i++) sum += f32[i] * f32[i];
-      const rms = Math.sqrt(sum / f32.length);
-      const live = !eng.muted;
-      if (!live) {
-        setLevel(0);
-        eng.lastFrame = performance.now();
-        return;
-      }
+      const rms = live ? Math.sqrt(sum / f32.length) : 0;
+      if (!eng.speaking) levelRef.current = Math.min(1, rms * 6);
       if (eng.speaking) {
-        if (rms > 0.06 && performance.now() - eng.speakStart > 500) {
+        const echoFloor = eng.outLevel * 1.8 + 0.05;
+        if (live && rms > 0.09 && rms > echoFloor && performance.now() - eng.speakStart > 500) {
           eng.bargeCount += 1;
           if (eng.bargeCount >= 3) {
             eng.bargeCount = 0;
@@ -235,13 +400,12 @@ function CodinoCall({ context, onClose }) {
         }
         return;
       }
-      setLevel((prev) => prev + (Math.min(1, rms * 6) - prev) * 0.4);
       const now = performance.now();
       if (now - eng.bargeAt < 300) {
         eng.lastFrame = now;
         return;
       }
-      if (rms > 0.02) {
+      if (eng.ptt || rms > 0.02) {
         if (!eng.bufSpeech) {
           eng.buf = [];
           eng.bufSpeech = true;
@@ -281,7 +445,7 @@ function CodinoCall({ context, onClose }) {
 
     return () => {
       eng.active = false;
-      stopAudio();
+      stopAllAudio();
       try {
         proc?.disconnect();
       } catch {
@@ -308,12 +472,19 @@ function CodinoCall({ context, onClose }) {
     });
   };
 
+  const pttEnd = () => {
+    const eng = engineRef.current;
+    if (!eng || !eng.ptt) return;
+    eng.ptt = false;
+    if (eng.active && !eng.speaking && eng.bufSpeech && eng.buf.length * 128 > 400 && eng.endUtterance) {
+      eng.endUtterance();
+    }
+  };
+
   return (
     <div className="cod-call-overlay" onClick={onClose}>
       <div className="cod-call-card" role="dialog" aria-label="Codino live call" onClick={(e) => e.stopPropagation()}>
-        <div className={`cod-orb is-${callState}`} aria-hidden="true">
-          <span className="cod-orb-core" style={{ transform: `scale(${(1 + Math.min(1, level) * 0.5).toFixed(3)})` }} />
-        </div>
+        <CodinoOrb stateRef={stateRef} levelRef={levelRef} />
         <p className="cod-call-status">
           {callState === "listening" ? "Listening…" : callState === "thinking" ? "Thinking…" : callState === "speaking" ? "Speaking… (talk to interrupt)" : "Call"}
         </p>
@@ -334,6 +505,21 @@ function CodinoCall({ context, onClose }) {
         <div className="cod-call-actions">
           <button type="button" className={muted ? "cod-ghost on" : "cod-ghost"} onClick={toggleMute} aria-pressed={muted}>
             {muted ? "Unmute" : "Mute"}
+          </button>
+          <button
+            type="button"
+            className="cod-ptt"
+            onPointerDown={(e) => {
+              e.preventDefault();
+              const eng = engineRef.current;
+              if (eng && eng.active) eng.ptt = true;
+            }}
+            onPointerUp={pttEnd}
+            onPointerLeave={pttEnd}
+            onPointerCancel={pttEnd}
+            aria-label="Hold to talk"
+          >
+            Hold to talk
           </button>
           <button type="button" className="cod-endcall" onClick={onClose}>
             End call
