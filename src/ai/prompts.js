@@ -126,3 +126,53 @@ export function buildExplanation({ q, pickedLetter, letters }) {
     rule: String(q.explain || ""),
   };
 }
+
+export function speakableText(raw, opts) {
+  const byLetter = new Map(
+    (opts || []).map((o) => [String(o.letter).toUpperCase(), String(o.text || "")])
+  );
+  const lines = String(raw || "").split("\n");
+  const out = [];
+  for (const line of lines) {
+    const t = String(line).trim();
+    if (!t || t === "$" || t === "$$") continue;
+    const tip = t.match(/^TIP:\s*(.*)$/);
+    if (tip) {
+      out.push(`Tip: ${tip[1]}`);
+      continue;
+    }
+    const quote = t.match(/^QUOTE:\s*"(.*)"\s*$/);
+    if (quote) {
+      out.push(`Quote: ${quote[1]}`);
+      continue;
+    }
+    const opt = t.match(/^OPTION:\s*([A-Za-z])\s*$/);
+    if (opt) {
+      const letter = opt[1].toUpperCase();
+      const text = byLetter.get(letter);
+      out.push(text ? `Option ${letter}: ${text}` : `Option ${letter}.`);
+      continue;
+    }
+    if (/^[-•]\s+/.test(t)) {
+      out.push(t.replace(/^[-•]\s+/, ""));
+      continue;
+    }
+    out.push(t);
+  }
+  let s = out.join(" ");
+  s = s
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\$\$([^$]+)\$\$/g, "$1")
+    .replace(/\$([^$]+)\$/g, "$1")
+    .replace(/\\([\[\]\(\)])/g, "$1")
+    .replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/\s+/g, " ")
+    .trim();
+  if (s.length > 3900) {
+    const cut = s.slice(0, 3900);
+    const dot = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
+    s = dot > 2000 ? cut.slice(0, dot + 1) : `${cut}…`;
+  }
+  return s;
+}

@@ -158,8 +158,30 @@ function rich(text) {
     .map((part, i) => (i % 2 === 1 ? <em key={i}>{part}</em> : <span key={i}>{part}</span>));
 }
 
+function optParts(opt) {
+  if (opt && typeof opt === "object") {
+    return {
+      t: String(opt.t || ""),
+      svg: typeof opt.svg === "string" && opt.svg.indexOf("<svg") >= 0 ? opt.svg : null,
+    };
+  }
+  return { t: String(opt || ""), svg: null };
+}
+
 function optText(opt) {
-  return opt === "No Change" ? <strong>No Change</strong> : mathRich(opt);
+  const { t, svg } = optParts(opt);
+  const label =
+    t === "" ? null : t === "No Change" ? <strong>No Change</strong> : mathRich(t);
+  if (!svg) return label;
+  return (
+    <>
+      {label ? <span className="q-text-label">{label}</span> : null}
+      <span
+        className="q-opt-figure"
+        dangerouslySetInnerHTML={{ __html: svg }}
+      />
+    </>
+  );
 }
 
 /* Placement / add-detail stems carry the proposed sentence as an *italic* (or
@@ -1201,7 +1223,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       );
     }
     activeQ.options.forEach((opt, i) => {
-      lines.push(`${qLetters[i]}. ${clean(opt)}`);
+      const parts = optParts(opt);
+      const label = clean(parts.t);
+      lines.push(`${qLetters[i]}. ${label}${label && parts.svg ? " " : ""}${parts.svg ? "[diagram]" : ""}`);
     });
     const elimHere = elims[activeQ.n] || [];
     if (elimHere.length > 0) lines.push(`Eliminated: ${elimHere.join(", ")}`);

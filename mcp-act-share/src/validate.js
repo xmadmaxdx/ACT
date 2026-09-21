@@ -61,6 +61,23 @@ function stripLetterPrefix(opt, letters, k) {
   return String(opt).replace(new RegExp(`^${letters[k]}[.):]\\s*`), "");
 }
 
+function normalizeOption(opt, letters, k, n) {
+  if (opt && typeof opt === "object" && !Array.isArray(opt)) {
+    const out = { t: opt.t === undefined ? "" : stripLetterPrefix(String(opt.t), letters, k) };
+    if (opt.svg !== undefined) {
+      if (typeof opt.svg !== "string" || opt.svg.indexOf("<svg") < 0) {
+        throw new Error(`Q${n}: option ${k + 1} svg must be a string containing <svg.`);
+      }
+      out.svg = opt.svg;
+    }
+    if (!out.t && out.svg === undefined) {
+      throw new Error(`Q${n}: option ${k + 1} needs t text or svg.`);
+    }
+    return out;
+  }
+  return stripLetterPrefix(opt, letters, k);
+}
+
 export function normalizeMcq(section, raw) {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
     throw new Error("Test must be a JSON object with passages + questions.");
@@ -161,7 +178,7 @@ export function normalizeMcq(section, raw) {
         tag: q.tag || "Custom",
         stem: q.stem || "",
         short: q.short || q.stem || `Question ${n}`,
-        options: q.options.map((opt, k) => stripLetterPrefix(opt, ok, k)),
+        options: q.options.map((opt, k) => normalizeOption(opt, ok, k, n)),
         answer: q.answer,
         explain: q.explain || "",
         refs: q.refs || [],
@@ -351,6 +368,9 @@ export function normalizeMath(raw) {
     if (typeof q.statement !== "string" || q.statement.length === 0) {
       throw new Error(`Q${n}: math questions need a statement string.`);
     }
+    if (q.svg !== undefined && (typeof q.svg !== "string" || q.svg.indexOf("<svg") < 0)) {
+      throw new Error(`Q${n}: svg must be a string containing <svg.`);
+    }
     if (!Array.isArray(q.options) || q.options.length !== 4) {
       throw new Error(`Q${n}: need exactly 4 options.`);
     }
@@ -384,7 +404,9 @@ export function normalizeMath(raw) {
     figures: checkFigures(raw.figures),
     passages: questions.map((q, i) => {
       const n = q.n ?? i + 1;
-      return { id: `q${n}`, title: `Problem ${n}`, paras: [[{ t: q.statement }]] };
+      const spans = [{ t: q.statement }];
+      if (q.svg !== undefined) spans.push({ svg: q.svg });
+      return { id: `q${n}`, title: `Problem ${n}`, paras: [spans] };
     }),
     questions: questions.map((q, i) => {
       const n = q.n ?? i + 1;
@@ -395,9 +417,10 @@ export function normalizeMath(raw) {
         stem: "",
         stemSide: "left",
         short: q.short || `Problem ${n}`,
-        options: q.options.map(String),
+        options: q.options.map((opt, k) => normalizeOption(opt, ["A", "B", "C", "D"], k, n)),
         answer: q.answer,
         explain: q.explain || "",
+        svg: q.svg !== undefined ? q.svg : undefined,
       };
     }),
   };

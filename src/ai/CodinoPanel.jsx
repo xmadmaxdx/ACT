@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./codino.css";
 import CodinoMascot from "./mascot.jsx";
-import { isCodinoConfigured, streamCodinoMessage, VISION_MODEL, CODINO_MODEL } from "./zynq.js";
+import { isCodinoConfigured, streamCodinoMessage, sendCodinoMessage, speakCodinoText, transcribeCodinoAudio, VISION_ALIAS, CODINO_MODEL } from "./zynq.js";
 import {
   ASK_SYSTEM,
   EXPLAIN_SYSTEM,
@@ -14,6 +14,7 @@ import {
   buildQuestionContext,
   generalContext,
   passageText,
+  speakableText,
 } from "./prompts.js";
 import { renderAiText } from "./rich.jsx";
 import { loadThreads, makeThread, persistThreads } from "./history.js";
@@ -43,6 +44,306 @@ function contextKey(ctx) {
   return `${ctx.testData.id}-Q${ctx.q.n}`;
 }
 
+const CALL_SYSTEM =
+  "You are a friendly voice tutor on a live call inside the ACTprep app. Reply in at most 35 words, plain speech only: no markdown, no lists, no emoji. Be warm and conversational.";
+const CALL_LLM = "openai/gpt-oss-20b-g";
+
+function flattenF32(chunks) {
+  const n = chunks.reduce((a, c) => a + c.length, 0);
+  const out = new Float32Array(n);
+  let o = 0;
+  for (const c of chunks) {
+    out.set(c, o);
+    o += c.length;
+  }
+  return out;
+}
+
+function wav16Bytes(f32, sr) {
+  const buf = new ArrayBuffer(44 + f32.length * 2);
+  const v = new DataView(buf);
+  const ws = (o, s) => {
+    for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i));
+  };
+  ws(0, "RIFF");
+  v.setUint32(4, 36 + f32.length * 2, true);
+  ws(8, "WAVE");
+  ws(12, "fmt ");
+  v.setUint32(16, 16, true);
+  v.setUint16(20, 1, true);
+  v.setUint16(22, 1, true);
+  v.setUint32(24, sr, true);
+  v.setUint32(28, sr * 2, true);
+  v.setUint16(32, 2, true);
+  v.setUint16(34, 16, true);
+  ws(36, "data");
+  v.setUint32(40, f32.length * 2, true);
+  for (let i = 0; i < f32.length; i++) {
+    v.setInt16(44 + i * 2, Math.max(-32768, Math.min(32767, f32[i] * 32767)), true);
+  }
+  return new Blob([buf], { type: "audio/wav" });
+}
+
+function CodinoCall({ context, onClose }) {
+  const [callState, setCallState] = useState("listening");
+  const [log, setLog] = useState([]);
+  const [level, setLevel] = useState(0);
+  const [muted, setMuted] = useState(false);
+  const [callError, setCallError] = useState("");
+  const engineRef = useRef(null);
+
+  useEffect(() => {
+    const eng = {
+      active: true,
+      speaking: false,
+      muted: false,
+      speakingAbort: null,
+      turnId: 0,
+      buf: [],
+      bufSpeech: false,
+      silenceMs: 0,
+      lastFrame: 0,
+      bargeCount: 0,
+      bargeAt: 0,
+      speakStart: 0,
+      history: [{ role: "system", content: CALL_SYSTEM }],
+      audio: null,
+    };
+    engineRef.current = eng;
+    let mic = null;
+    let actx = null;
+    let proc = null;
+
+    const setState = (s) => {
+      if (!engineRef.current) return;
+      setCallState(s);
+    };
+    const pushLog = (role, text) => setLog((prev) => [...prev.slice(-29), { role, text }]);
+
+    const stopAudio = () => {
+      try {
+        eng.audio?.pause();
+      } catch {
+        /* already stopped */
+      }
+      eng.audio = null;
+    };
+
+    const interruptAgent = () => {
+      eng.turnId += 1;
+      eng.speaking = false;
+      eng.bargeAt = performance.now();
+      stopAudio();
+      setState("listening");
+    };
+    eng.interruptAgent = interruptAgent;
+
+    const playReply = async (blob, myTurn) => {
+      if (myTurn !== eng.turnId || !eng.active) return;
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      eng.audio = audio;
+      eng.speaking = true;
+      eng.speakStart = performance.now();
+      eng.bargeCount = 0;
+      setState("speaking");
+      try {
+        await audio.play();
+      } catch {
+        eng.speaking = false;
+        setState("listening");
+        URL.revokeObjectURL(url);
+        return;
+      }
+      await new Promise((resolve) => {
+        audio.onended = resolve;
+        audio.onerror = resolve;
+      });
+      URL.revokeObjectURL(url);
+      if (eng.audio === audio) eng.audio = null;
+      if (eng.speaking && myTurn === eng.turnId && eng.active) {
+        eng.speaking = false;
+        setState("listening");
+      }
+    };
+
+    const endUtterance = async () => {
+      const myTurn = ++eng.turnId;
+      const pcm = flattenF32(eng.buf);
+      eng.buf = [];
+      eng.bufSpeech = false;
+      eng.silenceMs = 0;
+      if (!eng.active) return;
+      setState("thinking");
+      try {
+        const wav = wav16Bytes(pcm, 16000);
+        const userText = (await transcribeCodinoAudio({ blob: wav, filename: "utt.wav", language: "en" })).trim();
+        if (!userText) {
+          if (eng.active) setState("listening");
+          return;
+        }
+        pushLog("user", userText);
+        eng.history.push({ role: "user", content: userText });
+        if (eng.history.length > 17) eng.history = [eng.history[0], ...eng.history.slice(-16)];
+        let reply = "";
+        for (let attempt = 0; attempt < 2 && !reply && eng.active; attempt++) {
+          const data = await sendCodinoMessage({
+            model: CALL_LLM,
+            messages: eng.history,
+            extra: { max_tokens: 200, reasoning_effort: "low" },
+          });
+          reply = String(data?.choices?.[0]?.message?.content || "").trim();
+        }
+        if (!reply) {
+          pushLog("error", "Empty reply — speak again.");
+          if (eng.active) setState("listening");
+          return;
+        }
+        if (myTurn !== eng.turnId || !eng.active) return;
+        eng.history.push({ role: "assistant", content: reply });
+        pushLog("assistant", reply);
+        const audioBlob = await speakCodinoText({ text: reply, voice: "flux-alexis-en" });
+        await playReply(audioBlob, myTurn);
+      } catch (e) {
+        if (!eng.active) return;
+        pushLog("error", (e && e.message) || "Call error. Try again.");
+        setState("listening");
+      }
+    };
+
+    const onFrame = (e) => {
+      if (!eng.active) return;
+      const f32 = e.inputBuffer.getChannelData(0);
+      let sum = 0;
+      for (let i = 0; i < f32.length; i++) sum += f32[i] * f32[i];
+      const rms = Math.sqrt(sum / f32.length);
+      const live = !eng.muted;
+      if (!live) {
+        setLevel(0);
+        eng.lastFrame = performance.now();
+        return;
+      }
+      if (eng.speaking) {
+        if (rms > 0.06 && performance.now() - eng.speakStart > 500) {
+          eng.bargeCount += 1;
+          if (eng.bargeCount >= 3) {
+            eng.bargeCount = 0;
+            interruptAgent();
+          }
+        } else {
+          eng.bargeCount = 0;
+        }
+        return;
+      }
+      setLevel((prev) => prev + (Math.min(1, rms * 6) - prev) * 0.4);
+      const now = performance.now();
+      if (now - eng.bargeAt < 300) {
+        eng.lastFrame = now;
+        return;
+      }
+      if (rms > 0.02) {
+        if (!eng.bufSpeech) {
+          eng.buf = [];
+          eng.bufSpeech = true;
+        }
+        eng.buf.push(new Float32Array(f32));
+        eng.silenceMs = 0;
+      } else if (eng.bufSpeech) {
+        eng.silenceMs += now - eng.lastFrame;
+        eng.buf.push(new Float32Array(f32));
+        if (eng.silenceMs > 700 && eng.buf.length * 128 > 400) endUtterance();
+      }
+      eng.lastFrame = now;
+    };
+
+    (async () => {
+      try {
+        mic = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 },
+        });
+        if (!eng.active) {
+          mic.getTracks().forEach((t) => t.stop());
+          return;
+        }
+        actx = new AudioContext({ sampleRate: 16000 });
+        const src = actx.createMediaStreamSource(mic);
+        proc = actx.createScriptProcessor(2048, 1, 1);
+        proc.onaudioprocess = onFrame;
+        src.connect(proc);
+        proc.connect(actx.destination);
+        eng.nodes = { mic, actx, proc };
+        setState("listening");
+      } catch {
+        setCallError("Microphone blocked. Allow mic access, then try again.");
+        setState("idle");
+      }
+    })();
+
+    return () => {
+      eng.active = false;
+      stopAudio();
+      try {
+        proc?.disconnect();
+      } catch {
+        /* already closed */
+      }
+      try {
+        actx?.close();
+      } catch {
+        /* already closed */
+      }
+      try {
+        mic?.getTracks().forEach((t) => t.stop());
+      } catch {
+        /* already stopped */
+      }
+    };
+  }, []);
+
+  const toggleMute = () => {
+    const eng = engineRef.current;
+    setMuted((m) => {
+      if (eng) eng.muted = !m;
+      return !m;
+    });
+  };
+
+  return (
+    <div className="cod-call-overlay" onClick={onClose}>
+      <div className="cod-call-card" role="dialog" aria-label="Codino live call" onClick={(e) => e.stopPropagation()}>
+        <div className={`cod-orb is-${callState}`} aria-hidden="true">
+          <span className="cod-orb-core" style={{ transform: `scale(${(1 + Math.min(1, level) * 0.5).toFixed(3)})` }} />
+        </div>
+        <p className="cod-call-status">
+          {callState === "listening" ? "Listening…" : callState === "thinking" ? "Thinking…" : callState === "speaking" ? "Speaking… (talk to interrupt)" : "Call"}
+        </p>
+        {context?.q ? (
+          <p className="cod-call-sub">
+            Q{context.q.n} · {context.q.tag}
+          </p>
+        ) : null}
+        <div className="cod-call-log" aria-live="polite">
+          {log.length === 0 && <p className="cod-empty">Say something — Codino is listening.</p>}
+          {log.map((m, i) => (
+            <p key={i} className={m.role === "user" ? "cod-call-user" : m.role === "assistant" ? "cod-call-ai" : "cod-call-err"}>
+              {m.role === "user" ? "You: " : m.role === "assistant" ? "Codino: " : ""}{m.text}
+            </p>
+          ))}
+        </div>
+        {callError && <p className="cod-error">{callError}</p>}
+        <div className="cod-call-actions">
+          <button type="button" className={muted ? "cod-ghost on" : "cod-ghost"} onClick={toggleMute} aria-pressed={muted}>
+            {muted ? "Unmute" : "Mute"}
+          </button>
+          <button type="button" className="cod-endcall" onClick={onClose}>
+            End call
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CodinoPanel({ open, pinned, onTogglePin, context, onClose }) {
   const narrow = useNarrow();
   const modal = !pinned || narrow;
@@ -56,6 +357,16 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
   const [stuck, setStuck] = useState(true);
   const [error, setError] = useState("");
   const [configured] = useState(() => isCodinoConfigured());
+  const [speakingKey, setSpeakingKey] = useState(null);
+  const [speakLoading, setSpeakLoading] = useState(null);
+  const [recording, setRecording] = useState(false);
+  const [micBusy, setMicBusy] = useState(false);
+  const [callOpen, setCallOpen] = useState(false);
+  const audioRef = useRef(null);
+  const speakKeyRef = useRef(0);
+  const recorderRef = useRef(null);
+  const micChunksRef = useRef([]);
+  const micStreamRef = useRef(null);
   const abortRef = useRef(null);
   const frameRef = useRef(null);
   const pendingRef = useRef("");
@@ -150,10 +461,138 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
     if (abortRef.current) abortRef.current.abort();
   };
 
+  const stopSpeaking = () => {
+    speakKeyRef.current += 1;
+    try {
+      audioRef.current?.pause();
+    } catch {
+      /* already stopped */
+    }
+    audioRef.current = null;
+    setSpeakingKey(null);
+    setSpeakLoading(null);
+  };
+
+  const speakMessage = async (key, text) => {
+    if (speakingKey === key) {
+      stopSpeaking();
+      return;
+    }
+    if (!configured) {
+      setError("Codino is not configured. Set VITE_ZYNQ_URL and VITE_ZYNQ_SECRET in .env (and Netlify) then rebuild.");
+      return;
+    }
+    const plain = speakableText(text, answerOpts);
+    if (!plain) return;
+    stopSpeaking();
+    const myKey = (speakKeyRef.current += 1);
+    setSpeakLoading(key);
+    try {
+      const blob = await speakCodinoText({ text: plain, voice: "tara" });
+      if (speakKeyRef.current !== myKey) return;
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      setSpeakLoading(null);
+      setSpeakingKey(key);
+      try {
+        await audio.play();
+      } catch {
+        if (speakKeyRef.current === myKey) stopSpeaking();
+        URL.revokeObjectURL(url);
+        return;
+      }
+      await new Promise((resolve) => {
+        audio.onended = resolve;
+        audio.onerror = resolve;
+      });
+      URL.revokeObjectURL(url);
+      if (speakKeyRef.current === myKey) {
+        audioRef.current = null;
+        setSpeakingKey(null);
+      }
+    } catch (e) {
+      if (speakKeyRef.current !== myKey) return;
+      setSpeakLoading(null);
+      setSpeakingKey(null);
+      setError((e && e.message) || "Voice failed. Try again.");
+    }
+  };
+
+  const toggleRecording = async () => {
+    if (recording) {
+      try {
+        recorderRef.current?.stop();
+      } catch {
+        /* recorder already stopped */
+      }
+      return;
+    }
+    if (micBusy || streaming) return;
+    if (!configured) {
+      setError("Codino is not configured. Set VITE_ZYNQ_URL and VITE_ZYNQ_SECRET in .env (and Netlify) then rebuild.");
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micStreamRef.current = stream;
+      const rec = new MediaRecorder(stream);
+      micChunksRef.current = [];
+      rec.ondataavailable = (e) => {
+        if (e.data && e.data.size) micChunksRef.current.push(e.data);
+      };
+      rec.onstop = async () => {
+        setRecording(false);
+        try {
+          micStreamRef.current?.getTracks().forEach((t) => t.stop());
+        } catch {
+          /* tracks already stopped */
+        }
+        micStreamRef.current = null;
+        const chunks = micChunksRef.current;
+        micChunksRef.current = [];
+        if (!chunks.length) return;
+        const mime = (rec.mimeType || "audio/webm").split(";")[0];
+        const ext = mime.includes("mp4") ? "m4a" : mime.includes("ogg") ? "ogg" : mime.includes("wav") ? "wav" : "webm";
+        const blob = new Blob(chunks, { type: mime });
+        setMicBusy(true);
+        try {
+          const text = await transcribeCodinoAudio({ blob, filename: `note.${ext}`, language: "en" });
+          if (text) setInput((prev) => (prev && !prev.endsWith(" ") ? `${prev} ${text}` : `${prev || ""}${text}`));
+        } catch (e) {
+          setError((e && e.message) || "Dictation failed. Try again.");
+        } finally {
+          setMicBusy(false);
+        }
+      };
+      recorderRef.current = rec;
+      rec.start();
+      setRecording(true);
+    } catch {
+      setError("Microphone blocked. Allow mic access, then try again.");
+    }
+  };
+
   useEffect(
     () => () => {
       if (abortRef.current) abortRef.current.abort();
       if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
+      speakKeyRef.current += 1;
+      try {
+        audioRef.current?.pause();
+      } catch {
+        /* already stopped */
+      }
+      try {
+        recorderRef.current?.state === "recording" && recorderRef.current?.stop();
+      } catch {
+        /* recorder already stopped */
+      }
+      try {
+        micStreamRef.current?.getTracks().forEach((t) => t.stop());
+      } catch {
+        /* tracks already stopped */
+      }
     },
     []
   );
@@ -329,6 +768,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
     const clean = String(text || "").trim();
     const shots = images;
     if ((!clean && !shots.length) || streaming || !active) return;
+    stopSpeaking();
     if (!configured) {
       setError("Codino is not configured. Set VITE_ZYNQ_URL and VITE_ZYNQ_SECRET in .env (and Netlify) then rebuild.");
       return;
@@ -343,7 +783,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
     autoresize();
     stickRef.current = true;
     setStuck(true);
-    await runStream(id, shots.length ? VISION_MODEL : CODINO_MODEL, {
+    await runStream(id, shots.length ? VISION_ALIAS : CODINO_MODEL, {
       content: clean,
       images: shots.length ? shots : undefined,
     });
@@ -358,7 +798,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
       return;
     }
     const last = msgs[msgs.length - 1];
-    await runStream(active.id, last.images && last.images.length ? VISION_MODEL : CODINO_MODEL);
+    await runStream(active.id, last.images && last.images.length ? VISION_ALIAS : CODINO_MODEL);
   };
 
   const startNew = () => {
@@ -481,6 +921,37 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
                   <span className="cod-ai-head">
                     <CodinoMascot size={22} mood="idle" />
                     Codino
+                    <span className="cod-spacer" />
+                    <button
+                      type="button"
+                      className={speakingKey === `m${i}` ? "cod-speak speaking" : "cod-speak"}
+                      onClick={() => speakMessage(`m${i}`, m.content)}
+                      aria-label={speakingKey === `m${i}` ? "Stop reading aloud" : "Read aloud"}
+                      title={speakingKey === `m${i}` ? "Stop" : "Read aloud"}
+                      disabled={speakLoading === `m${i}`}
+                    >
+                      {speakLoading === `m${i}` ? (
+                        <span className="cod-speak-spin" aria-hidden="true" />
+                      ) : speakingKey === `m${i}` ? (
+                        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                          <rect x="2.5" y="2.5" width="9" height="9" rx="2" fill="currentColor" />
+                        </svg>
+                      ) : (
+                        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                          <path
+                            d="M2 6v4h3l4 3.5v-11L5 6H2z"
+                            fill="currentColor"
+                          />
+                          <path
+                            d="M11 5.5a3.5 3.5 0 0 1 0 5M12.8 3.8a6 6 0 0 1 0 8.4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      )}
+                    </button>
                   </span>
                   <div className="cod-ai-body">
                     {m.content ? (
@@ -541,7 +1012,7 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
                   send(input);
                 }
               }}
-              placeholder="Ask a question…"
+              placeholder={recording ? "Listening… tap the mic to stop" : "Ask a question…"}
               aria-label="Ask Codino a question"
               maxLength={1000}
             />
@@ -594,13 +1065,36 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
               </button>
               <span className="cod-model-tag">Auto</span>
               <span className="cod-spacer" />
+              <button
+                type="button"
+                className={recording ? "cod-mic recording" : "cod-mic"}
+                onClick={toggleRecording}
+                aria-label={recording ? "Stop dictation" : "Dictate with microphone"}
+                title={recording ? "Stop dictation" : "Dictate"}
+                disabled={micBusy || streaming}
+              >
+                {micBusy ? (
+                  <span className="cod-speak-spin" aria-hidden="true" />
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                    <rect x="6" y="1.5" width="4" height="7.5" rx="2" fill="currentColor" />
+                    <path
+                      d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                )}
+              </button>
             {streaming ? (
               <button type="button" className="cod-send" onClick={stop} aria-label="Stop Codino">
                 <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                   <rect x="3.5" y="3.5" width="9" height="9" rx="2" fill="currentColor" />
                 </svg>
               </button>
-            ) : (
+            ) : input.trim() || images.length ? (
               <button type="button" className="cod-send" onClick={() => send(input)} aria-label="Send to Codino">
                 <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
                   <path
@@ -610,6 +1104,15 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
                     strokeWidth="2.2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <button type="button" className="cod-send cod-call-btn" onClick={() => setCallOpen(true)} aria-label="Call Codino">
+                <svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true">
+                  <path
+                    d="M3.2 2.2c.4-.4 1-.4 1.4 0l1.2 1.4c.3.4.3 1 0 1.4L5 5.9c.5 1.2 1.4 2.6 2.9 4.1 1 1 1.5 1.3 2 1.5l.7-.7c.4-.4 1-.4 1.4 0l1.5 1.5c.4.4.4 1 0 1.4l-.9.9c-.5.5-1.1.7-1.8.6-2.1-.3-4.4-1.9-6.6-4.1C2 9.4.6 7.1.3 5c-.1-.7.1-1.3.6-1.8l2.3-1z"
+                    fill="currentColor"
                   />
                 </svg>
               </button>
@@ -623,10 +1126,18 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
 
   if (modal) {
     return (
-      <div className="cod-overlay" onClick={onClose}>
-        {panel}
-      </div>
+      <>
+        <div className="cod-overlay" onClick={onClose}>
+          {panel}
+        </div>
+        {callOpen && open && <CodinoCall context={ctx} onClose={() => setCallOpen(false)} />}
+      </>
     );
   }
-  return panel;
+  return (
+    <>
+      {panel}
+      {callOpen && open && <CodinoCall context={ctx} onClose={() => setCallOpen(false)} />}
+    </>
+  );
 }
