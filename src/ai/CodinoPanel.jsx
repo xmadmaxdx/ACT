@@ -120,7 +120,7 @@ function CodinoOrb({ stateRef, levelRef }) {
         ctx.arc(cx, cy, base * 0.95, 0, 7);
         ctx.fill();
       }
-      if (state === "listening") {
+      if (state === "listening" || state === "talking") {
         for (let i = 0; i < 2; i++) {
           const ph = (orb.t * 0.5 + i * 0.5) % 1;
           ctx.strokeStyle = `rgba(103,232,249,${((1 - ph) * 0.5).toFixed(3)})`;
@@ -215,6 +215,8 @@ function CodinoCall({ context, onClose }) {
   const [callState, setCallState] = useState("listening");
   const [log, setLog] = useState([]);
   const [muted, setMuted] = useState(false);
+  const [talking, setTalking] = useState(false);
+  const [manual, setManual] = useState(false);
   const [callError, setCallError] = useState("");
   const engineRef = useRef(null);
   const stateRef = useRef("listening");
@@ -231,7 +233,8 @@ function CodinoCall({ context, onClose }) {
       active: true,
       speaking: false,
       muted: false,
-      ptt: false,
+      talking: false,
+      manual: false,
       turnId: 0,
       buf: [],
       bufSpeech: false,
@@ -278,7 +281,8 @@ function CodinoCall({ context, onClose }) {
       eng.outLevel = 0;
       eng.bargeAt = performance.now();
       stopAllAudio();
-      setState("listening");
+      levelRef.current = 0;
+      setState(eng.manual ? "waiting" : "listening");
     };
     eng.interruptAgent = interruptAgent;
 
@@ -302,7 +306,10 @@ function CodinoCall({ context, onClose }) {
         }
         if (eng.speaking && myTurn === eng.turnId) {
           eng.speaking = false;
-          if (eng.active) setState("listening");
+          if (eng.active) {
+            levelRef.current = 0;
+            setState(eng.manual ? "waiting" : "listening");
+          }
         }
         return;
       }
@@ -339,7 +346,8 @@ function CodinoCall({ context, onClose }) {
       }
       if (eng.speaking && myTurn === eng.turnId && eng.active) {
         eng.speaking = false;
-        setState("listening");
+        levelRef.current = 0;
+        setState(eng.manual ? "waiting" : "listening");
       }
     };
 
@@ -350,12 +358,15 @@ function CodinoCall({ context, onClose }) {
       eng.bufSpeech = false;
       eng.silenceMs = 0;
       if (!eng.active) return;
-      setState("thinking");
+      setState(eng.manual ? "waiting" : "thinking");
       try {
         const wav = wav16Bytes(pcm, 16000);
         const userText = (await transcribeCodinoAudio({ blob: wav, filename: "utt.wav", language: "en" })).trim();
         if (!userText) {
-          if (eng.active) setState("listening");
+          if (eng.active) {
+            levelRef.current = 0;
+            setState(eng.manual ? "waiting" : "listening");
+          }
           return;
         }
         pushLog("user", userText);
@@ -388,12 +399,11 @@ function CodinoCall({ context, onClose }) {
     const onFrame = (e) => {
       if (!eng.active) return;
       const f32 = e.inputBuffer.getChannelData(0);
-      const live = !eng.muted || eng.ptt;
       let sum = 0;
       for (let i = 0; i < f32.length; i++) sum += f32[i] * f32[i];
-      const rms = live ? Math.sqrt(sum / f32.length) : 0;
-      if (!eng.speaking) levelRef.current = Math.min(1, rms * 6);
+      const rms = Math.sqrt(sum / f32.length);
       if (eng.speaking) {
+        const live = !eng.muted && !eng.manual;
         const echoFloor = eng.outLevel * 1.8 + 0.05;
         if (live && rms > 0.09 && rms > echoFloor && performance.now() - eng.speakStart > 500) {
           eng.bargeCount += 1;
@@ -406,12 +416,34 @@ function CodinoCall({ context, onClose }) {
         }
         return;
       }
+      if (eng.talking) {
+        if (!eng.bufSpeech) {
+          eng.buf = [];
+          eng.bufSpeech = true;
+        }
+        eng.buf.push(new Float32Array(f32));
+        eng.silenceMs = 0;
+        levelRef.current = Math.min(1, rms * 6);
+        eng.lastFrame = performance.now();
+        return;
+      }
+      if (eng.manual) {
+        levelRef.current = 0;
+        eng.lastFrame = performance.now();
+        return;
+      }
       const now = performance.now();
       if (now - eng.bargeAt < 300) {
         eng.lastFrame = now;
         return;
       }
-      if (eng.ptt || rms > 0.02) {
+      if (eng.muted) {
+        levelRef.current = 0;
+        eng.lastFrame = now;
+        return;
+      }
+      levelRef.current = Math.min(1, rms * 6);
+      if (rms > 0.02) {
         if (!eng.bufSpeech) {
           eng.buf = [];
           eng.bufSpeech = true;
@@ -478,13 +510,40 @@ function CodinoCall({ context, onClose }) {
     });
   };
 
-  const pttEnd = () => {
+  const talkTap = () => {
     const eng = engineRef.current;
-    if (!eng || !eng.ptt) return;
-    eng.ptt = false;
-    if (eng.active && !eng.speaking && eng.bufSpeech && eng.buf.length * 128 > 400 && eng.endUtterance) {
-      eng.endUtterance();
+    if (!eng || !eng.active || callState === "idle") return;
+    if (eng.talking) {
+      eng.talking = false;
+      setTalking(false);
+      levelRef.current = 0;
+      if (!eng.speaking && eng.bufSpeech && eng.buf.length * 128 > 400 && eng.endUtterance) {
+        eng.endUtterance();
+      } else {
+        eng.buf = [];
+        eng.bufSpeech = false;
+        setStateFallback(eng);
+      }
+      return;
     }
+    eng.turnId += 1;
+    if (eng.speaking) eng.interruptAgent();
+    eng.manual = true;
+    setManual(true);
+    eng.talking = true;
+    setTalking(true);
+    eng.buf = [];
+    eng.bufSpeech = true;
+    eng.silenceMs = 0;
+    eng.bargeCount = 0;
+    levelRef.current = 0;
+    stateRef.current = "talking";
+    setCallState("talking");
+  };
+
+  const setStateFallback = (eng) => {
+    stateRef.current = eng.manual ? "waiting" : "listening";
+    setCallState(eng.manual ? "waiting" : "listening");
   };
 
   return (
@@ -492,7 +551,17 @@ function CodinoCall({ context, onClose }) {
       <div className="cod-call-card" role="dialog" aria-label="Codino live call" onClick={(e) => e.stopPropagation()}>
         <CodinoOrb stateRef={stateRef} levelRef={levelRef} />
         <p className="cod-call-status">
-          {callState === "listening" ? "Listening…" : callState === "thinking" ? "Thinking…" : callState === "speaking" ? "Speaking… (talk to interrupt)" : "Call"}
+          {callState === "talking"
+            ? "Talking… tap again to send"
+            : callState === "waiting"
+              ? "Waiting… tap Talk to speak"
+              : callState === "listening"
+                ? "Listening…"
+                : callState === "thinking"
+                  ? "Thinking…"
+                  : callState === "speaking"
+                    ? "Speaking… (talk to interrupt)"
+                    : "Call"}
         </p>
         {context?.q ? (
           <p className="cod-call-sub">
@@ -512,21 +581,33 @@ function CodinoCall({ context, onClose }) {
           <button type="button" className={muted ? "cod-ghost on" : "cod-ghost"} onClick={toggleMute} aria-pressed={muted}>
             {muted ? "Unmute" : "Mute"}
           </button>
-          <button
-            type="button"
-            className="cod-ptt"
-            onPointerDown={(e) => {
-              e.preventDefault();
-              const eng = engineRef.current;
-              if (eng && eng.active) eng.ptt = true;
-            }}
-            onPointerUp={pttEnd}
-            onPointerLeave={pttEnd}
-            onPointerCancel={pttEnd}
-            aria-label="Hold to talk"
-          >
-            Hold to talk
-          </button>
+          <span className="cod-talk-wrap">
+            <button
+              type="button"
+              className={talking ? "cod-talk recording" : manual ? "cod-talk manual" : "cod-talk"}
+              onClick={talkTap}
+              aria-pressed={talking}
+              aria-label={talking ? "Stop recording and send to Codino" : "Talk to Codino"}
+              disabled={callState === "idle"}
+            >
+              <svg width="22" height="22" viewBox="0 0 16 16" aria-hidden="true">
+                <rect x="6" y="1.5" width="4" height="7.5" rx="2" fill="currentColor" />
+                <path
+                  d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+              {talking && (
+                <svg className="cod-talk-ring" viewBox="0 0 64 64" aria-hidden="true">
+                  <circle cx="32" cy="32" r="28" />
+                </svg>
+              )}
+            </button>
+            <span className="cod-talk-label">{talking ? "Tap to send" : "Tap to talk"}</span>
+          </span>
           <button type="button" className="cod-endcall" onClick={onClose}>
             End call
           </button>
