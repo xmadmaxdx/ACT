@@ -176,3 +176,23 @@ export function speakableText(raw, opts) {
   }
   return s;
 }
+
+export function speechText(raw) {
+  let s = String(raw || "");
+  s = s.replace(/```[\s\S]*?```/g, " ");
+  s = s.replace(/`([^`]*)`/g, "$1");
+  s = s.replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1");
+  s = s.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1");
+  s = s.replace(/^#{1,6}\s+/gm, "");
+  s = s.replace(/^\s*[-*+]\s+/gm, "");
+  s = s.replace(/^\s*\d+[.)]\s+/gm, "");
+  s = s.replace(/^\s*>\s?/gm, "");
+  s = s.replace(/(\*\*|__)([^*_]+)\1/g, "$2");
+  s = s.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?;:]|$)/g, "$1$2");
+  s = s.replace(/(^|[\s(])_([^_\n]+)_(?=[\s).,!?;:]|$)/g, "$1$2");
+  s = s.replace(/\$\$([^$]+)\$\$/g, "$1");
+  s = s.replace(/\$([^$]+)\$/g, "$1");
+  s = s.replace(/\|/g, " ");
+  s = s.replace(/\s+/g, " ").trim();
+  return s;
+}
