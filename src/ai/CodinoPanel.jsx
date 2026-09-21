@@ -363,12 +363,12 @@ function CodinoCall({ context, onClose }) {
         if (eng.history.length > 17) eng.history = [eng.history[0], ...eng.history.slice(-16)];
         let reply = "";
         for (let attempt = 0; attempt < 3 && !reply && eng.active; attempt++) {
-          const data = await sendCodinoMessage({
+          const text = await sendCodinoMessage({
             model: CALL_LLM,
             messages: eng.history,
             extra: { max_tokens: CALL_MAX_TOKENS, reasoning_effort: "low" },
           });
-          reply = String(data?.choices?.[0]?.message?.content || "").trim();
+          reply = String(text || "").trim();
         }
         if (!reply) reply = CALL_FALLBACK;
         if (myTurn !== eng.turnId || !eng.active) return;
