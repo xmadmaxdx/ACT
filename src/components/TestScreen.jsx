@@ -696,6 +696,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const prevQRef = useRef(null);
   const pausedRef = useRef(false);
   const introDoneRef = useRef(false);
+  const calcSizedRef = useRef(false);
   /* Mirror of paces state for use inside interval/effects without stale closures. */
   const pacesRef = useRef((session && session.paces) || {});
 
@@ -1259,6 +1260,14 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     setTimeout(() => setCopied(false), 1500);
   };
 
+  const calcDefaultW = () => {
+    const body = bodyRef.current;
+    if (!body) return null;
+    const w = body.getBoundingClientRect().width;
+    if (!Number.isFinite(w) || w <= 0) return null;
+    return Math.min(Math.max(Math.round(w * 0.5), 300), Math.floor(w * 0.5));
+  };
+
   const startDrag = (e) => {
     e.preventDefault();
     const move = (ev) => {
@@ -1266,7 +1275,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       if (!body) return;
       const rect = body.getBoundingClientRect();
       const w = Math.round(rect.right - ev.clientX - 12);
-      setCalcW(Math.min(Math.max(w, 300), Math.floor(rect.width * 0.7)));
+      setCalcW(Math.min(Math.max(w, 300), Math.floor(rect.width * 0.5)));
+      calcSizedRef.current = true;
     };
     const up = () => {
       window.removeEventListener("pointermove", move);
@@ -1277,19 +1287,19 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   };
 
   const openCalc = () => {
-    const body = bodyRef.current;
-    if (body) {
-      const w = body.getBoundingClientRect().width;
-      setCalcW(Math.min(Math.max(Math.round(w * 0.6), 300), Math.floor(w * 0.7)));
+    const w = calcDefaultW();
+    if (w !== null) {
+      setCalcW(w);
+      calcSizedRef.current = true;
     }
     setCalcOpen(true);
   };
 
   const resetCalc = () => {
-    const body = bodyRef.current;
-    if (body) {
-      const w = body.getBoundingClientRect().width;
-      setCalcW(Math.min(Math.max(Math.round(w * 0.6), 300), Math.floor(w * 0.7)));
+    const w = calcDefaultW();
+    if (w !== null) {
+      setCalcW(w);
+      calcSizedRef.current = true;
     } else {
       setCalcW(440);
     }
@@ -1432,6 +1442,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       setCalcOpen(false);
       setCalcFull(false);
     } else {
+      if (!calcSizedRef.current) {
+        const w = calcDefaultW();
+        if (w !== null) {
+          setCalcW(w);
+          calcSizedRef.current = true;
+        }
+      }
       setCalcOpen(true);
     }
   }, [showCalc, review, onIntro, brkId, qIndex]);

@@ -4032,8 +4032,9 @@ button {
   overflow: hidden;
   position: sticky;
   top: 84px;
-  height: calc(100vh - 100px);
-  min-height: 440px;
+  height: calc(100vh - 172px);
+  height: calc(100dvh - 172px);
+  min-height: 360px;
 }
 
 .calc-head {
