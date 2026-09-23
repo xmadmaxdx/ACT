@@ -246,3 +246,88 @@ export async function fetchSharedTest(slug) {
   }
   return test;
 }
+
+/* Client-controlled share creation (mirrors mcp-act-share generate_act_link:
+   same slug alphabet, same 10-minute expiry margin, same 4-attempt duplicate
+   retry). Only additions: caller-chosen expiry in days and origin-based URLs.
+   Anon inserts past 24h need supabase/share-links-expiry.sql on the live DB. */
+export const SHARE_EXPIRY_OPTIONS = [
+  { days: 1, label: "1 day" },
+  { days: 2, label: "2 days" },
+  { days: 3, label: "3 days" },
+  { days: 7, label: "1 week" },
+  { days: 30, label: "1 month" },
+];
+
+const SHARE_SLUG_ALPHA = "abcdefghjkmnpqrstuvwxyz23456789";
+
+function randomShareChunk(n) {
+  try {
+    const cryptoObj =
+      (typeof window !== "undefined" && window.crypto) ||
+      (typeof globalThis !== "undefined" && globalThis.crypto);
+    if (cryptoObj && typeof cryptoObj.getRandomValues === "function") {
+      const buf = new Uint32Array(n);
+      cryptoObj.getRandomValues(buf);
+      let s = "";
+      for (let i = 0; i < n; i++) s += SHARE_SLUG_ALPHA[buf[i] % SHARE_SLUG_ALPHA.length];
+      return s;
+    }
+  } catch (err) {
+    window.console.debug("share slug crypto skipped", err);
+  }
+  let s = "";
+  for (let i = 0; i < n; i++) {
+    s += SHARE_SLUG_ALPHA[Math.floor(Math.random() * SHARE_SLUG_ALPHA.length)];
+  }
+  return s;
+}
+
+function makeShareSlug() {
+  const s = randomShareChunk(15);
+  return `${s.slice(0, 5)}-${s.slice(5, 10)}-${s.slice(10, 15)}`;
+}
+
+export async function createShareLink({ section, title, test, days }) {
+  if (!URL || !KEY) throw new Error("Supabase env missing at build (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY)");
+  const opt = SHARE_EXPIRY_OPTIONS.find((o) => o.days === Number(days)) || SHARE_EXPIRY_OPTIONS[0];
+  if (!test || typeof test !== "object" || !Array.isArray(test.questions) || test.questions.length === 0) {
+    throw new Error("Nothing to share: this test has no questions.");
+  }
+  const sb = createClient(URL, KEY);
+  const expiresAt = new Date(Date.now() + (opt.days * 24 * 60 - 10) * 60 * 1000).toISOString();
+  const base =
+    typeof window !== "undefined" && window.location && window.location.origin
+      ? window.location.origin.replace(/\/$/, "")
+      : "";
+  let slug = "";
+  let lastError = null;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    slug = makeShareSlug();
+    const { error } = await sb.from("share_links").insert({
+      slug,
+      section,
+      title: title || "Shared Test",
+      test,
+      expires_at: expiresAt,
+    });
+    if (!error) {
+      lastError = null;
+      break;
+    }
+    lastError = error;
+    if (!String(error.message || "").toLowerCase().includes("duplicate")) break;
+  }
+  if (lastError) {
+    const msg = String(lastError.message || "unknown error");
+    const needsPolicy = opt.days > 1 && /row-level security|policy/i.test(msg);
+    const err = new Error(
+      needsPolicy
+        ? "Expiries past 1 day need the 30-day share policy: run supabase/share-links-expiry.sql once."
+        : `Could not store the test: ${msg}`
+    );
+    err.code = "SHARE_CREATE_FAILED";
+    throw err;
+  }
+  return { slug, url: `${base}/${slug}`, alt: `${base}/s/${slug}`, expiresAt, days: opt.days, label: opt.label };
+}

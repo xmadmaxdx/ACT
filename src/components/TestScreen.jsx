@@ -4,6 +4,7 @@ import MathFigure from "./MathFigure.jsx";
 import LatexBlock from "./LatexBlock.jsx";
 import { healOption } from "../latexHeal.js";
 import StrategyPanel, { BulbIcon } from "./StrategyPanel.jsx";
+import SaveLink from "./SaveLink.jsx";
 import FreestyleBoard from "./FreestyleBoard.jsx";
 import CodinoPanel from "../ai/CodinoPanel.jsx";
 import { DesmosCalc, preloadDesmos } from "./DesmosCalc.jsx";
@@ -1644,6 +1645,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
         )}
         <div className="test-right">
+          <SaveLink testData={testData} />
           {showCalc && (
             <button
               className={calcOpen ? "calc-btn on" : "calc-btn"}
