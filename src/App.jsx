@@ -217,6 +217,17 @@ export default function App() {
     window.scrollTo(0, 0);
   }, []);
 
+  const exitTest = useCallback(() => {
+    // Share links open with no history — back() would do nothing there.
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.history.pushState({}, "", "/");
+      setRoute("home");
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   const startTest = useCallback((skill, mode) => {
     setSession({ skill, mode, picks: {}, flags: {}, paces: {} });
     sessionRef.current = { skill, mode, picks: {}, flags: {}, paces: {} };
@@ -365,9 +376,7 @@ export default function App() {
           key={`${session.skill.id}-find`}
           testData={custom}
           mode={session.mode}
-          onExit={() => {
-            window.history.back();
-          }}
+          onExit={exitTest}
         />
       );
     }
@@ -382,9 +391,7 @@ export default function App() {
         customTestData={customTestData}
         hideSave={isShare}
         onFinish={finishTest}
-        onExit={() => {
-          window.history.back();
-        }}
+        onExit={exitTest}
       />
     );
   }
