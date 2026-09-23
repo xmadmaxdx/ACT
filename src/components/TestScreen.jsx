@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import MathText, { mathRich } from "./MathText.jsx";
 import MathFigure from "./MathFigure.jsx";
 import LatexBlock from "./LatexBlock.jsx";
+import { healOption } from "../latexHeal.js";
 import StrategyPanel, { BulbIcon } from "./StrategyPanel.jsx";
 import FreestyleBoard from "./FreestyleBoard.jsx";
 import CodinoPanel from "../ai/CodinoPanel.jsx";
@@ -173,8 +174,9 @@ function optParts(opt) {
 
 function optText(opt) {
   const { t, svg } = optParts(opt);
+  const healed = healOption(t);
   const label =
-    t === "" ? null : t === "No Change" ? <strong>No Change</strong> : mathRich(t);
+    healed === "" ? null : t === "No Change" ? <strong>No Change</strong> : mathRich(healed);
   if (!svg) return label;
   return (
     <>

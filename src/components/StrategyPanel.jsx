@@ -40,7 +40,26 @@ function StratRow({ index, title, body, stepTitle }) {
       </button>
       {open && (
         <div className="strat-row-body">
-          {stepTitle ? <p className="strat-step-title">{stepTitle}</p> : null}
+          {stepTitle ? (
+            <p className="strat-step-title">
+              <span>{stepTitle}</span>
+              <svg
+                className="strat-scribble"
+                viewBox="0 0 120 9"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M2 5.5 C 25 2.5, 45 7.5, 70 4.5 S 105 3.5, 118 5.5"
+                  pathLength={1}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                  strokeLinecap="round"
+                />
+              </svg>
+            </p>
+          ) : null}
           <MathText text={body} />
         </div>
       )}

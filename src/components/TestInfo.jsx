@@ -3,6 +3,7 @@ import ModeModal from "./ModeModal.jsx";
 import MathText from "./MathText.jsx";
 import MathFigure from "./MathFigure.jsx";
 import LatexBlock from "./LatexBlock.jsx";
+import { healOption } from "../latexHeal.js";
 
 function LessonFigure({ id, figures }) {
   if (!id || !figures) return null;
@@ -48,7 +49,7 @@ function PracticeEmbed({ problem, figures }) {
               onClick={() => setPick(letter)}
             >
               <span className="q-letter">{letter}</span>
-              <span className="q-text"><MathText text={opt} /></span>
+              <span className="q-text"><MathText text={healOption(opt)} /></span>
             </button>
           );
         })}
@@ -116,7 +117,7 @@ function ExampleEmbed({ example, figures }) {
                   onClick={() => setPick(letter)}
                 >
                   <span className="q-letter">{letter}</span>
-                  <span className="q-text"><MathText text={opt} /></span>
+                  <span className="q-text"><MathText text={healOption(opt)} /></span>
                 </button>
               );
             })}

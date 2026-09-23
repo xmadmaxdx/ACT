@@ -38,6 +38,21 @@ function healSegment(seg) {
   return null;
 }
 
+// Options often arrive as bare LaTeX without $ delimiters
+// ("y=\pm\frac{3}{4}x"). Detect and wrap so they render as math.
+export function healOption(src) {
+  const t = String(src || "");
+  if (!t || t.indexOf("$") >= 0) return t;
+  if (!/\\[a-zA-Z]|[\^_]/.test(t)) return t;
+  const wrapped = `$${t}$`;
+  try {
+    katex.renderToString(t, { throwOnError: true, displayMode: false });
+    return wrapped;
+  } catch {
+    return t;
+  }
+}
+
 // Pre-pass for theory formula/math blocks. AI content often mixes prose
 // with $inline$ math inside a display block, which KaTeX rejects. Split,
 // heal each math segment, and pick the render mode that parses.
