@@ -1,6 +1,22 @@
 import { useEffect, useState } from "react";
 import ModeModal from "./ModeModal.jsx";
 import MathText from "./MathText.jsx";
+import MathFigure from "./MathFigure.jsx";
+
+function LessonFigure({ id, figures }) {
+  if (!id || !figures) return null;
+  const entry = figures[id];
+  if (typeof entry === "string") {
+    if (entry.indexOf("<svg") < 0) return null;
+    return (
+      <span className="lesson-figure" dangerouslySetInnerHTML={{ __html: entry }} />
+    );
+  }
+  if (entry && typeof entry === "object" && !Array.isArray(entry)) {
+    return <MathFigure fig={{ ...entry, id }} />;
+  }
+  return null;
+}
 
 function PracticeEmbed({ problem, figures }) {
   const [pick, setPick] = useState(null);
@@ -14,9 +30,7 @@ function PracticeEmbed({ problem, figures }) {
         <span className="q-tag">{problem.tag}</span>
       </div>
       <p className="lesson-p"><MathText text={problem.statement} /></p>
-      {problem.figure && figures && figures[problem.figure] && (
-        <span className="lesson-figure" dangerouslySetInnerHTML={{ __html: figures[problem.figure] }} />
-      )}
+      <LessonFigure id={problem.figure} figures={figures} />
       <div className="q-options">
         {problem.options.map((opt, i) => {
           const letter = ["A", "B", "C", "D"][i];
@@ -82,9 +96,7 @@ function ExampleEmbed({ example, figures }) {
         <span className="q-tag">{example.tag}</span>
       </div>
       <p className="lesson-p"><MathText text={example.statement} /></p>
-      {example.figure && figures && figures[example.figure] && (
-        <span className="lesson-figure" dangerouslySetInnerHTML={{ __html: figures[example.figure] }} />
-      )}
+      <LessonFigure id={example.figure} figures={figures} />
       {hasOptions && (
         <>
           <div className="q-options">
@@ -169,12 +181,17 @@ function Blocks({ blocks, course }) {
       );
     }
     if (b.figure && figures && figures[b.figure]) {
+      const entry = figures[b.figure];
       return (
         <figure key={i} className="lesson-figure-wrap">
-          <span
-            className="lesson-figure"
-            dangerouslySetInnerHTML={{ __html: figures[b.figure] }}
-          />
+          {typeof entry === "string" ? (
+            <span
+              className="lesson-figure"
+              dangerouslySetInnerHTML={{ __html: entry }}
+            />
+          ) : (
+            <MathFigure fig={{ ...entry, id: b.figure }} />
+          )}
           {b.caption && <figcaption>{b.caption}</figcaption>}
         </figure>
       );
@@ -213,6 +230,7 @@ function lessonTest(course, subject) {
       options: prob.options,
       answer: prob.answer,
       explain: prob.explain,
+      figure: prob.figure,
     })),
   };
 }

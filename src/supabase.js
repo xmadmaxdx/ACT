@@ -46,6 +46,10 @@ export async function fetchCatalog() {
         options: r.options,
         answer: r.answer,
         explain: r.explain,
+        figure: r.figure,
+        strategy: r.strategy,
+        steps: r.steps,
+        solution: r.solution,
       })),
   }));
 }
@@ -139,6 +143,8 @@ export async function fetchChapters() {
           done: r.done,
           timeMinutes: Number(r.time_minutes),
           theory: r.theory,
+          theoryBreaks: r.theory_breaks || r.theoryBreaks || [],
+          figures: r.figures || {},
           questions: (q.data || [])
             .filter((x) => x.mini_id === r.id)
             .map((x) => ({
@@ -149,6 +155,11 @@ export async function fetchChapters() {
               options: x.options,
               answer: x.answer,
               explain: x.explain,
+              svg: x.svg,
+              figure: x.figure,
+              strategy: x.strategy,
+              steps: x.steps,
+              solution: x.solution,
             })),
         })),
     }));
@@ -165,11 +176,11 @@ export function buildMiniTest(mini) {
     intro: mini.theory || null,
     theoryBreaks: mini.theoryBreaks || [],
     figures: mini.figures || {},
-    passages: mini.questions.map((q) => ({
-      id: `q${q.n}`,
-      title: `Problem ${q.n}`,
-      paras: [[{ t: q.statement }]],
-    })),
+    passages: mini.questions.map((q) => {
+      const spans = [{ t: q.statement }];
+      if (q.svg !== undefined) spans.push({ svg: q.svg });
+      return { id: `q${q.n}`, title: `Problem ${q.n}`, paras: [spans] };
+    }),
     questions: mini.questions.map((q) => ({
       n: q.n,
       p: `q${q.n}`,
@@ -180,6 +191,11 @@ export function buildMiniTest(mini) {
       options: q.options,
       answer: q.answer,
       explain: q.explain,
+      svg: q.svg,
+      figure: q.figure,
+      strategy: q.strategy,
+      steps: q.steps,
+      solution: q.solution,
     })),
   };
 }

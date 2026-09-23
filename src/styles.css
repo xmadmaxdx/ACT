@@ -1214,6 +1214,140 @@ button {
   width: auto;
 }
 
+/* ---------- Math figures ---------- */
+.mathfig {
+  display: block;
+  text-align: center;
+  margin: 12px 0 4px;
+}
+.mathfig-cap {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.mathfig-svg {
+  max-width: min(420px, 100%);
+  height: auto;
+  width: 100%;
+  font-family: var(--font);
+}
+.mathfig-svg.pie {
+  max-width: min(320px, 100%);
+}
+.mathfig-axis {
+  stroke: var(--ink-soft);
+  stroke-width: 1.5;
+}
+.mathfig-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.mathfig-bar {
+  fill: var(--blue);
+  stroke: var(--blue-dark);
+  stroke-width: 1.5;
+}
+.mathfig-hist {
+  fill: var(--green);
+  stroke: var(--green-shadow);
+  stroke-width: 1.5;
+}
+.mathfig-line {
+  stroke: var(--ink);
+  fill: none;
+}
+.mathfig-trend {
+  stroke: var(--green-dark);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+.mathfig-dot {
+  fill: var(--blue);
+}
+.mathfig-open {
+  fill: #fff;
+  stroke: var(--blue);
+  stroke-width: 2;
+}
+.mathfig-arrow {
+  fill: var(--ink-soft);
+}
+.mathfig-hl {
+  stroke: var(--blue);
+}
+.mathfig-whisk {
+  stroke: var(--ink-soft);
+  stroke-width: 2;
+}
+.mathfig-box {
+  fill: var(--blue-light-bg);
+  stroke: var(--blue-dark);
+  stroke-width: 2;
+}
+.mathfig-median {
+  stroke: var(--blue-dark);
+  stroke-width: 2.5;
+}
+.mathfig-leader {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+.mathfig-tick {
+  font-size: 11px;
+  fill: var(--muted);
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 3px;
+}
+.mathfig-val {
+  font-size: 12px;
+  font-weight: 800;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 3px;
+}
+.mathfig-alabel {
+  font-size: 11px;
+  font-weight: 800;
+  fill: var(--ink-soft);
+}
+.mathfig-pielabel {
+  font-size: 12px;
+  font-weight: 800;
+  fill: #fff;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 3px;
+}
+.mathfig-table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.mathfig-table th,
+.mathfig-table td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: center;
+}
+.mathfig-table th {
+  background: var(--blue-light-bg);
+  font-weight: 800;
+  color: var(--ink);
+}
+.mathfig-error {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 16px;
+}
+
 .skill-card {
   display: flex;
   align-items: center;
@@ -2623,6 +2757,246 @@ button {
   color: var(--blue);
   border-color: var(--blue-light-border);
   background: var(--blue-light-bg);
+}
+
+.elim-toggle.left {
+  left: 62px;
+  right: auto;
+}
+
+.strat-nav-btn {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+
+.strat-nav-btn:hover {
+  color: var(--ink-soft);
+}
+
+.strat-nav-btn:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.strat-nav-btn.on {
+  color: var(--blue);
+  border-color: var(--blue-light-border);
+  background: var(--blue-light-bg);
+}
+
+/* ---------- Strategy rail ---------- */
+.strat-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(60, 60, 60, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  animation: strat-fade 0.18s ease-out;
+}
+
+.strat-rail {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 46;
+  width: min(400px, 94vw);
+  background: #fff;
+  border-left: 2px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  animation: strat-rail-in 0.28s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.strat-modal {
+  position: relative;
+  width: min(480px, 94vw);
+  max-height: 86vh;
+  background: #fff;
+  border: 2px solid var(--card-border);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: strat-modal-pop 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.strat-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px 10px 16px;
+  border-bottom: 2px solid var(--line);
+}
+
+.strat-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-right: auto;
+}
+
+.strat-head .modal-close {
+  position: static;
+  flex: none;
+}
+
+.strat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.strat-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 8px 2px 0;
+}
+
+.strat-row {
+  background: #fff;
+  border: 2px solid var(--card-border);
+  border-bottom-width: 4px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.strat-row-head {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.strat-row-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-right: auto;
+}
+
+.strat-chev {
+  flex: none;
+  color: var(--faint);
+  transition: transform 0.18s ease;
+}
+
+.strat-row.open .strat-chev {
+  transform: rotate(180deg);
+}
+
+.strat-row.open {
+  border-color: var(--blue-light-border);
+  background: var(--blue-light-bg);
+}
+
+.strat-row-body {
+  padding: 4px 14px 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  animation: strat-drop 0.18s ease-out;
+}
+
+.strat-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 26px 12px;
+}
+
+@keyframes strat-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes strat-rail-in {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes strat-modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes strat-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .strat-modal {
+    width: 94vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strat-overlay,
+  .strat-rail,
+  .strat-modal,
+  .strat-row,
+  .strat-row-body,
+  .strat-chev {
+    animation: none;
+    transition: none;
+  }
 }
 
 .nav-count {

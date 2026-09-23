@@ -10,7 +10,6 @@ function miniTest(mini) {
     intro: mini.theory || null,
     theoryBreaks: mini.theoryBreaks || [],
     figures: mini.figures || {},
-    figures: {},
     passages: mini.questions.map((q) => ({
       id: `q${q.n}`,
       title: `Problem ${q.n}`,
@@ -26,6 +25,11 @@ function miniTest(mini) {
       options: q.options,
       answer: q.answer,
       explain: q.explain,
+      svg: q.svg,
+      figure: q.figure,
+      strategy: q.strategy,
+      steps: q.steps,
+      solution: q.solution,
     })),
   };
 }

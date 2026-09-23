@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import MathText, { mathRich } from "./MathText.jsx";
+import MathFigure from "./MathFigure.jsx";
+import StrategyPanel, { BulbIcon } from "./StrategyPanel.jsx";
 import FreestyleBoard from "./FreestyleBoard.jsx";
 import CodinoPanel from "../ai/CodinoPanel.jsx";
 import { DesmosCalc, preloadDesmos } from "./DesmosCalc.jsx";
@@ -184,6 +186,28 @@ function optText(opt) {
   );
 }
 
+/* Question-level figure (math linked sets): figures map values are raw SVG
+   strings (legacy) or declarative objects rendered by MathFigure. Unknown
+   ids render nothing, never crash. */
+function QuestionFigure({ q, figures }) {
+  const id = q && q.figure;
+  if (!id || !figures) return null;
+  const entry = figures[id];
+  if (typeof entry === "string") {
+    if (entry.indexOf("<svg") < 0) return null;
+    return (
+      <span
+        className="passage-figure"
+        dangerouslySetInnerHTML={{ __html: entry }}
+      />
+    );
+  }
+  if (entry && typeof entry === "object" && !Array.isArray(entry)) {
+    return <MathFigure fig={{ ...entry, id }} />;
+  }
+  return null;
+}
+
 /* Placement / add-detail stems carry the proposed sentence as an *italic* (or
    _italic_) insert between a lead-in and a trailing question. The insert
    renders as an indented block; a multi-sentence lead-in splits after its
@@ -260,15 +284,25 @@ function renderSpans(spans, q, figures) {
       );
     }
     if (s.fig !== undefined) {
-      const svg = figures && figures[s.fig];
-      if (!svg) return null;
-      return (
-        <span
-          key={i}
-          className="passage-figure"
-          dangerouslySetInnerHTML={{ __html: svg }}
-        />
-      );
+      const entry = figures && figures[s.fig];
+      if (typeof entry === "string") {
+        if (entry.indexOf("<svg") < 0) return null;
+        return (
+          <span
+            key={i}
+            className="passage-figure"
+            dangerouslySetInnerHTML={{ __html: entry }}
+          />
+        );
+      }
+      if (entry && typeof entry === "object" && !Array.isArray(entry)) {
+        return (
+          <span key={i} className="passage-figure">
+            <MathFigure fig={{ ...entry, id: s.fig }} />
+          </span>
+        );
+      }
+      return null;
     }
     if (s.u !== undefined) {
       const active = s.u === q.n;
@@ -633,6 +667,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [aiOpen, setAiOpen] = useState(false);
   const [aiPinned, setAiPinned] = useState(true);
   const [aiCtx, setAiCtx] = useState(null);
+  const [stratOpen, setStratOpen] = useState(false);
 
   /* While Codino is open, follow the active question so every chat message
      carries the current stem, options, pick, answer, explanation + passage. */
@@ -931,6 +966,20 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const remaining = Math.max(0, limit - elapsed);
   const expired = timed && remaining === 0;
 
+  /* Strategy rail: only exists when the question carries data. Either the
+     AI rail or the strategy rail may show — never both at once. */
+  const hasStrategy = !!(
+    activeQ.strategy ||
+    (Array.isArray(activeQ.steps) && activeQ.steps.length > 0) ||
+    activeQ.solution
+  );
+  const stratVisible = stratOpen && hasStrategy;
+
+  const toggleStrategy = () => {
+    if (!stratOpen) setAiOpen(false);
+    setStratOpen(!stratOpen);
+  };
+
   const pick = (letter) => {
     if (review || paused) return;
     const n = activeQ.n;
@@ -964,8 +1013,39 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const elimActive = elimOn && !review && !paused;
   const elimSet = elims[activeQ.n] || [];
 
+  /* Eliminator lives on the right in the old layout, or on the left next
+     to copy when the strategy button takes the right slot. */
+  const elimBtn = !review && !activeBreak && (
+    <button
+      className={["elim-toggle", hasStrategy && "left", elimOn && "on"].filter(Boolean).join(" ")}
+      type="button"
+      onClick={() => setElimOn((v) => !v)}
+      title={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
+      aria-label={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
+      aria-pressed={elimOn}
+    >
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+        <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+          <line x1="2.5" y1="5" x2="10" y2="5" />
+          <line x1="2.5" y1="9" x2="10" y2="9" />
+          <line x1="2.5" y1="13" x2="7.5" y2="13" />
+        </g>
+        <line
+          x1="4"
+          y1="15.5"
+          x2="15"
+          y2="3"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+  );
+
   const openExplain = (qq) => {
     if (!review) return;
+    setStratOpen(false);
     setAiCtx({
       testData,
       q: qq,
@@ -978,6 +1058,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   };
 
   const openAsk = () => {
+    setStratOpen(false);
     setAiCtx({
       testData,
       q: activeQ,
@@ -1454,7 +1535,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   }, [showCalc, review, onIntro, brkId, qIndex]);
 
   return (
-    <div className={aiOpen && aiPinned ? "test cod-docked" : "test"}>
+    <div className={(aiOpen && aiPinned) || stratVisible ? "test cod-docked" : "test"}>
       <header className="test-topbar">
         <button className="test-exit" type="button" aria-label="Exit test" onClick={onExit}>
           ✕
@@ -1713,6 +1794,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               )
             )}
           </div>
+          <QuestionFigure q={activeQ} figures={testData.figures} />
           {merged && (
             <>
               <hr className="merged-divider" />
@@ -1928,6 +2010,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             )}
           </button>
           )}
+          {hasStrategy && elimBtn}
           <button
             className="nav-btn"
             type="button"
@@ -2009,33 +2092,18 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               />
             </svg>
           </button>
-          {!review && !activeBreak && (
+          {hasStrategy ? (
             <button
-              className={elimOn ? "elim-toggle on" : "elim-toggle"}
+              className={stratOpen ? "strat-nav-btn on" : "strat-nav-btn"}
               type="button"
-              onClick={() => setElimOn((v) => !v)}
-              title={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
-              aria-label={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
-              aria-pressed={elimOn}
+              onClick={toggleStrategy}
+              title={stratOpen ? "Close strategy" : "Open strategy"}
+              aria-label={stratOpen ? "Close strategy" : "Open strategy"}
+              aria-pressed={stratOpen}
             >
-              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-                <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  <line x1="2.5" y1="5" x2="10" y2="5" />
-                  <line x1="2.5" y1="9" x2="10" y2="9" />
-                  <line x1="2.5" y1="13" x2="7.5" y2="13" />
-                </g>
-                <line
-                  x1="4"
-                  y1="15.5"
-                  x2="15"
-                  y2="3"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <BulbIcon />
             </button>
-          )}
+          ) : elimBtn}
         </div>
       </div>
 
@@ -2061,6 +2129,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         context={aiCtx}
         onClose={() => setAiOpen(false)}
       />
+      {stratVisible && (
+        <StrategyPanel q={activeQ} onClose={() => setStratOpen(false)} />
+      )}
       {overviewOpen && (        <div className="overview-overlay" onClick={() => setOverviewOpen(false)}>
           <aside
             className="overview-drawer"

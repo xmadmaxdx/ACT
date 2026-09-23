@@ -31,14 +31,91 @@ export function containsAnswer(text, quote) {
   return locateSpan(text, quote) !== null;
 }
 
+const MATHFIG_KINDS = ["table", "bar", "histogram", "line", "scatter", "pie", "numberline", "grid", "box"];
+
+function validateFigureObject(fig, id) {
+  if (!fig || typeof fig !== "object" || Array.isArray(fig)) return "figure must be an object.";
+  const kind = fig.kind;
+  if (!MATHFIG_KINDS.includes(kind)) return `figure kind must be one of ${MATHFIG_KINDS.join(", ")}.`;
+  const fin = (v) => typeof v === "number" && Number.isFinite(v);
+  if (fig.title !== undefined && typeof fig.title !== "string") return "title must be a string.";
+  switch (kind) {
+    case "table":
+      if (!Array.isArray(fig.columns) || fig.columns.length === 0) return "columns must be non-empty.";
+      if (!Array.isArray(fig.rows) || fig.rows.length === 0) return "rows must be non-empty.";
+      for (let i = 0; i < fig.rows.length; i++) {
+        if (!Array.isArray(fig.rows[i]) || fig.rows[i].length !== fig.columns.length) {
+          return `rows[${i}] must have ${fig.columns.length} cells.`;
+        }
+      }
+      return null;
+    case "bar":
+      if (!Array.isArray(fig.categories) || fig.categories.length === 0) return "categories must be non-empty.";
+      if (!Array.isArray(fig.values) || fig.values.length !== fig.categories.length) return "values must match categories.";
+      if (!fig.values.every(fin)) return "values must be finite numbers.";
+      return null;
+    case "histogram":
+      if (!Array.isArray(fig.bins) || fig.bins.length === 0) return "bins must be non-empty.";
+      for (let i = 0; i < fig.bins.length; i++) {
+        const b = fig.bins[i];
+        if (!b || !fin(b.lo) || !fin(b.hi) || !fin(b.count)) return `bins[${i}] needs lo, hi, count.`;
+        if (!(b.hi > b.lo)) return `bins[${i}] needs hi above lo.`;
+      }
+      return null;
+    case "line":
+      if (!Array.isArray(fig.points) || fig.points.length === 0) return "points must be non-empty.";
+      for (let i = 0; i < fig.points.length; i++) {
+        if (!fig.points[i] || typeof fig.points[i].x !== "string" || !fin(fig.points[i].y)) {
+          return `points[${i}] needs x label and y number.`;
+        }
+      }
+      return null;
+    case "scatter":
+      if (!Array.isArray(fig.points) || fig.points.length === 0) return "points must be non-empty.";
+      for (let i = 0; i < fig.points.length; i++) {
+        if (!fig.points[i] || !fin(fig.points[i].x) || !fin(fig.points[i].y)) {
+          return `points[${i}] needs x and y numbers.`;
+        }
+      }
+      return null;
+    case "pie":
+      if (!Array.isArray(fig.slices) || fig.slices.length === 0) return "slices must be non-empty.";
+      if (!(fig.slices.reduce((a, s) => a + (s && s.value ? s.value : 0), 0) > 0)) {
+        return "slices must sum above 0.";
+      }
+      return null;
+    case "numberline":
+      if (!fin(fig.min) || !fin(fig.max) || !(fig.max > fig.min)) return "min/max must span a range.";
+      return null;
+    case "grid":
+      if (!Array.isArray(fig.xRange) || !Array.isArray(fig.yRange)) return "xRange/yRange must be pairs.";
+      return null;
+    case "box":
+      for (const k of ["min", "q1", "median", "q3", "max"]) {
+        if (!fin(fig[k])) return `${k} must be a finite number.`;
+      }
+      if (!(fig.min <= fig.q1 && fig.q1 <= fig.median && fig.median <= fig.q3 && fig.q3 <= fig.max)) {
+        return "need min <= q1 <= median <= q3 <= max.";
+      }
+      return null;
+    default:
+      return "unknown figure kind.";
+  }
+}
+
 function checkFigures(figures) {
   if (figures === undefined) return {};
   if (!figures || typeof figures !== "object" || Array.isArray(figures)) {
     throw new Error("figures must be an object mapping ids to SVG strings.");
   }
   for (const [id, svg] of Object.entries(figures)) {
-    if (typeof svg !== "string" || svg.indexOf("<svg") < 0) {
-      throw new Error(`figures["${id}"] must be a string containing <svg.`);
+    if (typeof svg === "string") {
+      if (svg.indexOf("<svg") < 0) {
+        throw new Error(`figures["${id}"] must be a string containing <svg.`);
+      }
+    } else {
+      const err = validateFigureObject({ ...svg, id }, id);
+      if (err) throw new Error(`figures["${id}"]: ${err}`);
     }
   }
   return figures;
@@ -377,6 +454,25 @@ export function normalizeMath(raw) {
     if (!["A", "B", "C", "D"].includes(q.answer)) {
       throw new Error(`Q${n}: answer must be one of A, B, C, D.`);
     }
+    if (q.strategy !== undefined && (typeof q.strategy !== "string" || q.strategy.length === 0)) {
+      throw new Error(`Q${n}: strategy must be a non-empty string.`);
+    }
+    if (q.steps !== undefined) {
+      if (!Array.isArray(q.steps) || q.steps.length < 3 || q.steps.length > 4) {
+        throw new Error(`Q${n}: steps must be an array of 3 or 4 strings.`);
+      }
+      q.steps.forEach((s, j) => {
+        if (typeof s !== "string" || s.length === 0) {
+          throw new Error(`Q${n}: steps[${j}] must be a non-empty string.`);
+        }
+      });
+    }
+    if (q.solution !== undefined && (typeof q.solution !== "string" || q.solution.length === 0)) {
+      throw new Error(`Q${n}: solution must be a non-empty string.`);
+    }
+    if (q.figure !== undefined && (typeof q.figure !== "string" || q.figure.length === 0)) {
+      throw new Error(`Q${n}: figure must be a figure id string.`);
+    }
   });
   const total = questions.length;
   let timeMinutes = Number(raw.timeMinutes);
@@ -393,6 +489,14 @@ export function normalizeMath(raw) {
       blocks: checkBlocks(b.blocks, `theoryBreak ${i + 1}`),
     };
   });
+  const figures = checkFigures(raw.figures);
+  const figIds = new Set(Object.keys(figures));
+  questions.forEach((q, i) => {
+    const n = q.n ?? i + 1;
+    if (q.figure !== undefined && !figIds.has(q.figure)) {
+      throw new Error(`Q${n}: unknown figure id "${q.figure}".`);
+    }
+  });
   return {
     id: raw.id || "SHARED-MATH-1",
     title: raw.title || "Shared Math",
@@ -401,7 +505,7 @@ export function normalizeMath(raw) {
     timeMinutes,
     intro: normalizeTheory(raw.theory !== undefined ? raw.theory : raw.intro),
     theoryBreaks,
-    figures: checkFigures(raw.figures),
+    figures,
     passages: questions.map((q, i) => {
       const n = q.n ?? i + 1;
       const spans = [{ t: q.statement }];
@@ -421,6 +525,10 @@ export function normalizeMath(raw) {
         answer: q.answer,
         explain: q.explain || "",
         svg: q.svg !== undefined ? q.svg : undefined,
+        figure: q.figure !== undefined ? q.figure : undefined,
+        strategy: q.strategy !== undefined ? q.strategy : undefined,
+        steps: q.steps !== undefined ? q.steps.map((s) => String(s)) : undefined,
+        solution: q.solution !== undefined ? q.solution : undefined,
       };
     }),
   };

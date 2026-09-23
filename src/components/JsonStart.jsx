@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { lettersFor } from "../scoring.js";
 import { tolerantParse, fixSummary } from "../tolerantJson.js";
+import { validateFigure } from "../mathFigures.js";
 import { containsAnswer } from "../detailScore.js";
 import readingPrompt from "../data/reading-prompt.md?raw";
 import englishPrompt from "../data/english-prompt.md?raw";
 import findPrompt from "../data/find-prompt.md?raw";
+import mathPrompt from "../data/math-prompt.md?raw";
 
 const SAMPLE_READING = `{
   "id": "JSON-READING-1",
@@ -139,6 +141,42 @@ const SAMPLE_FIND = `{
       "stem": "Select the sentence that shows Mara stayed dedicated to her watch.",
       "answers": [{ "para": 1, "text": "Mara lit the emergency lantern and kept watching the sky through the small round window." }],
       "explain": "Lighting the lantern and keeping watch through the outage proves dedication beyond duty."
+    }
+  ]
+}`;
+
+const SAMPLE_MATH = `{
+  "id": "JSON-MATH-1",
+  "title": "Quick Algebra",
+  "section": "math",
+  "timeMinutes": 10,
+  "theory": {
+    "heading": "A quick refresher",
+    "blocks": [
+      { "p": "Think of average speed as total distance over total time. It is a plain bookish rule, and honestly it saves you whenever two speeds team up." },
+      { "formula": "v = d/t" },
+      { "tip": "Averaging the two speeds only works when the times match, which they rarely do." }
+    ]
+  },
+  "questions": [
+    {
+      "n": 1,
+      "tag": "Rates",
+      "statement": "A courier drives $60$ miles at $30$ mph, then returns the same $60$ miles at $60$ mph. What is the average driving speed for the $120$ mile round trip?",
+      "options": ["36", "40", "45", "50"],
+      "answer": "B",
+      "explain": "Total distance $120$ over $3$ hours is $40$ mph.",
+      "strategy": "Total distance over total time beats averaging speeds; find each leg time with $t = d/v$.",
+      "steps": ["Outbound time is $60/30 = 2$ hours.", "Return time is $60/60 = 1$ hour.", "Average is $120/3 = 40$ mph."],
+      "solution": "Outbound $t = 60/30 = 2$, return $t = 60/60 = 1$, so $v = 120/(2+1) = 40$ mph."
+    },
+    {
+      "n": 2,
+      "tag": "Exponents",
+      "statement": "For all $x > 0$, which expression is equivalent to $(3x^2)^3 / (9x^5)$?",
+      "options": ["$3x$", "$3x^2$", "$9x$", "$9x^2$"],
+      "answer": "A",
+      "explain": "$27x^6/9x^5 = 3x$."
     }
   ]
 }`;
@@ -330,6 +368,265 @@ function normalizeFind(raw, expectedCount) {
   };
 }
 
+const MATH_LETTERS = ["A", "B", "C", "D"];
+const THEORY_KEYS = ["h", "math", "list", "p", "formula", "table", "example", "tip", "warn", "note", "def", "versus"];
+
+function checkTheoryBlocks(blocks, where) {
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    throw new Error(`${where}: blocks must be a non-empty array.`);
+  }
+  blocks.forEach((b, i) => {
+    if (!b || typeof b !== "object" || Array.isArray(b)) {
+      throw new Error(`${where} block ${i}: must be an object.`);
+    }
+    if (!THEORY_KEYS.some((k) => b[k] !== undefined)) {
+      throw new Error(`${where} block ${i}: needs one of ${THEORY_KEYS.join(", ")}.`);
+    }
+    if (b.table !== undefined) {
+      if (!b.table || typeof b.table !== "object" || !Array.isArray(b.table.rows) || b.table.rows.length === 0) {
+        throw new Error(`${where} block ${i}: table needs a non-empty rows array.`);
+      }
+      if (b.table.head !== undefined && !Array.isArray(b.table.head)) {
+        throw new Error(`${where} block ${i}: table head must be an array.`);
+      }
+    }
+    if (b.example !== undefined) {
+      if (!b.example || typeof b.example !== "object" || typeof b.example.problem !== "string") {
+        throw new Error(`${where} block ${i}: example needs a problem string.`);
+      }
+    }
+    if (b.versus !== undefined) {
+      if (!Array.isArray(b.versus) || b.versus.length < 2 || b.versus.length > 3) {
+        throw new Error(`${where} block ${i}: versus needs 2 or 3 cells.`);
+      }
+      b.versus.forEach((side, k) => {
+        if (!side || typeof side !== "object") {
+          throw new Error(`${where} block ${i} cell ${k}: must be an object.`);
+        }
+        if (side.shape !== undefined && (typeof side.shape !== "string" || !/^[a-z0-9-]+$/.test(side.shape))) {
+          throw new Error(`${where} block ${i} cell ${k}: shape must be a preset name like triangle-right.`);
+        }
+        if (side.svg !== undefined && (typeof side.svg !== "string" || side.svg.indexOf("<svg") < 0)) {
+          throw new Error(`${where} block ${i} cell ${k}: svg must be a string containing <svg.`);
+        }
+        if (side.title !== undefined && typeof side.title !== "string") {
+          throw new Error(`${where} block ${i} cell ${k}: title must be a string.`);
+        }
+        if (side.text !== undefined && typeof side.text !== "string") {
+          throw new Error(`${where} block ${i} cell ${k}: text must be a string.`);
+        }
+      });
+    }
+  });
+  return blocks;
+}
+
+function normalizeTheoryInput(theory) {
+  if (theory === null || theory === undefined) return null;
+  if (typeof theory !== "object" || Array.isArray(theory)) {
+    throw new Error("theory must be an object with blocks or slides.");
+  }
+  if (Array.isArray(theory.slides)) {
+    if (theory.slides.length === 0) throw new Error("theory.slides must be non-empty.");
+    return {
+      slides: theory.slides.map((s, i) => ({
+        heading: s.heading || "",
+        blocks: checkTheoryBlocks(s.blocks, `theory slide ${i + 1}`),
+      })),
+    };
+  }
+  return {
+    heading: theory.heading || "",
+    blocks: checkTheoryBlocks(theory.blocks, "theory"),
+  };
+}
+
+function mathOption(opt, k, n) {
+  if (opt && typeof opt === "object" && !Array.isArray(opt)) {
+    const out = { t: opt.t === undefined ? "" : String(opt.t).replace(new RegExp(`^${MATH_LETTERS[k]}[.):]\\s*`), "") };
+    if (opt.svg !== undefined) {
+      if (typeof opt.svg !== "string" || opt.svg.indexOf("<svg") < 0) {
+        throw new Error(`Q${n}: option ${k + 1} svg must be a string containing <svg.`);
+      }
+      out.svg = opt.svg;
+    }
+    if (!out.t && out.svg === undefined) {
+      throw new Error(`Q${n}: option ${k + 1} needs t text or svg.`);
+    }
+    return out;
+  }
+  return String(opt).replace(new RegExp(`^${MATH_LETTERS[k]}[.):]\\s*`), "");
+}
+
+// Math sets: no passages. Questions carry statement/options/answer plus
+// omittable strategy/steps/solution; knowledge slides (theory/theoryBreaks)
+// are omittable and follow the lesson block structure.
+function normalizeMath(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error("Top level must be a JSON object.");
+  }
+  const questions = raw.questions;
+  if (!Array.isArray(questions) || questions.length === 0) {
+    throw new Error("Need at least 1 question.");
+  }
+  const seen = new Set();
+  questions.forEach((q, i) => {
+    if (!q || typeof q !== "object") throw new Error(`Q${i + 1}: must be an object.`);
+    const n = q.n ?? i + 1;
+    if (seen.has(n)) throw new Error(`Duplicate question number ${n}.`);
+    seen.add(n);
+    if (typeof q.statement !== "string" || q.statement.length === 0) {
+      throw new Error(`Q${n}: math questions need a statement string.`);
+    }
+    if (q.svg !== undefined && (typeof q.svg !== "string" || q.svg.indexOf("<svg") < 0)) {
+      throw new Error(`Q${n}: svg must be a string containing <svg.`);
+    }
+    if (!Array.isArray(q.options) || q.options.length !== 4) {
+      throw new Error(`Q${n}: need exactly 4 options.`);
+    }
+    if (!MATH_LETTERS.includes(q.answer)) {
+      throw new Error(`Q${n}: answer must be one of ${MATH_LETTERS.join(", ")}.`);
+    }
+    if (q.strategy !== undefined && (typeof q.strategy !== "string" || q.strategy.length === 0)) {
+      throw new Error(`Q${n}: strategy must be a non-empty string.`);
+    }
+    if (q.steps !== undefined) {
+      if (!Array.isArray(q.steps) || q.steps.length < 3 || q.steps.length > 4) {
+        throw new Error(`Q${n}: steps must be an array of 3 or 4 strings.`);
+      }
+      q.steps.forEach((s, j) => {
+        if (typeof s !== "string" || s.length === 0) {
+          throw new Error(`Q${n}: steps[${j}] must be a non-empty string.`);
+        }
+      });
+    }
+    if (q.solution !== undefined && (typeof q.solution !== "string" || q.solution.length === 0)) {
+      throw new Error(`Q${n}: solution must be a non-empty string.`);
+    }
+    if (q.figure !== undefined && (typeof q.figure !== "string" || q.figure.length === 0)) {
+      throw new Error(`Q${n}: figure must be a figure id string.`);
+    }
+  });
+  const total = questions.length;
+  let timeMinutes = Number(raw.timeMinutes);
+  if (!timeMinutes || timeMinutes <= 0) timeMinutes = 10;
+  if (raw.figures !== undefined) {
+    if (!raw.figures || typeof raw.figures !== "object" || Array.isArray(raw.figures)) {
+      throw new Error("figures must be an object mapping ids to SVG strings or figure objects.");
+    }
+    for (const [id, entry] of Object.entries(raw.figures)) {
+      if (typeof entry === "string") {
+        if (entry.indexOf("<svg") < 0) {
+          throw new Error(`figures["${id}"] must be a string containing <svg.`);
+        }
+      } else {
+        const err = validateFigure({ ...entry, id });
+        if (err) throw new Error(`figures["${id}"]: ${err}`);
+      }
+    }
+  }
+  const figIds = new Set(Object.keys(raw.figures || {}));
+  questions.forEach((q, i) => {
+    const n = q.n ?? i + 1;
+    if (q.figure !== undefined && !figIds.has(q.figure)) {
+      throw new Error(`Q${n}: unknown figure id "${q.figure}".`);
+    }
+  });
+  const breaks = Array.isArray(raw.theoryBreaks) ? raw.theoryBreaks : [];
+  const theoryBreaks = breaks.map((b, i) => {
+    if (!b || typeof b !== "object") throw new Error(`theoryBreak ${i + 1}: must be an object.`);
+    if (!Number.isInteger(b.after) || b.after < 1 || b.after > total) {
+      throw new Error(`theoryBreak ${i + 1}: after must be a question number 1-${total}.`);
+    }
+    return {
+      after: b.after,
+      heading: b.heading || "",
+      blocks: checkTheoryBlocks(b.blocks, `theoryBreak ${i + 1}`),
+    };
+  });
+  return {
+    id: raw.id || "JSON-MATH-1",
+    title: raw.title || "Custom Math",
+    section: "math",
+    total,
+    timeMinutes,
+    intro: normalizeTheoryInput(raw.theory !== undefined ? raw.theory : raw.intro),
+    theoryBreaks,
+    figures: raw.figures || {},
+    passages: questions.map((q) => {
+      const n = q.n ?? 0;
+      const spans = [{ t: q.statement }];
+      if (q.svg !== undefined) spans.push({ svg: q.svg });
+      return { id: `q${n}`, title: `Problem ${n}`, paras: [spans] };
+    }),
+    questions: questions.map((q, i) => {
+      const n = q.n ?? i + 1;
+      const out = {
+        n,
+        p: `q${n}`,
+        tag: q.tag || "Custom",
+        stem: "",
+        stemSide: "left",
+        short: q.short || `Problem ${n}`,
+        options: q.options.map((opt, k) => mathOption(opt, k, n)),
+        answer: q.answer,
+        explain: q.explain || "",
+      };
+      if (q.svg !== undefined) out.svg = q.svg;
+      if (q.figure !== undefined) out.figure = q.figure;
+      if (q.strategy !== undefined) out.strategy = q.strategy;
+      if (q.steps !== undefined) out.steps = q.steps.map((s) => String(s));
+      if (q.solution !== undefined) out.solution = q.solution;
+      return out;
+    }),
+  };
+}
+
+function mergeTestsMath(tests) {
+  if (tests.length === 1) return tests[0];
+  let qn = 0;
+  const passages = [];
+  const questions = [];
+  const breaks = [];
+  const figures = Object.assign({}, ...tests.map((t) => t.figures || {}));
+  tests.forEach((t) => {
+    const offset = qn;
+    const qs = t.questions || [];
+    const ps = t.passages || [];
+    qs.forEach((q, qi) => {
+      qn += 1;
+      const src = ps[qi] || ps[0];
+      passages.push({
+        ...(src || { title: `Problem ${qn}`, paras: [[{ t: `Problem ${qn}` }]] }),
+        id: `q${qn}`,
+        title: (src && src.title) || `Problem ${qn}`,
+      });
+      questions.push({
+        ...q,
+        n: qn,
+        p: `q${qn}`,
+        short: /^Problem \d+$/.test(q.short || "") ? `Problem ${qn}` : q.short,
+      });
+    });
+    (t.theoryBreaks || []).forEach((b) => {
+      breaks.push({ ...b, after: b.after + offset });
+    });
+  });
+  const summed = tests.reduce((a, t) => a + (Number(t.timeMinutes) || 0), 0);
+  return {
+    id: tests[0].id,
+    title: `${tests[0].title} (+${tests.length - 1} more)`,
+    section: "math",
+    total: questions.length,
+    timeMinutes: summed > 0 ? summed : 10,
+    intro: tests[0].intro || null,
+    theoryBreaks: breaks,
+    figures,
+    passages,
+    questions,
+  };
+}
+
 function mergeTests(section, tests) {
   if (tests.length === 1) return tests[0];
   let qn = 0;
@@ -383,7 +680,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
       next[count - 1] = v;
       return next;
     });
-  const maxCount = tab === "english" ? 6 : 4;
+  const maxCount = tab === "english" ? 6 : tab === "math" ? 1 : 4;
   const filledCount = texts.filter((t) => t && t.trim()).length;
   const [mode, setMode] = useState("untimed");
   const [error, setError] = useState("");
@@ -391,7 +688,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   const [fixNote, setFixNote] = useState("");
 
   const copyPrompt = async () => {
-    const prompt = tab === "reading" ? readingPrompt : tab === "english" ? englishPrompt : findPrompt;
+    const prompt = tab === "reading" ? readingPrompt : tab === "english" ? englishPrompt : tab === "math" ? mathPrompt : findPrompt;
     try {
       await navigator.clipboard.writeText(prompt);
     } catch {
@@ -408,7 +705,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
 
   const start = () => {
     const filled =
-      tab === "find"
+      tab === "find" || tab === "math"
         ? (texts[0] && texts[0].trim() ? [{ text: texts[0], slot: 1 }] : [])
         : texts
             .map((t, i) => ({ text: t, slot: i + 1 }))
@@ -439,6 +736,13 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
     }
     try {
       const singles = raws.map(({ raw, slot }) => {
+        if (tab === "math") {
+          try {
+            return normalizeMath(raw);
+          } catch (e) {
+            throw new Error(`Slot ${slot}: ${e.message}`);
+          }
+        }
         const n = Array.isArray(raw.passages) ? raw.passages.length : 0;
         if (!n) throw new Error(`Slot ${slot}: need at least 1 passage.`);
         try {
@@ -447,7 +751,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
           throw new Error(`Slot ${slot}: ${e.message}`);
         }
       });
-      const test = mergeTests(tab, singles);
+      const test = tab === "math" ? mergeTestsMath(singles) : mergeTests(tab, singles);
       setError("");
       onStart(test, mode);
       if (variant === "modal") onClose();
@@ -460,7 +764,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
   const body = (
     <div className="jsonstart">
       <div className="tabs rise d3" role="tablist" aria-label="JSON section">
-        {["reading", "english", "find"].map((t) => (
+        {["reading", "english", "find", "math"].map((t) => (
           <button
             key={t}
             role="tab"
@@ -483,12 +787,16 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
           ? `Slot ${count} of ${maxCount} — paste one reading set here (9 questions · 10 min). `
           : tab === "english"
             ? `Slot ${count} of ${maxCount} — paste one english set here (5 or 10 questions). `
-            : "Paste one finding set here (5 questions · 8 min). "}
+            : tab === "math"
+              ? "Paste one math set here (questions only, no passages · 10 min default). "
+              : "Paste one finding set here (5 questions · 8 min). "}
         {tab === "find"
           ? "Finding paras are plain strings; each question carries verbatim answers spans — no options."
-          : `Each number keeps its own text. Filled slots ({filledCount}) merge on start and totals add up. Reading paras are plain strings + exact-quote refs; English paras use span arrays like the practice files.`}
+          : tab === "math"
+            ? "Math builds one passage per question. strategy/steps/solution and theory/theoryBreaks are omittable."
+            : `Each number keeps its own text. Filled slots ({filledCount}) merge on start and totals add up. Reading paras are plain strings + exact-quote refs; English paras use span arrays like the practice files.`}
       </p>
-      {tab !== "find" && (
+      {(tab === "reading" || tab === "english") && (
       <div className="jsonstart-row">
         <div className="mode-toggle" role="group" aria-label="Passage count">
           {Array.from({ length: maxCount }, (_, i) => i + 1).map((c) => (
@@ -512,7 +820,7 @@ export default function JsonStart({ variant, defaultSection, onStart, onClose })
           type="button"
           className="footer-link"
           onClick={() => {
-            setText(tab === "reading" ? SAMPLE_READING : tab === "english" ? SAMPLE_ENGLISH : SAMPLE_FIND);
+            setText(tab === "reading" ? SAMPLE_READING : tab === "english" ? SAMPLE_ENGLISH : tab === "math" ? SAMPLE_MATH : SAMPLE_FIND);
             setError("");
           }}
         >
