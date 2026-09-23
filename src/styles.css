@@ -4822,6 +4822,7 @@ button {
 
 .calc-panel {
   flex: none;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   background: #fff;
