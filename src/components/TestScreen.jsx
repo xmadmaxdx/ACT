@@ -654,7 +654,7 @@ function renderTheoryBlock(b, i) {
   return <p key={i} className="lesson-p"><MathText text={b.p || ""} /></p>;
 }
 
-export default function TestScreen({ test, session, startIndex, review, findTest, customTestData, onFinish, onExit }) {
+export default function TestScreen({ test, session, startIndex, review, findTest, customTestData, hideSave, onFinish, onExit }) {
   const timed = test.mode === "timed" && !review;
   const testData =
     customTestData && customTestData.id === test.id ? customTestData : findTest(test.id);
@@ -1645,7 +1645,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
         )}
         <div className="test-right">
-          <SaveLink testData={testData} />
+          {!hideSave && <SaveLink testData={testData} />}
           {showCalc && (
             <button
               className={calcOpen ? "calc-btn on" : "calc-btn"}

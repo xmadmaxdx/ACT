@@ -90,6 +90,7 @@ export default function App() {
   const [combo, setCombo] = useState([]);
   const [jsonOpen, setJsonOpen] = useState(false);
   const [jsonSection, setJsonSection] = useState("reading");
+  const [isShare, setIsShare] = useState(false);
   const sessionRef = useRef(null);
   sessionRef.current = session;
   const customRef = useRef(null);
@@ -145,6 +146,7 @@ export default function App() {
               sessionRef.current = fresh;
               setSession(fresh);
               setReviewIndex(null);
+              setIsShare(true);
               setRoute("test");
             } else {
               const msg =
@@ -219,6 +221,7 @@ export default function App() {
     setSession({ skill, mode, picks: {}, flags: {}, paces: {} });
     sessionRef.current = { skill, mode, picks: {}, flags: {}, paces: {} };
     setReviewIndex(null);
+    setIsShare(false);
     window.history.pushState({}, "", slugFor(skill));
     setRoute("test");
     window.scrollTo(0, 0);
@@ -230,6 +233,7 @@ export default function App() {
     setSession({ skill, mode, picks: {}, flags: {}, paces: {} });
     sessionRef.current = { skill, mode, picks: {}, flags: {}, paces: {} };
     setReviewIndex(null);
+    setIsShare(false);
     window.history.pushState({}, "", slugFor(skill));
     setRoute("test");
     window.scrollTo(0, 0);
@@ -376,6 +380,7 @@ export default function App() {
         review={reviewing}
         findTest={findTest}
         customTestData={customTestData}
+        hideSave={isShare}
         onFinish={finishTest}
         onExit={() => {
           window.history.back();
