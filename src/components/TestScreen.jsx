@@ -1643,29 +1643,29 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             </div>
           </div>
         )}
-        {showCalc && (
-          <button
-            className={calcOpen ? "calc-btn on" : "calc-btn"}
-            type="button"
-            aria-label={calcOpen ? "Close calculator" : "Open calculator"}
-            onClick={() => (calcOpen ? setCalcOpen(false) : openCalc())}
-          >
-            <svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true">
-              <rect x="2.5" y="1.5" width="12" height="14" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
-              <rect x="5.5" y="4" width="6" height="2.6" rx="1" fill="currentColor" />
-              <g fill="currentColor">
-                <circle cx="6.2" cy="9.5" r="1" />
-                <circle cx="8.5" cy="9.5" r="1" />
-                <circle cx="10.8" cy="9.5" r="1" />
-                <circle cx="6.2" cy="12" r="1" />
-                <circle cx="8.5" cy="12" r="1" />
-                <circle cx="10.8" cy="12" r="1" />
-              </g>
-            </svg>
-            <span>Calculator</span>
-          </button>
-        )}
         <div className="test-right">
+          {showCalc && (
+            <button
+              className={calcOpen ? "calc-btn on" : "calc-btn"}
+              type="button"
+              aria-label={calcOpen ? "Close calculator" : "Open calculator"}
+              onClick={() => (calcOpen ? setCalcOpen(false) : openCalc())}
+            >
+              <svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true">
+                <rect x="2.5" y="1.5" width="12" height="14" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                <rect x="5.5" y="4" width="6" height="2.6" rx="1" fill="currentColor" />
+                <g fill="currentColor">
+                  <circle cx="6.2" cy="9.5" r="1" />
+                  <circle cx="8.5" cy="9.5" r="1" />
+                  <circle cx="10.8" cy="9.5" r="1" />
+                  <circle cx="6.2" cy="12" r="1" />
+                  <circle cx="8.5" cy="12" r="1" />
+                  <circle cx="10.8" cy="12" r="1" />
+                </g>
+              </svg>
+              <span>Calculator</span>
+            </button>
+          )}
           {isReading && (
             <div
               className="ptime-wrap"

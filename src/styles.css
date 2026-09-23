@@ -4414,7 +4414,6 @@ button {
   letter-spacing: 0.6px;
   cursor: pointer;
   flex-shrink: 0;
-  margin-left: auto;
 }
 
 .calc-btn:hover {
