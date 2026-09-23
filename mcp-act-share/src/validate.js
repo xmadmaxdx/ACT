@@ -358,11 +358,39 @@ export function normalizeTest(section, raw) {
 
 const THEORY_KEYS = ["h", "math", "list", "p", "formula", "table", "example", "tip", "warn", "note", "def", "versus"];
 
+function canonBlock(b) {
+  if (b && typeof b === "object" && !Array.isArray(b) && typeof b.type === "string") {
+    const t = b.type;
+    if (THEORY_KEYS.includes(t)) {
+      const text = b.text !== undefined ? b.text : b.content !== undefined ? b.content : b.value;
+      if (t === "list") {
+        const items = b.list !== undefined ? b.list : b.items !== undefined ? b.items : Array.isArray(text) ? text : undefined;
+        return { list: items };
+      }
+      if (t === "table") {
+        return { table: b.table !== undefined ? b.table : { head: b.head, rows: b.rows, caption: b.caption } };
+      }
+      if (t === "example") {
+        return {
+          example:
+            b.example !== undefined
+              ? b.example
+              : { title: b.title, problem: b.problem, solution: b.solution },
+        };
+      }
+      if (t === "versus") return { versus: b.versus };
+      return { [t]: text };
+    }
+  }
+  return b;
+}
+
 function checkBlocks(blocks, where) {
   if (!Array.isArray(blocks) || blocks.length === 0) {
     throw new Error(`${where}: blocks must be a non-empty array.`);
   }
-  blocks.forEach((b, i) => {
+  return blocks.map((raw, i) => {
+    const b = canonBlock(raw);
     if (!b || typeof b !== "object" || Array.isArray(b)) {
       throw new Error(`${where} block ${i}: must be an object.`);
     }
@@ -404,8 +432,8 @@ function checkBlocks(blocks, where) {
         }
       });
     }
+    return b;
   });
-  return blocks;
 }
 
 function normalizeTheory(theory) {
