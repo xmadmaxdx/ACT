@@ -1013,36 +1013,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const elimActive = elimOn && !review && !paused;
   const elimSet = elims[activeQ.n] || [];
 
-  /* Eliminator lives on the right in the old layout, or on the left next
-     to copy when the strategy button takes the right slot. */
-  const elimBtn = !review && !activeBreak && (
-    <button
-      className={["elim-toggle", hasStrategy && "left", elimOn && "on"].filter(Boolean).join(" ")}
-      type="button"
-      onClick={() => setElimOn((v) => !v)}
-      title={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
-      aria-label={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
-      aria-pressed={elimOn}
-    >
-      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-        <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-          <line x1="2.5" y1="5" x2="10" y2="5" />
-          <line x1="2.5" y1="9" x2="10" y2="9" />
-          <line x1="2.5" y1="13" x2="7.5" y2="13" />
-        </g>
-        <line
-          x1="4"
-          y1="15.5"
-          x2="15"
-          y2="3"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-      </svg>
-    </button>
-  );
-
   const openExplain = (qq) => {
     if (!review) return;
     setStratOpen(false);
@@ -1201,6 +1171,37 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const breaksAfter = (n) => theoryBreaks.filter((b) => b.after === n);
   const activeBreak = brkId ? breakById(brkId) : null;
   const qIdxOf = (n) => questions.findIndex((q) => q.n === n);
+
+  /* Eliminator lives on the right in the old layout, or on the left next
+     to copy when the strategy button takes the right slot. Defined after
+     activeBreak — reading it earlier throws a TDZ ReferenceError. */
+  const elimBtn = !review && !activeBreak && (
+    <button
+      className={["elim-toggle", hasStrategy && "left", elimOn && "on"].filter(Boolean).join(" ")}
+      type="button"
+      onClick={() => setElimOn((v) => !v)}
+      title={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
+      aria-label={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
+      aria-pressed={elimOn}
+    >
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+        <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+          <line x1="2.5" y1="5" x2="10" y2="5" />
+          <line x1="2.5" y1="9" x2="10" y2="9" />
+          <line x1="2.5" y1="13" x2="7.5" y2="13" />
+        </g>
+        <line
+          x1="4"
+          y1="15.5"
+          x2="15"
+          y2="3"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+  );
 
   const stepForward = () => {
     if (activeBreak) {
