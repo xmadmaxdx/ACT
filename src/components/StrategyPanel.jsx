@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import MathText from "./MathText.jsx";
+import Scribble from "./Scribble.jsx";
 
 function Chevron() {
   return (
@@ -44,21 +45,7 @@ function StratRow({ index, title, body, stepTitle }) {
             <p className="strat-step-title">
               <span className="strat-step-title-inner">
                 <MathText text={stepTitle} />
-                <svg
-                  className="strat-scribble"
-                  viewBox="0 0 120 9"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M2 5.5 C 25 2.5, 45 7.5, 70 4.5 S 105 3.5, 118 5.5"
-                    pathLength={1}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <Scribble className="strat-scribble" />
               </span>
             </p>
           ) : null}
