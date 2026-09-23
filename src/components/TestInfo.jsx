@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ModeModal from "./ModeModal.jsx";
 import MathText from "./MathText.jsx";
 import MathFigure from "./MathFigure.jsx";
+import LatexBlock from "./LatexBlock.jsx";
 
 function LessonFigure({ id, figures }) {
   if (!id || !figures) return null;
@@ -170,7 +171,7 @@ function Blocks({ blocks, course }) {
     if (b.example !== undefined) {
       return <ExampleEmbed key={i} example={exByNum[b.example]} figures={figures} />;
     }
-    if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
+    if (b.math) return <div key={i} className="lesson-math"><LatexBlock tex={b.math} label="Math block needs a fix" /></div>;
     if (b.list) {
       return (
         <ul key={i} className="lesson-list">

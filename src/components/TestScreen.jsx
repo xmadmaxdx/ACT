@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import MathText, { mathRich } from "./MathText.jsx";
 import MathFigure from "./MathFigure.jsx";
+import LatexBlock from "./LatexBlock.jsx";
 import StrategyPanel, { BulbIcon } from "./StrategyPanel.jsx";
 import FreestyleBoard from "./FreestyleBoard.jsx";
 import CodinoPanel from "../ai/CodinoPanel.jsx";
@@ -542,7 +543,7 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
 function renderTheoryBlock(b, i) {
   if (!b || typeof b !== "object") return null;
   if (b.h) return <h4 key={i} className="lesson-h">{b.h}</h4>;
-  if (b.math) return <div key={i} className="lesson-math"><MathText text={`$$${b.math}$$`} /></div>;
+  if (b.math) return <div key={i} className="lesson-math"><LatexBlock tex={b.math} label="Math block needs a fix" /></div>;
   if (b.list) {
     return (
       <ul key={i} className="lesson-list">
@@ -555,7 +556,7 @@ function renderTheoryBlock(b, i) {
   if (b.formula) {
     return (
       <div key={i} className="formula-box">
-        <MathText text={`$$${b.formula}$$`} />
+        <LatexBlock tex={b.formula} label="Formula needs a fix" />
       </div>
     );
   }

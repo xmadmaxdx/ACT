@@ -22,7 +22,7 @@ function Chevron() {
   );
 }
 
-function StratRow({ index, title, body }) {
+function StratRow({ index, title, body, stepTitle }) {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -40,6 +40,7 @@ function StratRow({ index, title, body }) {
       </button>
       {open && (
         <div className="strat-row-body">
+          {stepTitle ? <p className="strat-step-title">{stepTitle}</p> : null}
           <MathText text={body} />
         </div>
       )}
@@ -91,7 +92,11 @@ export default function StrategyPanel({ q, onClose }) {
   }, []);
 
   const steps = Array.isArray(q.steps) ? q.steps : [];
-  const rows = steps.map((s, i) => ({ title: `Step ${i + 1}`, body: String(s) }));
+  const rows = steps.map((s, i) => ({
+    title: `Step ${i + 1}`,
+    stepTitle: s && typeof s === "object" && !Array.isArray(s) ? String(s.title) : null,
+    body: s && typeof s === "object" && !Array.isArray(s) ? String(s.body) : String(s),
+  }));
   if (typeof q.solution === "string" && q.solution.length > 0) {
     rows.push({ title: `Step ${steps.length + 1} (solution)`, body: q.solution });
   }
@@ -124,6 +129,7 @@ export default function StrategyPanel({ q, onClose }) {
             key={`${q.n}-${i}`}
             index={(q.strategy ? 1 : 0) + i}
             title={r.title}
+            stepTitle={r.stepTitle}
             body={r.body}
           />
         ))}

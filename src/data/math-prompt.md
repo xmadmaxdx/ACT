@@ -158,9 +158,21 @@ Linking questions to a figure:
 
 ## Optional per question (omit freely; past sets keep working)
 
-- `strategy`: non-empty string, about 30 words, `$LaTeX$` allowed. One short plan of attack.
-- `steps`: array of 3 or 4 non-empty strings, `$LaTeX$` allowed. Ordered steps, each one move.
+- `strategy`: non-empty string, BIG with formulas wherever the plan needs one (`$LaTeX$` always allowed). A full plan of attack, never a one-liner.
+- `steps`: array of 3 or 4 entries, `$LaTeX$` allowed. Each entry is either a plain string or, preferred, an object with a `title` plus a `body`: `{"title": "Substitute the line into the circle", "body": "From the system, ... $x^2+(x+k)^2=4k$ ..."}`. The title names the move; the body carries full reasoning with formulas — why this move, every derivation shown. Never mere single sentences.
 - `solution`: non-empty string, `$LaTeX$` allowed. Full working with formulas.
+- Nothing small anywhere: strategy, steps, and solution must all read substantial. Littleness fails review.
+- Canonical example — copy this shape exactly (big texts, titled steps, formulas everywhere):
+
+```json
+"strategy": "For ACT problems where a parameter appears in a system and you are told the system has \"exactly one\" real solution, first substitute to get a single equation in one variable, then recognize that you will usually end up with a quadratic. Use the discriminant condition $b^2-4ac=0$ to enforce exactly one real solution, solve the resulting equation for the parameter, and finally apply any given restrictions (like the parameter being positive) to select the correct value quickly and confidently.",
+"steps": [
+  {"title": "Substitute the line into the circle", "body": "From the system,\n\nCircle: $x^2+y^2=4k$\nLine: $y=x+k$\n\nSubstitute $y=x+k$ into the circle equation:\n\n$x^2+(x+k)^2=4k$."},
+  {"title": "Simplify to a quadratic in $x$", "body": "Expand and combine like terms:\n\n$x^2+(x+k)^2=x^2+x^2+2kx+k^2=2x^2+2kx+k^2$.\n\nSet this equal to $4k$:\n\n$2x^2+2kx+k^2=4k$.\n\nMove all terms to one side:\n\n$2x^2+2kx+k^2-4k=0$,\nso the quadratic in $x$ is\n\n$2x^2+2kx+(k^2-4k)=0$."},
+  {"title": "Use the \"exactly one real solution\" condition", "body": "For a quadratic $ax^2+bx+c=0$ to have exactly one real solution, its discriminant must be $0$.\n\nHere, $a=2$, $b=2k$, and $c=k^2-4k$.\n\nThe discriminant is\n\n$\\Delta=b^2-4ac=(2k)^2-4(2)(k^2-4k)$.\nSimplify:\n\n$\\Delta=4k^2-8(k^2-4k)=4k^2-8k^2+32k=-4k^2+32k=-4k(k-8)$.\n\nFor exactly one real solution, set $\\Delta=0$:\n\n$-4k(k-8)=0$."},
+  {"title": "Solve for $k$ and apply the given condition", "body": "From\n\n$-4k(k-8)=0$,\nwe get two possible values:\n\n$k=0$ or $k=8$.\nBut the problem states that $k$ is positive, so $k=0$ is not allowed.\n\nTherefore, the value of $k$ is $8$."}
+]
+```
 - Malformed optionals fail with a `Q{n}: …` error (wrong type, empty string, `steps` length outside 3–4).
 
 ## Optional knowledge slides (entirely the author's wish; omit freely)
@@ -169,6 +181,7 @@ Linking questions to a figure:
 - `theoryBreaks`: `[{after, heading?, blocks[]}]` shown after question `after` (`1` to total). Use right before a new question type starts.
 - Detailed like a textbook is fine: a short explanation plus 2–3 equations, one worked example, one tip. Keep the bookish-but-light voice.
 - Blocks use: `h`, `math`, `list`, `p`, `formula`, `table`, `example`, `tip`, `warn`, `note`, `def`, `versus`. Every block needs one known key; `blocks` must be non-empty. Tables need non-empty `rows`; examples need a `problem` string; `versus` needs 2–3 cells.
+- `formula` and `math` blocks hold pure LaTeX with NO `$` delimiters (`{"formula": "\\frac{b}{a}"}`). Prose plus inline math (`For $x$...`) belongs in a `p` block. A pre-pass healer repairs mixed content when it can; anything still unparsable shows a copy-out card instead of red text.
 - `after` must be a real question number. Out-of-range breaks fail validation.
 
 ## Self-check before sending (mandatory, last)

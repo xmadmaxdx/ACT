@@ -490,8 +490,17 @@ export function normalizeMath(raw) {
         throw new Error(`Q${n}: steps must be an array of 3 or 4 strings.`);
       }
       q.steps.forEach((s, j) => {
-        if (typeof s !== "string" || s.length === 0) {
-          throw new Error(`Q${n}: steps[${j}] must be a non-empty string.`);
+        if (typeof s === "string") {
+          if (s.length === 0) throw new Error(`Q${n}: steps[${j}] must be a non-empty string.`);
+        } else if (s && typeof s === "object" && !Array.isArray(s)) {
+          if (typeof s.title !== "string" || s.title.length === 0) {
+            throw new Error(`Q${n}: steps[${j}] needs a non-empty title.`);
+          }
+          if (typeof s.body !== "string" || s.body.length === 0) {
+            throw new Error(`Q${n}: steps[${j}] needs a non-empty body.`);
+          }
+        } else {
+          throw new Error(`Q${n}: steps[${j}] must be a string or {title, body}.`);
         }
       });
     }
@@ -555,7 +564,7 @@ export function normalizeMath(raw) {
         svg: q.svg !== undefined ? q.svg : undefined,
         figure: q.figure !== undefined ? q.figure : undefined,
         strategy: q.strategy !== undefined ? q.strategy : undefined,
-        steps: q.steps !== undefined ? q.steps.map((s) => String(s)) : undefined,
+        steps: q.steps !== undefined ? q.steps.map((s) => (typeof s === "string" ? String(s) : { title: String(s.title), body: String(s.body) })) : undefined,
         solution: q.solution !== undefined ? q.solution : undefined,
       };
     }),

@@ -166,9 +166,9 @@ const SAMPLE_MATH = `{
       "options": ["36", "40", "45", "50"],
       "answer": "B",
       "explain": "Total distance $120$ over $3$ hours is $40$ mph.",
-      "strategy": "Total distance over total time beats averaging speeds; find each leg time with $t = d/v$.",
-      "steps": ["Outbound time is $60/30 = 2$ hours.", "Return time is $60/60 = 1$ hour.", "Average is $120/3 = 40$ mph."],
-      "solution": "Outbound $t = 60/30 = 2$, return $t = 60/60 = 1$, so $v = 120/(2+1) = 40$ mph."
+      "strategy": "Total distance over total time beats averaging the two speeds, because average speed weights each speed by the time spent at it. Find each leg's time with $t = d/v$, add the times, then divide the full $120$ miles by that total.",
+      "steps": [{"title": "Find the outbound time", "body": "Outbound time is $60/30 = 2$ hours. Slower speed means more time on the road, which is exactly why a plain average of speeds lies."}, {"title": "Find the return time", "body": "Return time is $60/60 = 1$ hour, half the outbound time because the speed doubled on the same distance."}, {"title": "Divide totals, not speeds", "body": "Average is total distance over total time: $120/(2+1) = 40$ mph. The naive $(30+60)/2 = 45$ ignores the time weighting."}],
+      "solution": "Outbound $t = 60/30 = 2$ hours and return $t = 60/60 = 1$ hour, so $v = 120/(2+1) = 40$ mph. The trap answer $45$ averages the speeds while ignoring that twice as much time is spent at $30$ mph."
     },
     {
       "n": 2,
@@ -523,8 +523,17 @@ function normalizeMath(raw) {
         throw new Error(`Q${n}: steps must be an array of 3 or 4 strings.`);
       }
       q.steps.forEach((s, j) => {
-        if (typeof s !== "string" || s.length === 0) {
-          throw new Error(`Q${n}: steps[${j}] must be a non-empty string.`);
+        if (typeof s === "string") {
+          if (s.length === 0) throw new Error(`Q${n}: steps[${j}] must be a non-empty string.`);
+        } else if (s && typeof s === "object" && !Array.isArray(s)) {
+          if (typeof s.title !== "string" || s.title.length === 0) {
+            throw new Error(`Q${n}: steps[${j}] needs a non-empty title.`);
+          }
+          if (typeof s.body !== "string" || s.body.length === 0) {
+            throw new Error(`Q${n}: steps[${j}] needs a non-empty body.`);
+          }
+        } else {
+          throw new Error(`Q${n}: steps[${j}] must be a string or {title, body}.`);
         }
       });
     }
@@ -603,7 +612,7 @@ function normalizeMath(raw) {
       if (q.svg !== undefined) out.svg = q.svg;
       if (q.figure !== undefined) out.figure = q.figure;
       if (q.strategy !== undefined) out.strategy = q.strategy;
-      if (q.steps !== undefined) out.steps = q.steps.map((s) => String(s));
+      if (q.steps !== undefined) out.steps = q.steps.map((s) => (typeof s === "string" ? String(s) : { title: String(s.title), body: String(s.body) }));
       if (q.solution !== undefined) out.solution = q.solution;
       return out;
     }),
