@@ -695,7 +695,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [calcOpen, setCalcOpen] = useState(false);
   const [calcMode, setCalcMode] = useState("graph");
   const [calcFull, setCalcFull] = useState(false);
-  const [calcW, setCalcW] = useState(440);
+  /* Question/calc split as grid weights (default 1:1). Ratios track body
+     width automatically, so rails, resizes, and Desmos never fight. */
+  const [calcSplit, setCalcSplit] = useState({ q: 1, c: 1 });
   const [elimOn, setElimOn] = useState(true);
   const [elims, setElims] = useState({});
   const [marks, setMarks] = useState({});
@@ -735,7 +737,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const prevQRef = useRef(null);
   const pausedRef = useRef(false);
   const introDoneRef = useRef(false);
-  const calcSizedRef = useRef(false);
   /* Mirror of paces state for use inside interval/effects without stale closures. */
   const pacesRef = useRef((session && session.paces) || {});
 
@@ -1327,23 +1328,16 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const calcDefaultW = () => {
-    const body = bodyRef.current;
-    if (!body) return null;
-    const w = body.getBoundingClientRect().width;
-    if (!Number.isFinite(w) || w <= 0) return null;
-    return Math.min(Math.max(Math.round(w * 0.5), 300), Math.floor(w * 0.5));
-  };
-
   const startDrag = (e) => {
     e.preventDefault();
     const move = (ev) => {
       const body = bodyRef.current;
       if (!body) return;
       const rect = body.getBoundingClientRect();
-      const w = Math.round(rect.right - ev.clientX - 12);
-      setCalcW(Math.min(Math.max(w, 300), Math.floor(rect.width * 0.5)));
-      calcSizedRef.current = true;
+      const c = Math.round(rect.right - ev.clientX - 12);
+      const q = Math.round(ev.clientX - rect.left);
+      if (c < 260 || q < 260) return;
+      setCalcSplit({ q, c });
     };
     const up = () => {
       window.removeEventListener("pointermove", move);
@@ -1354,22 +1348,12 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   };
 
   const openCalc = () => {
-    const w = calcDefaultW();
-    if (w !== null) {
-      setCalcW(w);
-      calcSizedRef.current = true;
-    }
+    setCalcSplit({ q: 1, c: 1 });
     setCalcOpen(true);
   };
 
   const resetCalc = () => {
-    const w = calcDefaultW();
-    if (w !== null) {
-      setCalcW(w);
-      calcSizedRef.current = true;
-    } else {
-      setCalcW(440);
-    }
+    setCalcSplit({ q: 1, c: 1 });
   };
 
   const toggleFull = (v) => {
@@ -1555,46 +1539,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       setCalcOpen(false);
       setCalcFull(false);
     } else {
-      if (!calcSizedRef.current) {
-        const w = calcDefaultW();
-        if (w !== null) {
-          setCalcW(w);
-          calcSizedRef.current = true;
-        }
-      }
       setCalcOpen(true);
     }
   }, [showCalc, review, onIntro, brkId, qIndex]);
-
-  /* Docked rails (AI or strategy) steal 400px via margin. Glide the
-     calculator to half of the post-transition body width in sync with the
-     margin animation, then snap exact once it lands. */
-  const dockedRef = useRef(false);
-  useEffect(() => {
-    const docked = !!((aiOpen && aiPinned) || stratVisible);
-    if (!showCalc || review || !calcOpen) {
-      dockedRef.current = docked;
-      return undefined;
-    }
-    if (docked === dockedRef.current) return undefined;
-    dockedRef.current = docked;
-    const body = bodyRef.current;
-    if (!body) return undefined;
-    const w = body.getBoundingClientRect().width;
-    const target = Math.max(300, Math.floor((w + (docked ? -400 : 400)) * 0.5));
-    body.classList.add("calc-anim");
-    setCalcW(target);
-    calcSizedRef.current = true;
-    const t = setTimeout(() => {
-      body.classList.remove("calc-anim");
-      const exact = calcDefaultW();
-      if (exact !== null) setCalcW(exact);
-    }, 360);
-    return () => {
-      clearTimeout(t);
-      body.classList.remove("calc-anim");
-    };
-  }, [showCalc, review, calcOpen, aiOpen, aiPinned, stratVisible]);
 
   return (
     <div className={(aiOpen && aiPinned) || stratVisible ? "test cod-docked" : "test"}>
@@ -1791,7 +1738,15 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         </div>
       </header>
 
-      <div className={calcOpen && showCalc ? "test-body calc-open" : "test-body"} ref={bodyRef}>
+      <div
+        className={calcOpen && showCalc ? "test-body calc-open" : "test-body"}
+        ref={bodyRef}
+        style={
+          calcOpen && showCalc
+            ? { "--qfr": calcSplit.q, "--cfr": calcSplit.c }
+            : undefined
+        }
+      >
         {onIntro ? (
           <div className="intro-step">
             <div className="intro-card">
@@ -1913,7 +1868,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           />
         )}
         {calcOpen && showCalc && !calcFull && (
-          <section className="calc-panel" style={{ width: calcW }} aria-label="Calculator">
+          <section className="calc-panel" aria-label="Calculator">
             <div className="calc-head">
               <div className="calc-tabs" role="tablist" aria-label="Calculator type">
                 <button

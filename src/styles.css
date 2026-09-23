@@ -1315,16 +1315,6 @@ button {
   width: auto;
 }
 
-.calc-anim .calc-panel {
-  transition: width 0.28s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .calc-anim .calc-panel {
-    transition: none;
-  }
-}
-
 /* ---------- Math figures ---------- */
 .mathfig {
   display: block;
@@ -4751,7 +4741,7 @@ button {
 
 .test-body.calc-open {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, var(--qfr, 1fr)) auto minmax(0, var(--cfr, 1fr));
   grid-template-rows: auto auto;
   align-items: start;
   gap: 0;
