@@ -1743,7 +1743,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         ref={bodyRef}
         style={
           calcOpen && showCalc
-            ? { "--qfr": calcSplit.q, "--cfr": calcSplit.c }
+            ? { "--qfr": `${calcSplit.q}fr`, "--cfr": `${calcSplit.c}fr` }
             : undefined
         }
       >

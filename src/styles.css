@@ -4803,6 +4803,7 @@ button {
   cursor: col-resize;
   background: transparent;
   position: relative;
+  touch-action: none;
 }
 
 .calc-divider::after {
