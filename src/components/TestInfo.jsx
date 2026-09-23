@@ -328,7 +328,7 @@ export default function TestInfo({ onGiveTest, onCourseOpen, courseSlug }) {
   const [openId, setOpenId] = useState(courseSlug || null);
   const [selected, setSelected] = useState(null);
 
-  // Deep links: /test-info/<course-id> opens that course; back/forward
+  // Deep links: /courses/<course-id> opens that course; back/forward
   // navigation syncs through the courseSlug prop.
   useEffect(() => {
     setOpenId(courseSlug || null);
@@ -337,7 +337,7 @@ export default function TestInfo({ onGiveTest, onCourseOpen, courseSlug }) {
   const openCourseById = (id) => {
     setOpenId(id);
     try {
-      window.history.pushState({}, "", id ? `/test-info/${encodeURIComponent(id)}` : "/test-info");
+      window.history.pushState({}, "", id ? `/courses/${encodeURIComponent(id)}` : "/courses");
     } catch (err) {
       window.console.debug("course link skipped", err);
     }
@@ -375,7 +375,7 @@ export default function TestInfo({ onGiveTest, onCourseOpen, courseSlug }) {
   if (!data) {
     return (
       <div>
-        <h2 className="section-title rise d2">Test info</h2>
+        <h2 className="section-title rise d2">Courses</h2>
         <p className="muted-text">Loading skills…</p>
       </div>
     );
@@ -384,7 +384,7 @@ export default function TestInfo({ onGiveTest, onCourseOpen, courseSlug }) {
   if (data.error) {
     return (
       <div>
-        <h2 className="section-title rise d2">Test info</h2>
+        <h2 className="section-title rise d2">Courses</h2>
         <p className="muted-text">Could not load lessons: {data.error}</p>
       </div>
     );
@@ -399,7 +399,7 @@ export default function TestInfo({ onGiveTest, onCourseOpen, courseSlug }) {
     <div>
       {!openCourse && (
         <>
-          <h2 className="section-title rise d2">Test info</h2>
+          <h2 className="section-title rise d2">Courses</h2>
           <p className="muted-text rise d2">
             Skill courses with lessons and 10-problem practice sets. A course loads only when you open this page.
           </p>

@@ -37,7 +37,7 @@ function parseShareSlug(path) {
   if (short) return short[1];
   if (/^\/[A-Za-z0-9_-]{4,64}$/.test(clean)) {
     const bare = clean.slice(1);
-    if (["practice", "chapters", "combo", "calculator", "calc", "cal", "test-info"].includes(bare)) return null;
+    if (["practice", "chapters", "combo", "calculator", "calc", "cal", "courses", "test-info"].includes(bare)) return null;
     if (clean.startsWith("/practice-test-")) return null;
     return bare;
   }
@@ -49,7 +49,7 @@ function routeFromPath(path) {
   if (parseShareSlug(path)) return "share";
   if (clean.endsWith("/results")) return "results";
   if (clean === "/practice") return "practice";
-  if (clean === "/test-info" || clean.startsWith("/test-info/")) return "info";
+  if (clean === "/courses" || clean.startsWith("/courses/") || clean === "/test-info" || clean.startsWith("/test-info/")) return "info";
   if (clean === "/chapters") return "chapters";
   if (clean === "/combo") return "combo";
   if (clean === "/calculator" || clean === "/calc" || clean === "/cal") return "calculator";
@@ -59,7 +59,7 @@ function routeFromPath(path) {
 
 function courseSlugFromPath(path) {
   const clean = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
-  const m = /^\/test-info\/(.+)$/.exec(clean);
+  const m = /^\/(?:courses|test-info)\/(.+)$/.exec(clean);
   if (!m) return null;
   try {
     return decodeURIComponent(m[1]);
@@ -100,6 +100,15 @@ export default function App() {
   comboRef.current = combo;
 
   useEffect(() => {
+    // Legacy /test-info links rewrite to /courses once.
+    try {
+      const p = window.location.pathname;
+      if (p === "/test-info" || p.startsWith("/test-info/")) {
+        window.history.replaceState({}, "", p.replace("/test-info", "/courses"));
+      }
+    } catch (err) {
+      window.console.debug("course link rewrite skipped", err);
+    }
     let live = true;
     const pendingShare = pendingRef.current ? parseShareSlug(pendingRef.current) : null;
     const sharePromise = pendingShare
@@ -189,7 +198,7 @@ export default function App() {
       window.history.pushState({}, "", "/practice");
       setRoute("practice");
     } else if (r === "info") {
-      window.history.pushState({}, "", "/test-info");
+      window.history.pushState({}, "", "/courses");
       setRoute("info");
     } else if (r === "chapters") {
       window.history.pushState({}, "", "/chapters");

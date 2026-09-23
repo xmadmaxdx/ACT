@@ -20,7 +20,7 @@ current shape before changing anything. Never assume a selector, prop, or schema
 ## OVERVIEW
 
 ACTprep is a Duolingo-styled ACT practice web app (Vite + React 18, single `styles.css`, Supabase
-backend). Routes: home, practice, test-info, chapters, combo, test (`/practice-test-*`), results.
+backend). Routes: home, practice, courses, chapters, combo, test (`/practice-test-*`), results.
 Tests come from Supabase tables, local JSON seeds, math-chapter minis, or AI-generated JSON pasted
 into JsonStart. English scale = stretched Form J08 40Q table to 50Q (`scoring.js`).
 
