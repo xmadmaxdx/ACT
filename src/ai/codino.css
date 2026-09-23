@@ -658,7 +658,7 @@
   position: relative;
   overflow: hidden;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   margin: 0 0 8px;
   background: #fff;
@@ -684,6 +684,8 @@
 }
 
 .cod-optcard-text {
+  flex: 1;
+  min-width: 0;
   font-size: 14px;
   line-height: 1.55;
   color: var(--ink-soft);

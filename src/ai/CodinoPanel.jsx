@@ -1124,15 +1124,22 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
   }, [messages.length, messages.length > 0 ? messages[messages.length - 1].content.length : 0]);
 
   // Context rides in the USER turns, not just system: models obey user
-  // content far more reliably. Every user message carries the full passage +
-  // question block; stored threads stay clean for display.
+  // content far more reliably. Only the FIRST user turn carries the full
+  // passage + question block; follow-ups carry a short pointer so the model
+  // answers the new message instead of re-explaining the whole question.
+  const shortContext = (base) =>
+    `Continuing ${base.title || "this question"} (${base.brief || "see context above"}). ` +
+    `The full question context was already provided earlier in this thread — ` +
+    `answer only what the student now says, and do not restate it.`;
+
   const baseContext = () =>
     ctx?.q
       ? buildQuestionContext({ testData: ctx.testData, q: ctx.q, pickedLetter: ctx.pickedLetter, letters: ctx.letters, reveal: ctx.reveal })
       : generalContext(ctx?.testData?.section);
 
-  const toApiUser = (content, images, base) => {
-    const text = `${base.contextText}\n\n${content || ""}`;
+  const toApiUser = (content, images, base, full) => {
+    const head = full ? base.contextText : shortContext(base);
+    const text = `${head}\n\n${content || ""}`;
     if (images && images.length) {
       return {
         role: "user",
@@ -1149,9 +1156,12 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
     const base = baseContext();
     const sys = `${ctx?.q && ctx.reveal !== false ? EXPLAIN_SYSTEM : ASK_SYSTEM}\n\n${FORMAT_CONTRACT}`;
     const t = threadsRef.current.find((x) => x.id === id);
+    let seenUser = false;
     const prior = (t ? t.messages : []).map((m) => {
       if (m.role !== "user") return { role: m.role, content: m.content };
-      return toApiUser(m.content, m.images, base);
+      const full = !seenUser;
+      seenUser = true;
+      return toApiUser(m.content, m.images, base, full);
     });
     return [{ role: "system", content: sys }, ...prior];
   };
@@ -1217,10 +1227,12 @@ export default function CodinoPanel({ open, pinned, onTogglePin, context, onClos
     setError("");
     pushMessages(id, (msgs) => [...msgs, { role: "assistant", content: "" }]);
     try {
+      const t0 = threadsRef.current.find((x) => x.id === id);
+      const extraIsFirst = extra && !(t0 && t0.messages.some((m) => m.role === "user"));
       await streamCodinoMessage({
         messages: [
           ...historyFor(id),
-          ...(extra ? [toApiUser(extra.content, extra.images, baseContext())] : []),
+          ...(extra ? [toApiUser(extra.content, extra.images, baseContext(), extraIsFirst)] : []),
         ],
         model: model || CODINO_MODEL,
         signal: controller.signal,

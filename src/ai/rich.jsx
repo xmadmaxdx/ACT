@@ -125,7 +125,7 @@ function OptCard({ letter, text, state }) {
         )}
       </span>
       <span className="cod-optcard-text">
-        <b>{letter}.</b> {text}
+        <b>{letter}.</b> {mathRich(String(text || "").replace(/^[A-Za-z][.)]\s*/, ""))}
       </span>
     </div>
   );
@@ -147,14 +147,21 @@ export function renderAiText(text, passage, opts, evidenceLabel) {
     const fence = rawLines[j].trim();
     if (fence === "$" || fence === "$$") {
       let block = "";
+      let closed = false;
       j += 1;
       while (j < rawLines.length) {
         const edge = rawLines[j].trim();
-        if (edge === "$" || edge === "$$") break;
+        if (edge === "$" || edge === "$$") {
+          closed = true;
+          break;
+        }
         block += `${rawLines[j]}\n`;
         j += 1;
       }
-      if (block.trim()) lines.push(`${fence}${block.trim()}${fence}`);
+      // Inner $ markers are meaningless inside a display fence — drop them
+      // so nested dollars can never leak as literal stray lines.
+      const inner = block.replace(/\$/g, "").trim();
+      if (inner) lines.push(closed ? `${fence}${inner}${fence}` : inner);
       continue;
     }
     lines.push(rawLines[j]);

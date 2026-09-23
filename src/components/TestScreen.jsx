@@ -1027,12 +1027,16 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const openExplain = (qq) => {
     if (!review) return;
     setStratOpen(false);
+    const picked = picks[qq.n] || null;
+    const autoAsk = picked
+      ? `Explain question ${qq.n} (${qq.tag}): name the correct choice, apply it to this exact passage, and show why my picked choice ${picked} fails. Discuss only my picked choice — do not mention the other choices at all.`
+      : `Explain question ${qq.n} (${qq.tag}): name the correct choice and apply it to this exact passage.`;
     setAiCtx({
       testData,
       q: qq,
       pickedLetter: picks[qq.n] || null,
       letters: lettersFor(qq.n, testData.section),
-      autoAsk: `Explain question ${qq.n} (${qq.tag}) step by step: name the correct choice, apply it to this exact passage, and show why each of the other three choices fails.`,
+      autoAsk,
     });
     setAiPinned(false);
     setAiOpen(true);
