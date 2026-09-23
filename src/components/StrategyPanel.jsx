@@ -42,22 +42,24 @@ function StratRow({ index, title, body, stepTitle }) {
         <div className="strat-row-body">
           {stepTitle ? (
             <p className="strat-step-title">
-              <MathText text={stepTitle} />
-              <svg
-                className="strat-scribble"
-                viewBox="0 0 120 9"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M2 5.5 C 25 2.5, 45 7.5, 70 4.5 S 105 3.5, 118 5.5"
-                  pathLength={1}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={3}
-                  strokeLinecap="round"
-                />
-              </svg>
+              <span className="strat-step-title-inner">
+                <MathText text={stepTitle} />
+                <svg
+                  className="strat-scribble"
+                  viewBox="0 0 120 9"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2 5.5 C 25 2.5, 45 7.5, 70 4.5 S 105 3.5, 118 5.5"
+                    pathLength={1}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
             </p>
           ) : null}
           <MathText text={body} />

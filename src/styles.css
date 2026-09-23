@@ -3005,6 +3005,11 @@ button {
   color: var(--ink);
 }
 
+.strat-step-title-inner {
+  display: inline-block;
+  max-width: 100%;
+}
+
 .strat-scribble {
   display: block;
   width: 100%;
