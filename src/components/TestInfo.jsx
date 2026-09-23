@@ -323,10 +323,26 @@ function CoursePage({ course, subject, onBack, onSelect }) {
   );
 }
 
-export default function TestInfo({ onGiveTest, onCourseOpen }) {
+export default function TestInfo({ onGiveTest, onCourseOpen, courseSlug }) {
   const [data, setData] = useState(null);
-  const [openId, setOpenId] = useState(null);
+  const [openId, setOpenId] = useState(courseSlug || null);
   const [selected, setSelected] = useState(null);
+
+  // Deep links: /test-info/<course-id> opens that course; back/forward
+  // navigation syncs through the courseSlug prop.
+  useEffect(() => {
+    setOpenId(courseSlug || null);
+  }, [courseSlug]);
+
+  const openCourseById = (id) => {
+    setOpenId(id);
+    try {
+      window.history.pushState({}, "", id ? `/test-info/${encodeURIComponent(id)}` : "/test-info");
+    } catch (err) {
+      window.console.debug("course link skipped", err);
+    }
+    window.scrollTo(0, 0);
+  };
 
   useEffect(() => {
     if (onCourseOpen) onCourseOpen(openId !== null);
@@ -393,16 +409,13 @@ export default function TestInfo({ onGiveTest, onCourseOpen }) {
       {!openCourse ? (
         <>
           <h3 className="group-title rise d3">Math courses</h3>
-          <CourseGrid list={courses} onOpen={setOpenId} />
+          <CourseGrid list={courses} onOpen={openCourseById} />
         </>
       ) : (
         <CoursePage
           course={openCourse}
           subject={openCourse.subject || (data.math && data.math.subject) || "math"}
-          onBack={() => {
-            setOpenId(null);
-            window.scrollTo(0, 0);
-          }}
+          onBack={() => openCourseById(null)}
           onSelect={(sel) => setSelected(sel)}
         />
       )}
@@ -411,7 +424,7 @@ export default function TestInfo({ onGiveTest, onCourseOpen }) {
         <>
           <h3 className="group-title">English lessons</h3>
           {englishCourses.length > 0 ? (
-            <CourseGrid list={englishCourses} onOpen={setOpenId} />
+            <CourseGrid list={englishCourses} onOpen={openCourseById} />
           ) : (
             <p className="muted-text">
               {englishCount === 0 ? "English lessons are coming soon." : `${englishCount} lessons available.`}

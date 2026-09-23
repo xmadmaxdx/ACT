@@ -53,8 +53,67 @@ export function healOption(src) {
   }
 }
 
-// Bare-run healer: finds runs containing \commands or ^/_, validates each
-// with KaTeX, and marks parseable ones as math. Prose is untouched.
+// A line that is purely one formula (with or without $ delimiters).
+// Returns bare display-ready tex, or null for mixed/prose lines.
+export function aloneDisplayTex(line) {
+  const s = String(line || "").trim();
+  if (!s) return null;
+  const d = /^\$\$([\s\S]+)\$\$$/.exec(s);
+  if (d) return d[1].trim();
+  const segs = healBareRuns(s);
+  if (segs.length === 1 && segs[0].m !== undefined) return segs[0].m;
+  const single = /^\$([^$]+)\$$/.exec(s);
+  if (single) return single[1].trim();
+  return null;
+}
+
+const BULLET_RE = /^(?:[-•+]\s+|\d+[.)]\s+)([\s\S]*)$/;
+
+// Block parser for strategy/step bodies: paragraphs, bullet lists, and
+// standalone display formulas. Pure logic — rendering lives in StepBody.
+export function parseBlocks(text) {
+  const blocks = [];
+  let para = [];
+  let list = [];
+  const flushPara = () => {
+    if (para.length) {
+      blocks.push({ kind: "p", text: para.join("\n") });
+      para = [];
+    }
+  };
+  const flushList = () => {
+    if (list.length) {
+      blocks.push({ kind: "ul", items: list });
+      list = [];
+    }
+  };
+  for (const raw of String(text || "").split("\n")) {
+    const t = raw.trim();
+    if (!t) {
+      flushPara();
+      flushList();
+      blocks.push({ kind: "gap" });
+      continue;
+    }
+    const b = BULLET_RE.exec(t);
+    if (b) {
+      flushPara();
+      list.push(b[1]);
+      continue;
+    }
+    flushList();
+    const tex = aloneDisplayTex(t);
+    if (tex !== null && tex.length > 0) {
+      flushPara();
+      blocks.push({ kind: "math", tex });
+      continue;
+    }
+    para.push(raw);
+  }
+  flushPara();
+  flushList();
+  return blocks;
+}
 export function healBareRuns(text) {
   const out = [];
   const re = /[^\s$]*?(?:\\[a-zA-Z]|[\^_])[^\s$]*/g;

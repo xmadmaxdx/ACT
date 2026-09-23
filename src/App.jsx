@@ -49,12 +49,23 @@ function routeFromPath(path) {
   if (parseShareSlug(path)) return "share";
   if (clean.endsWith("/results")) return "results";
   if (clean === "/practice") return "practice";
-  if (clean === "/test-info") return "info";
+  if (clean === "/test-info" || clean.startsWith("/test-info/")) return "info";
   if (clean === "/chapters") return "chapters";
   if (clean === "/combo") return "combo";
   if (clean === "/calculator" || clean === "/calc" || clean === "/cal") return "calculator";
   if (clean.startsWith("/practice-test-")) return "test";
   return "home";
+}
+
+function courseSlugFromPath(path) {
+  const clean = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+  const m = /^\/test-info\/(.+)$/.exec(clean);
+  if (!m) return null;
+  try {
+    return decodeURIComponent(m[1]);
+  } catch {
+    return m[1];
+  }
 }
 
 export default function App() {
@@ -461,7 +472,11 @@ export default function App() {
           {route === "chapters" ? (
             <Chapters onStartMini={startLessonTest} />
           ) : route === "info" ? (
-            <TestInfo onGiveTest={startLessonTest} onCourseOpen={setInfoCourseOpen} />
+            <TestInfo
+              onGiveTest={startLessonTest}
+              onCourseOpen={setInfoCourseOpen}
+              courseSlug={courseSlugFromPath(window.location.pathname)}
+            />
           ) : route === "practice" ? (
             <Practice
               onStartTest={startTest}

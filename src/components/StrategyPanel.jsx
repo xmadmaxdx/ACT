@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import MathText from "./MathText.jsx";
 import Scribble from "./Scribble.jsx";
+import LatexBlock from "./LatexBlock.jsx";
+import { parseBlocks } from "../latexHeal.js";
 
 function Chevron() {
   return (
@@ -20,6 +22,42 @@ function Chevron() {
         strokeLinejoin="round"
       />
     </svg>
+  );
+}
+
+function StepBody({ text }) {
+  const blocks = parseBlocks(text);
+  return (
+    <>
+      {blocks.map((b, i) => {
+        if (b.kind === "ul") {
+          return (
+            <ul key={i} className="strat-list">
+              {b.items.map((item, j) => (
+                <li key={j}>
+                  <MathText text={item} />
+                </li>
+              ))}
+            </ul>
+          );
+        }
+        if (b.kind === "math") {
+          return (
+            <div key={i} className="strat-formula">
+              <LatexBlock tex={b.tex} label="Formula needs a fix" />
+            </div>
+          );
+        }
+        if (b.kind === "gap") {
+          return <div key={i} className="strat-gap" aria-hidden="true" />;
+        }
+        return (
+          <div key={i} className="strat-para">
+            <MathText text={b.text} />
+          </div>
+        );
+      })}
+    </>
   );
 }
 
@@ -49,7 +87,7 @@ function StratRow({ index, title, body, stepTitle }) {
               </span>
             </p>
           ) : null}
-          <MathText text={body} />
+          <StepBody text={body} />
         </div>
       )}
     </div>

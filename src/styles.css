@@ -544,6 +544,12 @@ button {
   border-bottom: 2px solid var(--line);
   margin-bottom: 26px;
   overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .tab {
@@ -1197,6 +1203,33 @@ button {
     padding: 7px 9px;
     font-size: 14px;
   }
+
+  .course-title {
+    font-size: 20px;
+  }
+
+  .content {
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  .lesson-p,
+  .example-problem,
+  .example-answer,
+  .embed-q .q-text,
+  .lesson-list li {
+    overflow-wrap: break-word;
+  }
+
+  .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 2px;
+  }
+
+  .katex {
+    font-size: 0.94em;
+  }
 }
 
 /* ---------- Worked examples ---------- */
@@ -1237,6 +1270,12 @@ button {
     flex-direction: row;
     overflow-x: auto;
     max-height: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .toc::-webkit-scrollbar {
+    display: none;
   }
 
   .toc-title {
@@ -3006,6 +3045,35 @@ button {
   animation: strat-drop 0.18s ease-out;
 }
 
+.strat-para {
+  margin: 0;
+}
+
+.strat-gap {
+  height: 6px;
+}
+
+.strat-list {
+  margin: 4px 0 4px 20px;
+  padding: 0;
+  list-style: disc;
+}
+
+.strat-list li {
+  margin: 3px 0;
+}
+
+.strat-list li::marker {
+  color: var(--blue);
+}
+
+.strat-formula {
+  margin: 8px 0;
+  text-align: center;
+  font-size: 16px;
+  overflow-x: auto;
+}
+
 .strat-step-title {
   margin: 2px 0 8px;
   padding: 6px 10px 8px;
@@ -3256,6 +3324,12 @@ button {
   gap: 6px;
   margin-bottom: 0;
   overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ov-filters::-webkit-scrollbar {
+  display: none;
 }
 
 .ov-filter {
