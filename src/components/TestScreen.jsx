@@ -1175,37 +1175,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const activeBreak = brkId ? breakById(brkId) : null;
   const qIdxOf = (n) => questions.findIndex((q) => q.n === n);
 
-  /* Eliminator lives on the right in the old layout, or on the left next
-     to copy when the strategy button takes the right slot. Defined after
-     activeBreak — reading it earlier throws a TDZ ReferenceError. */
-  const elimBtn = !review && !activeBreak && (
-    <button
-      className={["elim-toggle", hasStrategy && "left", elimOn && "on"].filter(Boolean).join(" ")}
-      type="button"
-      onClick={() => setElimOn((v) => !v)}
-      title={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
-      aria-label={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
-      aria-pressed={elimOn}
-    >
-      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-        <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-          <line x1="2.5" y1="5" x2="10" y2="5" />
-          <line x1="2.5" y1="9" x2="10" y2="9" />
-          <line x1="2.5" y1="13" x2="7.5" y2="13" />
-        </g>
-        <line
-          x1="4"
-          y1="15.5"
-          x2="15"
-          y2="3"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-      </svg>
-    </button>
-  );
-
   const stepForward = () => {
     if (activeBreak) {
       const same = breaksAfter(activeBreak.after);
@@ -1462,6 +1431,43 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       : [{ heading: intro && intro.heading, blocks: (intro && intro.blocks) || [] }];
   const [slideIdx, setSlideIdx] = useState(0);
 
+  /* Eliminator lives on the right in the old layout, or on the left next
+     to copy when the strategy button takes the right slot. Defined after
+     onIntro/activeBreak — reading them earlier throws a TDZ ReferenceError. */
+  const elimBtn = !review && !activeBreak && !onIntro && (
+    <button
+      className={["elim-toggle", hasStrategy && "left", elimOn && "on"].filter(Boolean).join(" ")}
+      type="button"
+      onClick={() => setElimOn((v) => !v)}
+      title={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
+      aria-label={elimOn ? "Hide answer eliminator" : "Show answer eliminator"}
+      aria-pressed={elimOn}
+    >
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+        <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+          <line x1="2.5" y1="5" x2="10" y2="5" />
+          <line x1="2.5" y1="9" x2="10" y2="9" />
+          <line x1="2.5" y1="13" x2="7.5" y2="13" />
+        </g>
+        <line
+          x1="4"
+          y1="15.5"
+          x2="15"
+          y2="3"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+  );
+
+  /* Strategy rail always resets to closed on any navigation — next,
+     back, break, or intro slide. It only opens via S key or icon tap. */
+  useEffect(() => {
+    setStratOpen(false);
+  }, [qIndex, brkId, slideIdx, introDone]);
+
   useEffect(() => {
     const onKey = (e) => {
       if (calcFull) return;
@@ -1474,7 +1480,16 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         return;
       }
       const inIntro = needIntro && !introDoneRef.current;
-      if (e.key === "ArrowRight") {
+      if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        if (inIntro || activeBreak || !hasStrategy) return;
+        toggleStrategy();
+        return;
+      }
+      const plain = !e.ctrlKey && !e.metaKey && !e.altKey;
+      const goRight = e.key === "ArrowRight" || ((e.key === "d" || e.key === "D") && plain);
+      const goLeft = e.key === "ArrowLeft" || ((e.key === "a" || e.key === "A") && plain);
+      if (goRight) {
         e.preventDefault();
         if (inIntro) {
           if (slideIdx < slides.length - 1) {
@@ -1486,7 +1501,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           return;
         }
         stepForward();
-      } else if (e.key === "ArrowLeft") {
+      } else if (goLeft) {
         e.preventDefault();
         if (inIntro) {
           if (slideIdx > 0) {
@@ -1537,6 +1552,21 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       setCalcOpen(true);
     }
   }, [showCalc, review, onIntro, brkId, qIndex]);
+
+  /* Docked rails (AI or strategy) steal 400px via margin. Re-snap the
+     calculator to half of the new body width once the margin transition
+     lands, so calc and question areas return to 50/50 instantly. */
+  useEffect(() => {
+    if (!showCalc || review || !calcOpen) return undefined;
+    const t = setTimeout(() => {
+      const w = calcDefaultW();
+      if (w !== null) {
+        setCalcW(w);
+        calcSizedRef.current = true;
+      }
+    }, 320);
+    return () => clearTimeout(t);
+  }, [showCalc, review, calcOpen, aiOpen, aiPinned, stratVisible]);
 
   return (
     <div className={(aiOpen && aiPinned) || stratVisible ? "test cod-docked" : "test"}>
@@ -1973,7 +2003,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
       <div className="test-nav">
         <div className="test-nav-inner">
-          {!activeBreak && (
+          {!activeBreak && !onIntro && (
           <button
             className={copied ? "copy-icon-btn copied" : "copy-icon-btn"}
             type="button"
@@ -2074,6 +2104,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   NEXT
                 </button>
               )}
+          {!onIntro && !activeBreak && (
           <button
             className={aiOpen ? "cod-nav-btn on" : "cod-nav-btn"}
             type="button"
@@ -2096,18 +2127,20 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               />
             </svg>
           </button>
-          {hasStrategy ? (
+          )}
+          {!onIntro && !activeBreak && (hasStrategy ? (
             <button
               className={stratOpen ? "strat-nav-btn on" : "strat-nav-btn"}
               type="button"
               onClick={toggleStrategy}
-              title={stratOpen ? "Close strategy" : "Open strategy"}
+              title={stratOpen ? "Close strategy (S)" : "Open strategy (S)"}
               aria-label={stratOpen ? "Close strategy" : "Open strategy"}
+              aria-keyshortcuts="s"
               aria-pressed={stratOpen}
             >
               <BulbIcon />
             </button>
-          ) : elimBtn}
+          ) : elimBtn)}
         </div>
       </div>
 

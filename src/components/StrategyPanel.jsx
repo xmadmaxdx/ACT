@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MathText from "./MathText.jsx";
 
 function Chevron() {
@@ -93,6 +93,7 @@ export function BulbIcon() {
 }
 
 export default function StrategyPanel({ q, onClose }) {
+  const bodyRef = useRef(null);
   const [narrow, setNarrow] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -122,6 +123,31 @@ export default function StrategyPanel({ q, onClose }) {
     rows.push({ title: `Step ${steps.length + 1} (solution)`, body: q.solution });
   }
 
+  /* Scroll isolation: wheel/touch over the panel never scrolls Desmos,
+     the question area, or the page — even when the panel content is short
+     and has nothing to scroll. Re-binds per question since the body remounts. */
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return undefined;
+    const onWheel = (e) => {
+      const canScroll = el.scrollHeight > el.clientHeight + 1;
+      const atTop = el.scrollTop <= 0;
+      const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+      if (!canScroll || (e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+        e.preventDefault();
+      }
+    };
+    const onTouch = (e) => {
+      if (el.scrollHeight <= el.clientHeight + 1) e.preventDefault();
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    el.addEventListener("touchmove", onTouch, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("touchmove", onTouch);
+    };
+  }, [q.n]);
+
   const body = (
     <>
       <div className="strat-head">
@@ -138,7 +164,7 @@ export default function StrategyPanel({ q, onClose }) {
           ✕
         </button>
       </div>
-      <div className="strat-body" key={q.n}>
+      <div className="strat-body" key={q.n} ref={bodyRef}>
         {typeof q.strategy === "string" && q.strategy.length > 0 ? (
           <StratRow index={0} title="Strategy" body={q.strategy} />
         ) : null}
