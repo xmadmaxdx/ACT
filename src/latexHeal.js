@@ -53,9 +53,27 @@ export function healOption(src) {
   }
 }
 
-// Pre-pass for theory formula/math blocks. AI content often mixes prose
-// with $inline$ math inside a display block, which KaTeX rejects. Split,
-// heal each math segment, and pick the render mode that parses.
+// Bare-run healer: finds runs containing \commands or ^/_, validates each
+// with KaTeX, and marks parseable ones as math. Prose is untouched.
+export function healBareRuns(text) {
+  const out = [];
+  const re = /[^\s$]*?(?:\\[a-zA-Z]|[\^_])[^\s$]*/g;
+  const s = String(text);
+  let last = 0;
+  let m;
+  for (;;) {
+    m = re.exec(s);
+    if (!m) break;
+    if (m.index > last) out.push({ t: s.slice(last, m.index) });
+    const cand = m[0];
+    if (cand.length > 0 && cand.length <= 160 && tryTex(cand, false)) out.push({ m: cand });
+    else out.push({ t: cand });
+    last = m.index + cand.length;
+    if (re.lastIndex === m.index) re.lastIndex++;
+  }
+  if (last < s.length) out.push({ t: s.slice(last) });
+  return out;
+}
 export function healTex(src) {
   const raw = String(src || "").trim();
   if (!raw) return { mode: "display", text: "", healed: false, errors: ["empty"] };

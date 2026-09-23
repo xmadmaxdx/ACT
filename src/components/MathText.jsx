@@ -1,5 +1,6 @@
 import katex from "katex";
 import "katex/dist/katex.min.css";
+import { healBareRuns } from "../latexHeal.js";
 
 function texNode(tex, display, key) {
   let html = tex;
@@ -51,7 +52,15 @@ export function mathRich(text) {
     }
     chunk.split(/\$([^$]+?)\$/g).forEach((part, i) => {
       if (i % 2 === 1) out.push(texNode(part, false, `m${k++}`));
-      else if (part) out.push(<span key={`t${k++}`}>{italicRich(part, `r${k}`)}</span>);
+      else if (part) {
+        // Bare LaTeX runs (no $ delimiters) heal into math here, so every
+        // surface — passages, stems, options, explanations, AI messages —
+        // renders them without per-site fixes.
+        healBareRuns(part).forEach((seg) => {
+          if (seg.m !== undefined) out.push(texNode(seg.m, false, `m${k++}`));
+          else if (seg.t) out.push(<span key={`t${k++}`}>{italicRich(seg.t, `r${k}`)}</span>);
+        });
+      }
     });
   });
   return out;

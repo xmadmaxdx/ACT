@@ -42,7 +42,7 @@ function StratRow({ index, title, body, stepTitle }) {
         <div className="strat-row-body">
           {stepTitle ? (
             <p className="strat-step-title">
-              <span>{stepTitle}</span>
+              <MathText text={stepTitle} />
               <svg
                 className="strat-scribble"
                 viewBox="0 0 120 9"
