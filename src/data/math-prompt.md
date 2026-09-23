@@ -183,6 +183,7 @@ Linking questions to a figure:
 - `theory`: `{heading?, blocks[]}` opener before the set, or `{slides: [{heading?, blocks[]}]}` for multi-slide openers. Place before any question type that needs a refresher.
 - `theoryBreaks`: `[{after, heading?, blocks[]}]` shown after question `after` (`1` to total). Use right before a new question type starts.
 - Detailed like a textbook is fine: a short explanation plus 2–3 equations, one worked example, one tip. Keep the bookish-but-light voice.
+- Remember: you can use `def`, `table`, `formula`, worked `example`, `tip`, and `warn` (watch out) blocks inside knowledge slides — mixing them keeps everything neat, clean, and nice instead of walls of `p` text.
 - Blocks use: `h`, `math`, `list`, `p`, `formula`, `table`, `example`, `tip`, `warn`, `note`, `def`, `versus`. Every block needs one known key; `blocks` must be non-empty. Tables need non-empty `rows`; examples need a `problem` string; `versus` needs 2–3 cells.
 - `formula` and `math` blocks hold pure LaTeX with NO `$` delimiters (`{"formula": "\\frac{b}{a}"}`). Prose plus inline math (`For $x$...`) belongs in a `p` block. A pre-pass healer repairs mixed content when it can; anything still unparsable shows a copy-out card instead of red text.
 - `after` must be a real question number. Out-of-range breaks fail validation.

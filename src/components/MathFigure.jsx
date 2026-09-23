@@ -57,7 +57,13 @@ function Axes({ ticks, tmin, tmax, yTicks, ytmin, ytmax, xLabels, yLabel }) {
       <line x1={m.l} y1={m.t} x2={m.l} y2={m.t + ih} className="mathfig-axis" />
       <line x1={m.l} y1={m.t + ih} x2={m.l + iw} y2={m.t + ih} className="mathfig-axis" />
       {yLabel ? (
-        <text x={12} y={m.t + 4} textAnchor="start" className="mathfig-alabel">
+        <text
+          x={11}
+          y={m.t + ih / 2}
+          textAnchor="middle"
+          transform={`rotate(-90 11 ${m.t + ih / 2})`}
+          className="mathfig-alabel"
+        >
           {yLabel}
         </text>
       ) : null}
@@ -246,7 +252,13 @@ function ScatterFig({ fig }) {
           </text>
         ) : null}
         {fig.yLabel ? (
-          <text x={12} y={m.t + 4} textAnchor="start" className="mathfig-alabel">
+          <text
+            x={11}
+            y={m.t + ih / 2}
+            textAnchor="middle"
+            transform={`rotate(-90 11 ${m.t + ih / 2})`}
+            className="mathfig-alabel"
+          >
             {fig.yLabel}
           </text>
         ) : null}
@@ -300,7 +312,18 @@ function PieFig({ fig }) {
         ))}
         {arcs.map((a) => {
           const mid = (a.start + a.end) / 2;
-          if (a.end - a.start >= 32) {
+          const span = a.end - a.start;
+          // Wide slices fit "label pct" inside; narrow ones get an outside
+          // leader. No separate legend, so nothing can collide with one.
+          if (span >= 40) {
+            const c = polarToCartesian(cx, cy, r * 0.62, mid);
+            return (
+              <text key={`t${a.i}`} x={c.x} y={c.y} textAnchor="middle" dominantBaseline="middle" className="mathfig-pielabel">
+                {`${a.s.label} ${a.pct}%`}
+              </text>
+            );
+          }
+          if (span >= 14) {
             const c = polarToCartesian(cx, cy, r * 0.62, mid);
             return (
               <text key={`t${a.i}`} x={c.x} y={c.y} textAnchor="middle" dominantBaseline="middle" className="mathfig-pielabel">
@@ -325,14 +348,6 @@ function PieFig({ fig }) {
             </g>
           );
         })}
-        {fig.slices.map((s, i) => (
-          <g key={`l${i}`}>
-            <rect x={222} y={40 + i * 22} width={12} height={12} rx={3} fill={PALETTE[i % PALETTE.length]} />
-            <text x={239} y={50 + i * 22} className="mathfig-tick">
-              {s.label}
-            </text>
-          </g>
-        ))}
       </svg>
     </figure>
   );
