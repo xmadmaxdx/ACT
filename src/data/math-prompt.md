@@ -160,6 +160,7 @@ Linking questions to a figure:
 
 - `strategy`: non-empty string, BIG with formulas wherever the plan needs one (`$LaTeX$` always allowed). A full plan of attack, never a one-liner.
 - `steps`: array of 3 or 4 entries, `$LaTeX$` allowed. Each entry is either a plain string or, preferred, an object with a `title` plus a `body`: `{"title": "Substitute the line into the circle", "body": "From the system, ... $x^2+(x+k)^2=4k$ ..."}`. The title names the move; the body carries full reasoning with formulas — why this move, every derivation shown. Never mere single sentences.
+- Line breaks that actually render: bodies keep every `\n` you write (single `\n` = new line, blank line `\n\n` = paragraph gap). Use MANY — one idea per line, every equation on its own line, blank lines between reasoning chunks. Dense single-paragraph bodies fail review. Example body shape: `"From the system,\n\nCircle: $x^2+y^2=4k$\nLine: $y=x+k$\n\nSubstitute $y=x+k$ into the circle equation:\n\n$x^2+(x+k)^2=4k$."`
 - `solution`: non-empty string, `$LaTeX$` allowed. Full working with formulas.
 - Nothing small anywhere: strategy, steps, and solution must all read substantial. Littleness fails review.
 - Canonical example — copy this shape exactly (big texts, titled steps, formulas everywhere):
