@@ -891,8 +891,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
   useEffect(() => {
     /* Leaving a question: bank the time spent on it into its pace. */
-    const leavingN = prevQRef.current;
-    if (!review && leavingN !== null && leavingN !== undefined) {
+    const leavingN = prevQRef.current;    if (!review && leavingN !== null && leavingN !== undefined) {
       const delta = elapsedRef.current - enterRef.current;
       if (delta > 0) {
         pacesRef.current = {
@@ -910,6 +909,15 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     prevPassageRef.current = pid;
     prevQRef.current = active ? active.n : null;
     enterRef.current = elapsedRef.current;
+    /* Option buttons are keyed by letter, so React reuses the DOM node on
+       the next question — a focused option would keep its focus ring and
+       look selected there. Drop option focus on every navigation. */
+    try {
+      const ae = document.activeElement;
+      if (ae && ae.closest && ae.closest(".q-options")) ae.blur();
+    } catch (err) {
+      window.console.debug("option blur skipped", err);
+    }
   }, [qIndex, total]);
 
   useEffect(() => {
