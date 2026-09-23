@@ -1274,6 +1274,16 @@ button {
   width: auto;
 }
 
+.calc-anim .calc-panel {
+  transition: width 0.28s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calc-anim .calc-panel {
+    transition: none;
+  }
+}
+
 /* ---------- Math figures ---------- */
 .mathfig {
   display: block;

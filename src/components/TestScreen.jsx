@@ -1553,19 +1553,34 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     }
   }, [showCalc, review, onIntro, brkId, qIndex]);
 
-  /* Docked rails (AI or strategy) steal 400px via margin. Re-snap the
-     calculator to half of the new body width once the margin transition
-     lands, so calc and question areas return to 50/50 instantly. */
+  /* Docked rails (AI or strategy) steal 400px via margin. Glide the
+     calculator to half of the post-transition body width in sync with the
+     margin animation, then snap exact once it lands. */
+  const dockedRef = useRef(false);
   useEffect(() => {
-    if (!showCalc || review || !calcOpen) return undefined;
+    const docked = !!((aiOpen && aiPinned) || stratVisible);
+    if (!showCalc || review || !calcOpen) {
+      dockedRef.current = docked;
+      return undefined;
+    }
+    if (docked === dockedRef.current) return undefined;
+    dockedRef.current = docked;
+    const body = bodyRef.current;
+    if (!body) return undefined;
+    const w = body.getBoundingClientRect().width;
+    const target = Math.max(300, Math.floor((w + (docked ? -400 : 400)) * 0.5));
+    body.classList.add("calc-anim");
+    setCalcW(target);
+    calcSizedRef.current = true;
     const t = setTimeout(() => {
-      const w = calcDefaultW();
-      if (w !== null) {
-        setCalcW(w);
-        calcSizedRef.current = true;
-      }
-    }, 320);
-    return () => clearTimeout(t);
+      body.classList.remove("calc-anim");
+      const exact = calcDefaultW();
+      if (exact !== null) setCalcW(exact);
+    }, 360);
+    return () => {
+      clearTimeout(t);
+      body.classList.remove("calc-anim");
+    };
   }, [showCalc, review, calcOpen, aiOpen, aiPinned, stratVisible]);
 
   return (
