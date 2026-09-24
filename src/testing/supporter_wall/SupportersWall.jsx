@@ -14,35 +14,10 @@ export default function SupportersWall() {
   const rest = DONORS.slice(1);
   return (
     <div className="sw-screen">
-      <div className="sw-hero rise">
-        <span className="sw-medal" aria-hidden="true">
-          <svg width="30" height="30" viewBox="0 0 24 24">
-            <path
-              d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"
-              fill="#fff"
-            />
-          </svg>
-        </span>
-        <h3 className="sw-title">Supporters Wall</h3>
-        <p className="sw-raised">
-          <b>$1,240</b> raised
-        </p>
-        <div
-          className="sw-goal"
-          role="img"
-          aria-label="82 percent of the 1500 dollar monthly goal"
-        >
-          <span className="sw-goal-fill" />
-        </div>
-        <div className="sw-proof">
-          <span className="sw-stack" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-          </span>
-          <span className="sw-proof-text">128 heroes · $1,500 goal</span>
-        </div>
+      <div className="sw-topbar" aria-hidden="true">
+        <span className="sw-x">✕</span>
+        <span className="sw-toptitle">SUPPORTERS WALL</span>
+        <span className="sw-x-spacer" />
       </div>
 
       <div className="sw-spotlight rise">

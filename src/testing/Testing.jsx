@@ -2,6 +2,9 @@ import { useState } from "react";
 import SupportersWall from "./supporter_wall/SupportersWall.jsx";
 import swJsx from "./supporter_wall/SupportersWall.jsx?raw";
 import swCss from "./supporter_wall/supporters-wall.css?raw";
+import Leaderboard from "./leaderboard/Leaderboard.jsx";
+import lbJsx from "./leaderboard/Leaderboard.jsx?raw";
+import lbCss from "./leaderboard/leaderboard.css?raw";
 import { makeZip } from "./zip.js";
 
 const VIEWPORTS = [
@@ -10,7 +13,22 @@ const VIEWPORTS = [
   { id: "compact", label: "Compact", w: 360, h: 700 },
 ];
 
+const LB_FILES = [
+  { name: "Leaderboard.jsx", content: lbJsx },
+  { name: "leaderboard.css", content: lbCss },
+];
+
 const FOLDERS = [
+  {
+    id: "leaderboard",
+    title: "Leaderboard",
+    desc: "Podium, streaks, league tabs",
+    icon: "▲",
+    screens: [
+      { id: "lb-week", title: "Leaderboard · 7 Days XP", desc: "Weekly board with streaks.", tab: "week", Comp: Leaderboard, files: LB_FILES },
+      { id: "lb-all", title: "Leaderboard · All Time", desc: "All-time board with streaks.", tab: "all", Comp: Leaderboard, files: LB_FILES },
+    ],
+  },
   {
     id: "supporters",
     title: "Supporters Wall",
