@@ -211,12 +211,25 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  background: #fff;
-  border: 2px solid var(--blue);
-  border-bottom-width: 4px;
+  background: var(--blue);
+  border-bottom: 4px solid var(--blue-dark);
   border-radius: 16px;
   padding: 11px 14px;
-  box-shadow: 0 6px 20px rgba(28, 176, 246, 0.25);
+}
+
+.lb-you .lb-pos,
+.lb-you .lb-rname,
+.lb-you .lb-rxp {
+  color: #fff;
+}
+
+.lb-you .lb-avatar {
+  background: #fff;
+  border-color: #fff;
+}
+
+.lb-you .lb-streak {
+  color: #fff;
 }
 
 .lb-cta {

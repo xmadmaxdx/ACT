@@ -5,6 +5,9 @@ import swCss from "./supporter_wall/supporters-wall.css?raw";
 import Leaderboard from "./leaderboard/Leaderboard.jsx";
 import lbJsx from "./leaderboard/Leaderboard.jsx?raw";
 import lbCss from "./leaderboard/leaderboard.css?raw";
+import Recap from "./recap/Recap.jsx";
+import rcJsx from "./recap/Recap.jsx?raw";
+import rcCss from "./recap/recap.css?raw";
 import { makeZip } from "./zip.js";
 
 const VIEWPORTS = [
@@ -27,6 +30,15 @@ const FOLDERS = [
     screens: [
       { id: "lb-week", title: "Leaderboard · 7 Days XP", desc: "Weekly board with streaks.", tab: "week", Comp: Leaderboard, files: LB_FILES },
       { id: "lb-all", title: "Leaderboard · All Time", desc: "All-time board with streaks.", tab: "all", Comp: Leaderboard, files: LB_FILES },
+    ],
+  },
+  {
+    id: "recap",
+    title: "Recap",
+    desc: "Dropdown lessons with PDF previews",
+    icon: "≡",
+    screens: [
+      { id: "rc-main", title: "Recap lists", desc: "Sections, nested lessons, PDF viewer.", Comp: Recap, files: [{ name: "Recap.jsx", content: rcJsx }, { name: "recap.css", content: rcCss }] },
     ],
   },
   {
