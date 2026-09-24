@@ -1536,6 +1536,27 @@ button {
   min-height: 0;
 }
 
+.tst-phone.dark {
+  background: #101218;
+  border-color: #000;
+}
+
+.tst-phone.dark .tst-notch {
+  background: #000;
+}
+
+.tst-phone.dark .tst-close {
+  color: #b9bcc9;
+}
+
+.tst-phone.dark .tst-phone-title {
+  color: #6b6e86;
+}
+
+.tst-phone.dark .tst-phone-screen {
+  background: #17181f;
+}
+
 .tst-deck {
   flex: none;
   width: 190px;

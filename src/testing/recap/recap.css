@@ -23,14 +23,55 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  background: #fff;
+  border: 2px solid var(--card-border);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+  padding: 6px 10px 10px;
+  transition: border-color 0.15s ease;
+}
+
+.rc-unit.open {
+  border-color: var(--purple);
+}
+
+.rc-unit-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 8px 4px;
 }
 
 .rc-unit-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: var(--purple);
-  margin: 4px 2px 0;
+  margin: 0;
+  margin-right: auto;
+}
+
+.rc-chev {
+  flex: none;
+  color: var(--faint);
+  transition: transform 0.18s ease;
+}
+
+.rc-unit.open .rc-chev {
+  transform: rotate(180deg);
+  color: var(--purple);
+}
+
+.rc-unit-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: rc-drop 0.2s ease-out;
 }
 
 .rc-lesson {
@@ -222,8 +263,69 @@
 @media (prefers-reduced-motion: reduce) {
   .rc-lesson,
   .rc-overlay,
-  .rc-paper {
+  .rc-paper,
+  .rc-chev,
+  .rc-unit-body {
     animation: none;
     transition: none;
   }
+}
+
+/* ---------- Recap dark theme (phone.dark only) ---------- */
+.tst-phone.dark .rc-toptitle {
+  color: #dfe1ea;
+}
+
+.tst-phone.dark .rc-unit {
+  background: #20212c;
+  border-color: #33353f;
+}
+
+.tst-phone.dark .rc-unit.open {
+  border-color: var(--purple);
+}
+
+.tst-phone.dark .rc-unit-label {
+  color: #c9b8f0;
+}
+
+.tst-phone.dark .rc-lesson {
+  background: #262833;
+  border-color: #33353f;
+}
+
+.tst-phone.dark .rc-ltitle {
+  color: #f0f1f6;
+}
+
+.tst-phone.dark .rc-ltitle.sm {
+  color: #b9bcc9;
+}
+
+.tst-phone.dark .rc-num {
+  background: #33353f;
+  color: #8fb8ff;
+}
+
+.tst-phone.dark .rc-kdot {
+  background: #4a4d63;
+}
+
+.tst-phone.dark .rc-pdf {
+  background: #262833;
+  border-color: #3a3d52;
+  color: #b9bcc9;
+}
+
+.tst-phone.dark .rc-pdf:hover {
+  color: var(--blue);
+  border-color: var(--blue-dark);
+}
+
+.tst-phone.dark .rc-chev {
+  color: #6b6e86;
+}
+
+.tst-phone.dark .rc-unit.open .rc-chev {
+  color: #c9b8f0;
 }

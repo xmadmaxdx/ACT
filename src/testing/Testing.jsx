@@ -38,7 +38,7 @@ const FOLDERS = [
     desc: "Dropdown lessons with PDF previews",
     icon: "≡",
     screens: [
-      { id: "rc-main", title: "Recap lists", desc: "Sections, nested lessons, PDF viewer.", Comp: Recap, files: [{ name: "Recap.jsx", content: rcJsx }, { name: "recap.css", content: rcCss }] },
+      { id: "rc-main", title: "Recap lists", desc: "Units, inline lessons, PDF viewer.", dark: true, Comp: Recap, files: [{ name: "Recap.jsx", content: rcJsx }, { name: "recap.css", content: rcCss }] },
     ],
   },
   {
@@ -64,6 +64,7 @@ export default function Testing() {
   const [folderId, setFolderId] = useState(null);
   const [screenId, setScreenId] = useState(null);
   const [viewport, setViewport] = useState("standard");
+  const [theme, setTheme] = useState("light");
   const [zipping, setZipping] = useState(false);
   const folder = FOLDERS.find((f) => f.id === folderId) || null;
   const screen = folder
@@ -74,6 +75,7 @@ export default function Testing() {
   const openScreen = (s) => {
     setScreenId(s.id);
     setViewport("standard");
+    setTheme("light");
     window.scrollTo(0, 0);
   };
   const closeScreen = () => setScreenId(null);
@@ -169,7 +171,7 @@ export default function Testing() {
       {screen && (
         <div className="tst-overlay" onClick={closeScreen}>
           <div
-            className="tst-phone"
+            className={theme === "dark" && screen.dark ? "tst-phone dark" : "tst-phone"}
             role="dialog"
             aria-modal="true"
             aria-label={screen.title}
@@ -215,6 +217,24 @@ export default function Testing() {
             >
               {zipping ? "ZIPPING…" : "⭳ DOWNLOAD ZIP"}
             </button>
+            {screen.dark ? (
+              <>
+                <p className="tst-deck-label">Theme</p>
+                <div className="tst-deck-row" role="group" aria-label="Color theme">
+                  {["light", "dark"].map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      className={theme === t ? "tst-chip on" : "tst-chip"}
+                      onClick={() => setTheme(t)}
+                      aria-pressed={theme === t}
+                    >
+                      {t === "light" ? "☀ Light" : "☾ Dark"}
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
       )}

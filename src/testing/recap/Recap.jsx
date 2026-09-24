@@ -7,11 +7,7 @@ const UNITS = [
     label: "UNIT 1 · BASICS",
     lessons: [
       { n: 1, title: "First Code" },
-      {
-        n: 2,
-        title: "Variables and Data Types",
-        kids: [{ title: "Numbers" }, { title: "Strings" }],
-      },
+      { n: 2, title: "Variables and Data Types" },
       { n: 3, title: "Input and Output" },
     ],
   },
@@ -52,6 +48,7 @@ function PdfIcon() {
 }
 
 export default function Recap() {
+  const [openId, setOpenId] = useState("u1");
   const [pdf, setPdf] = useState(null);
 
   return (
@@ -60,45 +57,75 @@ export default function Recap() {
         <span className="rc-toptitle">RECAP</span>
       </div>
 
-      {UNITS.map((u) => (
-        <div key={u.id} className="rc-unit">
-          <p className="rc-unit-label">{u.label}</p>
-          {u.lessons.map((l, i) => (
-            <div
-              className="rc-lesson rise"
-              key={l.n}
-              style={{ animationDelay: `${Math.min(i, 4) * 60}ms` }}
+      {UNITS.map((u) => {
+        const open = openId === u.id;
+        return (
+          <div className={open ? "rc-unit open" : "rc-unit"} key={u.id}>
+            <button
+              type="button"
+              className="rc-unit-head"
+              onClick={() => setOpenId(open ? null : u.id)}
+              aria-expanded={open}
             >
-              <div className="rc-lrow">
-                <span className="rc-num">{l.n}</span>
-                <span className="rc-ltitle">{l.title}</span>
-                <button
-                  type="button"
-                  className="rc-pdf"
-                  onClick={() => setPdf({ unit: u.label, lesson: l.title })}
-                  aria-label={`Open ${l.title} PDF`}
-                >
-                  <PdfIcon /> PDF
-                </button>
-              </div>
-              {(l.kids || []).map((k) => (
-                <div className="rc-lrow kid" key={k.title}>
-                  <span className="rc-kdot" aria-hidden="true" />
-                  <span className="rc-ltitle sm">{k.title}</span>
-                  <button
-                    type="button"
-                    className="rc-pdf"
-                    onClick={() => setPdf({ unit: u.label, lesson: `${l.title} · ${k.title}` })}
-                    aria-label={`Open ${k.title} PDF`}
+              <span className="rc-unit-label">{u.label}</span>
+              <svg
+                className="rc-chev"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 6l4 4 4-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            {open && (
+              <div className="rc-unit-body">
+                {u.lessons.map((l, i) => (
+                  <div
+                    className="rc-lesson rise"
+                    key={l.n}
+                    style={{ animationDelay: `${Math.min(i, 4) * 60}ms` }}
                   >
-                    <PdfIcon /> PDF
-                  </button>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      ))}
+                    <div className="rc-lrow">
+                      <span className="rc-num">{l.n}</span>
+                      <span className="rc-ltitle">{l.title}</span>
+                      <button
+                        type="button"
+                        className="rc-pdf"
+                        onClick={() => setPdf({ unit: u.label, lesson: l.title })}
+                        aria-label={`Open ${l.title} PDF`}
+                      >
+                        <PdfIcon /> PDF
+                      </button>
+                    </div>
+                    {(l.kids || []).map((k) => (
+                      <div className="rc-lrow kid" key={k.title}>
+                        <span className="rc-kdot" aria-hidden="true" />
+                        <span className="rc-ltitle sm">{k.title}</span>
+                        <button
+                          type="button"
+                          className="rc-pdf"
+                          onClick={() => setPdf({ unit: u.label, lesson: `${l.title} · ${k.title}` })}
+                          aria-label={`Open ${k.title} PDF`}
+                        >
+                          <PdfIcon /> PDF
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
 
       {pdf && (
         <div className="rc-overlay" onClick={() => setPdf(null)}>
