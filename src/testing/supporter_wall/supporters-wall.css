@@ -169,9 +169,8 @@
 }
 
 .sw-foot {
-  background: var(--blue-light-bg);
-  border: 2px solid var(--blue-light-border);
-  border-bottom-width: 4px;
+  background: var(--blue);
+  border-bottom: 4px solid var(--blue-dark);
   border-radius: var(--radius);
   padding: 14px;
   text-align: center;
@@ -183,16 +182,15 @@
 
 .sw-foot p {
   margin: 0;
-  color: var(--ink-soft);
+  color: #fff;
   font-size: 13px;
   font-weight: 700;
   line-height: 1.5;
 }
 
 .sw-cta {
-  background: var(--blue);
-  border-bottom: 4px solid var(--blue-dark);
-  color: #fff;
+  background: #fff;
+  color: var(--blue);
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.6px;

@@ -51,10 +51,13 @@ export default function Leaderboard({ tab }) {
   const rows = week ? WEEK : ALLTIME;
   const [first, second, third, ...rest] = rows;
   const order = [second, first, third];
+  const you = rows.find((r) => r.you);
   return (
     <div className="lb-screen">
-      <p className="lb-league">DIAMOND LEAGUE · ENDS SUNDAY</p>
-      <h3 className="lb-title">Leaderboard</h3>
+      <div className="lb-topbar" aria-hidden="true">
+        <span className="lb-toptitle">LEADERBOARD</span>
+      </div>
+      <p className="lb-refresh">REFRESHES IN 3D 5H 16M</p>
       <div className="lb-tabs" aria-hidden="true">
         <span className={week ? "lb-tab on" : "lb-tab"}>7 Days XP</span>
         <span className={week ? "lb-tab" : "lb-tab on"}>All Time</span>
@@ -66,7 +69,9 @@ export default function Leaderboard({ tab }) {
             {r.rank === 1 ? <Crown /> : null}
             <span className="lb-avatar" aria-hidden="true" />
             <span className="lb-pname">{r.name}</span>
-            <span className="lb-pxp">{r.xp}</span>
+            {week ? (
+              <span className="lb-pxp">{r.xp}</span>
+            ) : null}
             <span className="lb-streak">
               <Flame /> {r.streak}
             </span>
@@ -80,15 +85,36 @@ export default function Leaderboard({ tab }) {
             <span className="lb-pos">{r.rank}</span>
             <span className="lb-avatar sm" aria-hidden="true" />
             <span className="lb-rname">{r.name}</span>
-            <span className="lb-rxp">{r.xp}</span>
-            <span className="lb-streak">
-              <Flame /> {r.streak}
-            </span>
+            {week ? (
+              <>
+                <span className="lb-streak">
+                  <Flame /> {r.streak}
+                </span>
+                <span className="lb-rxp">{r.xp}</span>
+              </>
+            ) : (
+              <span className="lb-streak big">
+                <Flame /> {r.streak}
+              </span>
+            )}
           </div>
         ))}
       </div>
 
-      <div className="lb-cta">{week ? "Top 3 promote — 270 XP to go!" : "You are 2,540 XP from rank 3"}</div>
+      <div className="lb-you-strip">
+        <div className="lb-you">
+          <span className="lb-pos">#{you.rank}</span>
+          <span className="lb-avatar sm" aria-hidden="true" />
+          <span className="lb-rname">YOU</span>
+          {week ? (
+            <span className="lb-rxp">{you.xp}</span>
+          ) : (
+            <span className="lb-streak big">
+              <Flame /> {you.streak}
+            </span>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
