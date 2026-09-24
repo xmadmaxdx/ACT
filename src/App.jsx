@@ -13,6 +13,7 @@ import Results from "./components/Results.jsx";
 import ComboResults from "./components/ComboResults.jsx";
 import JsonStart from "./components/JsonStart.jsx";
 import Calculator from "./components/Calculator.jsx";
+import Testing from "./testing/Testing.jsx";
 import Loader, { LoaderError } from "./components/Loader.jsx";
 import { fetchCatalog, fetchMinis, fetchSharedTest } from "./supabase.js";
 import "./styles.css";
@@ -37,7 +38,7 @@ function parseShareSlug(path) {
   if (short) return short[1];
   if (/^\/[A-Za-z0-9_-]{4,64}$/.test(clean)) {
     const bare = clean.slice(1);
-    if (["practice", "chapters", "combo", "calculator", "calc", "cal", "courses", "test-info"].includes(bare)) return null;
+    if (["practice", "chapters", "combo", "calculator", "calc", "cal", "courses", "test-info", "testing-for-developer"].includes(bare)) return null;
     if (clean.startsWith("/practice-test-")) return null;
     return bare;
   }
@@ -46,6 +47,7 @@ function parseShareSlug(path) {
 
 function routeFromPath(path) {
   const clean = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+  if (clean === "/testing-for-developer") return "testing";
   if (parseShareSlug(path)) return "share";
   if (clean.endsWith("/results")) return "results";
   if (clean === "/practice") return "practice";
@@ -471,6 +473,10 @@ export default function App() {
         )}
       </>
     );
+  }
+
+  if (route === "testing") {
+    return <Testing />;
   }
 
   if (route === "calculator") {
