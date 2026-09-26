@@ -935,6 +935,12 @@
   .cod-input-row {
     padding-bottom: 20px;
   }
+
+  /* Phones hide the eliminator toggle: the AI button slides into its
+     far-right slot, unless the strategy button owns that slot. */
+  .test-nav-inner:not(:has(> .strat-nav-btn)) > .cod-nav-btn {
+    right: 16px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
