@@ -201,6 +201,22 @@ export function normalizeMcq(section, raw) {
   });
   const byId = new Map(passages.map((src, i) => [src.id || `p${i + 1}`, { src, index: i }]));
   const firstPid = passages[0].id || "p1";
+  const dualRaw = raw.dual;
+  const dualPair = Array.isArray(dualRaw) ? dualRaw : null;
+  const dual = dualRaw === true || dualPair !== null;
+  if (dual && !isReading) throw new Error("Dual mode is reading-only.");
+  if (dualRaw === true && passages.length !== 2) {
+    throw new Error("Dual mode needs exactly 2 passages.");
+  }
+  if (
+    dualPair !== null &&
+    (dualPair.length !== 2 ||
+      typeof dualPair[0] !== "string" ||
+      typeof dualPair[1] !== "string" ||
+      dualPair[0] === dualPair[1])
+  ) {
+    throw new Error('Dual pair must name exactly 2 different passage ids, e.g. "dual": ["p3", "p4"].');
+  }
   const questions = raw.questions;
   if (!Array.isArray(questions) || questions.length === 0) {
     throw new Error("Need at least 1 question.");
@@ -227,6 +243,33 @@ export function normalizeMcq(section, raw) {
       }
     });
   });
+  let ordered = questions;
+  if (dual) {
+    if (dualPair !== null) {
+      dualPair.forEach((pid) => {
+        if (!byId.has(pid)) throw new Error(`Dual pair id "${pid}" matches no passage.`);
+      });
+      dualPair.forEach((pid) => {
+        if (!questions.some((q) => (q.p || firstPid) === pid)) {
+          throw new Error(`Dual pair needs at least 1 question for "${pid}".`);
+        }
+      });
+    } else {
+      const rank = (q) => {
+        const entry = byId.get(q.p || firstPid);
+        return entry ? entry.index : 0;
+      };
+      ordered = questions
+        .map((q, i) => ({ ...q, n: q.n ?? i + 1 }))
+        .sort((a, b) => rank(a) - rank(b));
+      passages.forEach((src, i) => {
+        const pid = src.id || `p${i + 1}`;
+        if (!ordered.some((q) => (q.p || firstPid) === pid)) {
+          throw new Error(`Dual mode needs at least 1 question for Passage ${i + 1}.`);
+        }
+      });
+    }
+  }
   const total = questions.length;
   let timeMinutes = Number(raw.timeMinutes);
   if (!timeMinutes || timeMinutes <= 0) {
@@ -246,7 +289,8 @@ export function normalizeMcq(section, raw) {
       title: src.title || raw.title || `Passage ${i + 1}`,
       paras: src.paras,
     })),
-    questions: questions.map((q, i) => {
+    dual: dualPair !== null ? [dualPair[0], dualPair[1]] : dual,
+    questions: ordered.map((q, i) => {
       const n = q.n ?? i + 1;
       const ok = lettersFor(n, section);
       return {
