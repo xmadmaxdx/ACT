@@ -738,9 +738,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   }, []);
 
   useEffect(() => {
-    window.addEventListener("resize", onPaneScroll);
-    return () => window.removeEventListener("resize", onPaneScroll);
-  }, [onPaneScroll]);
+    const onResize = () => {
+      checkJump();
+      updateEdge();
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  });
   const passageWrapRef = useRef(null);
   const passagePaneRef = useRef(null);
   const paraRefs = useRef(new Map());
