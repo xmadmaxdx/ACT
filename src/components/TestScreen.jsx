@@ -874,14 +874,30 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     const target = Math.min(...auto);
     const el = paraRefs.current.get(`${cur.p}-${target}`);
     if (!el) return;
+    const reduce =
+      typeof window !== "undefined" &&
+      !!window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     try {
+      /* Passage is its own scroll pane on desktop: scroll it, not the window.
+         Falls back to window scrolling when the pane cannot scroll (mobile
+         stacked layout, calculator-split merged mode). */
+      const scroller =
+        passageWrapRef.current && passageWrapRef.current.parentElement;
+      if (scroller && scroller.scrollHeight > scroller.clientHeight + 1) {
+        const srect = scroller.getBoundingClientRect();
+        const rect = el.getBoundingClientRect();
+        const rel = rect.top - srect.top;
+        if (rel >= 16 && rect.bottom <= srect.bottom - 16) return;
+        scroller.scrollTo({
+          top: Math.max(0, scroller.scrollTop + rel - 16),
+          behavior: reduce ? "auto" : "smooth",
+        });
+        return;
+      }
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight || 800;
       if (rect.top >= 96 && rect.bottom <= vh - 40) return;
-      const reduce =
-        typeof window !== "undefined" &&
-        !!window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       window.scrollTo({
         top: Math.max(0, rect.top + window.scrollY - 96),
         behavior: reduce ? "auto" : "smooth",
@@ -906,6 +922,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     const active = questions[Math.min(qIndex, total - 1)];
     const pid = active?.p;
     if (prevPassageRef.current === null || prevPassageRef.current !== pid) {
+      try {
+        const scroller =
+          passageWrapRef.current && passageWrapRef.current.parentElement;
+        if (scroller) scroller.scrollTo(0, 0);
+      } catch (err) {
+        window.console.debug("passage scroll skipped", err);
+      }
       window.scrollTo(0, 0);
     }
     prevPassageRef.current = pid;
@@ -1836,6 +1859,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         </article>
 
         {!merged && (
+        <>
+        <div className="tq-divider" aria-hidden="true">
+          <span className="tq-dot" />
+        </div>
         <aside className="question-panel">
           <section className="q-card" aria-label={`Question ${activeQ.n}`}>
             <QBits
@@ -1856,6 +1883,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </section>
 
         </aside>
+        </>
         )}
         </>
         )}

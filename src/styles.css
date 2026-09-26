@@ -2250,7 +2250,7 @@ button {
 /* ---------- Test screen ---------- */
 .test {
   min-height: 100vh;
-  background: #f0f2f5;
+  background: #fff;
   display: flex;
   flex-direction: column;
 }
@@ -2666,7 +2666,7 @@ button {
 .test-body {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+  grid-template-columns: minmax(0, 1.25fr) auto minmax(340px, 0.75fr);
   gap: 20px;
   padding: 22px 22px 110px;
   max-width: 1280px;
@@ -2675,13 +2675,26 @@ button {
   align-items: start;
 }
 
-/* Passage — PDF-like serif reading card */
+/* Passage — PDF-like serif reading card. Own scroll pane (sticky, like the
+   question panel) so long passages scroll inside the card. direction: rtl
+   pins the thin scrollbar to the LEFT of the paragraph; children flip back
+   to ltr so text and figures render exactly as before. */
 .passage {
   background: #fff;
-  border: 2px solid var(--line);
+  border: none;
   border-radius: 16px;
   padding: 34px 40px 40px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
+  position: sticky;
+  top: 82px;
+  max-height: calc(100vh - 82px - 96px);
+  overflow-y: auto;
+  direction: rtl;
+  scrollbar-width: thin;
+}
+
+.passage > * {
+  direction: ltr;
 }
 
 .passage-kicker {
@@ -2777,6 +2790,57 @@ button {
   scrollbar-width: thin;
 }
 
+/* Passage↔questions divider: subtle line in the grid gap with a centered
+   dotted-grip badge. Decorative only — never intercepts clicks. */
+.tq-divider {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: stretch;
+  justify-self: center;
+  width: 20px;
+  min-height: 120px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.tq-divider::before {
+  content: "";
+  width: 2px;
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.tq-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--line);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.tq-dot::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--faint);
+  transform: translate(-50%, -50%);
+  box-shadow:
+    -4px -5px 0 var(--faint), 4px -5px 0 var(--faint),
+    -4px 0 0 var(--faint), 4px 0 0 var(--faint),
+    -4px 5px 0 var(--faint), 4px 5px 0 var(--faint);
+}
+
 .q-card {
   background: transparent;
   border: none;
@@ -2790,7 +2854,7 @@ button {
   align-items: center;
   gap: 10px;
   margin-bottom: 14px;
-  background: #fff;
+  background: #f1f2f4;
   border-radius: 10px;
   padding: 7px 12px 7px 7px;
 }
@@ -2866,6 +2930,7 @@ button {
 
 .q-stem {
   margin: 0 0 16px;
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 17px;
   font-weight: 600;
   line-height: 1.5;
@@ -3055,6 +3120,7 @@ button {
 }
 
 .q-text {
+  font-family: Georgia, "Times New Roman", serif;
   font-weight: 600;
 }
 
@@ -3596,6 +3662,25 @@ button {
 
   .passage {
     padding: 24px 22px 28px;
+    position: static;
+    max-height: none;
+    overflow: visible;
+    direction: ltr;
+  }
+
+  .tq-divider {
+    grid-column: auto;
+    grid-row: auto;
+    width: auto;
+    height: 22px;
+    min-height: 0;
+    align-items: center;
+  }
+
+  .tq-divider::before {
+    width: 100%;
+    height: 2px;
+    align-self: center;
   }
 
   .passage-title {
@@ -5159,6 +5244,9 @@ button {
   margin-bottom: 0;
   border-bottom: none;
   border-radius: 16px 16px 0 0;
+  position: static;
+  max-height: none;
+  overflow: visible;
 }
 
 .test-body.calc-open > aside.question-panel {
@@ -5179,6 +5267,10 @@ button {
   grid-row: 1 / 3;
   align-self: stretch;
   margin: 0 8px;
+}
+
+.test-body.calc-open > .tq-divider {
+  display: none;
 }
 
 .merged-divider {
