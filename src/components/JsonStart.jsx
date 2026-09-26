@@ -193,6 +193,11 @@ function normalize(section, raw, expectedCount) {
     );
   }
   const isReading = section === "reading";
+  const dual = raw.dual === true;
+  if (dual && !isReading) throw new Error("Dual mode is reading-only.");
+  if (dual && passages.length !== 2) {
+    throw new Error("Dual mode needs exactly 2 passages (set passage count to 2).");
+  }
   passages.forEach((src, i) => {
     if (!Array.isArray(src.paras) || src.paras.length === 0) {
       throw new Error(`Passage ${i + 1} needs a non-empty paras array.`);
@@ -236,6 +241,26 @@ function normalize(section, raw, expectedCount) {
       if (typeof r.text !== "string" || r.text.length === 0) return;
     });
   });
+  // Dual mode flows Passage 1 + its questions, then Passage 2 + its
+  // questions: stable-sort by passage, requiring at least 1 each side.
+  let ordered = questions;
+  if (dual) {
+    const rank = (q) => {
+      const entry = byId.get(q.p || firstPid);
+      return entry ? entry.index : 0;
+    };
+    // Lock in validated numbers before reordering so output numbering can
+    // never collide when some questions omit n.
+    ordered = questions
+      .map((q, i) => ({ ...q, n: q.n ?? i + 1 }))
+      .sort((a, b) => rank(a) - rank(b));
+    passages.forEach((src, i) => {
+      const pid = src.id || `p${i + 1}`;
+      if (!ordered.some((q) => (q.p || firstPid) === pid)) {
+        throw new Error(`Dual mode needs at least 1 question for Passage ${i + 1}.`);
+      }
+    });
+  }
   const total = questions.length;
   let timeMinutes = Number(raw.timeMinutes);
   if (!timeMinutes || timeMinutes <= 0) {
@@ -253,7 +278,8 @@ function normalize(section, raw, expectedCount) {
       title: src.title || raw.title || `Passage ${i + 1}`,
       paras: src.paras,
     })),
-    questions: questions.map((q, i) => {
+    dual,
+    questions: ordered.map((q, i) => {
       const n = q.n ?? i + 1;
       const ok = lettersFor(n, section);
       return {

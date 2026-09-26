@@ -1041,6 +1041,11 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
   const activeQ = questions[Math.min(qIndex, total - 1)];
   const passage = testData.passages.find((p) => p.id === activeQ.p);
+  const isDual =
+    testData.dual === true && ((testData.section || "").toLowerCase() === "reading");
+  const passageLabel = isDual
+    ? `Passage ${testData.passages.findIndex((p) => p.id === activeQ.p) + 1}`
+    : passage.title;
   const qLetters = lettersFor(activeQ.n, testData.section);
   const picked = picks[activeQ.n] || null;
   const flagged = !!flags[activeQ.n];
@@ -1994,7 +1999,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         ) : (
           <>
         <article className="passage" ref={passagePaneRef} onScroll={checkJump}>
-          {!merged && <h1 className="passage-title">{passage.title}</h1>}
+          {!merged && <h1 className="passage-title">{passageLabel}</h1>}
           {passageMarkCount > 0 && (
             <div className="hl-bar">
               <button type="button" className="hl-clear" onClick={clearPassageMarks}>
