@@ -918,7 +918,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       return;
     }
     const target = Math.min(...auto);
-    const el = paraRefs.current.get(`${cur.p}-${target}`);
+    const el = officialMark(cur.p, target);
     if (!el) {
       checkJump();
       return;
@@ -1185,6 +1185,21 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     });
   };
 
+  /* First official-highlight node inside a paragraph (the yellow mark), or
+     the paragraph itself when it has none. Scrolling to the mark — not the
+     para top — keeps phrases visible even in short panes where a long
+     paragraph's top would leave its phrase below the fold. */
+  const officialMark = (pid, pi) => {
+    const paraEl = paraRefs.current.get(`${pid}-${pi}`);
+    if (!paraEl) return null;
+    try {
+      return paraEl.querySelector(".ref-mark") || paraEl;
+    } catch (err) {
+      window.console.debug("mark lookup skipped", err);
+      return paraEl;
+    }
+  };
+
   /* Jump-to-highlight button: visible only while an official highlight sits
      far below the visible part of the passage pane (down arrow) or far above
      it (up arrow) — not merely close or already seen. Clicking scrolls the
@@ -1205,7 +1220,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     let down = null;
     let up = null;
     for (let k = 0; k < sorted.length; k++) {
-      const el = paraRefs.current.get(`${ctx.pid}-${sorted[k]}`);
+      const el = officialMark(ctx.pid, sorted[k]);
       if (!el) continue;
       let relTop = 0;
       let relBottom = 0;
@@ -1233,7 +1248,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     const pane = passagePaneRef.current;
     const ctx = offRefsRef.current;
     if (!pane || !ctx || !jump) return;
-    const el = paraRefs.current.get(`${ctx.pid}-${jump.idx}`);
+    const el = officialMark(ctx.pid, jump.idx);
     if (!el) return;
     try {
       const reduce =
