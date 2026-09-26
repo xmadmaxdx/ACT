@@ -3851,6 +3851,14 @@ button {
     overflow-y: auto;
   }
 
+  /* Math on mobile flows naturally: short statements, no scroll trap. */
+  .test-body.section-math .passage {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
   .tq-divider {
     display: none;
   }
@@ -5421,6 +5429,8 @@ button {
   border-bottom: none;
   border-radius: 16px 16px 0 0;
   position: static;
+  height: auto;
+  min-height: 0;
   max-height: none;
   overflow: visible;
 }
@@ -5556,6 +5566,7 @@ button {
   display: flex;
   flex-direction: column;
   padding: 14px;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
   gap: 12px;
 }
 
@@ -5877,6 +5888,31 @@ button {
     display: none;
   }
 
+  .save-btn span {
+    display: none;
+  }
+
+  .save-btn {
+    padding: 7px 9px;
+  }
+
+  .calc-btn span {
+    display: none;
+  }
+
+  .calc-btn {
+    padding: 7px 9px;
+  }
+
+  .test-right .strat-nav-btn {
+    position: static;
+    transform: none;
+  }
+
+  .test-right .strat-nav-btn:active {
+    transform: scale(0.92);
+  }
+
   /* Review mode on phones: two bottom rows, always. Row 1 keeps BACK + NEXT
      as before; row 2 holds copy + AI icons with RESULT as plain text. The
      breaker (not hopeful wrapping) forces the split at any width. */
@@ -5926,8 +5962,9 @@ button {
     order: 3;
   }
 
-  /* Two-row review bar is taller: keep the question card clear of it. */
-  .test.review .test-body {
+  /* Two-row review bar is taller: keep the question card clear of it
+     (math flows without extra padding). */
+  .test.review .test-body:not(.section-math) {
     padding-bottom: 170px;
   }
 

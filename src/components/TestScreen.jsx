@@ -785,6 +785,16 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       document.body.style.overflow = prev;
     };
   }, [confirmOpen]);
+
+  /* Mobile calculator popup: freeze the page behind it while open. */
+  useEffect(() => {
+    if (!(calcOpen && !calcFull && isMobile && showCalc)) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [calcOpen, calcFull, isMobile, showCalc]);
   const passageWrapRef = useRef(null);
   const passagePaneRef = useRef(null);
   const paraRefs = useRef(new Map());
@@ -1125,6 +1135,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const picked = picks[activeQ.n] || null;
   const flagged = !!flags[activeQ.n];
   const isReading = ((testData && testData.section) || "").toLowerCase() === "reading";
+  const isMathSection = ((testData && testData.section) || "").toLowerCase() === "math";
   const pt = ptimers[passage.id] || ptBlank();
   const ptTop = pt;
   const ptFrac = pt.total > 0 ? pt.remaining / pt.total : 0;
@@ -1473,7 +1484,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   });
 
   const showCalc = /^MATH-/i.test(test.id) || (testData.section || "").toLowerCase() === "math";
-  const merged = calcOpen && showCalc;
+  const merged = calcOpen && showCalc && !isMobile;
 
   const goTo = (n) => {
     const idx = questions.findIndex((q) => q.n === n);
@@ -1899,10 +1910,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     if (onIntro || activeBreak) {
       setCalcOpen(false);
       setCalcFull(false);
-    } else {
+    } else if (!isMobile) {
       setCalcOpen(true);
     }
-  }, [showCalc, review, onIntro, brkId, qIndex]);
+  }, [showCalc, review, onIntro, brkId, qIndex, isMobile]);
 
   return (
     <div className={((aiOpen && aiPinned) || stratVisible ? "test cod-docked" : "test") + (review ? " review" : "")}>
@@ -1953,6 +1964,19 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
         )}
         <div className="test-right">
+          {isMobile && hasStrategy && !onIntro && !activeBreak && (
+            <button
+              className={stratOpen ? "strat-nav-btn on" : "strat-nav-btn"}
+              type="button"
+              onClick={toggleStrategy}
+              title={stratOpen ? "Close strategy (S)" : "Open strategy (S)"}
+              aria-label={stratOpen ? "Close strategy" : "Open strategy"}
+              aria-keyshortcuts="s"
+              aria-pressed={stratOpen}
+            >
+              <BulbIcon />
+            </button>
+          )}
           {!hideSave && <SaveLink testData={testData} />}
           {showCalc && (
             <button
@@ -2100,7 +2124,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       </header>
 
       <div
-        className={calcOpen && showCalc ? "test-body calc-open" : "test-body"}
+        className={(calcOpen && showCalc ? "test-body calc-open" : "test-body") + (isMathSection ? " section-math" : "")}
         ref={bodyRef}
         style={{
           "--pfr": `${paneSplit.p}fr`,
@@ -2232,7 +2256,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         )}
         </>
         )}
-        {calcOpen && showCalc && !calcFull && (
+        {calcOpen && showCalc && !calcFull && !isMobile && (
           <div
             className="calc-divider"
             onPointerDown={startDrag}
@@ -2240,7 +2264,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             title="Drag to resize (double-click to reset)"
           />
         )}
-        {calcOpen && showCalc && !calcFull && (
+        {calcOpen && showCalc && !calcFull && !isMobile && (
           <section className="calc-panel" aria-label="Calculator">
             <div className="calc-head">
               <div className="calc-tabs" role="tablist" aria-label="Calculator type">
@@ -2302,7 +2326,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             )}
           </section>
         )}
-      {calcOpen && showCalc && calcFull && (
+      {calcOpen && showCalc && (calcFull || isMobile) && (
         <div className="calc-fullscreen" role="dialog" aria-label="Calculator fullscreen">
           <div className="calc-full-head">
             <div className="calc-tabs" role="tablist" aria-label="Calculator type">
@@ -2328,9 +2352,12 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             <button
               type="button"
               className="calc-full-exit"
-              aria-label="Exit fullscreen"
-              title="Back to split view"
-              onClick={() => toggleFull(false)}
+              aria-label={isMobile ? "Close calculator" : "Exit fullscreen"}
+              title={isMobile ? "Close calculator" : "Back to split view"}
+              onClick={() => {
+                if (isMobile) setCalcOpen(false);
+                else toggleFull(false);
+              }}
             >
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="4 14 10 14 10 20" />
@@ -2484,7 +2511,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
             </svg>
           </button>
           )}
-          {!onIntro && !activeBreak && (hasStrategy ? (
+          {!onIntro && !activeBreak && !isMobile && (hasStrategy ? (
             <button
               className={stratOpen ? "strat-nav-btn on" : "strat-nav-btn"}
               type="button"
