@@ -788,13 +788,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
   /* Mobile calculator popup: freeze the page behind it while open. */
   useEffect(() => {
-    if (!(calcOpen && !calcFull && isMobile && showCalc)) return;
+    if (!(calcOpen && !calcFull && isMobile)) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
     };
-  }, [calcOpen, calcFull, isMobile, showCalc]);
+  }, [calcOpen, calcFull, isMobile]);
   const passageWrapRef = useRef(null);
   const passagePaneRef = useRef(null);
   const paraRefs = useRef(new Map());
