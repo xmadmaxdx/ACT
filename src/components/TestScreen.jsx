@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import MathText, { mathRich } from "./MathText.jsx";
 import MathFigure from "./MathFigure.jsx";
 import LatexBlock from "./LatexBlock.jsx";
@@ -1047,19 +1047,28 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const isDual =
     (dualRaw === true || dualPair !== null) &&
     ((testData.section || "").toLowerCase() === "reading");
-  const pairSlot = dualPair !== null ? dualPair.indexOf(activeQ.p) : -1;
   let passageLabel = passage.title;
-  if (isDual) {
-    if (pairSlot >= 0) passageLabel = `Passage ${pairSlot === 0 ? "A" : "B"}`;
-    else if (dualPair === null) {
-      passageLabel = `Passage ${testData.passages.findIndex((p) => p.id === activeQ.p) + 1}`;
-    }
+  if (isDual && dualPair === null) {
+    passageLabel = `Passage ${testData.passages.findIndex((p) => p.id === activeQ.p) + 1}`;
   }
+  /* Dual stacked view: both paired passages under one common title, always.
+     Pure pairs label 1/2, embedded pairs A/B. The common title hides when
+     the JSON omits it (normalize default "Custom Reading" means omitted). */
+  const dualList = !isDual
+    ? null
+    : dualPair !== null
+      ? dualPair.map((id) => testData.passages.find((p) => p.id === id)).filter(Boolean)
+      : testData.passages;
+  const stackedPair = dualList && dualList.length === 2 ? dualList : null;
+  const commonTitle =
+    stackedPair !== null && testData.title && testData.title !== "Custom Reading"
+      ? testData.title
+      : "";
+  const pairSub = (k) =>
+    dualPair !== null ? `Passage ${k === 0 ? "A" : "B"}` : `Passage ${k + 1}`;
   const qLetters = lettersFor(activeQ.n, testData.section);
   const picked = picks[activeQ.n] || null;
   const flagged = !!flags[activeQ.n];
-  const marksHere = marks[passage.id] || [];
-  const passageMarkCount = marksHere.length;
   const isReading = ((testData && testData.section) || "").toLowerCase() === "reading";
   const pt = ptimers[passage.id] || ptBlank();
   const ptTop = pt;
@@ -1186,24 +1195,64 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     dropSelection();
   };
 
-  const unmarkRange = (para, a, b) => {
-    if (!passage) return;
+  const unmarkRange = (pid, para, a, b) => {
     setMarks((m) => {
-      const list = m[passage.id] || [];
+      const list = m[pid] || [];
       const next = list.filter((h) => !(h.para === para && h.s < b && h.e > a));
       if (next.length === list.length) return m;
-      marksRef.current = { ...m, [passage.id]: next };
+      marksRef.current = { ...m, [pid]: next };
       return marksRef.current;
     });
   };
 
-  const clearPassageMarks = () => {
-    if (!passage) return;
+  const clearPassageMarks = (pid) => {
     setMarks((m) => {
-      if (!(m[passage.id] || []).length) return m;
-      marksRef.current = { ...m, [passage.id]: [] };
+      if (!(m[pid] || []).length) return m;
+      marksRef.current = { ...m, [pid]: [] };
       return marksRef.current;
     });
+  };
+
+  /* One passage block inside the article: subhead (dual stacked view only),
+     its own highlights bar, and its paras. Only the active question's own
+     passage gets official stem highlights and the selection scope. */
+  const renderPassageBlock = (pp, sub, active) => {
+    const ppMarks = marks[pp.id] || [];
+    return (
+      <Fragment key={pp.id}>
+        {sub !== null && <h2 className="passage-sub">{sub}</h2>}
+        {active && ppMarks.length > 0 && (
+          <div className="hl-bar">
+            <button type="button" className="hl-clear" onClick={() => clearPassageMarks(pp.id)}>
+              Clear highlights · {ppMarks.length}
+            </button>
+          </div>
+        )}
+        <div className="passage-text" ref={active ? passageWrapRef : undefined}>
+          {pp.paras.map((pa, i) =>
+            typeof pa === "string" ? (
+              <p
+                key={`${pp.id}-${i}`}
+                data-para={i}
+                ref={(el) => {
+                  if (el) paraRefs.current.set(`${pp.id}-${i}`, el);
+                  else paraRefs.current.delete(`${pp.id}-${i}`);
+                }}
+              >
+                {renderParaText(
+                  pa,
+                  active ? stemRefs(pp.paras, activeQ.stem).filter((r) => r.para === i) : [],
+                  ppMarks.filter((h) => h.para === i),
+                  (a, b) => unmarkRange(pp.id, i, a, b)
+                )}
+              </p>
+            ) : (
+              <p key={`${pp.id}-${i}`}>{renderSpans(pa, activeQ, testData.figures)}</p>
+            )
+          )}
+        </div>
+      </Fragment>
+    );
   };
 
   /* First official-highlight node inside a paragraph (the yellow mark), or
@@ -2008,37 +2057,17 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         ) : (
           <>
         <article className="passage" ref={passagePaneRef} onScroll={checkJump}>
-          {!merged && <h1 className="passage-title">{passageLabel}</h1>}
-          {passageMarkCount > 0 && (
-            <div className="hl-bar">
-              <button type="button" className="hl-clear" onClick={clearPassageMarks}>
-                Clear highlights · {passageMarkCount}
-              </button>
-            </div>
+          {!merged && stackedPair !== null && commonTitle !== "" && (
+            <h1 className="passage-title">{commonTitle}</h1>
           )}
-          <div className="passage-text" ref={passageWrapRef}>
-            {passage.paras.map((pa, i) =>
-              typeof pa === "string" ? (
-                <p
-                  key={`${passage.id}-${i}`}
-                  data-para={i}
-                  ref={(el) => {
-                    if (el) paraRefs.current.set(`${passage.id}-${i}`, el);
-                    else paraRefs.current.delete(`${passage.id}-${i}`);
-                  }}
-                >
-                  {renderParaText(
-                    pa,
-                    stemRefs(passage.paras, activeQ.stem).filter((r) => r.para === i),
-                    marksHere.filter((h) => h.para === i),
-                    (a, b) => unmarkRange(i, a, b)
-                  )}
-                </p>
-              ) : (
-                <p key={`${passage.id}-${i}`}>{renderSpans(pa, activeQ, testData.figures)}</p>
+          {!merged && stackedPair === null && (
+            <h1 className="passage-title">{passageLabel}</h1>
+          )}
+          {stackedPair !== null
+            ? stackedPair.map((pp, k) =>
+                renderPassageBlock(pp, pairSub(k), pp.id === activeQ.p)
               )
-            )}
-          </div>
+            : renderPassageBlock(passage, null, true)}
           <QuestionFigure q={activeQ} figures={testData.figures} />
           {merged && (
             <>
