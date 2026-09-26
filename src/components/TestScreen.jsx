@@ -1041,11 +1041,20 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
   const activeQ = questions[Math.min(qIndex, total - 1)];
   const passage = testData.passages.find((p) => p.id === activeQ.p);
+  const dualRaw = testData.dual;
+  const dualPair =
+    Array.isArray(dualRaw) && dualRaw.length === 2 ? dualRaw : null;
   const isDual =
-    testData.dual === true && ((testData.section || "").toLowerCase() === "reading");
-  const passageLabel = isDual
-    ? `Passage ${testData.passages.findIndex((p) => p.id === activeQ.p) + 1}`
-    : passage.title;
+    (dualRaw === true || dualPair !== null) &&
+    ((testData.section || "").toLowerCase() === "reading");
+  const pairSlot = dualPair !== null ? dualPair.indexOf(activeQ.p) : -1;
+  let passageLabel = passage.title;
+  if (isDual) {
+    if (pairSlot >= 0) passageLabel = `Passage ${pairSlot === 0 ? "A" : "B"}`;
+    else if (dualPair === null) {
+      passageLabel = `Passage ${testData.passages.findIndex((p) => p.id === activeQ.p) + 1}`;
+    }
+  }
   const qLetters = lettersFor(activeQ.n, testData.section);
   const picked = picks[activeQ.n] || null;
   const flagged = !!flags[activeQ.n];
