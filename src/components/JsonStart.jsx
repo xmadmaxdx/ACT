@@ -181,6 +181,23 @@ const SAMPLE_MATH = `{
   ]
 }`;
 
+function checkFiguresMap(raw) {
+  if (raw.figures === undefined) return;
+  if (!raw.figures || typeof raw.figures !== "object" || Array.isArray(raw.figures)) {
+    throw new Error("figures must be an object mapping ids to SVG strings or figure objects.");
+  }
+  for (const [id, entry] of Object.entries(raw.figures)) {
+    if (typeof entry === "string") {
+      if (entry.indexOf("<svg") < 0) {
+        throw new Error(`figures["${id}"] must be a string containing <svg.`);
+      }
+    } else {
+      const err = validateFigure({ ...entry, id });
+      if (err) throw new Error(`figures["${id}"]: ${err}`);
+    }
+  }
+}
+
 function normalize(section, raw, expectedCount) {
   const want = expectedCount && expectedCount > 0 ? expectedCount : 1;
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
@@ -224,6 +241,19 @@ function normalize(section, raw, expectedCount) {
       }
     });
   });
+  if (isReading) {
+    checkFiguresMap(raw);
+    const figIds = new Set(Object.keys(raw.figures || {}));
+    passages.forEach((src, i) => {
+      (src.paras || []).forEach((pa) => {
+        if (typeof pa !== "string") return;
+        const m = /^\[figure:([A-Za-z0-9_-]+)\]$/.exec(pa.trim());
+        if (m && !figIds.has(m[1])) {
+          throw new Error(`Passage ${i + 1}: unknown figure id "${m[1]}".`);
+        }
+      });
+    });
+  }
   const byId = new Map(passages.map((src, i) => [src.id || `p${i + 1}`, { src, index: i }]));
   const firstPid = passages[0].id || "p1";
   const questions = raw.questions;
@@ -597,21 +627,7 @@ function normalizeMath(raw) {
   const total = questions.length;
   let timeMinutes = Number(raw.timeMinutes);
   if (!timeMinutes || timeMinutes <= 0) timeMinutes = 10;
-  if (raw.figures !== undefined) {
-    if (!raw.figures || typeof raw.figures !== "object" || Array.isArray(raw.figures)) {
-      throw new Error("figures must be an object mapping ids to SVG strings or figure objects.");
-    }
-    for (const [id, entry] of Object.entries(raw.figures)) {
-      if (typeof entry === "string") {
-        if (entry.indexOf("<svg") < 0) {
-          throw new Error(`figures["${id}"] must be a string containing <svg.`);
-        }
-      } else {
-        const err = validateFigure({ ...entry, id });
-        if (err) throw new Error(`figures["${id}"]: ${err}`);
-      }
-    }
-  }
+  if (raw.figures !== undefined) checkFiguresMap(raw);
   const figIds = new Set(Object.keys(raw.figures || {}));
   questions.forEach((q, i) => {
     const n = q.n ?? i + 1;

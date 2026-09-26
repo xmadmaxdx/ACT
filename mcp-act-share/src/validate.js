@@ -243,6 +243,18 @@ export function normalizeMcq(section, raw) {
       }
     });
   });
+  if (isReading) {
+    const figIds = new Set(Object.keys(raw.figures || {}));
+    passages.forEach((src, i) => {
+      (src.paras || []).forEach((pa) => {
+        if (typeof pa !== "string") return;
+        const m = /^\[figure:([A-Za-z0-9_-]+)\]$/.exec(pa.trim());
+        if (m && !figIds.has(m[1])) {
+          throw new Error(`Passage ${i + 1}: unknown figure id "${m[1]}".`);
+        }
+      });
+    });
+  }
   let ordered = questions;
   if (dual) {
     if (dualPair !== null) {

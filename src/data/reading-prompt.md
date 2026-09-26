@@ -7,6 +7,7 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 ## badges (test facts — obey exactly)
 
 - Exactly 1 passage, 7–9 paragraphs, plain strings (no markup inside paras).
+  Figure slots (`"[figure:id]"` paras) are extra on top of the 7–9, preferably last.
 - Exactly 9 questions, numbered n: 1–9.
 - Time: `"timeMinutes": 10`.
 - Section value must be exactly `"reading"`.
@@ -57,6 +58,28 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 - For vocabulary questions, quote just the target word plus 1–2 surrounding words.
 - The renderer highlights exactly what the shape says: quote-shaped = the words, para-shaped = the whole paragraph, no refs = nothing. Short precise quotes beat long ones.
 
+## figures (optional VQI — reuse the math figure objects, write nothing new)
+
+- Top-level `"figures"` maps ids to entries. Two entry shapes, nothing else:
+  - `"<svg>...</svg>"` string (must contain `<svg`), or
+  - Declarative object with a `kind` plus its fields. Kinds and fields:
+    `table` {columns[], rows[[]]}, `bar` {categories[], values[], yMax?, yLabel?},
+    `histogram` {bins[{lo, hi, count}]}, `line`/`scatter` {points[]},
+    `pie` {slices[{value, label?}]}, `numberline` {min, max},
+    `grid` {xRange, yRange}, `box` {min, q1, median, q3, max}.
+    Optional `"title"` captions any of them. Strings/numbers only inside.
+- Placement: a para that is exactly `"[figure:chart1]"` (whole string, nothing
+  else in it) renders that figure there. Put it between paragraphs or last —
+  never first, never inside a paragraph. Slots count as para indexes for refs,
+  so last is simplest (no renumbering).
+- Pointing questions at the figure: use a whole-para ref with NO text key,
+  `{ "para": N }` where N is the figure slot's index. The figure lights up
+  yellow and auto-scroll targets it. Quote-shaped refs never point at slots.
+- Example:
+  `"figures": { "growth": { "kind": "bar", "title": "City population",
+  "categories": ["1990", "2000", "2010"], "values": [120, 180, 250] } }`
+  with `"[figure:growth]"` as its own para string where the chart belongs.
+
 ## Question-type coverage (use at least 6 different tags across the 9)
 
 - Inference ("It can reasonably be inferred…", "The passage most strongly suggests…")
@@ -90,6 +113,7 @@ You generate a complete ACT Reading practice test as a single JSON object. Outpu
 2. 1 passage, 7–9 paras, 9 questions numbered 1–9.
 3. Every answer letter belongs to its question's set (odd=A–D, even=F–J).
 4. Every ref with a text quote exists verbatim in its paragraph; para-only refs carry `{"para": N}` with NO text key; refs omitted entirely for questions that highlight nothing.
-5. Answers distributed across letters.
-6. The format given as json using codeblock using the three backticks.
-7. No option numbering!! Don't number option as "A. " or "F. ". Don't.
+5. Figures (if any): every `"[figure:id]"` id exists in top-level `"figures"`; figure entries are `<svg>` strings or valid kind objects; VQI questions use para-only refs on the slot.
+6. Answers distributed across letters.
+7. The format given as json using codeblock using the three backticks.
+8. No option numbering!! Don't number option as "A. " or "F. ". Don't.

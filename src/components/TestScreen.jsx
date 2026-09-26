@@ -190,11 +190,9 @@ function optText(opt) {
   );
 }
 
-/* Question-level figure (math linked sets): figures map values are raw SVG
-   strings (legacy) or declarative objects rendered by MathFigure. Unknown
-   ids render nothing, never crash. */
-function QuestionFigure({ q, figures }) {
-  const id = q && q.figure;
+/* figures map values are raw SVG strings (legacy) or declarative objects
+   rendered by MathFigure. Unknown ids render nothing, never crash. */
+function FigureFromMap({ id, figures }) {
   if (!id || !figures) return null;
   const entry = figures[id];
   if (typeof entry === "string") {
@@ -210,6 +208,13 @@ function QuestionFigure({ q, figures }) {
     return <MathFigure fig={{ ...entry, id }} />;
   }
   return null;
+}
+
+/* Question-level figure (math linked sets): figured by active question id. */
+function QuestionFigure({ q, figures }) {
+  const id = q && q.figure;
+  if (!id) return null;
+  return <FigureFromMap id={id} figures={figures} />;
 }
 
 /* Placement / add-detail stems carry the proposed sentence as an *italic* (or
@@ -918,6 +923,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         hide();
         return;
       }
+      if (startP.hasAttribute("data-fig")) {
+        hide();
+        return;
+      }
       const text = range.toString();
       if (!text || text.trim().length < 2) {
         hide();
@@ -1262,6 +1271,15 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   /* One passage block inside the article: subhead (dual stacked view only),
      its own highlights bar, and its paras. Only the active question's own
      passage gets official stem highlights and the selection scope. */
+  /* Reading figure slot: a para that is exactly "[figure:id]" renders the
+     figures-map entry there instead of text. Slots consume a para index
+     (refs count them), so prefer them last. */
+  const figureMarker = (pa) => {
+    if (typeof pa !== "string") return null;
+    const m = /^\[figure:([A-Za-z0-9_-]+)\]$/.exec(pa.trim());
+    return m ? m[1] : null;
+  };
+
   const renderPassageBlock = (pp, sub, active) => {
     const ppMarks = marks[pp.id] || [];
     return (
@@ -1275,8 +1293,31 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
         )}
         <div className="passage-text" ref={active ? passageWrapRef : undefined}>
-          {pp.paras.map((pa, i) =>
-            typeof pa === "string" ? (
+          {pp.paras.map((pa, i) => {
+            if (typeof pa !== "string") {
+              return <p key={`${pp.id}-${i}`}>{renderSpans(pa, activeQ, testData.figures)}</p>;
+            }
+            const figId = figureMarker(pa);
+            if (figId !== null) {
+              const lit =
+                active &&
+                stemRefs(pp.paras, activeQ.stem).some((r) => r.para === i && r.text == null);
+              return (
+                <div
+                  key={`${pp.id}-${i}`}
+                  data-para={i}
+                  data-fig={figId}
+                  ref={(el) => {
+                    if (el) paraRefs.current.set(`${pp.id}-${i}`, el);
+                    else paraRefs.current.delete(`${pp.id}-${i}`);
+                  }}
+                  className={lit ? "passage-fig lit" : "passage-fig"}
+                >
+                  <FigureFromMap id={figId} figures={testData.figures} />
+                </div>
+              );
+            }
+            return (
               <p
                 key={`${pp.id}-${i}`}
                 data-para={i}
@@ -1292,10 +1333,8 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   (a, b) => unmarkRange(pp.id, i, a, b)
                 )}
               </p>
-            ) : (
-              <p key={`${pp.id}-${i}`}>{renderSpans(pa, activeQ, testData.figures)}</p>
-            )
-          )}
+            );
+          })}
         </div>
       </Fragment>
     );
@@ -1564,7 +1603,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         passage.paras
           .map((pa) =>
             typeof pa === "string"
-              ? clean(pa)
+              ? figureMarker(pa) !== null
+                ? "[figure]"
+                : clean(pa)
               : pa
                   .map((s) => (s.box !== undefined ? ` [${s.box}]` : clean(s.t)))
                   .join("")
