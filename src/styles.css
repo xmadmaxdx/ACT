@@ -2691,6 +2691,7 @@ button {
   overflow-y: auto;
   direction: rtl;
   scrollbar-width: thin;
+  overscroll-behavior: contain;
 }
 
 .passage > * {
