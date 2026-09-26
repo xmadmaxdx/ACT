@@ -2778,7 +2778,7 @@ button {
 }
 
 .q-card {
-  background: #fff;
+  background: transparent;
   border: none;
   border-radius: 0;
   padding: 0;
@@ -2790,7 +2790,7 @@ button {
   align-items: center;
   gap: 10px;
   margin-bottom: 14px;
-  background: #f1f2f4;
+  background: #fff;
   border-radius: 10px;
   padding: 7px 12px 7px 7px;
 }
