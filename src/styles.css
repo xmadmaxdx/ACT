@@ -3851,12 +3851,22 @@ button {
     overflow-y: auto;
   }
 
-  /* Math on mobile flows naturally: short statements, no scroll trap. */
+  /* Math on mobile flows naturally: short statements, no scroll trap,
+     statement hugging the question card below. */
+  .test-body.section-math {
+    gap: 8px;
+  }
+
   .test-body.section-math .passage {
     height: auto;
     min-height: 0;
     max-height: none;
     overflow: visible;
+    padding-bottom: 8px;
+  }
+
+  .test-body.section-math .passage-text p:last-child {
+    margin-bottom: 0;
   }
 
   .tq-divider {
