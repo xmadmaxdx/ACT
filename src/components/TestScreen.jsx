@@ -695,9 +695,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [calcOpen, setCalcOpen] = useState(false);
   const [calcMode, setCalcMode] = useState("graph");
   const [calcFull, setCalcFull] = useState(false);
-  /* Question/calc split as grid weights (default 1:1). Ratios track body
-     width automatically, so rails, resizes, and Desmos never fight. */
-  const [calcSplit, setCalcSplit] = useState({ q: 1, c: 1 });
+  /* Question/calc split as grid weights (default 3:2, questions 60 / calc 40).
+     Passage/questions split as grid weights (default 3:2, passage 60 /
+     questions 40). Ratios track body width automatically, so rails, resizes,
+     and Desmos never fight. Drag writes pixel widths; both sides share the
+     same unit so fr proportions stay exact. */
+  const [calcSplit, setCalcSplit] = useState({ q: 3, c: 2 });
+  const [paneSplit, setPaneSplit] = useState({ p: 3, q: 2 });
   const [elimOn, setElimOn] = useState(true);
   const [elims, setElims] = useState({});
   const [marks, setMarks] = useState({});
@@ -1371,12 +1375,35 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   };
 
   const openCalc = () => {
-    setCalcSplit({ q: 1, c: 1 });
+    setCalcSplit({ q: 3, c: 2 });
     setCalcOpen(true);
   };
 
   const resetCalc = () => {
-    setCalcSplit({ q: 1, c: 1 });
+    setCalcSplit({ q: 3, c: 2 });
+  };
+
+  const startPaneDrag = (e) => {
+    e.preventDefault();
+    const move = (ev) => {
+      const body = bodyRef.current;
+      if (!body) return;
+      const rect = body.getBoundingClientRect();
+      const p = Math.round(ev.clientX - rect.left);
+      const q = Math.round(rect.right - ev.clientX - 10);
+      if (p < 300 || q < 340) return;
+      setPaneSplit({ p, q });
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
+
+  const resetPane = () => {
+    setPaneSplit({ p: 3, q: 2 });
   };
 
   const toggleFull = (v) => {
@@ -1764,11 +1791,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       <div
         className={calcOpen && showCalc ? "test-body calc-open" : "test-body"}
         ref={bodyRef}
-        style={
-          calcOpen && showCalc
+        style={{
+          "--pfr": `${paneSplit.p}fr`,
+          "--qpfr": `${paneSplit.q}fr`,
+          ...(calcOpen && showCalc
             ? { "--qfr": `${calcSplit.q}fr`, "--cfr": `${calcSplit.c}fr` }
-            : undefined
-        }
+            : null),
+        }}
       >
         {onIntro ? (
           <div className="intro-step">
@@ -1860,8 +1889,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
 
         {!merged && (
         <>
-        <div className="tq-divider" aria-hidden="true">
-          <span className="tq-dot" />
+        <div
+          className="tq-divider"
+          onPointerDown={startPaneDrag}
+          onDoubleClick={resetPane}
+          title="Drag to resize (double-click to reset)"
+        >
+          <span className="tq-dot" aria-hidden="true" />
         </div>
         <aside className="question-panel">
           <section className="q-card" aria-label={`Question ${activeQ.n}`}>
