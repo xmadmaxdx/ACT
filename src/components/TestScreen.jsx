@@ -1059,9 +1059,15 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     : dualPair !== null
       ? dualPair.map((id) => testData.passages.find((p) => p.id === id)).filter(Boolean)
       : testData.passages;
-  const stackedPair = dualList && dualList.length === 2 ? dualList : null;
+  // Stack only while answering a paired question; singles render alone
+  // with their own titles.
+  const onPair = dualPair !== null ? dualPair.indexOf(activeQ.p) >= 0 : dualList !== null;
+  const stackedPair = dualList && dualList.length === 2 && onPair ? dualList : null;
   const commonTitle =
-    stackedPair !== null && testData.title && testData.title !== "Custom Reading"
+    stackedPair !== null &&
+    testData.title &&
+    testData.title !== "Custom Reading" &&
+    testData.title !== "Shared Reading"
       ? testData.title
       : "";
   const pairSub = (k) =>
