@@ -419,6 +419,32 @@ function tripleTick() {
   setTimeout(tickSound, 220);
 }
 
+/* Soft minute chime for the main test timer: warm fifth (G4+D5), low gain,
+   slow decay. Soothing by design — nothing like the escapement tick. */
+function minuteChime() {
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  try {
+    const t = ctx.currentTime;
+    [392.0, 587.33].forEach((freq, i) => {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = freq;
+      const g = ctx.createGain();
+      const start = t + i * 0.22;
+      g.gain.setValueAtTime(0.0001, start);
+      g.gain.exponentialRampToValueAtTime(0.15, start + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.0001, start + 1.0);
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start(start);
+      o.stop(start + 1.1);
+    });
+  } catch (err) {
+    window.console.debug("chime skipped", err);
+  }
+}
+
 function ElimIcon({ off }) {
   if (off) {
     return (
@@ -772,6 +798,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     });
   };
   const elapsedRef = useRef(0);
+  const minuteChimeRef = useRef(0);
   const enterRef = useRef(0);
   const prevPassageRef = useRef(null);
   const bodyRef = useRef(null);
@@ -792,6 +819,16 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       if (needIntro && !introDoneRef.current) return;
       elapsedRef.current += 1;
       setElapsed(elapsedRef.current);
+      /* One soft chime per elapsed minute in timed take-mode (never at 0:00
+         expiry, never while muted — same mute as the other test sounds). */
+      if (timed) {
+        const mins = Math.floor(elapsedRef.current / 60);
+        if (mins > minuteChimeRef.current) {
+          minuteChimeRef.current = mins;
+          const left = testData.timeMinutes * 60 - elapsedRef.current;
+          if (left > 0 && !ptimeMutedRef.current) minuteChime();
+        }
+      }
     }, 1000);
     return () => clearInterval(id);
   }, []);
