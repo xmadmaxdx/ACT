@@ -1613,7 +1613,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   }, [showCalc, review, onIntro, brkId, qIndex]);
 
   return (
-    <div className={(aiOpen && aiPinned) || stratVisible ? "test cod-docked" : "test"}>
+    <div className={((aiOpen && aiPinned) || stratVisible ? "test cod-docked" : "test") + (review ? " review" : "")}>
       <header className="test-topbar">
         <button className="test-exit" type="button" aria-label="Exit test" onClick={onExit}>
           ✕
@@ -2130,17 +2130,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </span>
           {review ? (
             <>
-              <button
-                className="nav-btn primary"
-                type="button"
-                disabled={qIndex === total - 1}
-                onClick={() => setQIndex(qIndex + 1)}
-              >
+              <button className="nav-btn primary" type="button" disabled={qIndex === total - 1} onClick={() => setQIndex(qIndex + 1)}>
                 NEXT
               </button>
-              <button className="nav-btn" type="button" onClick={onExit}>
+              <button className="nav-btn result-nav-btn" type="button" onClick={onExit}>
                 RESULT
               </button>
+              <span className="result-plain">RESULT</span>
             </>
           ) : !onIntro && qIndex === total - 1 ? (            <button
               className="nav-btn primary"
