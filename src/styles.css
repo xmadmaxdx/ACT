@@ -2740,21 +2740,30 @@ button {
   }
 }
 
-/* Passage edge fades: soft shadow up top once scrolled down a bit, soft
-   shadow at the bottom while more sits below. Toggled by scroll position
-   (see updateEdge in TestScreen). Inset shadows stay fixed while the text
-   scrolls beneath them. */
-.passage.edge-top {
-  box-shadow: inset 0 16px 12px -12px rgba(0, 0, 0, 0.22);
+/* Passage edge fades: straight soft bands across the text (top one appears
+   once scrolled down a bit, bottom one while more sits below). Sticky
+   overlays stay pinned while the text scrolls beneath them. Toggled by
+   scroll position (see updateEdge in TestScreen). */
+.passage.edge-top::before {
+  content: "";
+  position: sticky;
+  top: 0;
+  display: block;
+  height: 36px;
+  margin-bottom: -36px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0), #fff);
+  pointer-events: none;
 }
 
-.passage.edge-bottom {
-  box-shadow: inset 0 -16px 12px -12px rgba(0, 0, 0, 0.22);
-}
-
-.passage.edge-top.edge-bottom {
-  box-shadow: inset 0 16px 12px -12px rgba(0, 0, 0, 0.22),
-    inset 0 -16px 12px -12px rgba(0, 0, 0, 0.22);
+.passage.edge-bottom::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  display: block;
+  height: 36px;
+  margin-top: -36px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+  pointer-events: none;
 }
 
 /* Finish guard: warm confirm before leaving open questions behind. Reuses
