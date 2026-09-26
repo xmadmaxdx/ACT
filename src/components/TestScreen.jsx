@@ -740,7 +740,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   useEffect(() => {
     const onResize = () => {
       checkJump();
-      updateEdge();
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
@@ -761,7 +760,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   /* Latest official-highlight targets for the jump button: { pid, paras }. */
   const offRefsRef = useRef(null);
   const [jump, setJump] = useState(null); // { idx, dir: "up" | "down" } | null
-  const [edge, setEdge] = useState({ top: false, bottom: false });
   const pendingHl = useRef(null);
   const marksRef = useRef({});
   const ptimersRef = useRef({});
@@ -964,7 +962,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       el.scrollIntoView();
     } finally {
       checkJump();
-      updateEdge();
     }
   }, [qIndex]);
 
@@ -1274,26 +1271,6 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       window.console.debug("jump scroll skipped", err);
     }
   };
-
-  /* Passage edge fades: soft top shadow once scrolled down a bit, soft bottom
-     shadow while more sits below. Updated on the same scroll beat as the
-     jump button. */
-  const updateEdge = useCallback(() => {
-    const pane = passagePaneRef.current;
-    if (!pane || pane.scrollHeight <= pane.clientHeight + 1) {
-      setEdge((v) => (v.top || v.bottom ? { top: false, bottom: false } : v));
-      return;
-    }
-    const max = pane.scrollHeight - pane.clientHeight;
-    const st = pane.scrollTop;
-    const next = { top: st > 8, bottom: max - st > 8 };
-    setEdge((v) => (v.top === next.top && v.bottom === next.bottom ? v : next));
-  }, []);
-
-  const onPaneScroll = useCallback(() => {
-    checkJump();
-    updateEdge();
-  }, [checkJump, updateEdge]);
 
   const setPt = (pid, patch) => {
     const cur = ptimersRef.current[pid] || ptBlank();
@@ -2016,11 +1993,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
         ) : (
           <>
-        <article
-          className={"passage" + (edge.top ? " edge-top" : "") + (edge.bottom ? " edge-bottom" : "")}
-          ref={passagePaneRef}
-          onScroll={onPaneScroll}
-        >
+        <article className="passage" ref={passagePaneRef} onScroll={checkJump}>
           {!merged && <h1 className="passage-title">{passage.title}</h1>}
           {passageMarkCount > 0 && (
             <div className="hl-bar">
