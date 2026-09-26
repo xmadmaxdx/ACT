@@ -819,14 +819,17 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       if (needIntro && !introDoneRef.current) return;
       elapsedRef.current += 1;
       setElapsed(elapsedRef.current);
-      /* One soft chime per elapsed minute in timed take-mode (never at 0:00
-         expiry, never while muted — same mute as the other test sounds). */
+      /* One soft chime per elapsed minute in timed take-mode: only while the
+         active passage (custom) clock is running — never when it is off or
+         paused, never at 0:00 expiry, never while muted. */
       if (timed) {
         const mins = Math.floor(elapsedRef.current / 60);
         if (mins > minuteChimeRef.current) {
           minuteChimeRef.current = mins;
           const left = testData.timeMinutes * 60 - elapsedRef.current;
-          if (left > 0 && !ptimeMutedRef.current) minuteChime();
+          const pid = prevPassageRef.current;
+          const pt = pid ? ptimersRef.current[pid] : null;
+          if (left > 0 && pt && pt.running && !ptimeMutedRef.current) minuteChime();
         }
       }
     }, 1000);
