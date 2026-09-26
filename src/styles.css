@@ -3674,25 +3674,14 @@ button {
   .passage {
     padding: 24px 22px 28px;
     position: static;
-    max-height: none;
-    overflow: visible;
-    direction: ltr;
+    height: 38vh;
+    min-height: 240px;
+    max-height: 42vh;
+    overflow-y: auto;
   }
 
   .tq-divider {
-    grid-column: auto;
-    grid-row: auto;
-    width: auto;
-    height: 22px;
-    min-height: 0;
-    align-items: center;
-    pointer-events: none;
-  }
-
-  .tq-divider::before {
-    width: 100%;
-    height: 2px;
-    align-self: center;
+    display: none;
   }
 
   .passage-title {
@@ -5649,30 +5638,68 @@ button {
 
   .test-topbar {
     flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 12px;
   }
 
   .test-title {
-    margin-left: auto;
+    margin-left: 0;
     order: 1;
-    max-width: 45%;
-    justify-content: flex-end;
-    text-align: right;
+    min-width: 0;
+    flex: 1;
+    max-width: none;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .test-title-main {
+    font-size: 14px;
   }
 
   .test-exit {
     order: 0;
+    width: 32px;
+    height: 32px;
   }
 
   .overview-btn {
     order: 0;
+    padding: 6px 9px;
+  }
+
+  .overview-btn span {
+    display: none;
   }
 
   .test-timer-wrap {
     position: static;
     transform: none;
-    flex: 1 1 100%;
+    flex: none;
     order: 2;
-    justify-content: center;
+  }
+
+  .pause-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .test-timer {
+    font-size: 13px;
+    padding: 6px 10px;
+    gap: 6px;
+  }
+
+  .ptime-wrap {
+    display: none;
+  }
+
+  .test-right {
+    flex-basis: auto;
+    order: 3;
+  }
+
+  .elim-toggle {
+    display: none;
   }
 
   .nav-item > span {

@@ -716,6 +716,25 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       !!window.matchMedia &&
       window.matchMedia("(hover: hover)").matches
   );
+  /* Narrow (phone) screens hide the eliminator toggle to free bottom-bar
+     space, so elimination stays forced on there. */
+  const [isMobile, setIsMobile] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      !!window.matchMedia &&
+      window.matchMedia("(max-width: 700px)").matches
+  );
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(max-width: 700px)");
+    const onChange = (e) => setIsMobile(e.matches);
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
+    else mq.addListener(onChange);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", onChange);
+      else mq.removeListener(onChange);
+    };
+  }, []);
   const passageWrapRef = useRef(null);
   const paraRefs = useRef(new Map());
   const pendingHl = useRef(null);
@@ -1050,7 +1069,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     });
   };
 
-  const elimActive = elimOn && !review && !paused;
+  const elimActive = (elimOn || isMobile) && !review && !paused;
   const elimSet = elims[activeQ.n] || [];
 
   const openExplain = (qq) => {
