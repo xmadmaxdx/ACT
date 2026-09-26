@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MathText, { mathRich } from "./MathText.jsx";
 import MathFigure from "./MathFigure.jsx";
 import LatexBlock from "./LatexBlock.jsx";
@@ -668,6 +668,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const [paces, setPaces] = useState((session && session.paces) || {});
   const [elapsed, setElapsed] = useState(0);
   const [overviewOpen, setOverviewOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [aiPinned, setAiPinned] = useState(true);
   const [aiCtx, setAiCtx] = useState(null);
@@ -735,8 +736,18 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       else mq.removeListener(onChange);
     };
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", onPaneScroll);
+    return () => window.removeEventListener("resize", onPaneScroll);
+  }, [onPaneScroll]);
   const passageWrapRef = useRef(null);
+  const passagePaneRef = useRef(null);
   const paraRefs = useRef(new Map());
+  /* Latest official-highlight targets for the jump button: { pid, paras }. */
+  const offRefsRef = useRef(null);
+  const [jump, setJump] = useState(null); // { idx, dir: "up" | "down" } | null
+  const [edge, setEdge] = useState({ top: false, bottom: false });
   const pendingHl = useRef(null);
   const marksRef = useRef({});
   const ptimersRef = useRef({});
@@ -887,26 +898,36 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   }, []);
 
   useEffect(() => {
-    if (((testData && testData.section) || "").toLowerCase() !== "reading") return;
+    if (((testData && testData.section) || "").toLowerCase() !== "reading") {
+      offRefsRef.current = null;
+      setJump((v) => (v === null ? v : null));
+      return;
+    }
     const cur = questions[Math.min(qIndex, total - 1)];
     if (!cur) return;
     const pd = (testData.passages || []).find((p) => p.id === cur.p);
     const paras = pd ? pd.paras : [];
     const auto = stemRefs(paras, cur.stem).map((r) => r.para);
-    if (auto.length === 0) return;
+    offRefsRef.current = { pid: cur.p, paras: auto };
+    if (auto.length === 0) {
+      setJump((v) => (v === null ? v : null));
+      return;
+    }
     const target = Math.min(...auto);
     const el = paraRefs.current.get(`${cur.p}-${target}`);
-    if (!el) return;
+    if (!el) {
+      checkJump();
+      return;
+    }
     const reduce =
       typeof window !== "undefined" &&
       !!window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     try {
-      /* Passage is its own scroll pane on desktop: scroll it, not the window.
-         Falls back to window scrolling when the pane cannot scroll (mobile
-         stacked layout, calculator-split merged mode). */
-      const scroller =
-        passageWrapRef.current && passageWrapRef.current.parentElement;
+      /* Passage is its own scroll pane: scroll it, not the window. Falls
+         back to window scrolling when the pane cannot scroll
+         (calculator-split merged mode). */
+      const scroller = passagePaneRef.current;
       if (scroller && scroller.scrollHeight > scroller.clientHeight + 1) {
         const srect = scroller.getBoundingClientRect();
         const rect = el.getBoundingClientRect();
@@ -927,6 +948,9 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       });
     } catch {
       el.scrollIntoView();
+    } finally {
+      checkJump();
+      updateEdge();
     }
   }, [qIndex]);
 
@@ -946,8 +970,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     const pid = active?.p;
     if (prevPassageRef.current === null || prevPassageRef.current !== pid) {
       try {
-        const scroller =
-          passageWrapRef.current && passageWrapRef.current.parentElement;
+        const scroller = passagePaneRef.current;
         if (scroller) scroller.scrollTo(0, 0);
       } catch (err) {
         window.console.debug("passage scroll skipped", err);
@@ -1018,6 +1041,20 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const ptFrac = pt.total > 0 ? pt.remaining / pt.total : 0;
   const showAnswers = review;
   const answeredCount = questions.filter((q) => picks[q.n]).length;
+  const unansweredCount = questions.filter((q) => !picks[q.n]).length;
+  const markedCount = questions.filter((q) => flags[q.n]).length;
+  const confirmTitle =
+    unansweredCount > 0 && markedCount > 0
+      ? "A few still open?"
+      : unansweredCount > 0
+        ? "Some left unanswered?"
+        : "Some still marked?";
+  const confirmSub =
+    unansweredCount > 0 && markedCount > 0
+      ? `${unansweredCount} unanswered · ${markedCount} marked for review. They count as wrong if you finish now.`
+      : unansweredCount > 0
+        ? `${unansweredCount} unanswered — ${unansweredCount === 1 ? "it counts" : "they count"} as wrong if you finish now.`
+        : `${markedCount} marked for review — give ${markedCount === 1 ? "it" : "them"} one more look?`;
   const answeredFrac = total ? answeredCount / total : 0;
   const fillClass = answeredFrac < 0.34 ? "fill-low" : answeredFrac < 0.67 ? "fill-mid" : "";
 
@@ -1144,6 +1181,91 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     });
   };
 
+  /* Jump-to-highlight button: visible only while an official highlight sits
+     far below the visible part of the passage pane (down arrow) or far above
+     it (up arrow) — not merely close or already seen. Clicking scrolls the
+     pane to the nearest such paragraph in that direction. */
+  const checkJump = useCallback(() => {
+    const pane = passagePaneRef.current;
+    const ctx = offRefsRef.current;
+    if (!pane || !ctx || !Array.isArray(ctx.paras) || ctx.paras.length === 0) {
+      setJump((v) => (v === null ? v : null));
+      return;
+    }
+    if (pane.scrollHeight <= pane.clientHeight + 1) {
+      setJump((v) => (v === null ? v : null));
+      return;
+    }
+    const srect = pane.getBoundingClientRect();
+    const sorted = [...new Set(ctx.paras)].sort((a, b) => a - b);
+    let down = null;
+    let up = null;
+    for (let k = 0; k < sorted.length; k++) {
+      const el = paraRefs.current.get(`${ctx.pid}-${sorted[k]}`);
+      if (!el) continue;
+      let relTop = 0;
+      let relBottom = 0;
+      try {
+        const r = el.getBoundingClientRect();
+        relTop = r.top - srect.top;
+        relBottom = r.bottom - srect.top;
+      } catch (err) {
+        window.console.debug("jump measure skipped", err);
+        continue;
+      }
+      if (down === null && relTop > srect.height + 120) down = sorted[k];
+      if (relBottom < -120) up = sorted[k];
+    }
+    setJump(
+      down !== null
+        ? { idx: down, dir: "down" }
+        : up !== null
+          ? { idx: up, dir: "up" }
+          : null
+    );
+  }, []);
+
+  const jumpToOfficial = () => {
+    const pane = passagePaneRef.current;
+    const ctx = offRefsRef.current;
+    if (!pane || !ctx || !jump) return;
+    const el = paraRefs.current.get(`${ctx.pid}-${jump.idx}`);
+    if (!el) return;
+    try {
+      const reduce =
+        typeof window !== "undefined" &&
+        !!window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const rel = el.getBoundingClientRect().top - pane.getBoundingClientRect().top;
+      pane.scrollTo({
+        top: Math.max(0, pane.scrollTop + rel - 16),
+        behavior: reduce ? "auto" : "smooth",
+      });
+    } catch (err) {
+      window.console.debug("jump scroll skipped", err);
+    }
+  };
+
+  /* Passage edge fades: soft top shadow once scrolled down a bit, soft bottom
+     shadow while more sits below. Updated on the same scroll beat as the
+     jump button. */
+  const updateEdge = useCallback(() => {
+    const pane = passagePaneRef.current;
+    if (!pane || pane.scrollHeight <= pane.clientHeight + 1) {
+      setEdge((v) => (v.top || v.bottom ? { top: false, bottom: false } : v));
+      return;
+    }
+    const max = pane.scrollHeight - pane.clientHeight;
+    const st = pane.scrollTop;
+    const next = { top: st > 8, bottom: max - st > 8 };
+    setEdge((v) => (v.top === next.top && v.bottom === next.bottom ? v : next));
+  }, []);
+
+  const onPaneScroll = useCallback(() => {
+    checkJump();
+    updateEdge();
+  }, [checkJump, updateEdge]);
+
   const setPt = (pid, patch) => {
     const cur = ptimersRef.current[pid] || ptBlank();
     const next = { ...ptimersRef.current, [pid]: { ...cur, ...patch } };
@@ -1250,7 +1372,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         setQIndex(next);
         window.scrollTo(0, 0);
       } else {
-        handleFinish();
+        requestFinish();
       }
       return;
     }
@@ -1464,6 +1586,19 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     onFinish({ picks, flags, paces: finalPaces });
   };
 
+  /* Finish gate: with open or marked questions left, warm-confirm instead of
+     finishing outright. Clean sheets finish immediately. */
+  const requestFinish = () => {
+    if (review) return;
+    const open = questions.filter((q) => !picks[q.n]).length;
+    const marked = questions.filter((q) => flags[q.n]).length;
+    if (open === 0 && marked === 0) {
+      handleFinish();
+      return;
+    }
+    setConfirmOpen(true);
+  };
+
   const livePace = (n) => {
     if (review || n !== activeQ.n) return paces[n];
     const running = elapsed - enterRef.current;
@@ -1539,6 +1674,13 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       if (calcFull) return;
       const tag = (e.target && e.target.tagName) || "";
       if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable)) return;
+      if (confirmOpen) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          setConfirmOpen(false);
+        }
+        return;
+      }
       if ((e.ctrlKey || e.metaKey || e.shiftKey) && (e.key === "a" || e.key === "A")) {
         e.preventDefault();
         if (aiOpen) setAiOpen(false);
@@ -1584,13 +1726,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
         if (e.shiftKey || e.ctrlKey || e.metaKey) {
           e.preventDefault();
           if (review) return;
-          const n = prevQRef.current;
-          const delta = elapsedRef.current - enterRef.current;
-          const finalPaces =
-            n !== null && n !== undefined && delta > 0
-              ? { ...pacesRef.current, [n]: (pacesRef.current[n] || 0) + delta }
-              : { ...pacesRef.current };
-          finishRef.current({ ...snapshotRef.current, paces: finalPaces });
+          requestFinish();
         } else if (showCalc) {
           e.preventDefault();
           if (calcOpen) setCalcOpen(false);
@@ -1851,7 +1987,11 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           </div>
         ) : (
           <>
-        <article className="passage">
+        <article
+          className={"passage" + (edge.top ? " edge-top" : "") + (edge.bottom ? " edge-bottom" : "")}
+          ref={passagePaneRef}
+          onScroll={onPaneScroll}
+        >
           {!merged && <h1 className="passage-title">{passage.title}</h1>}
           {passageMarkCount > 0 && (
             <div className="hl-bar">
@@ -1903,6 +2043,26 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                 onExplain={() => openExplain(activeQ)}
               />
             </>
+          )}
+          {jump !== null && (
+            <button
+              type="button"
+              className={jump.dir === "up" ? "passage-jump up" : "passage-jump"}
+              onClick={jumpToOfficial}
+              title={jump.dir === "up" ? "Jump to highlighted part above" : "Jump to highlighted part below"}
+              aria-label={jump.dir === "up" ? "Jump to highlighted part above" : "Jump to highlighted part below"}
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                <path
+                  d="M3 6.5l6 6 6-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           )}
         </article>
 
@@ -2141,7 +2301,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
           ) : !onIntro && qIndex === total - 1 ? (            <button
               className="nav-btn primary"
               type="button"
-              onClick={handleFinish}
+              onClick={requestFinish}
             >
               FINISH
             </button>
@@ -2230,6 +2390,49 @@ export default function TestScreen({ test, session, startIndex, review, findTest
       {stratVisible && (
         <StrategyPanel q={activeQ} onClose={() => setStratOpen(false)} />
       )}
+      {confirmOpen && (
+        <div className="modal-overlay" onClick={() => setConfirmOpen(false)}>
+          <div
+            className="modal finish-confirm"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Finish test?"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="finish-warn" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 3.5L22 20H2z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinejoin="round"
+                />
+                <line x1="12" y1="9.5" x2="12" y2="14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                <circle cx="12" cy="16.8" r="1.3" fill="currentColor" />
+              </svg>
+            </div>
+            <p className="results-kicker">Before you finish</p>
+            <h2 className="finish-title">{confirmTitle}</h2>
+            <p className="finish-sub">{confirmSub}</p>
+            <div className="finish-actions">
+              <button type="button" className="nav-btn" onClick={() => setConfirmOpen(false)}>
+                GO BACK
+              </button>
+              <button
+                type="button"
+                className="nav-btn primary"
+                onClick={() => {
+                  setConfirmOpen(false);
+                  handleFinish();
+                }}
+              >
+                FINISH
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {overviewOpen && (        <div className="overview-overlay" onClick={() => setOverviewOpen(false)}>
           <aside
             className="overview-drawer"
@@ -2317,7 +2520,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
                   type="button"
                   onClick={() => {
                     setOverviewOpen(false);
-                    handleFinish();
+                    requestFinish();
                   }}
                 >
                   FINISH THIS EXAM
