@@ -447,8 +447,25 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
   return (
     <>
       <div className="q-head">
-        <span className="q-badge">{q.n}</span>
-        <span className="q-tag">{q.tag}</span>
+        <span className="q-num">{q.n}</span>
+        <button
+          type="button"
+          className={flagged ? "q-flag on" : "q-flag"}
+          onClick={onToggleFlag}
+          aria-pressed={flagged}
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+            <path
+              d="M3.5 14.5v-12M3.5 3c3-2 5.5 2 9 0v7c-3.5 2-6-2-9 0"
+              fill={flagged ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span>{flagged ? "Flagged for review" : "Mark for Review"}</span>
+        </button>
       </div>
       {q.stem ? (
         serifStem ? (
@@ -522,23 +539,6 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
           <p className="explain-text">{mathRich(q.explain)}</p>
         </div>
       )}
-      <button
-        type="button"
-        className={flagged ? "flag-btn on" : "flag-btn"}
-        onClick={onToggleFlag}
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-          <path
-            d="M3.5 14.5v-12M3.5 3c3-2 5.5 2 9 0v7c-3.5 2-6-2-9 0"
-            fill={flagged ? "currentColor" : "none"}
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        <span>{flagged ? "Flagged for review" : "Flag this question"}</span>
-      </button>
     </>
   );
 }
