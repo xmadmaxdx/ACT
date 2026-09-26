@@ -5892,6 +5892,25 @@ button {
     padding-bottom: 170px;
   }
 
+  /* Roomier eliminator buttons on touch: fewer mis-taps selecting options. */
+  .elim-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .elim-btn svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .q-options.elim-mode .q-option {
+    padding-right: 60px;
+  }
+
+  .q-option::after {
+    right: 62px;
+  }
+
   .nav-item > span {
     display: none;
   }
