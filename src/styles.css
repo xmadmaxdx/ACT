@@ -2708,7 +2708,7 @@ button {
   margin: 12px 4px 0 12px;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  border-radius: var(--radius);
   background: #fff;
   border: 2px solid var(--line);
   box-shadow: 0 4px 0 #d4d4d4;
@@ -2751,7 +2751,7 @@ button {
   display: block;
   height: 16px;
   margin-bottom: -16px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.16));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.08));
   pointer-events: none;
 }
 
@@ -2762,7 +2762,7 @@ button {
   display: block;
   height: 16px;
   margin-top: -16px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.16));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.08));
   pointer-events: none;
 }
 
@@ -2822,9 +2822,12 @@ button {
   gap: 10px;
 }
 
-.finish-actions .nav-btn {
+.finish-actions .nav-btn,
+.finish-actions .btn-primary {
   flex: 1;
   min-width: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3797,14 +3800,25 @@ button {
 }
 
 /* Plain-text RESULT twin: hidden on desktop, replaces the RESULT button on
-   phones in review mode (second bottom row). */
+   phones in review mode (second bottom row). A real button stripped of
+   chrome so it stays tappable. */
 .result-plain {
   display: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 1px;
   color: var(--muted);
   white-space: nowrap;
+}
+
+/* Forced line break for the review bottom nav on phones (hidden elsewhere).
+   flex-wrap alone only breaks on overflow — this guarantees two rows. */
+.review-nav-break {
+  display: none;
 }
 
 @media (max-width: 980px) {
@@ -5849,18 +5863,27 @@ button {
     display: none;
   }
 
-  /* Review mode on phones: two bottom rows. Row 1 keeps BACK + NEXT as
-     before; row 2 holds the copy + AI icons with RESULT as plain text. */
+  /* Review mode on phones: two bottom rows, always. Row 1 keeps BACK + NEXT
+     as before; row 2 holds copy + AI icons with RESULT as plain text. The
+     breaker (not hopeful wrapping) forces the split at any width. */
   .test.review .test-nav-inner {
     flex-wrap: wrap;
-    row-gap: 10px;
+    row-gap: 0;
+  }
+
+  .test.review .review-nav-break {
+    display: block;
+    flex-basis: 100%;
+    height: 0;
+    order: 2;
+    margin-bottom: 10px;
   }
 
   .test.review .copy-icon-btn,
   .test.review .cod-nav-btn {
     position: static;
     transform: none;
-    order: 5;
+    order: 3;
   }
 
   .test.review .cod-nav-btn:active {
@@ -5873,7 +5896,7 @@ button {
 
   .test.review .result-plain {
     display: block;
-    order: 6;
+    order: 3;
   }
 
   .nav-item > span {

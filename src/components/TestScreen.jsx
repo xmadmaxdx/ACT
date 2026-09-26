@@ -745,6 +745,16 @@ export default function TestScreen({ test, session, startIndex, review, findTest
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   });
+
+  /* Finish-confirm dialog: freeze the page behind it while open. */
+  useEffect(() => {
+    if (!confirmOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [confirmOpen]);
   const passageWrapRef = useRef(null);
   const passagePaneRef = useRef(null);
   const paraRefs = useRef(new Map());
@@ -2315,7 +2325,10 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               <button className="nav-btn result-nav-btn" type="button" onClick={onExit}>
                 RESULT
               </button>
-              <span className="result-plain">RESULT</span>
+              <span className="review-nav-break" aria-hidden="true" />
+              <button type="button" className="result-plain" onClick={onExit}>
+                RESULT
+              </button>
             </>
           ) : !onIntro && qIndex === total - 1 ? (            <button
               className="nav-btn primary"
@@ -2440,7 +2453,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               </button>
               <button
                 type="button"
-                className="nav-btn primary"
+                className="btn-primary"
                 onClick={() => {
                   setConfirmOpen(false);
                   handleFinish();
