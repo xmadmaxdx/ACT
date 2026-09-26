@@ -5861,6 +5861,19 @@ button {
     order: 3;
   }
 
+  .test.review .copy-icon-btn {
+    margin-right: auto;
+  }
+
+  .test.review .cod-nav-btn {
+    margin-left: auto;
+  }
+
+  /* Strategy bulb owns the far-right slot: keep the AI icon in the group. */
+  .test.review .test-nav-inner:has(> .strat-nav-btn) > .cod-nav-btn {
+    margin-left: 0;
+  }
+
   .test.review .cod-nav-btn:active {
     transform: scale(0.92);
   }
@@ -5872,6 +5885,11 @@ button {
   .test.review .result-plain {
     display: block;
     order: 3;
+  }
+
+  /* Two-row review bar is taller: keep the question card clear of it. */
+  .test.review .test-body {
+    padding-bottom: 170px;
   }
 
   .nav-item > span {
