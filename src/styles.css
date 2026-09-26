@@ -3851,21 +3851,18 @@ button {
     overflow-y: auto;
   }
 
-  /* Math on mobile flows naturally: short statements, no scroll trap,
-     statement hugging the question card below. */
-  .test-body.section-math {
-    gap: 8px;
-  }
-
+  /* Math on mobile: no passage block at all — statement + figure ride in
+     the question card, Mark bar first, options follow. */
   .test-body.section-math .passage {
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    overflow: visible;
-    padding-bottom: 8px;
+    display: none;
   }
 
-  .test-body.section-math .passage-text p:last-child {
+  .math-lead-para {
+    display: block;
+    margin: 0 0 10px;
+  }
+
+  .math-lead-para:last-child {
     margin-bottom: 0;
   }
 

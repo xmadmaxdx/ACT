@@ -473,7 +473,7 @@ function ElimIcon({ off }) {
   );
 }
 
-function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag, letters, elimActive, elimSet, onToggleElim, onExplain }) {
+function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onToggleFlag, letters, elimActive, elimSet, onToggleElim, onExplain, lead }) {
   const L = letters && letters.length === 4 ? letters : LETTERS;
   return (
     <>
@@ -498,6 +498,7 @@ function QBits({ q, picked, showAnswers, paused, flagged, serifStem, onPick, onT
           <span>{flagged ? "Flagged for review" : "Mark for Review"}</span>
         </button>
       </div>
+      {lead}
       {q.stem ? (
         serifStem ? (
           <div className="passage-text merged-stem">
@@ -1136,6 +1137,21 @@ export default function TestScreen({ test, session, startIndex, review, findTest
   const flagged = !!flags[activeQ.n];
   const isReading = ((testData && testData.section) || "").toLowerCase() === "reading";
   const isMathSection = ((testData && testData.section) || "").toLowerCase() === "math";
+  /* Mobile math: no passage block at all — the statement + figure move into
+     the question card under Mark (see mathLead), options follow. */
+  const mathLead =
+    isMobile && isMathSection ? (
+      <div className="q-stem math-lead">
+        {passage.paras.map((pa, i) =>
+          Array.isArray(pa) ? (
+            <span key={i} className="math-lead-para">
+              {renderSpans(pa, activeQ, testData.figures)}
+            </span>
+          ) : null
+        )}
+        <QuestionFigure q={activeQ} figures={testData.figures} />
+      </div>
+    ) : null;
   const pt = ptimers[passage.id] || ptBlank();
   const ptTop = pt;
   const ptFrac = pt.total > 0 ? pt.remaining / pt.total : 0;
@@ -2241,6 +2257,7 @@ export default function TestScreen({ test, session, startIndex, review, findTest
               paused={paused}
               flagged={flagged}
                 serifStem={false}
+                lead={mathLead}
                 letters={qLetters}
                 onPick={pick}
                 onToggleFlag={toggleFlag}
