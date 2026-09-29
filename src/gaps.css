@@ -10,6 +10,12 @@
   -webkit-font-smoothing: antialiased;
   padding: 28px 16px 60px;
   box-sizing: border-box;
+}
+
+/* Selection lives everywhere EXCEPT the gap squares: typed content never
+   shows a blue highlight (no auto-select anywhere in this mode). */
+.gz-gap,
+.gz-gap input.gz-cell {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;

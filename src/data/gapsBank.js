@@ -339,28 +339,8 @@ export const GAPS_BANK = [
     text: "Mirrors multiply every stretch across the wood. They make every mistake visible and useful. Counted steps echo off high ceilings. Sneakers squeak during the fast combinations. Hair ties live permanently in pockets. The pianist repeats difficult music on request. Nobody notices the whole hour flying past.",
   },
   {
-    title: "Trail Camera Shop",
-    text: "Memory cards come in cases of fifty. Screens show blurry deer caught mid-stride. Batteries matter far more than megapixels. Straps chafe badly across long walks. The staff knows exactly which forest this footage came from. Everyone spends too much on the lens housing.",
-  },
-  {
     title: "Bicycle Mechanic",
     text: "Chains lie coiled across an old towel. The stand holds the frame at a helpful height. Bearings click when the wheels turn. Grease collects under every fingernail anyway. Cables fray where frames flex most. The shop dog sleeps under a stack of rims. Every repair teaches something new and costs almost nothing.",
-  },
-  {
-    title: "Fishing Charter",
-    text: "The boat rocks gently in early morning water. Baitfish swim in the shaded lower well. Everyone reels too fast exactly once. The guide tells the same calm story every trip. Mist burns away as the sun climbs. Seagulls follow the boat for company. Seagulls follow the boat for company.",
-  },
-  {
-    title: "Skate Park",
-    text: "Concrete bowls hold heat long after sunset. Wheels hum across smooth transitions. Kneepads matter more than anybody admits. Beginners hesitate at every lip. Someone always lands unexpectedly well. Graffiti covers the ramps in fresh layers. Lights come on automatically at dusk. The park closes when the crowds thin out.",
-  },
-  {
-    title: "Sledding Hill",
-    text: "Snow squeaks under every eager boot. Kids form a line that grows by seconds. Scarves whip sideways on fast runs. Someone always loses a glove to a tree. The hill wears grooves by afternoon. Faces glow pink above the collars. Nobody wants to head home for dinner.",
-  },
-  {
-    title: "Leaf Pile",
-    text: "The rake makes a soft scratching sound. Leaves smell like wet autumn pavement. Kids discover buried rakes and rake handles. The pile grows larger than any reasonable estimate. Every kick sends sparks of colour upward. The bag at the curb demands constant refilling. Neighbours stop to talk over the work.",
   },
   {
     title: "First Snow",

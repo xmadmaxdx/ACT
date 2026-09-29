@@ -281,17 +281,24 @@ export default function GapsScreen({ mode, source, testData, onExit }) {
       const el = boxRefs.current[`${G}:${K}`];
       if (!el) return false;
       el.focus();
-      try {
-        el.select();
-      } catch (err) {
-        window.console.debug("box select skipped", err);
-      }
       return true;
     };
     if (tryAt(gid, k)) return true;
-    // Past the end (or a missing node): settle on the nearest real box
-    // instead of dropping focus to the page, where arrows would die.
-    // (Tab still exits natively.)
+    // Forward past the end: first box of the next word gap.
+    if (k >= 0) {
+      for (let G = gid + 1; G < r.gaps.length; G++) {
+        if (tryAt(G, 0)) return true;
+      }
+    }
+    // Backward past the start (or a missing node): last box of the
+    // previous word gap, else pin to the nearest edge box. Focus never
+    // drops to the page, where arrows would die. (Tab still exits.)
+    if (k < 0) {
+      for (let G = gid - 1; G >= 0; G--) {
+        const g = r.gaps[G];
+        if (g && tryAt(G, g.boxes - 1)) return true;
+      }
+    }
     const G = Math.max(0, Math.min(gid, r.gaps.length - 1));
     const g = r.gaps[G];
     const K = Math.max(0, Math.min(k, g.boxes - 1));
@@ -329,21 +336,13 @@ export default function GapsScreen({ mode, source, testData, onExit }) {
         const cur = String(typedRef.current[gid] || "");
         if (!cur[k]) {
           e.preventDefault();
-          if (k > 0) focusBox(gid, k - 1);
-          else if (gid > 0) {
-            const prev = roundRef.current ? roundRef.current.gaps[gid - 1] : null;
-            if (prev) focusBox(gid - 1, prev.boxes - 1);
-          }
+          focusBox(gid, k - 1);
         }
         return;
       }
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        if (k > 0) focusBox(gid, k - 1);
-        else if (gid > 0) {
-          const prev = roundRef.current ? roundRef.current.gaps[gid - 1] : null;
-          if (prev) focusBox(gid - 1, prev.boxes - 1);
-        }
+        focusBox(gid, k - 1);
         return;
       }
       if (e.key === "ArrowRight") {
