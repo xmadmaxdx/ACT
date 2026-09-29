@@ -124,7 +124,7 @@ function GapsDialog({ onClose, onStart }) {
             onClick={() => setPick({ kind: "single", source: "ai" })}
           >
             <span>
-              One sentence · AI<small>10 AI sentences · 20 seconds each · PIN once</small>
+              One sentence · AI<small>10 AI sentences · 20 seconds each · pass once</small>
             </span>
           </button>
           <button
@@ -134,7 +134,7 @@ function GapsDialog({ onClose, onStart }) {
             onClick={() => setPick({ kind: "passage", source: "ai" })}
           >
             <span>
-              Multiple sentences · AI<small>AI passage · 15 gaps · 3 minutes · PIN once</small>
+              Multiple sentences · AI<small>AI passage · 15 gaps · 3 minutes · pass once</small>
             </span>
           </button>
           <button
@@ -144,7 +144,7 @@ function GapsDialog({ onClose, onStart }) {
             onClick={() => setPick({ kind: "single", source: "bank" })}
           >
             <span>
-              One sentence · Bank<small>10 random bank sentences · no PIN</small>
+              One sentence · Bank<small>10 random bank sentences · no pass</small>
             </span>
           </button>
           <button
@@ -154,7 +154,7 @@ function GapsDialog({ onClose, onStart }) {
             onClick={() => setPick({ kind: "passage", source: "bank" })}
           >
             <span>
-              Multiple sentences · Bank<small>random bank passage · no PIN</small>
+              Multiple sentences · Bank<small>random bank passage · no pass</small>
             </span>
           </button>
         </div>

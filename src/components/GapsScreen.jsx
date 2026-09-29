@@ -21,7 +21,7 @@ import "../gaps.css";
    whole mode deletes cleanly. AI supplies raw text only; gapsEngine picks
    every gap. Instant per-round banners, no results screen. */
 
-const GAPS_PIN = "Not available";
+const GAPS_PASS = "sneha";
 
 const MOODS = [
   "a quiet morning routine",
@@ -137,60 +137,70 @@ function CrossIcon() {
   );
 }
 
-function PinPad({ onUnlock }) {
-  const [digits, setDigits] = useState(["", "", "", "", "", ""]);
+function PassPad({ onUnlock }) {
+  const [chars, setChars] = useState(["", "", "", "", ""]);
   const [bad, setBad] = useState(false);
   const refs = useRef({});
+  const resetT = useRef(null);
 
-  const setDigit = (k, v) => {
-    const ch = String(v || "").replace(/[^0-9]/g, "").slice(-1);
-    setDigits((d) => {
+  useEffect(
+    () => () => {
+      if (resetT.current) window.clearTimeout(resetT.current);
+    },
+    []
+  );
+
+  const setChar = (k, v) => {
+    const ch = String(v || "").replace(/[^a-z]/gi, "").slice(-1);
+    setChars((d) => {
       const next = d.slice();
       next[k] = ch;
       return next;
     });
     setBad(false);
-    if (ch && k < 5) {
+    if (ch && k < 4) {
       const el = refs.current[k + 1];
       if (el) el.focus();
     }
   };
 
-  const onDigitKey = (k, e) => {
-    if (e.key === "Backspace" && !digits[k] && k > 0) {
+  const onCharKey = (k, e) => {
+    if (e.key === "Backspace" && !chars[k] && k > 0) {
       const el = refs.current[k - 1];
       if (el) el.focus();
     }
-    if (e.key === "Enter") tryUnlock(digits.join(""));
+    if (e.key === "Enter") tryUnlock(chars.join(""));
   };
 
   const tryUnlock = (code) => {
-    if (code === GAPS_PIN) {
+    if (String(code || "").toLowerCase() === GAPS_PASS) {
       onUnlock();
       return;
     }
     setBad(true);
-    window.setTimeout(() => {
-      setDigits(["", "", "", "", "", ""]);
+    if (resetT.current) window.clearTimeout(resetT.current);
+    resetT.current = window.setTimeout(() => {
+      resetT.current = null;
+      setChars(["", "", "", "", ""]);
       setBad(false);
       const el = refs.current[0];
       if (el) el.focus();
     }, 450);
   };
 
-  const full = digits.every((d) => d !== "");
+  const full = chars.every((d) => d !== "");
   return (
     <div className="gz-overlay" role="presentation">
       <div
         className="gz-modal"
         role="dialog"
         aria-modal="true"
-        aria-label="Enter PIN to unlock AI generation"
+        aria-label="Enter pass to unlock AI generation"
       >
-        <h2>One-time PIN</h2>
-        <p>Enter the PIN once to unlock AI passage generation for this visit.</p>
+        <h2>One-time pass</h2>
+        <p>Enter the pass once to unlock AI generation for this visit.</p>
         <div className={`gz-pin-row${bad ? " bad" : ""}`}>
-          {digits.map((d, k) => (
+          {chars.map((d, k) => (
             <input
               key={k}
               ref={(el) => {
@@ -199,23 +209,23 @@ function PinPad({ onUnlock }) {
               }}
               className="gz-digit"
               type="text"
-              inputMode="numeric"
+              inputMode="text"
+              autoCapitalize="off"
               autoComplete="off"
               maxLength={1}
               value={d}
-              aria-label={`PIN digit ${k + 1} of 6`}
-              onChange={(e) => setDigit(k, e.target.value)}
-              onKeyDown={(e) => onDigitKey(k, e)}
+              aria-label={`Pass character ${k + 1} of 5`}
+              onChange={(e) => setChar(k, e.target.value)}
+              onKeyDown={(e) => onCharKey(k, e)}
             />
           ))}
         </div>
-        <p className="gz-hint">Demo PIN: {GAPS_PIN}</p>
         <div className="gz-row">
           <button
             type="button"
             className={`gz-submit${full ? " ready" : ""}`}
             disabled={!full}
-            onClick={() => tryUnlock(digits.join(""))}
+            onClick={() => tryUnlock(chars.join(""))}
           >
             UNLOCK
           </button>
@@ -264,29 +274,29 @@ export default function GapsScreen({ mode, source, testData, onExit }) {
 
   const focusBox = useCallback((gid, k) => {
     const r = roundRef.current;
-    if (!r) return false;
-    if (k < 0) return false;
-    const g = r.gaps[gid];
-    if (g && k < g.boxes) {
-      const el = boxRefs.current[`${gid}:${k}`];
-      if (el) {
-        el.focus();
-        return true;
+    if (!r || r.gaps.length === 0) return false;
+    const tryAt = (G, K) => {
+      const g = r.gaps[G];
+      if (!g || K < 0 || K >= g.boxes) return false;
+      const el = boxRefs.current[`${G}:${K}`];
+      if (!el) return false;
+      el.focus();
+      try {
+        el.select();
+      } catch (err) {
+        window.console.debug("box select skipped", err);
       }
-      return false;
-    }
-    const next = r.gaps[gid + 1];
-    if (next) {
-      const el = boxRefs.current[`${gid + 1}:0`];
-      if (el) {
-        el.focus();
-        return true;
-      }
-    }
-    if (document.activeElement && document.activeElement.blur) {
-      document.activeElement.blur();
-    }
-    return false;
+      return true;
+    };
+    if (tryAt(gid, k)) return true;
+    // Past the end (or a missing node): settle on the nearest real box
+    // instead of dropping focus to the page, where arrows would die.
+    // (Tab still exits natively.)
+    const G = Math.max(0, Math.min(gid, r.gaps.length - 1));
+    const g = r.gaps[G];
+    const K = Math.max(0, Math.min(k, g.boxes - 1));
+    if (G === gid && K === k) return false;
+    return tryAt(G, K);
   }, []);
 
   const setBox = useCallback(
@@ -310,6 +320,11 @@ export default function GapsScreen({ mode, source, testData, onExit }) {
   const onBoxKey = useCallback(
     (gid, k, e) => {
       if (result) return;
+      if (e.key === " ") {
+        e.preventDefault();
+        focusBox(gid, k + 1);
+        return;
+      }
       if (e.key === "Backspace") {
         const cur = String(typedRef.current[gid] || "");
         if (!cur[k]) {
@@ -570,6 +585,7 @@ export default function GapsScreen({ mode, source, testData, onExit }) {
         }
         if (items.length === 0) throw new Error("Bank has no usable sentences.");
         batchRef.current = { items };
+        setProg(null);
         loadItem(0, false);
       } else {
         const order = GAPS_BANK.slice();
@@ -631,6 +647,7 @@ export default function GapsScreen({ mode, source, testData, onExit }) {
           const items = await buildBatch(ctrl.signal);
           if (ctrl.signal.aborted) return;
           batchRef.current = { items };
+          setProg(null);
           loadItem(0, false);
         } else {
           const r = await buildRound(ctrl.signal);
@@ -707,33 +724,12 @@ export default function GapsScreen({ mode, source, testData, onExit }) {
   if (phase === "pin" && !unlocked) {
     return (
       <div className="gz-wrap">
-        <PinPad
+        <PassPad
           onUnlock={() => {
             setUnlocked(true);
             startRound(gapsMode);
           }}
         />
-      </div>
-    );
-  }
-
-  if (phase === "loading" || !round) {
-    return (
-      <div className="gz-wrap">
-        <div className="gz-card">
-          <div className="gz-top">
-            <span className="gz-timer">
-              <ClockIcon /> --:--
-            </span>
-            <button type="button" className="gz-x" aria-label="Exit gaps" onClick={onExit}>
-              ✕
-            </button>
-          </div>
-          <div className="gz-load" role="status">
-            <div className="gz-spin" aria-hidden="true" />
-            <p>{phase === "error" ? "Something went wrong." : "Dreaming up your text…"}</p>
-          </div>
-        </div>
       </div>
     );
   }
@@ -757,18 +753,40 @@ export default function GapsScreen({ mode, source, testData, onExit }) {
               <button type="button" className="gz-btn ghost" onClick={onExit}>
                 BACK
               </button>
-              <button
-                type="button"
-                className="gz-btn go"
-                onClick={() => {
-                  if (testData) again();
-                  else if (source === "bank") startBank(gapsMode);
-                  else startRound(gapsMode);
-                }}
-              >
-                RETRY
-              </button>
+              {!testData && (
+                <button
+                  type="button"
+                  className="gz-btn go"
+                  onClick={() => {
+                    if (source === "bank") startBank(gapsMode);
+                    else startRound(gapsMode);
+                  }}
+                >
+                  RETRY
+                </button>
+              )}
             </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === "loading" || !round) {
+    return (
+      <div className="gz-wrap">
+        <div className="gz-card">
+          <div className="gz-top">
+            <span className="gz-timer">
+              <ClockIcon /> --:--
+            </span>
+            <button type="button" className="gz-x" aria-label="Exit gaps" onClick={onExit}>
+              ✕
+            </button>
+          </div>
+          <div className="gz-load" role="status">
+            <div className="gz-spin" aria-hidden="true" />
+            <p>Dreaming up your text…</p>
           </div>
         </div>
       </div>

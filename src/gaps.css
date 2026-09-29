@@ -365,7 +365,7 @@ input.gz-cell:disabled {
   box-shadow: none;
 }
 
-/* Mode dialog + PIN pad share the modal shell. */
+/* Mode dialog + pass pad share the modal shell. */
 .gz-temp {
   display: inline-block;
   vertical-align: 2px;
@@ -523,12 +523,6 @@ input.gz-digit:focus {
   80% {
     transform: translateX(4px);
   }
-}
-
-.gz-hint {
-  font-size: 12.5px !important;
-  color: #afafaf !important;
-  margin: -8px 0 18px !important;
 }
 
 .gz-row {
