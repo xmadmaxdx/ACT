@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ModeModal from "./ModeModal.jsx";
+import "../gaps.css";
 
 /* Small card icons — same flat Duo sticker style as the nav icons. */
 function PencilIcon() {
@@ -51,6 +52,17 @@ function OpenBookIcon() {
   );
 }
 
+function GapIcon() {
+  return (
+    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+      <rect x="3" y="9" width="8" height="16" rx="3" fill="#fff" stroke="#afafaf" strokeWidth="2.5" />
+      <rect x="13" y="9" width="8" height="16" rx="3" fill="#1cb0f6" />
+      <rect x="23" y="9" width="8" height="16" rx="3" fill="#fff" stroke="#afafaf" strokeWidth="2.5" />
+      <path d="M15.5 15.5l2.5 2.5 4-4.5" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 /* Laptop + clock hero art in the screenshot's flat style, gently animated. */
 function PracticeArt() {
   return (
@@ -76,7 +88,7 @@ function PracticeArt() {
   );
 }
 
-const TABS = ["ENGLISH", "MATH", "READING", "COMPLETE"];
+const TABS = ["ENGLISH", "MATH", "READING", "COMPLETE", "EXTRA"];
 
 const SECTIONS = [
   { tab: "ENGLISH", title: "English Only", meta: "50 questions · 35 min", Icon: PencilIcon },
@@ -89,9 +101,10 @@ const SKILLS = SECTIONS.flatMap((s) =>
   [1, 2, 3, 4].map((n) => ({ ...s, id: `${s.tab}-${n}`, num: n }))
 );
 
-export default function Practice({ onStartTest, passageTests }) {
+export default function Practice({ onStartTest, onStartGaps, passageTests }) {
   const [tab, setTab] = useState("ENGLISH");
   const [selected, setSelected] = useState(null);
+  const [gapsOpen, setGapsOpen] = useState(false);
 
   const visible = SKILLS.filter((s) => s.tab === tab);
   const visiblePassages = (passageTests || []).filter(
@@ -112,12 +125,39 @@ export default function Practice({ onStartTest, passageTests }) {
             onClick={() => setTab(t)}
           >
             {t}
+            {t === "EXTRA" && (
+              <span className="gz-temp" aria-label="Temporary tab">
+                Temporary
+              </span>
+            )}
           </button>
         ))}
       </div>
 
-      <h3 className="group-title rise d4">Practice tests</h3>
-      <div className="skill-grid rise d4">
+      {tab === "EXTRA" ? (
+        <>
+          <h3 className="group-title rise d4">Fill in the gaps</h3>
+          <div className="skill-grid rise d4">
+            <button type="button" className="skill-card" onClick={() => setGapsOpen(true)}>
+              <span className="skill-ghost" aria-hidden="true">
+                ✎
+              </span>
+              <span className="skill-icon">
+                <GapIcon />
+              </span>
+              <span className="skill-text">
+                <span className="skill-title">
+                  Fill in the Gaps <span className="gz-temp">Temporary</span>
+                </span>
+                <span className="skill-meta">AI generated · instant feedback</span>
+              </span>
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+              <h3 className="group-title rise d4">Practice tests</h3>
+              <div className="skill-grid rise d4">
         {visible.map(({ id, num, title, meta, Icon }) => (
           <button
             key={id}
@@ -143,7 +183,9 @@ export default function Practice({ onStartTest, passageTests }) {
             </span>
           </button>
         ))}
-      </div>
+          </div>
+        </>
+      )}
 
       {visiblePassages.length > 0 && (
         <>
@@ -185,6 +227,9 @@ export default function Practice({ onStartTest, passageTests }) {
 
       {selected && (
         <ModeModal skill={selected} onClose={() => setSelected(null)} onStart={(mode) => onStartTest(selected, mode)} />
+      )}
+      {gapsOpen && (
+        <GapsDialog onClose={() => setGapsOpen(false)} onStart={(gapsMode) => onStartGaps(gapsMode)} />
       )}
     </div>
   );

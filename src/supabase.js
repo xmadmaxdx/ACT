@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { segmentsFromOffsets } from "./gapsEngine.js";
 
 const URL = import.meta.env.VITE_SUPABASE_URL;
 const KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -291,7 +292,28 @@ function makeShareSlug() {
 export async function createShareLink({ section, title, test, days }) {
   if (!URL || !KEY) throw new Error("Supabase env missing at build (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY)");
   const opt = SHARE_EXPIRY_OPTIONS.find((o) => o.days === Number(days)) || SHARE_EXPIRY_OPTIONS[0];
-  if (!test || typeof test !== "object" || !Array.isArray(test.questions) || test.questions.length === 0) {
+  if (!test || typeof test !== "object") {
+    throw new Error("Nothing to share: this test has no content.");
+  }
+  let stored = test;
+  if (String(section || "").toLowerCase() === "gaps") {
+    if (!Array.isArray(test.gaps) || test.gaps.length === 0) {
+      throw new Error("Nothing to share: this gaps round has no gaps.");
+    }
+    // Throws with a reason when offsets/answers do not line up.
+    segmentsFromOffsets(test.text, test.gaps);
+    const mode = test.mode === "passage" ? "passage" : "single";
+    stored = {
+      id: test.id || "GAPS-1",
+      title: test.title || "Shared Gaps",
+      section: "gaps",
+      mode,
+      total: test.gaps.length,
+      timeSeconds: Number(test.timeSeconds) > 0 ? Number(test.timeSeconds) : mode === "passage" ? 180 : 20,
+      text: String(test.text || ""),
+      gaps: test.gaps.map((g) => ({ answer: g.answer, shown: g.shown, start: g.start })),
+    };
+  } else if (!Array.isArray(test.questions) || test.questions.length === 0) {
     throw new Error("Nothing to share: this test has no questions.");
   }
   const sb = createClient(URL, KEY);
@@ -307,8 +329,8 @@ export async function createShareLink({ section, title, test, days }) {
     const { error } = await sb.from("share_links").insert({
       slug,
       section,
-      title: title || "Shared Test",
-      test,
+      title: stored.title || title || "Shared Test",
+      test: stored,
       expires_at: expiresAt,
     });
     if (!error) {

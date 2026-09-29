@@ -1,0 +1,883 @@
+{
+    "id":  "JSON-READING-SECTION-5",
+    "section":  "reading",
+    "timeMinutes":  40,
+    "dual":  [
+                 "p1",
+                 "p2"
+             ],
+    "figures":  {
+                    "hearing":  {
+                                    "kind":  "table",
+                                    "title":  "Representative hearing ranges in vertebrates and insects",
+                                    "columns":  [
+                                                    "Group",
+                                                    "Lowest audible (kHz)",
+                                                    "Highest audible (kHz)",
+                                                    "Primary use of hearing"
+                                                ],
+                                    "rows":  [
+                                                 [
+                                                     "Human",
+                                                     "0.02",
+                                                     "20",
+                                                     "speech and environmental sound"
+                                                 ],
+                                                 [
+                                                     "Domestic dog",
+                                                     "0.015",
+                                                     "45",
+                                                     "detection of approaching predators"
+                                                 ],
+                                                 [
+                                                     "Pigeon",
+                                                     "0.05",
+                                                     "10",
+                                                     "navigation and predator detection"
+                                                 ],
+                                                 [
+                                                     "Barn owl",
+                                                     "0.005",
+                                                     "12",
+                                                     "locating prey by rustle and heartbeat"
+                                                 ],
+                                                 [
+                                                     "Greater wax moth",
+                                                     "0.05",
+                                                     "300",
+                                                     "avoiding its own ultrasonic parasite"
+                                                 ],
+                                                 [
+                                                     "Echolocating bat (Pipistrellus)",
+                                                     "0.02",
+                                                     "110",
+                                                     "echo-ranging insect flight"
+                                                 ],
+                                                 [
+                                                     "African elephant",
+                                                     "0.008",
+                                                     "12",
+                                                     "long-distance infrasonic contact"
+                                                 ],
+                                                 [
+                                                     " bottlenose dolphin",
+                                                     "0.05",
+                                                     "150",
+                                                     "echo-ranging and communication"
+                                                 ]
+                                             ],
+                                    "footnote":  "Ranges are approximate and vary by individual and by measurement method. The two echolocating entries are the only groups whose upper limit exceeds that of any bird."
+                                }
+                },
+    "passages":  [
+                     {
+                         "id":  "p1",
+                         "title":  "Retention",
+                         "paras":  [
+                                       "Every public body in an advanced democracy generates records faster than any institution can retain them indefinitely, and the determination of what survives is therefore not an archival question but a budgetary one. National archives respond to this accumulation through appraisal: a formal, documented process by which the records of an administrative body are examined and assigned a retention schedule specifying the period after which they are destroyed. The schedule is not a matter of local discretion. It is issued centrally, applied uniformly across every office of that body, and revised only on a fixed cycle.",
+                                       "Appraisal operates upon series rather than upon items. A file is appraised as a member of a classified group, and every member of that group receives an identical schedule. This design is deliberate. The individual assessment of each item would be prohibitively expensive and would in any case produce inconsistent results, since officers applying an unstructured standard would diverge from one another in the handling of borderline material. Consistency is obtained by removing judgment from the point of disposal.",
+                                       "Retention schedules are constructed around four tests. Material is retained permanently where it records the existence or constitution of the body itself; where it establishes rights or obligations, financial or otherwise, that may outlive the transaction to which they relate; where it documents the exercise of discretion, so that a decision might subsequently be reviewed; and where it possesses evident research value not anticipated at the time of creation. Where no test is satisfied, the material is scheduled for destruction at the earliest permissible date.",
+                                       "The apparatus is, judged by these criteria, sound. A test requiring that material be evaluated in the context of the decision it documents will, applied consistently, capture what later generations will require of it. The apparatus also provides for its own correction: schedules are reviewed upon a fixed cycle, and any office may submit a case for the retention of a specific series beyond its scheduled date.",
+                                       "It would follow from the foregoing that a record of unusual significance which a scheduled series had failed to capture would be recoverable through the review mechanism. The series is the unit of judgment; where the series has been scheduled, the individual item inherits that schedule, and the remedy lies not in the reconsideration of the item but in the reopening of the series. This is the position the system is designed to occupy, and it is the position its own documentation asserts."
+                                   ]
+                     },
+                     {
+                         "id":  "p2",
+                         "title":  "The Box",
+                         "paras":  [
+                                       "I worked in records for twenty-six years, most of it at the county office, and the part of the job nobody warns you about is that you throw things away. That\u0027s the verb. Not transfer to offsite storage. Destroy. Twice a year a truck would pull up and we would load it.",
+                                       "The box in question came from the county clerk\u0027s office, the 1950s correspondence that nobody had ever requested in all the years I was there. Scheduled, routine, third week of October. I was on the cart with a clipboard. There were perhaps forty boxes that week and I remember most of them being boring.",
+                                       "I got to the clerk\u0027s boxes and one of them felt wrong, and I don\u0027t have a way to tell you what I mean by wrong. The boxes are all supposed to weigh about the same because they are supposed to be full of the same thing, which is paper of a uniform vintage, and this one was heavy the way a box is heavy when there is something in it that is not paper. So I opened it.",
+                                       "It was photographs. Several hundred of them, loose, not in folders, unnumbered on the reverse. They had been in an envelope, the envelope had come apart, and somebody in about 1958 had simply emptied them in and gone back to work. Buildings. Storefronts. A street with a tram line that is not there now. Hundreds of people standing in front of their own shops looking at the camera, and a date in pencil on about a fifth of them.",
+                                       "I did everything correctly and it made no difference whatsoever. I wrote it up, I flagged the box, I took it to my supervisor and explained the weight and the envelope and the photographs. And he was extremely reasonable about it. He said the schedule said destroy. I said the schedule said the test was research value. He said yes, and that was the end of it, because the series had been appraised and the series was county clerk routine correspondence, and photographs are not correspondence. There was no appeal. There is an appeal. I looked it up that night on the state library site, a perfectly reasonable-looking form, and the box went out on the truck on Thursday.",
+                                       "I still do not know whether I was right. Probably I was, and the town would have lost those photographs entirely within a decade if nobody had put them in a box at all. But that is not the same as the system working. The system did what it was built to do. I do not have a better phrase for what I did."
+                                   ]
+                     },
+                     {
+                         "id":  "p3",
+                         "title":  "What Ears Are For",
+                         "paras":  [
+                                       "A female greater wax moth will not approach a hive. She will not approach a light, and she will not approach a hive that is warm and humming on a summer evening. She retreats, and she retreats fast, and the reason is that the wax moth is a parasite of the bee colony, and the moth\u0027s most reliable cue to a suitable host is a high-frequency sound that the human ear cannot detect at all. The moth responds to ultrasonic frequencies as high as three hundred kilohertz, which is beyond the hearing of every bat yet measured.",
+                                       "That single capacity is unremarkable to an entomologist and startling to everyone else, because it inverts the expectation that an animal\u0027s sensory range ought to be a function of its size. The moth is small. Its range is enormous. Nothing about its anatomy demands the upper limit; what demands it is the requirement that the moth detect the thing that is hunting it, and the appropriate solution, over a very large number of generations, was to extend the range until the predator\u0027s signal fell comfortably inside it.",
+                                       "The same logic, examined across a wider range of animals, produces a set of figures that at first appears arbitrary. The pigeon, which navigates over hundreds of kilometres and has no need of high frequencies, tops out at ten kilohertz. The barn owl, which hunts in total darkness and locates its prey by rustle, is more sensitive at the low end than almost anything measured and is equally uninterested in the high end. The elephant, which communicates across distances at which a visual signal would be useless, occupies the infrasonic band that a human being experiences not as sound at all but as a pressure felt in the chest.",
+                                       "Materials scientists studying the cochlea have taken a particular interest in this variability, for the reason that a biological system which has solved the same problem several hundred times independently has almost certainly found more than one good answer. The human cochlea is not the optimal instrument for detecting sound; it is the instrument that was adequate to the ancestors of a species which needed to hear speech, and to hear it well enough to locate a speaker in a quiet landscape. It is heavily invested in the two or three kilohertz band where the formants of human speech lie, and comparatively neglected everywhere else. The barn owl\u0027s cochlea is not a better ear. It is a differently shaped answer to a different question.",
+                                       "The traditional account of sensory evolution held that complexity of structure produced range, that an animal with a more elaborate auditory apparatus could therefore perceive more of the spectrum. This account does not survive contact with the wax moth, whose auditory system is small and lightly built and which nonetheless exceeds every vertebrate in the reach of its upper limit. The account that has displaced it is narrower and, in the estimation of most workers, considerably better supported: an animal hears what it must hear, and the shape of the organ follows the shape of the requirement.",
+                                       "The difficulty with the narrower account is that requirements are not always knowable in advance. An owl has no use for the upper frequencies, and will not acquire them unless the ecosystem in which it hunts changes in a particular way. A pigeon will not extend its range because nothing in its current life calls for it. A species can therefore be perfectly well adapted to a world that then ceases to be the world, and the range that was an advantage becomes a boundary that cannot be crossed from inside.",
+                                       "This is the sense in which the wax moth is not a curiosity. It is the one case in which an insect has been pushed outward along a sensory axis by pressure from a predator, and it has been pushed further than any vertebrate. What the comparison with the bat establishes is not that moths hear better, which is a meaningless question, but that the ceiling of the audible spectrum is set by ecological circumstance and is therefore not a constant. It moves. It has moved, repeatedly, in the direction of whatever was hunting.",
+                                       "The table below assembles representative figures. They should be read as ranges rather than limits, since individuals vary and since measurement method varies considerably between laboratories, and the two echolocating entries are the only ones in which the upper figure exceeds that of any bird.",
+                                       "[figure:hearing]"
+                                   ]
+                     },
+                     {
+                         "id":  "p4",
+                         "title":  "Somewhere to Sit",
+                         "paras":  [
+                                       "Put two benches side by side and the difference is obvious before either has been sat upon. One has a flat wooden slat seat, four metal legs, a back, and a weight that makes it difficult to move. The other has a single concrete form, a slight backward tilt, an underseat gap of about ten centimetres, and a division down the middle that a person cannot sit across without appearing to intend to occupy two places. You will not have to be told which of these was installed to be sat upon for a while.",
+                                       "That both designs are recent, and that the second has largely displaced the first within two decades, is the part of the story that is genuinely difficult to explain, because the second is not cheaper. A cast concrete bench with a central division costs more to manufacture and more to install than a slatted timber bench, and it is considerably heavier. The change cannot be accounted for by economy, and it was not the product of a decision to produce fewer seats. Seat numbers in most public spaces have not fallen.",
+                                       "The furniture of a park is designed, in the ordinary course of business, by landscape architects, and it is specified through procurement documents, and it is installed by contractors who are working to a schedule. A design that discourages a particular use can enter the world without anybody deciding that it should. It enters the way a shelf height enters the world. Somebody working from a standard, a supplier offering a standard, an authority accepting a standard, and at no point in that chain a question being asked about what the standard is for.",
+                                       "The division down the middle of a concrete seat has a name in the trade, and the name is not decorative. It is a dividing bar, and it exists to prevent a person from lying down. The gap beneath the seat exists to prevent a person from sleeping. Both features are documented in municipal procurement schedules, described functionally and without euphemism, and both have been adopted broadly and without controversy, which is the remarkable part: there was no vote, no consultation, and no occasion on which anyone was asked to decide that a person lying on a bench in a public park was a problem requiring a hardware solution.",
+                                       "The consequence is that a substantial quantity of public seating has ceased to be seating in any meaningful sense and has become, in effect, a surface. It probably remains furniture in the inventory, and it continues to be counted in assessments of amenity, and the count is accurate while the description is not. The bench is still there. What has been removed is the permission, and permission was never a thing anyone believed was stored in the concrete.",
+                                       "This matters most to those for whom a bench is not a convenience but a necessity, and the population for whom that is true is not small and is not, in the main, visible to the people who commission benches. A person waiting for a bus, unable to stand, is not a person the concrete was designed for. A parent with an infant and no other adult. An old person for whom the division makes the seat too narrow for comfort rather than merely uncomfortable. Each of these is a person who requires a flat surface of a particular width, and each is invisible in a procurement document that records seat dimensions rather than seat use.",
+                                       "It may seem reasonable to conclude from all of this that the modern bench is a failure of design, and that better design would resolve it. That conclusion is available, and it is not, I think, the more useful one. The bench has not failed. It has performed, and what it has performed is a purpose, and the purpose was achieved so efficiently that the achievement is now invisible to the people who commissioned it and unremarkable to the people who live beside it. What we are looking at is not an error in the making of something but the ordinary operation of a system doing exactly what it was built to do, and the difficulty is that this is what the making of things has come to look like when nobody is in a position to say no."
+                                   ]
+                     },
+                     {
+                         "id":  "p5",
+                         "title":  "The Slots Nobody Fills",
+                         "paras":  [
+                                       "I schedule clinic appointments, which is a job that sounds like data entry and is actually about the distribution of pain across a Tuesday. I have done it for eleven years, at a mid-sized outpatient practice with nineteen providers, and I am responsible for a book roughly nine hundred appointments deep. The book has holes in it. That is the entire subject of this passage, and I want to be precise about what I mean, because nobody in my profession talks about it the way I am about to.",
+                                       "A no-show is an appointment that is not kept and not cancelled, and it costs the practice the full slot value, which for a new-patient visit in our building is one hundred and thirty dollars of clinician time alone. We run a fourteen percent no-show rate on standard follow-ups and nineteen percent on new-patient visits, which means we lose about four thousand two hundred appointments a year. A slot lost is not a slot that moves; it is a slot that becomes empty and cannot be refilled, because the patients who book earliest take the earliest slots and the ones who cancel late are the ones who wanted it most. In the last full year we turned away one thousand and ninety patients for lack of an available appointment, and we did that while operating at seventy-nine percent capacity. Seventy-nine percent of the book is not full. It is a book with holes shaped like the hours that people cannot attend.",
+                                       "The standard explanation is that patients forget. The reminders go out, some of them go to numbers that are disconnected, some of the patients are notnative speakers, some of the reminders require an app, and forgetting is the residual category that absorbs everything the system has failed to account for. I have heard this explanation given as though it were a finding. I do not think it is a finding. I think it is the sentence we say at meetings, and I have never once been able to test it, because nobody has ever measured whether the patients who miss appointments know that they had one.",
+                                       "We measured it this year. We took six weeks of data and asked, at the point of the missed slot rather than afterward, by telephone, one question: had you known you had an appointment today. Of two hundred and forty patients who had missed a booked appointment, one hundred and fifty-eight said yes, they knew perfectly well. They were not forgetful. They were present, informed, and did not come. Of those, just under half cited transport, a substantial number cited a childcare arrangement that fell through, and a substantial number said something closer to they had arranged their day around coming and could not arrange their day around coming. They knew. Attendance was not the variable. Attendance was the outcome of a set of constraints, and the constraints had not changed, and our reminder system had not noticed.",
+                                       "What we changed was not the reminders, which were already elaborate. We changed the book. We moved a hundred and forty appointments a year out of eight-thirty and one-fifteen, which are the worst slots in the building, into the middle of the morning, where the bus route is frequent and the parking is unrestricted and the walk from the car park is short. We allowed a fortnight\u0027s notice by text for anyone who asked for one, which costs nothing and is cancelled at a rate of under four percent. We closed the book to new booking at four-thirty on the day rather than at five, which recovered sixty-one appointments a year. None of these are innovations. Any practice doing this work has arrived at some version of all of them.",
+                                       "The improvement is real and I would not want to overstate it. We went from fourteen percent to nine. That is five points, and five points is about three hundred appointments a year, and three hundred appointments is a clinic that sees the people it turned away. But nine percent is not four percent, and I have no explanation for the residual nine that is better than the explanation I had before, and I have stopped pretending that the six-week telephone survey generalized. The honest position is that I know what the numbers are, that I know roughly why a third of them happen, and that I have a great deal less idea about the rest. Anyone who tells you they have solved this is describing their own data badly, and the surest sign of it is that they have a single reason."
+                                   ]
+                     }
+                 ],
+    "questions":  [
+                      {
+                          "n":  1,
+                          "p":  "p1",
+                          "kind":  "locate",
+                          "tier":  1,
+                          "trick":  1,
+                          "stem":  "According to Passage A, an office may submit a case for a series to be retained beyond its scheduled date",
+                          "options":  [
+                                          "at any time, through the stated mechanism",
+                                          "only during a scheduled review cycle",
+                                          "only if the series records the constitution",
+                                          "only where another office has already asked"
+                                      ],
+                          "answer":  "A",
+                          "key":  "at any time, through the stated mechanism",
+                          "explain":  "Paragraph 4 states that any office may submit a case for retention beyond the scheduled date, and paragraph 5 confirms the remedy exists. The other three each add a restriction the passage never imposes.",
+                          "refs":  [
+
+                                   ],
+                          "scope":  "A"
+                      },
+                      {
+                          "n":  2,
+                          "p":  "p1",
+                          "kind":  "vocab",
+                          "tier":  0,
+                          "trick":  1,
+                          "stem":  "As it is used in Passage A, the word \"appraisal\" most nearly means",
+                          "options":  [
+                                          "a monetary figure",
+                                          "a criticism",
+                                          "a formal assessment",
+                                          "an appeal"
+                                      ],
+                          "answer":  "H",
+                          "key":  "a formal assessment",
+                          "explain":  "The passage defines appraisal as a formal, documented process of examination. The other three shift it to a financial sense or to the review process, which is a separate mechanism the passage distinguishes from appraisal itself.",
+                          "refs":  [
+                                       {
+                                           "para":  0,
+                                           "text":  "a formal, documented process by which the records of an administrative body are examined"
+                                       }
+                                   ],
+                          "scope":  "A"
+                      },
+                      {
+                          "n":  3,
+                          "p":  "p2",
+                          "kind":  "evidence",
+                          "tier":  2,
+                          "trick":  3,
+                          "stem":  "The narrator in Passage B identifies which of the following as the reason her objection had no effect?",
+                          "options":  [
+                                          "the photographs had not been formally accessioned",
+                                          "her supervisor was unwilling to reconsider",
+                                          "the photographs fell outside the appraised category",
+                                          "the box had already left the building"
+                                      ],
+                          "answer":  "C",
+                          "key":  "the photographs fell outside the appraised category",
+                          "explain":  "She says the series was appraised as county clerk routine correspondence and photographs are not correspondence, which is why the research-value test could not be reached. That is a scope problem, not unwillingness and not lateness.",
+                          "refs":  [
+
+                                   ],
+                          "scope":  "B"
+                      },
+                      {
+                          "n":  4,
+                          "p":  "p2",
+                          "kind":  "tone",
+                          "tier":  2,
+                          "trick":  3,
+                          "stem":  "The tone of the final paragraph of Passage B is best described as",
+                          "options":  [
+                                          "resigned",
+                                          "apologetic",
+                                          "outraged",
+                                          "satisfied"
+                                      ],
+                          "answer":  "F",
+                          "key":  "resigned",
+                          "explain":  "She concedes she was probably right, notes the photographs would otherwise have been lost, and ends by conceding the system did what it was built to do. Anger and apology are both available earlier in the passage but neither survives into the last paragraph, and satisfaction is excluded by her not knowing.",
+                          "refs":  [
+
+                                   ],
+                          "scope":  "B"
+                      },
+                      {
+                          "n":  5,
+                          "p":  "p2",
+                          "kind":  "vocab",
+                          "tier":  0,
+                          "trick":  1,
+                          "stem":  "As it is used in Passage B, the word \"wrong\" most nearly means",
+                          "options":  [
+                                          "in the wrong place",
+                                          "incorrect",
+                                          "damaged",
+                                          "suspicious"
+                                      ],
+                          "answer":  "A",
+                          "key":  "in the wrong place",
+                          "explain":  "She says the box felt wrong, that the boxes should all weigh the same because they should hold the same thing, and that this one was heavy the way a box is heavy when something in it is not what belongs there. The sense is misplacement, not error in judgement or damage.",
+                          "refs":  [
+                                       {
+                                           "para":  2,
+                                           "text":  "this one was heavy the way a box is heavy when there is something in it that is not paper"
+                                       }
+                                   ],
+                          "scope":  "B"
+                      },
+                      {
+                          "n":  6,
+                          "p":  "p1",
+                          "kind":  "compare",
+                          "tier":  3,
+                          "trick":  2,
+                          "stem":  "The passages differ most sharply in that Passage A",
+                          "options":  [
+                                          "recommends a reform Passage B\u0027s narrator has stopped believing in",
+                                          "assumes the series is the right unit, and Passage B shows it failing",
+                                          "treats a limitation as a known cost, unlike Passage B\u0027s narrator",
+                                          "concerns record volume, whereas Passage B concerns condition"
+                                      ],
+                          "answer":  "G",
+                          "key":  "assumes the series is the right unit, and Passage B shows it failing",
+                          "explain":  "Passage A justifies series-level appraisal explicitly and locates the remedy in reopening the series, not the item. Passage B is a case where that unit classified the contents out of reach. The volume and condition readings are both false: the box was heavy, not damaged.",
+                          "refs":  [
+
+                                   ],
+                          "scope":  "both"
+                      },
+                      {
+                          "n":  7,
+                          "p":  "p1",
+                          "kind":  "compare",
+                          "tier":  3,
+                          "trick":  2,
+                          "stem":  "Compared with the narrator of Passage B, the writer of Passage A would most likely describe the review mechanism as",
+                          "options":  [
+                                          "Passage A regards the review mechanism as unnecessary, whereas Passage B treats its adequacy as settled.",
+                                          "Passage A regards the review mechanism as adequate, whereas Passage B treats its adequacy as doubtful.",
+                                          "Passage A regards the review mechanism as unreliable, whereas Passage B treats its adequacy as doubtful.",
+                                          "Passage A regards the review mechanism as discretionary, whereas Passage B treats its adequacy as settled."
+                                      ],
+                          "answer":  "B",
+                          "key":  "Passage A regards the review mechanism as adequate, whereas Passage B treats its adequacy as doubtful.",
+                          "explain":  "Passage A argues that consistency is obtained by removing judgment from disposal, and presents the criteria as sound; it needs no case-by-case discretion. Passage B\u0027s narrator, having seen the mechanism exist unused, is the one positioned to find its adequacy doubtful.",
+                          "refs":  [
+
+                                   ],
+                          "scope":  "both"
+                      },
+                      {
+                          "n":  8,
+                          "p":  "p1",
+                          "kind":  "compare",
+                          "tier":  2,
+                          "trick":  2,
+                          "stem":  "The two passages are similar in that both",
+                          "options":  [
+                                          "Both recommend reform to a retention schedule.",
+                                          "Both treat lost paperwork as an unavoidable condition.",
+                                          "Both argue officers should exercise more judgment.",
+                                          "Both present a process as sound and describe its cost."
+                                      ],
+                          "answer":  "J",
+                          "key":  "Both present a process as sound and describe its cost.",
+                          "explain":  "Passage A calls the apparatus sound and then locates the remedy in reopening the series; Passage B accepts that the system worked and cannot say otherwise. Neither recommends reform, neither argues for more individual discretion, and the paperwork framing belongs to neither.",
+                          "refs":  [
+
+                                   ],
+                          "scope":  "both"
+                      },
+                      {
+                          "n":  9,
+                          "p":  "p1",
+                          "kind":  "compare",
+                          "tier":  3,
+                          "trick":  2,
+                          "stem":  "The two passages differ in that Passage B\u0027s narrator",
+                          "options":  [
+                                          "Passage A misreads the four tests; Passage B applies them.",
+                                          "Passage B rejects the schedules\u0027 purpose; Passage A defends it.",
+                                          "Passage A treats one box as recoverable; Passage B treats only the series.",
+                                          "Passage B treats one box as recoverable; Passage A treats only the series."
+                                      ],
+                          "answer":  "D",
+                          "key":  "Passage B treats one box as recoverable; Passage A treats only the series.",
+                          "explain":  "That asymmetry is the whole misfit: Passage A puts the remedy in reopening the series, and the narrator\u0027s action treats the item as separable. She does not misread the tests, she names the research-value test accurately, and she never questions the schedules\u0027 purpose.",
+                          "refs":  [
+
+                                   ],
+                          "scope":  "both"
+                      },
+                      {
+                          "n":  10,
+                          "p":  "p3",
+                          "kind":  "purpose",
+                          "tier":  4,
+                          "trick":  1,
+                          "stem":  "The primary purpose of the passage is to",
+                          "options":  [
+                                          "argue that an animal\u0027s hearing range is shaped by what it must detect",
+                                          "describe the structure of the human cochlea in detail",
+                                          "compare the hearing of birds with that of insects",
+                                          "document the decline of ultrasonic hearing in pollinating insects"
+                                      ],
+                          "answer":  "F",
+                          "key":  "argue that an animal\u0027s hearing range is shaped by what it must detect",
+                          "explain":  "The moth opens the range argument, the table assembles it, and the wax moth returns to close it. The cochlea is one illustration among several, no birds-and-insects comparison is the point, and no decline is discussed.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  11,
+                          "p":  "p3",
+                          "kind":  "process",
+                          "tier":  1,
+                          "trick":  1,
+                          "stem":  "According to the passage, the four uses to which a barn owl\u0027s hearing is put include",
+                          "options":  [
+                                          "navigating over long distances and hearing speech",
+                                          "detecting predators and detecting approaching footsteps",
+                                          "echo-ranging insect flight and avoiding parasites",
+                                          "long-distance contact and locating prey by heartbeat"
+                                      ],
+                          "answer":  "C",
+                          "key":  "echo-ranging insect flight and avoiding parasites",
+                          "explain":  "The table gives echo-ranging insect flight to Pipistrellus and avoiding its own ultrasonic parasite to the greater wax moth. Navigation and speech belong to the pigeon and the human, and heartbeat detection is the owl\u0027s alone.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  12,
+                          "p":  "p3",
+                          "kind":  "locate",
+                          "tier":  0,
+                          "trick":  1,
+                          "stem":  "The highest frequency the passage reports for the greater wax moth is",
+                          "options":  [
+                                          "110 kHz",
+                                          "150 kHz",
+                                          "300 kHz",
+                                          "20 kHz"
+                                      ],
+                          "answer":  "H",
+                          "key":  "300 kHz",
+                          "explain":  "The moth\u0027s range is given as high as three hundred kilohertz in the opening paragraph and again in the table. 110 and 150 are the bats and the dolphin, and 20 is the human ceiling.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  13,
+                          "p":  "p3",
+                          "kind":  "vocab",
+                          "tier":  0,
+                          "trick":  1,
+                          "stem":  "As it is used in the passage, the word \"inverts\" most nearly means",
+                          "options":  [
+                                          "divides",
+                                          "reverses",
+                                          "doubles",
+                                          "ignores"
+                                      ],
+                          "answer":  "B",
+                          "key":  "reverses",
+                          "explain":  "The passage contrasts the expectation that a larger animal perceives more with the moth\u0027s small body and enormous range, and calls this an inversion of that expectation. The passage also speaks of turning aside in another sense, but here the word names a reversal.",
+                          "refs":  [
+                                       {
+                                           "para":  1,
+                                           "text":  "it inverts the expectation that an animal\u0027s sensory range ought to be a function of its size"
+                                       }
+                                   ]
+                      },
+                      {
+                          "n":  14,
+                          "p":  "p3",
+                          "kind":  "evidence",
+                          "tier":  2,
+                          "trick":  3,
+                          "stem":  "According to the table, which two groups are the only ones whose upper limit exceeds that of any bird?",
+                          "options":  [
+                                          "the greater wax moth and the domestic dog",
+                                          "the African elephant and the barn owl",
+                                          "the Pipistrellus bat and the pigeon",
+                                          "the greater wax moth and the bottlenose dolphin"
+                                      ],
+                          "answer":  "J",
+                          "key":  "the greater wax moth and the bottlenose dolphin",
+                          "explain":  "The footnote identifies them as the two echolocating entries, which are the greater wax moth at 300 and the dolphin at 150. The dog reaches 45, and every bird in the table is at or below 12, so both named groups are correct and the alternatives are not.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  15,
+                          "p":  "p3",
+                          "kind":  "evidence",
+                          "tier":  4,
+                          "trick":  2,
+                          "stem":  "Which detail most directly challenges the traditional account of sensory evolution?",
+                          "options":  [
+                                          "the pigeon requires no high frequencies in order to navigate",
+                                          "the owl\u0027s cochlea is no better a receptor than a human cochlea",
+                                          "the elephant occupies a band that a human being perceives as pressure rather than sound",
+                                          "the wax moth\u0027s auditory system is small and lightly built, yet it holds the highest upper limit measured"
+                                      ],
+                          "answer":  "D",
+                          "key":  "the wax moth\u0027s auditory system is small and lightly built, yet it holds the highest upper limit measured",
+                          "explain":  "The traditional account held that more complex structure produced more range, and the passage says it does not survive contact with a moth whose system is small and lightly built and which nonetheless exceeds every vertebrate. The other three are consistent with either account.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  16,
+                          "p":  "p3",
+                          "kind":  "inference",
+                          "tier":  2,
+                          "trick":  3,
+                          "stem":  "The passage\u0027s discussion of a species that is well adapted to a world that then changes is used to show that",
+                          "options":  [
+                                          "adaptation usually results from competition",
+                                          "an animal\u0027s range can become a fixed boundary",
+                                          "evolution acts faster on hearing than other traits",
+                                          "natural selection cannot be seen in one species"
+                                      ],
+                          "answer":  "G",
+                          "key":  "an animal\u0027s range can become a fixed boundary",
+                          "explain":  "The passage says an owl will not acquire upper frequencies unless its ecosystem changes in a particular way, and that a range which was an advantage becomes a boundary that cannot be crossed from inside. That is a limit argument, not a competition or observation argument.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  17,
+                          "p":  "p3",
+                          "kind":  "process",
+                          "tier":  2,
+                          "trick":  1,
+                          "stem":  "Which choice most accurately captures the sequence by which the passage says an animal\u0027s hearing comes to match its requirements?",
+                          "options":  [
+                                          "requirements arise, structure follows, and the range settles at whatever the structure permits",
+                                          "structure varies first, and requirements then adapt to the range available",
+                                          "requirements and structure develop together, with neither leading",
+                                          "range is set by body size, and requirements follow from the range"
+                                      ],
+                          "answer":  "A",
+                          "key":  "requirements arise, structure follows, and the range settles at whatever the structure permits",
+                          "explain":  "The passage says the appropriate solution over a large number of generations was to extend the range until the predator\u0027s signal fell inside it, and concludes that the shape of the organ follows the shape of the requirement. Size is explicitly rejected as the driver.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  18,
+                          "p":  "p3",
+                          "kind":  "locate",
+                          "tier":  2,
+                          "trick":  1,
+                          "stem":  "The passage\u0027s final comparison between the moth and the bat is intended to establish that",
+                          "options":  [
+                                          "moths hear better than bats",
+                                          "bats alone use echo-ranging",
+                                          "the ceiling of the audible spectrum is not a constant",
+                                          "comparing two species\u0027 hearing is meaningless"
+                                      ],
+                          "answer":  "H",
+                          "key":  "the ceiling of the audible spectrum is not a constant",
+                          "explain":  "The passage calls hearing better a meaningless question and uses the comparison to show the ceiling is set by circumstance and therefore moves. The third option is contradicted by the footnote\u0027s reference to two echolocating entries, and the fourth is stated as a dismissive aside rather than the conclusion.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  19,
+                          "p":  "p4",
+                          "kind":  "purpose",
+                          "tier":  4,
+                          "trick":  1,
+                          "stem":  "The main purpose of the passage is to",
+                          "options":  [
+                                          "compare the cost of concrete and timber park benches",
+                                          "explain how park furniture came to discourage a particular use",
+                                          "propose a redesign of public seating",
+                                          "argue that landscape architects should consult park users"
+                                      ],
+                          "answer":  "B",
+                          "key":  "explain how park furniture came to discourage a particular use",
+                          "explain":  "The passage traces a design purpose through procurement to installation and declines to call it error. Cost is raised once to rule it out, and both redesign and consultation are explicitly set aside in the closing paragraph.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  20,
+                          "p":  "p4",
+                          "kind":  "chronology",
+                          "tier":  1,
+                          "trick":  1,
+                          "stem":  "According to the passage, which of the following occurred first?",
+                          "options":  [
+                                          "the flat slatted timber bench was displaced by the concrete form",
+                                          "the division down the middle of a concrete seat was given a name in the trade",
+                                          "a procurement schedule documented the purpose of a dividing bar",
+                                          "the two designs were placed side by side for comparison"
+                                      ],
+                          "answer":  "F",
+                          "key":  "the flat slatted timber bench was displaced by the concrete form",
+                          "explain":  "The displacement is the event that within two decades made the concrete form the norm, and the naming, the documentation, and the comparison are all described as features of the resulting situation. The passage supplies no earlier date for the timber bench, so the displacement is the earliest datable event among the four.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  21,
+                          "p":  "p4",
+                          "kind":  "vocab",
+                          "tier":  0,
+                          "trick":  1,
+                          "stem":  "As it is used in the passage, the word \"euphemism\" most nearly means",
+                          "options":  [
+                                          "an official class",
+                                          "an exaggeration",
+                                          "a borrowed term",
+                                          "a mild substitute"
+                                      ],
+                          "answer":  "D",
+                          "key":  "a mild substitute",
+                          "explain":  "The passage says the features are described functionally and without euphemism, in a context where their purpose is to stop a person lying or sleeping down. The word therefore names a softening of an unpleasant description.",
+                          "refs":  [
+                                       {
+                                           "para":  3,
+                                           "text":  "described functionally and without euphemism"
+                                       }
+                                   ]
+                      },
+                      {
+                          "n":  22,
+                          "p":  "p4",
+                          "kind":  "compare",
+                          "tier":  2,
+                          "trick":  2,
+                          "stem":  "The passage draws a contrast between the bench as counted in an inventory and the bench as used, on the grounds that",
+                          "options":  [
+                                          "inventory counts are usually inaccurate",
+                                          "the two are maintained by different authorities",
+                                          "seat numbers have fallen even where the description holds",
+                                          "the count remains accurate while the description of what is counted is not"
+                                      ],
+                          "answer":  "J",
+                          "key":  "the count remains accurate while the description of what is counted is not",
+                          "explain":  "The passage says the bench is still in the inventory and still counted in assessments of amenity, and that the count is accurate while the description is not, because what was removed was permission. The fall in seat numbers is explicitly denied two paragraphs earlier.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  23,
+                          "p":  "p4",
+                          "kind":  "inference",
+                          "tier":  2,
+                          "trick":  2,
+                          "stem":  "The statement that a purpose was \"achieved so efficiently that the achievement is now invisible\" is used mainly to",
+                          "options":  [
+                                          "explain why the design is not called a failure",
+                                          "criticise the contractors who installed the benches",
+                                          "show that the public rarely uses park furniture",
+                                          "suggest cheaper designs would work as well"
+                                      ],
+                          "answer":  "A",
+                          "key":  "explain why the design is not called a failure",
+                          "explain":  "The passage has already ruled out economy, and the closing paragraph says the bench has not failed but has performed. Invisibility to commissioners and unremarkableness to residents are the two parties the passage contrasts, which is what makes it hard to call a failure.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  24,
+                          "p":  "p4",
+                          "kind":  "evidence",
+                          "tier":  2,
+                          "trick":  3,
+                          "stem":  "Which group does the passage identify as most affected by the loss of usable seating?",
+                          "options":  [
+                                          "landscape architects",
+                                          "those for whom a bench is a necessity, not a convenience",
+                                          "contractors working to a schedule",
+                                          "people who live beside the park"
+                                      ],
+                          "answer":  "G",
+                          "key":  "those for whom a bench is a necessity, not a convenience",
+                          "explain":  "The passage names a population that is not small and not visible to those who commission benches, requiring a flat surface of a particular width. Architects, contractors, and residents are all named in the passage but as the parties the change is invisible to, not as those affected by it.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  25,
+                          "p":  "p4",
+                          "kind":  "inference",
+                          "tier":  3,
+                          "trick":  2,
+                          "stem":  "The author would most likely agree that a redesign of public seating",
+                          "options":  [
+                                          "is the most useful response to the problem described",
+                                          "would be effective if accompanied by a formal vote",
+                                          "addresses the wrong question, since no design is at fault",
+                                          "should be required before any further installation"
+                                      ],
+                          "answer":  "C",
+                          "key":  "addresses the wrong question, since no design is at fault",
+                          "explain":  "The closing paragraph says the bench has not failed, has performed, and that what we are looking at is not an error in the making of something. It also says nobody is in a position to say no, which locates the problem in authority rather than in the object.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  26,
+                          "p":  "p4",
+                          "kind":  "locate",
+                          "tier":  1,
+                          "trick":  1,
+                          "stem":  "The gap beneath the seat of a concrete bench is described as intended to prevent",
+                          "options":  [
+                                          "a person from lying down",
+                                          "rain from collecting",
+                                          "a person from sleeping",
+                                          "a person from damaging the surface"
+                                      ],
+                          "answer":  "H",
+                          "key":  "a person from sleeping",
+                          "explain":  "The division prevents lying down and the underseat gap prevents sleeping, in that order. The passage is explicit that the gap exists for the second purpose and not the first.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  27,
+                          "p":  "p4",
+                          "kind":  "inference",
+                          "tier":  3,
+                          "trick":  2,
+                          "stem":  "The author\u0027s closing claim is best understood as a claim about",
+                          "options":  [
+                                          "the expense of municipal procurement",
+                                          "the absence of any point at which a question could be asked",
+                                          "landscape architects\u0027 failure to understand needs",
+                                          "the public\u0027s tolerance of inconvenience"
+                                      ],
+                          "answer":  "B",
+                          "key":  "the absence of any point at which a question could be asked",
+                          "explain":  "Paragraph 3 says the design entered the world through a chain of standards in which nobody asked what the standard was for, and the closing sentence says nobody is in a position to say no. The two together locate the cause in a chain with no decision point, not in cost, incompetence, or public tolerance.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  28,
+                          "p":  "p5",
+                          "kind":  "purpose",
+                          "tier":  4,
+                          "trick":  1,
+                          "stem":  "The primary purpose of the passage is to",
+                          "options":  [
+                                          "argue that missed appointments reflect a scheduling failure rather than patient forgetfulness",
+                                          "describe a survey of why patients miss appointments",
+                                          "explain how the narrator\u0027s profession is misunderstood",
+                                          "report the financial cost of unused appointment slots"
+                                      ],
+                          "answer":  "F",
+                          "key":  "argue that missed appointments reflect a scheduling failure rather than patient forgetfulness",
+                          "explain":  "The passage rejects the standard explanation in paragraph 3 and supports the scheduling account with survey data and a changed book. The survey is evidence for that claim rather than the subject, and cost appears in the same paragraph as the numbers.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  29,
+                          "p":  "p5",
+                          "kind":  "locate",
+                          "tier":  1,
+                          "trick":  1,
+                          "stem":  "According to the passage, the practice turned away how many patients for lack of an available appointment?",
+                          "options":  [
+                                          "nine hundred",
+                                          "four thousand two hundred",
+                                          "sixty-one",
+                                          "one thousand and ninety"
+                                      ],
+                          "answer":  "D",
+                          "key":  "one thousand and ninety",
+                          "explain":  "The figure given for patients turned away is one thousand and ninety. Nine hundred is the size of the book, four thousand two hundred is the annual loss of appointments, and sixty-one is the single change\u0027s annual recovery.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  30,
+                          "p":  "p5",
+                          "kind":  "evidence",
+                          "tier":  3,
+                          "trick":  2,
+                          "stem":  "Which of the following does the passage present as evidence against the explanation that patients forget their appointments?",
+                          "options":  [
+                                          "the reminders reached some disconnected numbers",
+                                          "the no-show rate is higher for new patients",
+                                          "the practice ran at seventy-nine percent",
+                                          "most patients telephoned said they had known"
+                                      ],
+                          "answer":  "J",
+                          "key":  "most patients telephoned said they had known",
+                          "explain":  "The survey was made specifically to test the forgetting explanation, and the finding that a clear majority said they had known directly undercuts it. The other three are all consistent with forgetting being real, or bear on capacity rather than on memory.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  31,
+                          "p":  "p5",
+                          "kind":  "process",
+                          "tier":  1,
+                          "trick":  1,
+                          "stem":  "Which choice most accurately captures the order in which the practice made its changes?",
+                          "options":  [
+                                          "moved times, then allowed text cancellation, then closed the book earlier",
+                                          "adjusted reminder wording, then shortened booking, then moved times",
+                                          "closed the book earlier, then moved times, then altered reminders",
+                                          "altered reminders, then allowed text cancellation, then shortened booking"
+                                      ],
+                          "answer":  "A",
+                          "key":  "moved times, then allowed text cancellation, then closed the book earlier",
+                          "explain":  "The changes are given as moving a hundred and forty appointments out of the worst slots, then allowing fortnight\u0027s notice by text, then closing the book to new booking at four-thirty. The reminder system is not changed at all, which rules out three of the four.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  32,
+                          "p":  "p5",
+                          "kind":  "tone",
+                          "tier":  2,
+                          "trick":  3,
+                          "stem":  "The narrator\u0027s attitude toward her own profession in the final paragraph is best described as",
+                          "options":  [
+                                          "defensive",
+                                          "dismissive",
+                                          "candid",
+                                          "ambitious"
+                                      ],
+                          "answer":  "H",
+                          "key":  "candid",
+                          "explain":  "She reports a real improvement, declines to overstate it, admits nine percent is unexplained, and criticises colleagues who claim a single reason. That is candour about the limits of her own evidence, not defensiveness and not ambition.",
+                          "refs":  [
+                                       {
+                                           "para":  5,
+                                           "text":  "I have a great deal less idea about the rest."
+                                       }
+                                   ]
+                      },
+                      {
+                          "n":  33,
+                          "p":  "p5",
+                          "kind":  "compare",
+                          "tier":  2,
+                          "trick":  2,
+                          "stem":  "The passage contrasts the practice\u0027s operating rate with its rate of turning patients away in order to show that",
+                          "options":  [
+                                          "the two figures are calculated differently",
+                                          "turning patients away is compatible with unused capacity",
+                                          "capacity should be measured by volume not slots",
+                                          "the book should close to new booking"
+                                      ],
+                          "answer":  "B",
+                          "key":  "turning patients away is compatible with unused capacity",
+                          "explain":  "The passage gives both figures in order to make the point that seventy-nine percent is not full but a book with holes shaped like the hours people cannot attend. Nothing in it suggests a calculation difference or that the book should close.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  34,
+                          "p":  "p5",
+                          "kind":  "evidence",
+                          "tier":  2,
+                          "trick":  1,
+                          "stem":  "The passage offers the cancellation-by-text figure as support for which claim?",
+                          "options":  [
+                                          "late cancellation is never significant",
+                                          "a low-cost change recovers appointments cheaply",
+                                          "patients prefer text to telephone",
+                                          "the eight-thirty slot is always in demand"
+                                      ],
+                          "answer":  "G",
+                          "key":  "a low-cost change recovers appointments cheaply",
+                          "explain":  "The fortnight\u0027s notice by text is introduced as costing nothing and being cancelled at a rate of under four percent, which is offered as one of several low-cost recoveries. The passage does not say late cancellation is never significant, nor does it compare communication channels.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  35,
+                          "p":  "p5",
+                          "kind":  "inference",
+                          "tier":  0,
+                          "trick":  2,
+                          "stem":  "According to the passage, the most defensible estimate of the share of missed appointments now explained by the narrator\u0027s account is",
+                          "options":  [
+                                          "a small minority",
+                                          "nine tenths",
+                                          "roughly half",
+                                          "all of them"
+                                      ],
+                          "answer":  "C",
+                          "key":  "roughly half",
+                          "explain":  "She says she knows why a third of them happen and has much less idea about the rest, and the standard explanation is what the survey displaced for just over half the missed patients. Nine tenths is the improvement, not the explained share.",
+                          "refs":  [
+
+                                   ]
+                      },
+                      {
+                          "n":  36,
+                          "p":  "p5",
+                          "kind":  "locate",
+                          "tier":  2,
+                          "trick":  2,
+                          "stem":  "The passage\u0027s final remark about colleagues who claim to have solved the problem is best understood as",
+                          "options":  [
+                                          "a single-cause explanation usually rests on poor data",
+                                          "the residual nine percent cannot be reduced",
+                                          "a defence of the narrator\u0027s survey method",
+                                          "other practices have worse no-show rates"
+                                      ],
+                          "answer":  "F",
+                          "key":  "a single-cause explanation usually rests on poor data",
+                          "explain":  "The surest sign she offers of a bad description is having a single reason, which is a general caution rather than a claim about the residual nine percent or about other practices. She has already conceded she cannot generalise her own survey.",
+                          "refs":  [
+
+                                   ]
+                      }
+                  ]
+}

@@ -104,15 +104,15 @@ function readTestFile(path) {
   }
 }
 
-const server = new McpServer({ name: "act-share", version: "1.0.0" });
+const server = new McpServer({ name: "act-share", version: "1.1.0" });
 
 server.registerTool(
   "generate_act_link",
   {
     description:
-      "Store an ACTprep test (reading, english, find, or math) in Supabase and return a share link that works for 24 hours, then auto-expires. Reading paras are plain strings; english paras are span arrays [{t}, {u:n,t}, {box}; find questions use answers spans, not options/answer; math questions use statement plus options, with optional theory intro and theoryBreaks between questions. For big payloads, write the test JSON to a .json file and pass testFile instead of test.",
+      "Store an ACTprep test (reading, english, find, or math) in Supabase and return a share link that works for 24 hours, then auto-expires. Reading paras are plain strings; english paras are span arrays [{t}, {u:n,t}, {box}; find questions use answers spans, not options/answer; math questions use statement plus options, with optional theory intro and theoryBreaks between questions. For big payloads, write the test JSON to a .json file and pass testFile instead of test. To extend a link past 24h, remove its expiry, or revive an expired one, use update_shared_test_expiry afterwards.",
     inputSchema: {
-      section: z.enum(["reading", "english", "find", "math"]).describe("Test section. Must match the JSON shape."),
+      section: z.enum(["reading", "english", "find", "math", "gaps"]).describe("Test section. Must match the JSON shape."),
       test: TestPayload.describe("Full test object, inline (small payloads only)."),
       testFile: z.string().optional().describe("Absolute path to a .json or .cjs file holding the full test object (big payloads; .cjs uses module.exports = {...}). Takes precedence over test."),
       mode: z.enum(["untimed", "timed"]).optional().describe("Link timing mode. Default untimed."),
@@ -203,7 +203,7 @@ server.registerTool(
     }
     if (!data) {
       return {
-        content: [{ type: "text", text: `No live share found for "${clean}". It has expired (24h) or never existed.` }],
+        content: [{ type: "text", text: `No live share found for "${clean}". It has expired, was deleted, or never existed.` }],
         isError: true,
       };
     }
@@ -218,7 +218,7 @@ server.registerTool(
             `Title: ${data.title}`,
             `Section: ${data.section}`,
             `Questions: ${total}`,
-            `Expires: ${data.expires_at}`,
+            `Expires: ${data.expires_at ? data.expires_at : "Never (no expiry)"}`,
             `URL: ${SHARE_BASE_URL}/${data.slug}`,
           ].join("\n"),
         },
@@ -261,6 +261,81 @@ server.registerTool(
     }
     return {
       content: [{ type: "text", text: `Deleted share link "${clean}" completely. Its URL now shows the expired-link page.` }],
+    };
+  }
+);
+
+server.registerTool(
+  "update_shared_test_expiry",
+  {
+    description:
+      "Change a share link's expiry by slug: extend it by days (up to 3650, e.g. 365 for 1 year) or clear it for never-expires. Requires SUPABASE_SERVICE_ROLE_KEY in the MCP server environment (anon keys cannot change expiry by design). Works on live and already-expired-but-present rows (revives them); rows the daily purge already deleted must be regenerated.",
+    inputSchema: {
+      slug: z.string().describe("The slug from the share URL (the part after actprep.vercel.app/ or /s/)."),
+      days: z.number().positive().max(3650).optional().describe("Days from now the link stays live (e.g. 365 = 1 year). Give exactly one of days / never."),
+      never: z.boolean().optional().describe("Set true to clear expiry: the link never expires. Give exactly one of days / never."),
+    },
+  },
+  async ({ slug, days, never }) => {
+    if (!SERVICE_KEY) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Expiry change refused: the MCP server runs on an anon key, which has no update grant by design (any visitor could otherwise extend links). Set SUPABASE_SERVICE_ROLE_KEY and restart the server to enable it.",
+          },
+        ],
+        isError: true,
+      };
+    }
+    const useNever = never === true;
+    const useDays = typeof days === "number" && Number.isFinite(days);
+    if (useNever === useDays) {
+      return {
+        content: [{ type: "text", text: "Give exactly one of days (positive number, max 3650) or never: true." }],
+        isError: true,
+      };
+    }
+    const clean = String(slug || "").trim().replace(/^.*\//, "");
+    const sb = supabase();
+    const { data: row, error: readError } = await sb
+      .from("share_links")
+      .select("slug, expires_at")
+      .eq("slug", clean)
+      .maybeSingle();
+    if (readError) {
+      return { content: [{ type: "text", text: `Lookup failed: ${readError.message}` }], isError: true };
+    }
+    if (!row) {
+      return {
+        content: [{ type: "text", text: `No share found for "${clean}". Already purged, deleted, or never existed — regenerate the link instead.` }],
+        isError: true,
+      };
+    }
+    let expiresAt = null;
+    if (!useNever) {
+      const at = Date.now() + (days * 24 * 60 - 10) * 60 * 1000;
+      if (!(at > Date.now())) {
+        return {
+          content: [{ type: "text", text: `Days value ${days} lands in the past after the 10-minute clock-skew margin. Use a larger value.` }],
+          isError: true,
+        };
+      }
+      expiresAt = new Date(at).toISOString();
+    }
+    const { error: upError } = await sb.from("share_links").update({ expires_at: expiresAt }).eq("slug", clean);
+    if (upError) {
+      return { content: [{ type: "text", text: `Expiry update failed: ${upError.message}` }], isError: true };
+    }
+    return {
+      content: [
+        {
+          type: "text",
+          text: useNever
+            ? `Share link "${clean}" now never expires. The live URL works immediately, no redeploy needed.`
+            : `Share link "${clean}" now expires ${expiresAt} (${days} days). The live URL picks it up immediately, no redeploy needed.`,
+        },
+      ],
     };
   }
 );

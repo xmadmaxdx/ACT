@@ -406,9 +406,56 @@ export function normalizeFind(raw) {
   };
 }
 
+export function normalizeGaps(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error("Test must be a JSON object with text + gaps.");
+  }
+  const mode = raw.mode === "passage" ? "passage" : "single";
+  const text = String(raw.text || "");
+  if (text.length === 0) throw new Error("Gaps test needs a non-empty text string.");
+  const gaps = Array.isArray(raw.gaps) ? raw.gaps : [];
+  if (gaps.length === 0) throw new Error("Gaps test needs at least 1 gap.");
+  const clean = gaps.map((g, k) => {
+    if (!g || typeof g !== "object") throw new Error(`Gap ${k}: must be an object.`);
+    if (typeof g.answer !== "string" || g.answer.length === 0) {
+      throw new Error(`Gap ${k}: needs a non-empty answer.`);
+    }
+    if (typeof g.shown !== "string" || g.shown.length === 0 || !g.answer.startsWith(g.shown)) {
+      throw new Error(`Gap ${k}: shown must be a non-empty prefix of the answer.`);
+    }
+    if (!Number.isInteger(g.start) || g.start < 0 || g.start + g.answer.length > text.length) {
+      throw new Error(`Gap ${k}: start offset out of bounds.`);
+    }
+    if (text.slice(g.start, g.start + g.answer.length) !== g.answer) {
+      throw new Error(`Gap ${k}: answer does not match text at offset.`);
+    }
+    return { answer: g.answer, shown: g.shown, start: g.start };
+  });
+  const sorted = clean.slice().sort((a, b) => a.start - b.start);
+  for (let k = 1; k < sorted.length; k++) {
+    if (sorted[k].start < sorted[k - 1].start + sorted[k - 1].answer.length) {
+      throw new Error("Gaps offsets overlap.");
+    }
+  }
+  const total = sorted.length;
+  let timeSeconds = Number(raw.timeSeconds);
+  if (!timeSeconds || timeSeconds <= 0) timeSeconds = mode === "passage" ? 180 : 20;
+  return {
+    id: raw.id || "SHARED-GAPS-1",
+    title: raw.title || "Shared Gaps",
+    section: "gaps",
+    mode,
+    total,
+    timeSeconds,
+    text,
+    gaps: sorted,
+  };
+}
+
 export function normalizeTest(section, raw) {
   if (section === "find") return normalizeFind(raw);
   if (section === "math") return normalizeMath(raw);
+  if (section === "gaps") return normalizeGaps(raw);
   return normalizeMcq(section, raw);
 }
 

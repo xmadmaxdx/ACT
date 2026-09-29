@@ -1,0 +1,26 @@
+{
+  "form": "sec5",
+  "figurePassage": "p3",
+  "numbersPassage": "p5",
+  "pair": ["p1", "p2"],
+  "slots": [
+    { "slot": 1, "genre": "pair",            "passages": ["p1","p2"], "modes": ["M3","M4"], "registers": ["academic","informal"] },
+    { "slot": 2, "genre": "natural-science","passages": ["p3"],      "modes": ["M1"],     "registers": ["formal"] },
+    { "slot": 3, "genre": "humanities",     "passages": ["p4"],      "modes": ["M5"],     "registers": ["conversational"] },
+    { "slot": 4, "genre": "social-science", "passages": ["p5"],      "modes": ["M6"],     "registers": ["semi-formal"] }
+  ],
+  "endings": {
+    "p1": "declarative-hinge",
+    "p2": "resigned-concession",
+    "p3": "constant-that-moves",
+    "p4": "no-one-can-say-no",
+    "p5": "single-reason-caution"
+  },
+  "traps": {
+    "p1": "series-vs-item",
+    "p2": "category-exclusion",
+    "p3": "size-vs-requirement",
+    "p4": "nobody-asked",
+    "p5": "known-but-absent"
+  }
+}

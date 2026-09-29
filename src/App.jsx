@@ -9,6 +9,7 @@ import Chapters from "./components/Chapters.jsx";
 import TestInfo from "./components/TestInfo.jsx";
 import TestScreen from "./components/TestScreen.jsx";
 import FindScreen from "./components/FindScreen.jsx";
+import GapsScreen from "./components/GapsScreen.jsx";
 import Results from "./components/Results.jsx";
 import ComboResults from "./components/ComboResults.jsx";
 import JsonStart from "./components/JsonStart.jsx";
@@ -93,6 +94,7 @@ export default function App() {
   const [jsonOpen, setJsonOpen] = useState(false);
   const [jsonSection, setJsonSection] = useState("reading");
   const [isShare, setIsShare] = useState(false);
+  const [gapsMode, setGapsMode] = useState(null);
   const sessionRef = useRef(null);
   sessionRef.current = session;
   const customRef = useRef(null);
@@ -135,10 +137,14 @@ export default function App() {
         if (pending && !sessionRef.current) {
           if (pendingShare) {
             if (shared && !shared.__shareError) {
+              const sharedSection = String(shared.section || "").toLowerCase();
               const skill = {
                 id: shared.id,
                 title: shared.title,
-                meta: `${shared.total} questions · shared link`,
+                meta:
+                  sharedSection === "gaps"
+                    ? `${shared.total} gaps · shared link`
+                    : `${shared.total} questions · shared link`,
               };
               setCustomTestData(shared);
               customRef.current = shared;
@@ -237,6 +243,14 @@ export default function App() {
     setIsShare(false);
     window.history.pushState({}, "", slugFor(skill));
     setRoute("test");
+    window.scrollTo(0, 0);
+  }, []);
+
+  const startGaps = useCallback((mode) => {
+    setGapsMode(mode === "passage" ? "passage" : "single");
+    setIsShare(false);
+    window.history.pushState({}, "", "/practice");
+    setRoute("gaps");
     window.scrollTo(0, 0);
   }, []);
 
@@ -369,6 +383,10 @@ export default function App() {
     return <Loader />;
   }
 
+  if (route === "gaps" && gapsMode) {
+    return <GapsScreen mode={gapsMode} onExit={() => navigate("practice")} />;
+  }
+
   if (route === "test" && session) {
     const reviewing = reviewIndex !== null;
     const custom = customTestData;
@@ -378,6 +396,16 @@ export default function App() {
           key={`${session.skill.id}-find`}
           testData={custom}
           mode={session.mode}
+          onExit={exitTest}
+        />
+      );
+    }
+    if (custom && custom.id === session.skill.id && (custom.section || "").toLowerCase() === "gaps" && !reviewing) {
+      return (
+        <GapsScreen
+          key={`${session.skill.id}-gaps`}
+          mode={custom.mode === "passage" ? "passage" : "single"}
+          testData={custom}
           onExit={exitTest}
         />
       );
@@ -507,6 +535,7 @@ export default function App() {
           ) : route === "practice" ? (
             <Practice
               onStartTest={startTest}
+              onStartGaps={startGaps}
               passageTests={catalog.filter((t) => /-P\d+$/.test(t.id))}
             />
           ) : (
