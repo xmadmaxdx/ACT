@@ -1,4 +1,4 @@
-/* Manual gaps bank: 60 hand-written passages for PIN-free offline play.
+/* Manual gaps bank: 100 hand-written passages for PIN-free offline play.
    Full passages (~100+ words each) with titles. Every sentence is
    gap-capable (content words length 4+, no mid-sentence proper nouns),
    enforced by scripts/verify-gaps.cjs — fix sentences there, never weaken
@@ -245,5 +245,185 @@ export const GAPS_BANK = [
   {
     title: "Evening Run",
     text: "Streetlights buzz awake one by one. Breath clouds briefly in the cooling air. Legs find their rhythm near the second mile. Dogs bark encouragement from dark yards. Porch lights guide the easy way home. Stretches hurt in the best way.",
+  },
+  {
+    title: "Hardware Store",
+    text: "Every aisle holds a small kingdom of metal drawers. He walks in for one washer and leaves planning a project. Shelves hide screws sorted by size and head. A retired clerk fixes flat tires for free. Advice arrives faster than the desired part. The receipt reads like a small essay. He returns on Sunday for tape.",
+  },
+  {
+    title: "Thrift Store",
+    text: "Racks of donated coats smell faintly of other wardrobes. She checks every seam before trying anything on. A hand mixer costs less than the new model. Children ignore the toys section completely. Patience is the only currency this place accepts. Some things deserve a second owner. She carries four bags to the car.",
+  },
+  {
+    title: "Post Office",
+    text: "The lobby smells of ink and old paper. Senders argue quietly about lost packages. A clerk tapes every box twice for safety. Christmas queues begin before the doors open. Postage machines reject foreign addresses kindly. Somebody always mails a letter to themselves. The wall of yellow PO boxes tells small local histories.",
+  },
+  {
+    title: "Dry Cleaner",
+    text: "Fresh plastic covers every finished coat. Hangers squeak along a long metal rail. Starch and heat make the whole shop smell warm. Customers track winter mud across the tile. Each garment receives a numbered tag. Wrinkles vanish under a heavy iron. They hand back your life pressed and folded.",
+  },
+  {
+    title: "Pharmacy",
+    text: "Bright rows of boxes line the walls in perfect grids. A tired clerk swipes plastic cards without looking up. The queue moves at exactly one patient per minute. Vitamins promise energy in large friendly letters. Insurance paperwork decides who waits longer. Cold medicine tastes like blue sugar. Everyone leaves holding a small plastic bag.",
+  },
+  {
+    title: "Gas Station",
+    text: "Fluorescent lights make everyone look slightly ill. The coffee machine hums beside a rack of stale doughnuts. An attendant washes a windshield without being asked. Highway noise makes speech feel impossible. Ice pellets rattle the bucket in the corner. Payment happens faster than the coffee finishes. The car smells faintly of paper air fresheners.",
+  },
+  {
+    title: "Bike Lane",
+    text: "Commuters pedal past with helmets and tote bags. Delivery riders weave the gaps between parked cars. Drivers brake harder than physics would suggest. Children practice balance on the painted symbols. A dog walker crosses whenever the light allows. The lane belongs to everyone on a weekday evening. Nobody speeds through this particular stretch.",
+  },
+  {
+    title: "Tailor Fitting",
+    text: "She stands on a small wooden riser while fabric speaks. Pins prick gently at her hip. A mirror shows the garment from every tired angle. The tailor hums while measuring without hurry. Trousers need shortening by two inches exactly. Steam rises from the iron at the end. She walks out feeling newly assembled.",
+  },
+  {
+    title: "Corner Deli",
+    text: "Cold cuts shine under fluorescent light behind glass. The counter man knows the regular order by heart. Mustard spreads unevenly on thick rye bread. Conversation runs to sports and weather again. Chairs scrape loudly on the tile floor. Coffee refills cost nothing if you ask politely. Lunch crowds out the quiet by noon.",
+  },
+  {
+    title: "Record Shop",
+    text: "Crate diggers flip albums with careful fingers. A tester needle drops before every listening sample. Owner knowledge supplies the better recommendation. Jazz sits near the window for some reason. Every used sleeve carries the previous owner's initials. Silence falls somewhere after the third track. Bagpipes ruin about one album per decade.",
+  },
+  {
+    title: "Toy Store",
+    text: "Plastic horses cast small shadows on the carpet. A child tests every keyboard twice before deciding. Bright blocks stack badly and perfectly both. The assistant wears a name badge and infinite patience. Birthday lists start arriving in January. Gift wrapping adds silver ribbons everywhere. Nobody leaves without buying a spare battery.",
+  },
+  {
+    title: "Locksmith",
+    text: "Tiny screws rest in a magnetic tray. The old lock was simpler than anything modern. He explains each step without rushing his hands. A key blank gets filed by patient strokes. The new cylinder turns with a satisfying click. Lockouts happen at the worst hours. Trust is the biggest part of the job.",
+  },
+  {
+    title: "Art Supply Store",
+    text: "Colours march in strict order along the wall. Watercolours bleed into each other in the display tray. The clerk recommends a brush handle for small hands. Cheap paper buckles under heavy water. Mixing jars smell faintly of plastic. Every serious artist owns far more pigment than canvas.",
+  },
+  {
+    title: "Furniture Store",
+    text: "Room settings pretend that nobody actually cooks. Mattresses get raked with a wooden stage prop. Somebody naps on every display sofa within minutes. Delivery dates slide quietly across calendars. Assembly instructions are famously unusable. Drawer slides squeak forever if ignored. Nobody buys the rug in the corner display.",
+  },
+  {
+    title: "Shoe Repair",
+    text: "Leather smells strongly near the window seats. The cobbler draws stitches before he cuts anything. A heel cap goes on crooked and comes back straighter. Customers bring boots that survived real weather. Glue dries overnight under heavy weight. Money changes hands in coins and small bills. The shop closes early on rainy days.",
+  },
+  {
+    title: "Book Fair",
+    text: "Long tables hold stacks sorted by nothing in particular. Authors queue beside their own novels. Readers bend spines before buying anything. Someone always asks for the entire plot of a novel. Balloons mark the correct table from far away. Signing lines stretch around the corner. Popular titles disappear before lunch.",
+  },
+  {
+    title: "Seasonal Market",
+    text: "Plastic crates vanish under mounds of orange fruit. A chalkboard lists prices that change by the pound. Customers argue gently about which peach variety ripens faster. Bees investigate every opened box. Scales sit slightly level despite constant use. Autumn arrives in plastic bags. Vendors wave goodbye long before the light fades.",
+  },
+  {
+    title: "Rooftop Garden",
+    text: "Raised beds fill the roof above busy traffic. Bees work the purple flowers in patient circles. Wind up here arrives faster than expected. Someone waters everything twice on hot days. The city looks almost peaceful from up here. Lunch breaks happen against the low gray wall. The elevator smells faintly of rosemary.",
+  },
+  {
+    title: "Rehearsal Room",
+    text: "Chairs scrape into a rough half circle every time. The director speaks softly so everyone leans inward. Sheet music litters every flat surface. Warmups involve grumbling and much stretching. Someone forgets the blocking entirely. Applause from outside echoes down the hallway. Runners end with cold water and loud complaints.",
+  },
+  {
+    title: "Open Mic Night",
+    text: "A hand-lettered sign claims six minutes per reader. The room fills slowly with nervous laughter. Someone plays a song without announcing the title. Chairs scrape when the applause starts. The host reads the next name kindly. A poem about a train lands better than expected. The lights come up far too early.",
+  },
+  {
+    title: "Community Choir",
+    text: "Music stands hide most of the folding chairs. The director stops everyone with two fingers raised. Breath marks arrive at completely different times. Section leaders keep time with expressive hands. Someone always enters one bar early. The final chord hangs longer than strictly necessary. Sheet music gets collected in silent stacks.",
+  },
+  {
+    title: "Piano Lesson",
+    text: "Sheet music gathers dust above the closed lid. A metronome counts beside the window. Fingers hesitate over keys they have forgotten. The teacher plays the phrase properly once. Practice scales turn into mindless repetition. Coffee helps more than talent at this hour. The window reflects everything happening inside the room.",
+  },
+  {
+    title: "Dance Studio",
+    text: "Mirrors multiply every stretch across the wood. They make every mistake visible and useful. Counted steps echo off high ceilings. Sneakers squeak during the fast combinations. Hair ties live permanently in pockets. The pianist repeats difficult music on request. Nobody notices the whole hour flying past.",
+  },
+  {
+    title: "Trail Camera Shop",
+    text: "Memory cards come in cases of fifty. Screens show blurry deer caught mid-stride. Batteries matter far more than megapixels. Straps chafe badly across long walks. The staff knows exactly which forest this footage came from. Everyone spends too much on the lens housing.",
+  },
+  {
+    title: "Bicycle Mechanic",
+    text: "Chains lie coiled across an old towel. The stand holds the frame at a helpful height. Bearings click when the wheels turn. Grease collects under every fingernail anyway. Cables fray where frames flex most. The shop dog sleeps under a stack of rims. Every repair teaches something new and costs almost nothing.",
+  },
+  {
+    title: "Fishing Charter",
+    text: "The boat rocks gently in early morning water. Baitfish swim in the shaded lower well. Everyone reels too fast exactly once. The guide tells the same calm story every trip. Mist burns away as the sun climbs. Seagulls follow the boat for company. Seagulls follow the boat for company.",
+  },
+  {
+    title: "Skate Park",
+    text: "Concrete bowls hold heat long after sunset. Wheels hum across smooth transitions. Kneepads matter more than anybody admits. Beginners hesitate at every lip. Someone always lands unexpectedly well. Graffiti covers the ramps in fresh layers. Lights come on automatically at dusk. The park closes when the crowds thin out.",
+  },
+  {
+    title: "Sledding Hill",
+    text: "Snow squeaks under every eager boot. Kids form a line that grows by seconds. Scarves whip sideways on fast runs. Someone always loses a glove to a tree. The hill wears grooves by afternoon. Faces glow pink above the collars. Nobody wants to head home for dinner.",
+  },
+  {
+    title: "Leaf Pile",
+    text: "The rake makes a soft scratching sound. Leaves smell like wet autumn pavement. Kids discover buried rakes and rake handles. The pile grows larger than any reasonable estimate. Every kick sends sparks of colour upward. The bag at the curb demands constant refilling. Neighbours stop to talk over the work.",
+  },
+  {
+    title: "First Snow",
+    text: "Overnight the world turned white and quiet. Footprints cross the fresh blanket toward school. Nobody drives faster than the plows. Salt stains the sidewalks grey. Breath becomes visible in large clouds. A neighbour shovels the whole block alone. Children stand in the road refusing to move.",
+  },
+  {
+    title: "Ice Fishing",
+    text: "The lake holds a silence that feels earned. Drilled holes reveal black water below. Frost builds on every exposed glove. Small fish come up mostly out of curiosity. The shelter blocks wind and daylight together. Thermos coffee freezes in an hour. Nobody mentions phones for the whole afternoon.",
+  },
+  {
+    title: "Bonfire Night",
+    text: "Driftwood stands in a tall careful pyramid. Newspaper catches sparks from a single match. The smoke drifts toward the parked cars. Marshmallows burn gold at the perfect edge. Voices compete with the crackling wood. Embers glow red long after the flames collapse. Someone always relights the fire near midnight.",
+  },
+  {
+    title: "Hiking Boots",
+    text: "Blisters form where the seams meet the ankle. New leather needs breaking in slowly. Socks matter more than shoes most days. The trail gains height in quiet increments. Water bottles run lower than expected. Ridgelines reward every boring step before them. Blisters heal and the boots get quieter.",
+  },
+  {
+    title: "Camping Coffee",
+    text: "The pot sits in the coals until it sings. Grounds bubble in that first awkward minute. Cold mountain air makes the steam rise straight up. Everyone stands closer than the fire deserves. A camp mug tastes like a small luxury. Fingers warm around the metal handle. The first day always feels long.",
+  },
+  {
+    title: "Birdfeeder",
+    text: "The hanging feeder swings gently in the wind. Cardinals arrive first and bully the sparrows. Squirrels ignore the bird rules completely. Sunflower seeds disappear into the small crowd. A plastic roof keeps the seed dry. Cats watch from an alarming distance nearby. The feeder gets refilled more often than planned.",
+  },
+  {
+    title: "Kite Flying",
+    text: "Windy days are the only honest test of a kite. String tangles the instant attention lapses. The tail steadies the whole flight path. Gulls investigate the bright plastic. A neighbour lends a stronger line. Kids run until arms give out. The kite lands in an impossible tree. Somebody else throws a stone.",
+  },
+  {
+    title: "Puddle Jump",
+    text: "Boots splash through the long shallow puddles. Rain gutters after the sudden downpour. Puddles form in every available low corner. A stranger's umbrella shelters two extra children. Sidewalks turn into small rivers. Shoes squeak and squish the whole way home. Nobody remembers which socks stayed dry.",
+  },
+  {
+    title: "Neighborhood Cookout",
+    text: "A long table appears on the closed street. Burgers flip while somebody guards the corn. Kids organize elaborate games in the street. Neighbors exchange plates they claim to have too much of. A speaker plays somebody's uncle's playlist. Chairs migrate as the sun moves. Nobody cleans up until long after dark.",
+  },
+  {
+    title: "Fireworks Show",
+    text: "Blankets cover the hill before the sun goes down. Small illegal sparks always start the evening early. The first real shell wakes the whole valley. Boom echoes return from the far ridge. Dogs hide somewhere under the furniture. Red paper drifts down hours after the sky empties. Nobody gets a good photo of any of it.",
+  },
+  {
+    title: "Lighthouse Museum",
+    text: "Ship logs fill glass cases along the narrow corridor. Ink fades differently on every old page. A lens polished this big took hours. Visitors descend the same iron steps. The fog signal still works on the weekends. Donations pay for rust prevention slowly. The spiral staircase turns people dizzy near the top.",
+  },
+  {
+    title: "Pier Fishing",
+    text: "Bait buckets rattle against the rail all morning. Seagulls steal bait with zero shame. The water works a small swell below. Rods point out at wildly different angles. An old man catches nothing and stays anyway. Children count boats instead of fish. Sunset empties the pier completely.",
+  },
+  {
+    title: "Quaint Harbor",
+    text: "Ropes stay coiled out of habit not necessity. Gulls patrol the dock at low tide. Fresh paint covers almost every hull now. Cafes serve coffee to fishermen with heavy hands. The chandlery sells nothing except essential supplies. Fog horns sound twice each morning. The town measures days by tides instead of hours.",
+  },
+  {
+    title: "Seaside Gift Cart",
+    text: "Small gifts hang from every available hook. Postcards sell best in cloudy weather. A windbreak shelters the whole cart. Sand works its way into everything eventually. Children ask about the smallest prices. Coins clink in a dented bucket. Everything smells faintly of sunscreen and salt. The cart closes early when weather turns.",
+  },
+  {
+    title: "Boardwalk Arcade",
+    text: "Old machines blink along the narrow walk. Plastic tokens fill one pocket with weight. Presto machines never pay out and keep smiling. A teenager racks up another perfect score. Skee-ball rolls tilt toward the edge forever. Salt air rusts every hinge outside. The claw machine takes cash very seriously.",
+  },
+  {
+    title: "Beach Cleanup",
+    text: "Gloves come in bright plastic pairs by the dozen. Plastic fragments collect in wide grey buckets. Volunteers comb the sand in careful rows. A child holds up a crushed bottle proudly. Sharp items go straight into special containers. The tally fills a clipboard page by page. The water looks cleaner by afternoon.",
   },
 ];

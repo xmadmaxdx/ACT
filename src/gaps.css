@@ -368,6 +368,15 @@ input.gz-cell:disabled {
   box-shadow: none;
 }
 
+.gz-go:focus {
+  outline: none;
+}
+
+.gz-go:focus-visible {
+  outline: 3px solid #1cb0f6;
+  outline-offset: 2px;
+}
+
 /* Mode dialog + pass pad share the modal shell. */
 .gz-temp {
   display: inline-block;
