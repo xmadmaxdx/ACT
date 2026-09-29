@@ -144,7 +144,7 @@
   margin: 0 auto;
   max-width: 760px;
   font-size: 18px;
-  line-height: 2.1;
+  line-height: 2.3;
   color: #333;
   text-align: left;
   overflow-wrap: break-word;
@@ -166,8 +166,8 @@
 }
 
 .gz-cell {
-  width: 30px;
-  height: 36px;
+  width: 28px;
+  height: 34px;
   padding: 0;
   margin: 0;
   border: none;
