@@ -166,12 +166,7 @@
   background: #f7f7f7;
   border: 2px solid #e5e5e5;
   border-radius: 8px;
-  margin-right: -2px;
-}
-
-.gz-cell:first-child {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  margin-right: 4px;
 }
 
 .gz-gap .gz-cell:last-child {
