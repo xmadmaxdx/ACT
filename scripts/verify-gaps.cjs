@@ -211,6 +211,31 @@ async function main() {
     check(`offsets reject bad case ${k}`, threw);
   });
 
+  // 9. Manual bank: size, titles, every sentence gappable.
+  const bankUrl = pathToFileURL(path.join(__dirname, "..", "src", "data", "gapsBank.js")).href;
+  const { GAPS_BANK } = await import(bankUrl);
+  check("bank: 50-100 passages", GAPS_BANK.length >= 50 && GAPS_BANK.length <= 100, `got ${GAPS_BANK.length}`);
+  const titles = GAPS_BANK.map((p) => p.title);
+  check("bank: titles non-empty", titles.every((t) => typeof t === "string" && t.trim().length > 0));
+  check("bank: titles unique", new Set(titles.map((t) => t.toLowerCase())).size === titles.length);
+  const noText = GAPS_BANK.filter((p) => typeof p.text !== "string" || !p.text.trim());
+  check("bank: every passage has text", noText.length === 0);
+  const short = GAPS_BANK.filter((p) => engine.splitSentences(p.text).length < 3);
+  check("bank: every passage 3+ sentences", short.length === 0, short.map((p) => p.title).join(";"));
+  const thin = GAPS_BANK.filter((p) => p.text.split(/\s+/).filter(Boolean).length < 40);
+  check("bank: every passage 40+ words", thin.length === 0, thin.map((p) => p.title).join(";"));
+  const ungappable = [];
+  GAPS_BANK.forEach((p) => {
+    engine.splitSentences(p.text).forEach((s, si) => {
+      try {
+        engine.buildSingleGap(s, engine.mulberry32(1));
+      } catch {
+        ungappable.push(`${p.title}#${si + 1}`);
+      }
+    });
+  });
+  check("bank: every sentence gappable", ungappable.length === 0, ungappable.slice(0, 8).join(";"));
+
   if (failures > 0) {
     console.log(`${failures} FAILURE(S)`);
     process.exit(1);

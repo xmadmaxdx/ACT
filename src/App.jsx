@@ -95,6 +95,7 @@ export default function App() {
   const [jsonSection, setJsonSection] = useState("reading");
   const [isShare, setIsShare] = useState(false);
   const [gapsMode, setGapsMode] = useState(null);
+  const [gapsSource, setGapsSource] = useState("ai");
   const sessionRef = useRef(null);
   sessionRef.current = session;
   const customRef = useRef(null);
@@ -246,8 +247,9 @@ export default function App() {
     window.scrollTo(0, 0);
   }, []);
 
-  const startGaps = useCallback((mode) => {
+  const startGaps = useCallback((mode, source) => {
     setGapsMode(mode === "passage" ? "passage" : "single");
+    setGapsSource(source === "bank" ? "bank" : "ai");
     setIsShare(false);
     window.history.pushState({}, "", "/practice");
     setRoute("gaps");
@@ -384,7 +386,7 @@ export default function App() {
   }
 
   if (route === "gaps" && gapsMode) {
-    return <GapsScreen mode={gapsMode} onExit={() => navigate("practice")} />;
+    return <GapsScreen mode={gapsMode} source={gapsSource} onExit={() => navigate("practice")} />;
   }
 
   if (route === "test" && session) {

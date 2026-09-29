@@ -13,6 +13,7 @@ import {
 import { sendCodinoMessage, isCodinoConfigured } from "../ai/zynq.js";
 import { tolerantParse } from "../tolerantJson.js";
 import gapsPrompt from "../data/gapsDetPrompt.md?raw";
+import { GAPS_BANK } from "../data/gapsBank.js";
 import SaveLink from "./SaveLink.jsx";
 import "../gaps.css";
 
@@ -20,7 +21,7 @@ import "../gaps.css";
    whole mode deletes cleanly. AI supplies raw text only; gapsEngine picks
    every gap. Instant per-round banners, no results screen. */
 
-const GAPS_PIN = "246810";
+const GAPS_PIN = "Not available";
 
 const MOODS = [
   "a quiet morning routine",
@@ -97,11 +98,7 @@ function GapField({ gap, chars, disabled, mark, onChar, onKey, regRef }) {
   return (
     <span className="gz-gap" role="group" aria-label={`Incomplete word, ${gap.boxes} letters missing`}>
       {gap.shown.split("").map((ch, i) => (
-        <span
-          key={`s${i}`}
-          className={`gz-cell${mark === null ? "" : mark ? " right" : " wrong"}`}
-          aria-hidden="true"
-        >
+        <span key={`s${i}`} className="gz-cell" aria-hidden="true">
           {ch}
         </span>
       ))}
@@ -228,10 +225,11 @@ function PinPad({ onUnlock }) {
   );
 }
 
-export default function GapsScreen({ mode, testData, onExit }) {
+export default function GapsScreen({ mode, source, testData, onExit }) {
+  const bankFlow = !testData && source === "bank";
   const gapsMode = testData && testData.mode ? testData.mode : mode || "single";
-  const [unlocked, setUnlocked] = useState(!!testData);
-  const [phase, setPhase] = useState(testData ? "loading" : "pin");
+  const [unlocked, setUnlocked] = useState(!!testData || bankFlow);
+  const [phase, setPhase] = useState(testData || bankFlow ? "loading" : "pin");
   const [round, setRound] = useState(null);
   const [roundKey, setRoundKey] = useState(0);
   const [typed, setTyped] = useState({});
@@ -532,7 +530,88 @@ export default function GapsScreen({ mode, testData, onExit }) {
       return;
     }
     if (testData) again();
+    else if (source === "bank") startBank(gapsMode);
     else startRound(gapsMode);
+  };
+
+  const startBank = (m) => {
+    setPhase("loading");
+    setErrMsg("");
+    setResult(null);
+    setTyped({});
+    typedRef.current = {};
+    doneRef.current = false;
+    boxRefs.current = {};
+    try {
+      if (m === "single") {
+        const pool = [];
+        GAPS_BANK.forEach((p) =>
+          splitSentences(p.text).forEach((s) => {
+            if (s) pool.push(s);
+          })
+        );
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        const items = [];
+        const seen = new Set();
+        for (const s of pool) {
+          if (items.length >= 10) break;
+          const key = s.toLowerCase();
+          if (seen.has(key)) continue;
+          try {
+            const built = buildSingleGap(s);
+            seen.add(key);
+            items.push({ text: s, gaps: built.gaps, segments: built.segments });
+          } catch {
+            /* not gappable, skip */
+          }
+        }
+        if (items.length === 0) throw new Error("Bank has no usable sentences.");
+        batchRef.current = { items };
+        loadItem(0, false);
+      } else {
+        const order = GAPS_BANK.slice();
+        for (let i = order.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [order[i], order[j]] = [order[j], order[i]];
+        }
+        let done = null;
+        for (const p of order) {
+          try {
+            const sentences = splitSentences(p.text);
+            const built = buildGaps(sentences, PASSAGE_GAP_COUNT, PASSAGE_EASY_COUNT);
+            done = {
+              id: `GAPS-BANK-P-${Date.now()}`,
+              section: "gaps",
+              mode: "passage",
+              text: sentences.join(" "),
+              title: p.title,
+              gaps: built.gaps,
+              segments: built.segments,
+              timeSeconds: PASSAGE_TIME_SEC,
+            };
+            break;
+          } catch {
+            /* too short, try next passage */
+          }
+        }
+        if (!done) throw new Error("Bank has no usable passage.");
+        const r = done;
+        batchRef.current = null;
+        setProg(null);
+        timeRef.current = r.timeSeconds;
+        setTimeLeft(r.timeSeconds);
+        setRound(r);
+        roundRef.current = r;
+        setRoundKey((k) => k + 1);
+      }
+      setPhase("play");
+    } catch (e) {
+      setErrMsg((e && e.message) || "Could not start a round.");
+      setPhase("error");
+    }
   };
 
   const startRound = useCallback(
@@ -575,7 +654,11 @@ export default function GapsScreen({ mode, testData, onExit }) {
   );
 
   useEffect(() => {
-    if (!testData) return;
+    if (!testData && source !== "bank") return;
+    if (!testData) {
+      startBank(gapsMode);
+      return;
+    }
     try {
       const built = segmentsFromOffsets(testData.text, testData.gaps);
       const r = {
@@ -677,7 +760,11 @@ export default function GapsScreen({ mode, testData, onExit }) {
               <button
                 type="button"
                 className="gz-btn go"
-                onClick={() => (testData ? again() : startRound(gapsMode))}
+                onClick={() => {
+                  if (testData) again();
+                  else if (source === "bank") startBank(gapsMode);
+                  else startRound(gapsMode);
+                }}
               >
                 RETRY
               </button>

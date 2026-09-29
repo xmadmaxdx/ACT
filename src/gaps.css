@@ -182,8 +182,9 @@
 
 input.gz-cell {
   background: #f4f5f6;
-  color: #1cb0f6;
-  font-weight: 800;
+  color: #777;
+  font-weight: 700;
+  text-align: center;
   caret-color: #1cb0f6;
   outline: none;
   cursor: text;

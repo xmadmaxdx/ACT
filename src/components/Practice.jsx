@@ -102,7 +102,9 @@ const SKILLS = SECTIONS.flatMap((s) =>
 );
 
 function GapsDialog({ onClose, onStart }) {
-  const [pick, setPick] = useState("single");
+  const [pick, setPick] = useState({ kind: "single", source: "ai" });
+  const sel = (kind, source) => pick.kind === kind && pick.source === source;
+  const btn = (kind, source) => (sel(kind, source) ? "gz-pick on" : "gz-pick");
   return (
     <div className="gz-overlay" onClick={onClose}>
       <div
@@ -113,26 +115,46 @@ function GapsDialog({ onClose, onStart }) {
         onClick={(e) => e.stopPropagation()}
       >
         <h2>Fill in the gaps</h2>
-        <p>AI writes fresh DET-style text. Our engine builds every gap.</p>
+        <p>AI writes fresh DET-style text, bank plays offline. Our engine builds every gap.</p>
         <div className="gz-choice">
           <button
             type="button"
-            className={pick === "single" ? "gz-pick on" : "gz-pick"}
-            aria-pressed={pick === "single"}
-            onClick={() => setPick("single")}
+            className={btn("single", "ai")}
+            aria-pressed={sel("single", "ai")}
+            onClick={() => setPick({ kind: "single", source: "ai" })}
           >
             <span>
-              One sentence<small>1 gap · 20 seconds</small>
+              One sentence · AI<small>10 AI sentences · 20 seconds each · PIN once</small>
             </span>
           </button>
           <button
             type="button"
-            className={pick === "passage" ? "gz-pick on" : "gz-pick"}
-            aria-pressed={pick === "passage"}
-            onClick={() => setPick("passage")}
+            className={btn("passage", "ai")}
+            aria-pressed={sel("passage", "ai")}
+            onClick={() => setPick({ kind: "passage", source: "ai" })}
           >
             <span>
-              Multiple sentences<small>15 gaps · 3 minutes</small>
+              Multiple sentences · AI<small>AI passage · 15 gaps · 3 minutes · PIN once</small>
+            </span>
+          </button>
+          <button
+            type="button"
+            className={btn("single", "bank")}
+            aria-pressed={sel("single", "bank")}
+            onClick={() => setPick({ kind: "single", source: "bank" })}
+          >
+            <span>
+              One sentence · Bank<small>10 random bank sentences · no PIN</small>
+            </span>
+          </button>
+          <button
+            type="button"
+            className={btn("passage", "bank")}
+            aria-pressed={sel("passage", "bank")}
+            onClick={() => setPick({ kind: "passage", source: "bank" })}
+          >
+            <span>
+              Multiple sentences · Bank<small>random bank passage · no PIN</small>
             </span>
           </button>
         </div>
@@ -140,7 +162,7 @@ function GapsDialog({ onClose, onStart }) {
           <button type="button" className="gz-btn ghost" onClick={onClose}>
             BACK
           </button>
-          <button type="button" className="gz-btn go" onClick={() => onStart(pick)}>
+          <button type="button" className="gz-btn go" onClick={() => onStart(pick.kind, pick.source)}>
             START
           </button>
         </div>
@@ -277,7 +299,7 @@ export default function Practice({ onStartTest, onStartGaps, passageTests }) {
         <ModeModal skill={selected} onClose={() => setSelected(null)} onStart={(mode) => onStartTest(selected, mode)} />
       )}
       {gapsOpen && (
-        <GapsDialog onClose={() => setGapsOpen(false)} onStart={(gapsMode) => onStartGaps(gapsMode)} />
+        <GapsDialog onClose={() => setGapsOpen(false)} onStart={(m, s) => onStartGaps(m, s)} />
       )}
     </div>
   );
