@@ -134,7 +134,7 @@ function GapsDialog({ onClose, onStart }) {
             onClick={() => setPick({ kind: "passage", source: "ai" })}
           >
             <span>
-              Multiple sentences · AI<small>AI passage · 15 gaps · 3 minutes · pass once</small>
+              Multiple sentences · AI<small>AI passage · 10 gaps · 3 minutes · pass once</small>
             </span>
           </button>
           <button

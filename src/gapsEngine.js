@@ -15,7 +15,7 @@ export const FUNCTION_EASIES = [
 
 export const SINGLE_TIME_SEC = 20;
 export const PASSAGE_TIME_SEC = 180;
-export const PASSAGE_GAP_COUNT = 15;
+export const PASSAGE_GAP_COUNT = 10;
 export const PASSAGE_EASY_COUNT = 3;
 
 export function mulberry32(seed) {
