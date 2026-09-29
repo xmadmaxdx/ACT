@@ -101,6 +101,54 @@ const SKILLS = SECTIONS.flatMap((s) =>
   [1, 2, 3, 4].map((n) => ({ ...s, id: `${s.tab}-${n}`, num: n }))
 );
 
+function GapsDialog({ onClose, onStart }) {
+  const [pick, setPick] = useState("single");
+  return (
+    <div className="gz-overlay" onClick={onClose}>
+      <div
+        className="gz-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Choose gaps drill"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2>Fill in the gaps</h2>
+        <p>AI writes fresh DET-style text. Our engine builds every gap.</p>
+        <div className="gz-choice">
+          <button
+            type="button"
+            className={pick === "single" ? "gz-pick on" : "gz-pick"}
+            aria-pressed={pick === "single"}
+            onClick={() => setPick("single")}
+          >
+            <span>
+              One sentence<small>1 gap · 20 seconds</small>
+            </span>
+          </button>
+          <button
+            type="button"
+            className={pick === "passage" ? "gz-pick on" : "gz-pick"}
+            aria-pressed={pick === "passage"}
+            onClick={() => setPick("passage")}
+          >
+            <span>
+              Multiple sentences<small>15 gaps · 3 minutes</small>
+            </span>
+          </button>
+        </div>
+        <div className="gz-row">
+          <button type="button" className="gz-btn ghost" onClick={onClose}>
+            BACK
+          </button>
+          <button type="button" className="gz-btn go" onClick={() => onStart(pick)}>
+            START
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Practice({ onStartTest, onStartGaps, passageTests }) {
   const [tab, setTab] = useState("ENGLISH");
   const [selected, setSelected] = useState(null);
