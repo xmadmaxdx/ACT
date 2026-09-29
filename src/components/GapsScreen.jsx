@@ -690,7 +690,6 @@ export default function GapsScreen({ mode, testData, onExit }) {
 
   const single = gapsMode === "single";
   const lowAt = single ? 10 : 30;
-  const ready = !result && round.gaps.every((g) => String(typed[g.id] || "").length === g.boxes);
   const shareObject = {
     id: round.id,
     title: round.title || "Gaps Practice",
@@ -750,8 +749,7 @@ export default function GapsScreen({ mode, testData, onExit }) {
           <div className="gz-foot">
             <button
               type="button"
-              className={`gz-submit${ready ? " ready" : ""}`}
-              disabled={!ready}
+              className="gz-submit ready"
               onClick={() => doSubmit(false)}
             >
               SUBMIT
