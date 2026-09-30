@@ -11,6 +11,9 @@ import rcCss from "./recap/recap.css?raw";
 import Summary from "./summary/Summary.jsx";
 import sumJsx from "./summary/Summary.jsx?raw";
 import sumCss from "./summary/summary.css?raw";
+import Ai from "./ai/Ai.jsx";
+import aiJsx from "./ai/Ai.jsx?raw";
+import aiCss from "./ai/ai.css?raw";
 import { makeZip } from "./zip.js";
 
 const VIEWPORTS = [
@@ -29,7 +32,21 @@ const SUM_FILES = [
   { name: "summary.css", content: sumCss },
 ];
 
+const AI_FILES = [
+  { name: "Ai.jsx", content: aiJsx },
+  { name: "ai.css", content: aiCss },
+];
+
 const FOLDERS = [
+  {
+    id: "ai",
+    title: "AI",
+    desc: "Python tutor root state",
+    icon: "✦",
+    screens: [
+      { id: "ai-root", title: "AI · Root State", desc: "Hamburger, Auto model, voice+send, suggestions.", Comp: Ai, files: AI_FILES },
+    ],
+  },
   {
     id: "leaderboard",
     title: "Leaderboard",
