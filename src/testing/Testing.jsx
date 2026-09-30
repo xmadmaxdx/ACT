@@ -55,7 +55,7 @@ const FOLDERS = [
     desc: "Lesson notes with PDF reader",
     icon: "✎",
     screens: [
-      { id: "sum-strings", title: "Summary · Strings", desc: "Fade header, PDF block, full reader, notes.", Comp: Summary, files: SUM_FILES },
+      { id: "sum-strings", title: "Summary · Strings", desc: "Fade header, PDF block, full reader, notes.", dark: true, Comp: Summary, files: SUM_FILES },
     ],
   },
   {
