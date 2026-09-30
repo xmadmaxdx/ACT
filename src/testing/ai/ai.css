@@ -420,6 +420,8 @@
 .ai-attachx:focus-visible,
 .ai-sheetrow:focus-visible,
 .ai-switch:focus-visible,
+.ai-snipcopy:focus-visible,
+.ai-inline:focus-visible,
 .ai-send:focus-visible {
   outline: 3px solid var(--blue-light-border);
   outline-offset: 2px;
@@ -1044,6 +1046,64 @@ button.ai-sheetrow:hover {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Normal snippet block — copy only, no language, no IDE footer */
+.ai-snippet {
+  position: relative;
+  background: #f4f5f7;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.ai-snipcopy {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ai-snipcopy:hover {
+  background: #e5e5e5;
+}
+
+.ai-snippre {
+  margin: 0;
+  padding: 14px 52px 14px 14px;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+/* Inline follow-up link inside reply text */
+.ai-inline {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 800;
+  color: var(--blue-dark);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.ai-inline:active {
+  opacity: 0.6;
+}
+
 /* ---------- AI dark theme (phone.dark only) ---------- */
 .tst-phone.dark .ai-wrap {
   background: #17181f;
@@ -1283,6 +1343,26 @@ button.ai-sheetrow:hover {
 
 .tst-phone.dark .ai-ide:hover {
   background: rgba(255, 255, 255, 0.03);
+}
+
+.tst-phone.dark .ai-snippet {
+  background: #1c1c26;
+}
+
+.tst-phone.dark .ai-snipcopy {
+  color: #dfe1ea;
+}
+
+.tst-phone.dark .ai-snipcopy:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tst-phone.dark .ai-snippre {
+  color: #c8cad2;
+}
+
+.tst-phone.dark .ai-inline {
+  color: #8fb8ff;
 }
 
 .tst-phone.dark .ai-plus {

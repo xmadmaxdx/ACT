@@ -65,9 +65,20 @@ const SUGGESTIONS = [
   },
 ];
 
-const AI_INTRO = "Here's a tiny function you can try:";
+const AI_INTRO =
+  "Great pick — functions are where Python starts feeling like magic. " +
+  "You pack a few lines into a name, then call that name whenever you want the job done. " +
+  "Here's the smallest version that actually works:";
 const AI_CODE = 'def greet(name):\n    return f"Hello, {name}!"';
-const AI_OUTRO = 'Call greet("Ada") and it hands back "Hello, Ada!". The f-string pastes the name right into the sentence — no plus signs, no gaps to forget.';
+const AI_SNIPPET = "$ python greet.py\nHello, Ada!";
+const AI_OUTRO =
+  'Run it and greet("Ada") hands back "Hello, Ada!". The f-string pastes the name right into ' +
+  "the sentence — no plus signs, no gaps to forget. Once this clicks, try calling it three times " +
+  "with three different names and watch it never break a sweat.";
+const INLINE_FOLLOW = {
+  label: "find free Python speaking drills",
+  send: "Find me free Python speaking drills with instant feedback",
+};
 const FOLLOWUPS = ["Explain each line", "Give me a challenge"];
 const MENU_TIME = "Today, 11:01 AM";
 
@@ -319,6 +330,19 @@ function AiCode({ copied, onCopy }) {
   );
 }
 
+function AiSnippet({ text, copied, onCopy }) {
+  return (
+    <div className="ai-snippet">
+      <button type="button" className="ai-snipcopy" onClick={onCopy} aria-label={copied ? "Copied" : "Copy snippet"}>
+        {copied ? <CheckIcon /> : <CopyIcon />}
+      </button>
+      <pre className="ai-snippre">
+        <code>{text}</code>
+      </pre>
+    </div>
+  );
+}
+
 export default function Ai() {
   const [text, setText] = useState("");
   const [phIdx, setPhIdx] = useState(0);
@@ -332,6 +356,7 @@ export default function Ai() {
   const [attach, setAttach] = useState(null);
   const [vote, setVote] = useState({});
   const [codeCopied, setCodeCopied] = useState(false);
+  const [snipCopied, setSnipCopied] = useState(false);
   const [msgCopied, setMsgCopied] = useState(null);
   const [speaking, setSpeaking] = useState(null);
   const [shared, setShared] = useState(null);
@@ -468,7 +493,7 @@ export default function Ai() {
     }
   };
 
-  const replyFull = (m) => `${m.text}\n${AI_CODE}\n${AI_OUTRO}`;
+  const replyFull = (m) => `${m.text}\n${AI_CODE}\n${AI_SNIPPET}\n${AI_OUTRO}`;
 
   const onCopyMsg = async (m) => {
     if (await copyText(replyFull(m))) {
@@ -481,6 +506,13 @@ export default function Ai() {
     if (await copyText(AI_CODE)) {
       setCodeCopied(true);
       later(() => setCodeCopied(false), 1500);
+    }
+  };
+
+  const onCopySnip = async () => {
+    if (await copyText(AI_SNIPPET)) {
+      setSnipCopied(true);
+      later(() => setSnipCopied(false), 1500);
     }
   };
 
@@ -586,7 +618,15 @@ export default function Ai() {
                   )}
                   {m.stage === "done" && (
                     <>
+                      <AiSnippet text={AI_SNIPPET} copied={snipCopied} onCopy={onCopySnip} />
                       <p className="ai-text">{AI_OUTRO}</p>
+                      <p className="ai-text">
+                        If you want, I can{" "}
+                        <button type="button" className="ai-inline" onClick={() => runReply(INLINE_FOLLOW.send)}>
+                          ↳ {INLINE_FOLLOW.label}
+                        </button>{" "}
+                        — just tap it.
+                      </p>
                       <div className="ai-actions">
                         <button
                           type="button"
