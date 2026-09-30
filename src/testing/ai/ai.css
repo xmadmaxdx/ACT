@@ -108,6 +108,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: var(--blue-light-bg);
+  border: 2px solid var(--blue-light-border);
+  border-bottom-width: 5px;
 }
 
 .ai-hello {

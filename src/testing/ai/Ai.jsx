@@ -176,7 +176,7 @@ export default function Ai() {
 
       <div className="ai-main">
         <div className="ai-logo rise d1" aria-hidden="true">
-          <svg width="76" height="76" viewBox="0 0 200 200" role="img" aria-label="Codino mark">
+          <svg width="62" height="62" viewBox="0 0 200 200" role="img" aria-label="Codino mark">
             <path d="M 100 20
                      C 92 30, 80 35, 66 30
                      C 44 24, 29 41, 33 65
