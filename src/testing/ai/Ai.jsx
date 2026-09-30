@@ -876,7 +876,6 @@ export default function Ai() {
                     <>
                       <AiResults query={AI_SEARCH_Q} items={AI_RESULTS} />
                       <p className="ai-text">{AI_OUTRO3}</p>
-                      <AiFollow mode={m.follow} onInline={() => runReply(INLINE_FOLLOW.send)} onChip={(f) => runReply(f)} />
                     </>
                   )}
                   {m.stage === "done" && (
