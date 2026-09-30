@@ -1087,6 +1087,7 @@ button.ai-sheetrow:hover {
 
 /* Inline follow-up link inside reply text */
 .ai-inline {
+  display: inline;
   background: none;
   border: none;
   padding: 0;
