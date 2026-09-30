@@ -104,7 +104,7 @@ function MicIcon() {
 
 function SendIcon() {
   return (
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M21 3.5L10.2 14.3" />
       <path d="M21 3.5L14.4 21l-4.2-6.7L3.5 10z" />
     </svg>
@@ -175,15 +175,19 @@ export default function Ai() {
       </div>
 
       <div className="ai-main">
-        <div className="ai-orb rise d1" aria-hidden="true">
-          <span className="ai-ring r1" />
-          <span className="ai-ring r2" />
-          <span className="ai-core">
-            <SparkIcon />
-          </span>
-          <span className="ai-tw t1" />
-          <span className="ai-tw t2" />
-          <span className="ai-tw t3" />
+        <div className="ai-logo rise d1" aria-hidden="true">
+          <svg width="76" height="76" viewBox="0 0 34 34" aria-hidden="true">
+            <circle cx="17" cy="17" r="14.5" fill="#58cc02" />
+            <circle cx="17" cy="17" r="14.5" fill="none" stroke="#46a302" strokeWidth="2" />
+            <circle cx="12.2" cy="14.5" r="4.6" fill="#fff" />
+            <circle cx="21.8" cy="14.5" r="4.6" fill="#fff" />
+            <circle cx="12.6" cy="14.8" r="2.1" fill="#3c3c3c" />
+            <circle cx="21.4" cy="14.8" r="2.1" fill="#3c3c3c" />
+            <circle cx="13.3" cy="14.1" r="0.7" fill="#fff" />
+            <circle cx="22.1" cy="14.1" r="0.7" fill="#fff" />
+            <path d="M14.5 20.5h5l-2.5 3.2z" fill="#ff9600" />
+            <path d="M17 8.5l1.6 2.2 2.7.3-2 1.9.5 2.7-2.8-1.5-2.8 1.5.5-2.7-2-1.9 2.7-.3z" fill="#ffc800" />
+          </svg>
         </div>
         <h2 className="ai-hello rise d2">Hey, let's learn <span>Python</span></h2>
         <p className="ai-sub rise d2">Ask anything — loops, errors, ideas, quizzes.</p>
@@ -240,7 +244,6 @@ export default function Ai() {
             <SendIcon />
           </button>
         </div>
-        <p className="ai-fine">AI can make mistakes. Check important code.</p>
       </div>
     </div>
   );

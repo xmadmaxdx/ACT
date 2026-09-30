@@ -104,60 +104,11 @@
   padding-top: 14px;
 }
 
-.ai-orb {
-  position: relative;
-  width: 118px;
-  height: 118px;
+.ai-logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: ai-bob 3.4s ease-in-out infinite;
 }
-
-.ai-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 46% 54% 52% 48% / 50% 46% 54% 50%;
-  border: 2px solid var(--blue-light-border);
-}
-
-.ai-ring.r1 {
-  animation: ai-spin 14s linear infinite;
-  background: radial-gradient(circle, #fff 30%, #ddf4ff 100%);
-}
-
-.ai-ring.r2 {
-  inset: 14px;
-  border-style: dashed;
-  opacity: 0.7;
-  animation: ai-spin-rev 20s linear infinite;
-}
-
-.ai-core {
-  width: 52px;
-  height: 52px;
-  border-radius: 18px 18px 18px 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(140deg, var(--blue), var(--blue-dark));
-  color: #fff;
-  box-shadow: 0 4px 0 var(--blue-dark);
-  animation: ai-breathe 3.4s ease-in-out infinite;
-}
-
-.ai-tw {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--blue);
-  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-  animation: ai-twinkle 2.2s ease-in-out infinite;
-}
-
-.ai-tw.t1 { top: 6px; right: 22px; }
-.ai-tw.t2 { bottom: 12px; left: 14px; animation-delay: 0.7s; transform: scale(0.7); }
-.ai-tw.t3 { top: 44px; left: 2px; animation-delay: 1.3s; transform: scale(0.55); }
 
 .ai-hello {
   font-size: 22px;
@@ -385,7 +336,7 @@
 }
 
 .ai-send svg {
-  transform: translate(1px, -1px) rotate(8deg);
+  display: block;
 }
 
 .ai-send.on {
@@ -397,37 +348,6 @@
 .ai-send.on:active {
   transform: translateY(3px) scale(0.96);
   box-shadow: none;
-}
-
-.ai-fine {
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--faint);
-  text-align: center;
-  margin: 8px 0 0;
-}
-
-@keyframes ai-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
-}
-
-@keyframes ai-breathe {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.07) rotate(-3deg); }
-}
-
-@keyframes ai-spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes ai-spin-rev {
-  to { transform: rotate(-360deg); }
-}
-
-@keyframes ai-twinkle {
-  0%, 100% { opacity: 0.25; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.15); }
 }
 
 @keyframes ai-ph-in {
@@ -461,10 +381,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ai-orb,
-  .ai-ring,
-  .ai-core,
-  .ai-tw,
   .ai-ph,
   .ai-mic.on,
   .ai-waves i,
