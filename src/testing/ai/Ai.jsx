@@ -79,6 +79,25 @@ const INLINE_FOLLOW = {
   label: "find free Python speaking drills",
   send: "Find me free Python speaking drills with instant feedback",
 };
+const AI_BULLETS = [
+  "Call it with any name — it just works",
+  "f-strings beat plus-sign joining every time",
+  "return hands the result straight back to you",
+];
+const AI_TABLE = {
+  head: ["Method", "Does", "Try"],
+  rows: [
+    [".upper()", "SHOUTS", '"hi" → "HI"'],
+    [".strip()", "Trims edges", '" hi " → "hi"'],
+    [".split(\",\")", "Cuts apart", '"a,b" → ["a", "b"]'],
+  ],
+};
+const AI_QUIZ = {
+  q: 'What does greet("Ada") return?',
+  options: ['"Hello, Ada!"', '"Hello, name!"', '"Ada, Hello!"'],
+  answer: 0,
+  explain: 'The f-string swaps {name} for "Ada" — exactly what you passed in.',
+};
 const FOLLOWUPS = ["Explain each line", "Give me a challenge"];
 const MENU_TIME = "Today, 11:01 AM";
 
@@ -121,9 +140,8 @@ function MicIcon() {
 
 function SendIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 3.5L10.2 14.3" />
-      <path d="M21 3.5L14.4 21l-4.2-6.7L3.5 10z" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 19V5M5 12l7-7 7 7" />
     </svg>
   );
 }
@@ -343,6 +361,58 @@ function AiSnippet({ text, copied, onCopy }) {
   );
 }
 
+function AiBullets({ items }) {
+  return (
+    <ul className="ai-bullets">
+      {(items || []).map((b, i) => (
+        <li key={i}>{b}</li>
+      ))}
+    </ul>
+  );
+}
+
+function AiTable({ head, rows }) {
+  return (
+    <div className="ai-tablewrap" role="table" aria-label="String methods">
+      <div className="ai-tr head" role="row">
+        {(head || []).map((h) => (
+          <span className="ai-td" role="columnheader" key={h}>{h}</span>
+        ))}
+      </div>
+      {(rows || []).map((r, i) => (
+        <div className="ai-tr" role="row" key={i}>
+          {r.map((c, j) => (
+            <span className={j === 0 ? "ai-td mono" : "ai-td"} role="cell" key={j}>{c}</span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AiQuiz({ data, qkey }) {
+  const [pick, setPick] = useState(null);
+  const done = pick !== null;
+  return (
+    <div className="ai-quiz" key={qkey}>
+      <p className="ai-quiz-q">{data.q}</p>
+      <div className="ai-quiz-opts">
+        {data.options.map((o, i) => {
+          const cls = !done ? "ai-opt" : i === data.answer ? "ai-opt correct" : i === pick ? "ai-opt wrong" : "ai-opt dim";
+          return (
+            <button key={o} type="button" className={cls} disabled={done} onClick={() => setPick(i)}>
+              <span className="ai-opt-letter" aria-hidden="true">{["A", "B", "C"][i]}</span>
+              {o}
+              {done && i === data.answer && <span className="ai-opt-mark" aria-hidden="true"><CheckIcon /></span>}
+            </button>
+          );
+        })}
+      </div>
+      {done && <p className={pick === data.answer ? "ai-quiz-why ok" : "ai-quiz-why no"}>{data.explain}</p>}
+    </div>
+  );
+}
+
 export default function Ai() {
   const [text, setText] = useState("");
   const [phIdx, setPhIdx] = useState(0);
@@ -365,6 +435,7 @@ export default function Ai() {
   const threadRef = useRef(null);
   const genRef = useRef(0);
   const flipRef = useRef(false);
+  const countRef = useRef(0);
   const timers = useRef([]);
   const ivs = useRef([]);
 
@@ -412,12 +483,14 @@ export default function Ai() {
     const aiId = `a${stamp}`;
     const follow = flipRef.current ? "chips" : "inline";
     flipRef.current = !flipRef.current;
+    const variant = countRef.current % 2 === 1 ? "quiz" : "standard";
+    countRef.current += 1;
     if (echo) setMsgs((m) => [...m, { id: `u${stamp}`, role: "user", text: userText, photo: hasPhoto }]);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: AI_INTRO, follow }]);
+      setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: AI_INTRO, follow, variant }]);
       return;
     }
-    setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "thinking", text: "", follow }]);
+    setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "thinking", text: "", follow, variant }]);
     later(() => {
       if (genRef.current !== gen) return;
       setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, stage: "streaming" } : x)));
@@ -481,6 +554,8 @@ export default function Ai() {
 
   const newChat = () => {
     genRef.current += 1;
+    countRef.current = 0;
+    flipRef.current = false;
     setMsgs([]);
     setMenuFor(null);
   };
@@ -622,7 +697,15 @@ export default function Ai() {
                   {m.stage === "done" && (
                     <>
                       <AiSnippet text={AI_SNIPPET} copied={snipCopied} onCopy={onCopySnip} />
-                      <p className="ai-text">{AI_OUTRO}</p>
+                      <p className="ai-text">
+                        Run it and <span className="ai-hl y">greet("Ada")</span> hands back{" "}
+                        <span className="ai-hl g">"Hello, Ada!"</span>. The{" "}
+                        <span className="ai-hl b">f-string</span> pastes the name right into the sentence —
+                        no plus signs, no gaps to forget. Once this clicks, try calling it three times with
+                        three different names and watch it never break a sweat.
+                      </p>
+                      <AiBullets items={AI_BULLETS} />
+                      <AiTable head={AI_TABLE.head} rows={AI_TABLE.rows} />
                       {m.follow === "inline" ? (
                         <p className="ai-text">
                           If you want, I can{" "}
@@ -639,6 +722,9 @@ export default function Ai() {
                             </button>
                           ))}
                         </div>
+                      )}
+                      {m.variant === "quiz" && (
+                        <AiQuiz data={AI_QUIZ} qkey={m.id} />
                       )}
                       <div className="ai-actions">
                         <button
