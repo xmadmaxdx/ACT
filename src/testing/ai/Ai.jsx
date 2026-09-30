@@ -176,20 +176,8 @@ export default function Ai() {
 
       <div className="ai-main">
         <div className="ai-logo rise d1" aria-hidden="true">
-          <svg width="62" height="62" viewBox="0 0 200 200" role="img" aria-label="Codino mark">
-            <path d="M 100 20
-                     C 92 30, 80 35, 66 30
-                     C 44 24, 29 41, 33 65
-                     C 36 83, 29 99, 25 115
-                     C 21 135, 37 150, 59 152
-                     C 72 154, 86 155, 100 155
-                     C 114 155, 128 154, 141 151
-                     C 161 145, 169 127, 163 108
-                     C 158 92, 158 76, 167 62
-                     C 175 48, 168 31, 153 31
-                     C 140 31, 131 40, 122 29
-                     C 116 22, 106 14, 100 20 Z"
-                  fill="#38A8FF" stroke="#1463AC" strokeWidth="8" strokeLinejoin="round" />
+          <svg width="76" height="76" viewBox="0 0 200 200" role="img" aria-label="Codino mark">
+            <circle cx="100" cy="90" r="72" fill="#38A8FF" stroke="#1463AC" strokeWidth="8" />
             <ellipse cx="80" cy="80" rx="20" ry="24" fill="#fff" />
             <ellipse cx="122" cy="80" rx="20" ry="24" fill="#fff" />
             <circle cx="83" cy="85" r="10" fill="#0C2340" />
