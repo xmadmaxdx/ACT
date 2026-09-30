@@ -360,6 +360,9 @@
   outline: none;
   resize: none;
   overflow-y: auto;
+  overflow-x: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   max-height: 120px;
   font-family: inherit;
   font-size: 14px;
