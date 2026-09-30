@@ -232,7 +232,7 @@ function IdeIcon() {
 
 function PlusIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
       <circle cx="12" cy="12" r="8.5" strokeDasharray="3.5 3" />
       <path d="M12 8.5v7M8.5 12h7" />
     </svg>
@@ -518,7 +518,7 @@ export default function Ai() {
   const chatting = msgs.length > 0;
 
   return (
-    <div className="ai-wrap">
+    <div className={chatting ? "ai-wrap chatting" : "ai-wrap"}>
       <div className="ai-topbar rise">
         <button type="button" className="ai-burger" aria-label="Menu" aria-expanded={drawer} onClick={() => setDrawer(true)}>
           <BurgerIcon />

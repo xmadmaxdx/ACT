@@ -22,6 +22,10 @@
   pointer-events: none;
 }
 
+.ai-wrap.chatting::before {
+  display: none;
+}
+
 /* Top bar */
 .ai-topbar {
   display: flex;
