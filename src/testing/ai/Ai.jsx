@@ -98,6 +98,14 @@ const AI_QUIZ = {
   answer: 0,
   explain: 'The f-string swaps {name} for "Ada" — exactly what you passed in.',
 };
+const AI_INTRO2 = "Pop quiz time — two quick taps, no pressure. Wrong answers teach just as much:";
+const AI_OUTRO2 = "Finished both? Then the idea is yours — functions take in, hand back, never fuss.";
+const AI_QUIZ_B = {
+  q: "Which line actually runs the function?",
+  options: ['def greet(name):', 'greet("Ada")', 'return f"..."'],
+  answer: 1,
+  explain: "def only defines it — the call greet(\"Ada\") is what runs it.",
+};
 const FOLLOWUPS = ["Explain each line", "Give me a challenge"];
 const MENU_TIME = "Today, 11:01 AM";
 
@@ -390,6 +398,28 @@ function AiTable({ head, rows }) {
   );
 }
 
+function AiFollow({ mode, onInline, onChip }) {
+  if (mode === "inline") {
+    return (
+      <p className="ai-text">
+        If you want, I can{" "}
+        <button type="button" className="ai-inline" onClick={onInline}>
+          ↳ {INLINE_FOLLOW.label}
+        </button>{" "}
+        — just tap it.
+      </p>
+    );
+  }
+  return (
+    <div className="ai-follow">
+      {FOLLOWUPS.map((f) => (
+        <button key={f} type="button" className="ai-chip" onClick={() => onChip(f)}>
+          {f}
+        </button>
+      ))}
+    </div>
+  );
+}
 function AiQuiz({ data, qkey }) {
   const [pick, setPick] = useState(null);
   const done = pick !== null;
@@ -485,9 +515,10 @@ export default function Ai() {
     flipRef.current = !flipRef.current;
     const variant = countRef.current % 2 === 1 ? "quiz" : "standard";
     countRef.current += 1;
+    const intro = variant === "quiz" ? AI_INTRO2 : AI_INTRO;
     if (echo) setMsgs((m) => [...m, { id: `u${stamp}`, role: "user", text: userText, photo: hasPhoto }]);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: AI_INTRO, follow, variant }]);
+      setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: intro, follow, variant }]);
       return;
     }
     setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "thinking", text: "", follow, variant }]);
@@ -501,8 +532,8 @@ export default function Ai() {
           return;
         }
         i += 2;
-        const done = i >= AI_INTRO.length;
-        const slice = AI_INTRO.slice(0, i);
+        const done = i >= intro.length;
+        const slice = intro.slice(0, i);
         setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, text: slice, stage: done ? "code" : "streaming" } : x)));
         if (done) {
           window.clearInterval(iv);
@@ -571,7 +602,10 @@ export default function Ai() {
     }
   };
 
-  const replyFull = (m) => `${m.text}\n${AI_CODE}\n${AI_SNIPPET}\n${AI_OUTRO}`;
+  const replyFull = (m) =>
+    m.variant === "quiz"
+      ? `${m.text}\n${AI_QUIZ.q}\n${AI_QUIZ_B.q}`
+      : `${m.text}\n${AI_CODE}\n${AI_SNIPPET}\n${AI_OUTRO}`;
 
   const onCopyMsg = async (m) => {
     if (await copyText(replyFull(m))) {
@@ -691,10 +725,10 @@ export default function Ai() {
                     {m.text}
                     {m.stage === "streaming" && <span className="ai-caret" aria-hidden="true" />}
                   </p>
-                  {(m.stage === "code" || m.stage === "done") && (
+                  {(m.stage === "code" || m.stage === "done") && m.variant !== "quiz" && (
                     <AiCode copied={codeCopied} onCopy={onCopyCode} />
                   )}
-                  {m.stage === "done" && (
+                  {m.stage === "done" && m.variant !== "quiz" && (
                     <>
                       <AiSnippet text={AI_SNIPPET} copied={snipCopied} onCopy={onCopySnip} />
                       <p className="ai-text">
@@ -706,26 +740,18 @@ export default function Ai() {
                       </p>
                       <AiBullets items={AI_BULLETS} />
                       <AiTable head={AI_TABLE.head} rows={AI_TABLE.rows} />
-                      {m.follow === "inline" ? (
-                        <p className="ai-text">
-                          If you want, I can{" "}
-                          <button type="button" className="ai-inline" onClick={() => runReply(INLINE_FOLLOW.send)}>
-                            ↳ {INLINE_FOLLOW.label}
-                          </button>{" "}
-                          — just tap it.
-                        </p>
-                      ) : (
-                        <div className="ai-follow">
-                          {FOLLOWUPS.map((f) => (
-                            <button key={f} type="button" className="ai-chip" onClick={() => runReply(f)}>
-                              {f}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                      {m.variant === "quiz" && (
-                        <AiQuiz data={AI_QUIZ} qkey={m.id} />
-                      )}
+                      <AiFollow mode={m.follow} onInline={() => runReply(INLINE_FOLLOW.send)} onChip={(f) => runReply(f)} />
+                    </>
+                  )}
+                  {m.stage === "done" && m.variant === "quiz" && (
+                    <>
+                      <AiQuiz data={AI_QUIZ} qkey={`${m.id}-a`} />
+                      <AiQuiz data={AI_QUIZ_B} qkey={`${m.id}-b`} />
+                      <p className="ai-text">{AI_OUTRO2}</p>
+                      <AiFollow mode={m.follow} onInline={() => runReply(INLINE_FOLLOW.send)} onChip={(f) => runReply(f)} />
+                    </>
+                  )}
+                  {m.stage === "done" && (
                       <div className="ai-actions">
                         <button
                           type="button"
@@ -804,7 +830,6 @@ export default function Ai() {
                           </div>
                         )}
                       </div>
-                    </>
                   )}
                 </>
               )}
