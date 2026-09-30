@@ -53,6 +53,92 @@ function CodeBlock({ label, code, children, copied, onCopy }) {
   );
 }
 
+/* Reusable visual blocks — generic props, usable for any topic. */
+function SyntaxSkeleton({ title, parts }) {
+  return (
+    <div className="sum-bone">
+      <p className="sum-bone-title">{title}</p>
+      <div className="sum-bone-row">
+        {(parts || []).map((p, i) => (
+          <span className="sum-bone-col" key={`${p.tag}-${i}`}>
+            <span className={`sum-bone-chip t-${p.tone || "green"}`}>{p.t}</span>
+            <span className="sum-bone-stem" aria-hidden="true" />
+            <span className="sum-bone-tag">{p.tag}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function QuoteTrio({ items }) {
+  return (
+    <div className="sum-trio">
+      {(items || []).map((it) => (
+        <div className="sum-trio-cell" key={it.note}>
+          <span className={`sum-swatch s-${it.shape}`} aria-hidden="true">{it.mark}</span>
+          <span className="sum-trio-sample">{it.sample}</span>
+          <span className="sum-trio-note">{it.note}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SliceRuler({ word, lo, hi, label, result }) {
+  const chars = (word || "").split("");
+  return (
+    <div className="sum-ruler">
+      <div className="sum-ruler-bracketrow" aria-hidden="true">
+        <span className="sum-bracket" style={{ gridColumn: `${lo + 1} / ${hi + 1}` }}>
+          {label} → {result}
+        </span>
+      </div>
+      <div className="sum-ruler-cells" aria-hidden="true">
+        {chars.map((ch, i) => (
+          <span
+            className={i === chars.length - 1 ? (i >= lo && i < hi ? "sum-rcell on last" : "sum-rcell last") : (i >= lo && i < hi ? "sum-rcell on" : "sum-rcell")}
+            key={`${ch}-${i}`}
+            data-tick={i}
+            data-end={chars.length}
+          >
+            {ch}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SwapStay({ source, op, result, note }) {
+  return (
+    <div className="sum-swap">
+      <span className="sum-swap-old">{source}<span className="sum-swap-kept">kept ✓</span></span>
+      <span className="sum-swap-mid">
+        <span className="sum-swap-op">{op}</span>
+        <span className="sum-swap-arrow" aria-hidden="true" />
+      </span>
+      <span className="sum-swap-new">{result}</span>
+      <p className="sum-swap-note">{note}</p>
+    </div>
+  );
+}
+
+function ChainPipe({ start, steps }) {
+  return (
+    <div className="sum-pipe">
+      <span className="sum-pipe-pill">{start}</span>
+      {(steps || []).map((s, i) => (
+        <span className="sum-pipe-link" key={`${s.op}-${i}`}>
+          <span className="sum-pipe-op">{s.op}</span>
+          <span className="sum-pipe-chev" aria-hidden="true" />
+          <span className="sum-pipe-pill">{s.out}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function Summary() {
   const [view, setView] = useState("lesson");
   const [copied, setCopied] = useState(null);
@@ -173,6 +259,14 @@ f"{name} is {age}"     # "Ada is 36"`;
       <section className="sum-flow rise d2">
         <h3 className="sum-h"><span className="sum-ghost" aria-hidden="true">Aa</span>What is a string?</h3>
         <p className="sum-p">A string is a <b>sequence of characters</b> wrapped in quotes. Words, sentences, even emojis — all strings.</p>
+        <SyntaxSkeleton
+          title="ANATOMY OF A STRING"
+          parts={[
+            { t: '"', tag: "opening quote", tone: "purple" },
+            { t: "Ada", tag: "characters", tone: "green" },
+            { t: '"', tag: "closing quote", tone: "purple" },
+          ]}
+        />
         <ul className="sum-ul">
           <li>Made of single characters, read left to right</li>
           <li><b>Immutable</b> — you build new strings, never edit in place</li>
@@ -187,6 +281,13 @@ f"{name} is {age}"     # "Ada is 36"`;
           <span className="c-k">shout </span>= <span className="c-s">'It\'s fun!'</span>{'\n'}
           <span className="c-k">notes </span>= <span className="c-s">"""line one{'\n'}line two"""</span>
         </CodeBlock>
+        <QuoteTrio
+          items={[
+            { shape: "circle", mark: '"', sample: '"hi"', note: "everyday text" },
+            { shape: "square", mark: "'", sample: '\'say "hi"\'', note: 'holds " inside' },
+            { shape: "cap", mark: '"""', sample: "lines…", note: "many lines" },
+          ]}
+        />
         <ul className="sum-ul">
           <li><span className="sum-ic">"..."</span> and <span className="sum-ic">'...'</span> are identical — pick one style</li>
           <li><span className="sum-ic">"""..."""</span> spans multiple lines</li>
@@ -211,6 +312,7 @@ f"{name} is {age}"     # "Ada is 36"`;
 
       <section className="sum-flow rise d4">
         <h3 className="sum-h">Slicing — grab a chunk</h3>
+        <SliceRuler word="string" lo={0} hi={3} label="[0:3]" result='"str"' />
         <CodeBlock label="slice.py" code={sliceCode} copied={copied === "s"} onCopy={() => copyCode("s", sliceCode)}>
           <span className="c-k">word </span>= <span className="c-s">"string"</span>{'\n'}
           <span className="c-k">word</span>[0:3]   <span className="c-c"># "str"</span>{'\n'}
@@ -236,6 +338,7 @@ f"{name} is {age}"     # "Ada is 36"`;
           <li><span className="sum-ic">.replace(a, b)</span> swaps every <span className="sum-ic">a</span> for <span className="sum-ic">b</span></li>
           <li>Methods return a <b>new</b> string — the original never changes</li>
         </ul>
+        <SwapStay source="hello" op=".upper()" result="HELLO" note="The original sits untouched — upper() hands you a twin." />
       </section>
 
       <section className="sum-flow rise d4">
@@ -258,6 +361,13 @@ f"{name} is {age}"     # "Ada is 36"`;
 
       <div className="sum-flow rise d4">
         <p className="sum-p">Methods chain left to right, so <span className="sum-ic">" hi ".strip().upper()</span> trims first and shouts second — the order you write them is the order they run.</p>
+        <ChainPipe
+          start=" hi "
+          steps={[
+            { op: ".strip()", out: "hi" },
+            { op: ".upper()", out: "HI" },
+          ]}
+        />
       </div>
 
       <section className="sum-sec danger rise d4">
