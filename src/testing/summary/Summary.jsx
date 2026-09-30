@@ -154,15 +154,20 @@ f"{name} is {age}"     # "Ada is 36"`;
       </div>
 
       <button type="button" className="sum-pdf rise d1" onClick={() => setView("pdf")} aria-label={`Open ${FILE_NAME}`}>
+        <span className="sum-docicon" aria-hidden="true"><DocIcon /></span>
+        {/* REVERSIBLE 2026-09-30: red badge + thumbnail removed on request — uncomment to restore, delete docicon above
         <span className="sum-badge" aria-hidden="true">PDF</span>
+        */}
         <span className="sum-pdfinfo">
           <span className="sum-filename">{FILE_NAME}</span>
         </span>
+        {/* REVERSIBLE 2026-09-30: thumbnail removed on request — uncomment to restore
         <span className="sum-thumb" aria-hidden="true">
           <span style={{ width: "88%" }} /><span style={{ width: "96%" }} />
           <span className="hl" style={{ width: "58%" }} /><span style={{ width: "80%" }} />
         </span>
-        <span className="sum-openbtn"><DocIcon /> OPEN</span>
+        */}
+        <span className="sum-openbtn">OPEN</span>
       </button>
 
       <section className="sum-flow rise d2">
@@ -242,9 +247,17 @@ f"{name} is {age}"     # "Ada is 36"`;
         </CodeBlock>
       </section>
 
+      <div className="sum-flow rise d4">
+        <p className="sum-p">Once slicing and methods click, most text tasks turn into small recipes — cut the piece you need, shape it, then join it back together.</p>
+      </div>
+
       <div className="sum-tip rise d4">
         <span className="sum-tipicon" aria-hidden="true"><BulbIcon /></span>
         <p><b>TIP ·</b> Quote inside a quote? Switch styles instead of escaping: <span className="sum-ic">'Say "hi"'</span> beats <span className="sum-ic">"Say \"hi\""</span>.</p>
+      </div>
+
+      <div className="sum-flow rise d4">
+        <p className="sum-p">Methods chain left to right, so <span className="sum-ic">" hi ".strip().upper()</span> trims first and shouts second — the order you write them is the order they run.</p>
       </div>
 
       <section className="sum-sec danger rise d4">
@@ -255,6 +268,10 @@ f"{name} is {age}"     # "Ada is 36"`;
           <li>Compare text with <span className="sum-ic">==</span>, never <span className="sum-ic">is</span></li>
         </ul>
       </section>
+
+      <div className="sum-flow rise d4">
+        <p className="sum-p">Dodge those three traps and strings stop surprising you — clean text in, clean text out, every time.</p>
+      </div>
 
       <section className="sum-sec goal rise d4">
         <h3 className="sum-h">Your turn</h3>

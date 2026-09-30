@@ -5,7 +5,7 @@
   padding: 0 10px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   overflow: hidden;
 }
 
@@ -43,7 +43,7 @@
   align-items: center;
   gap: 10px;
   margin: 0 -10px;
-  padding: 20px 10px 34px;
+  padding: 20px 10px 22px;
   background: linear-gradient(
     to bottom,
     #f0f2f5 0%,
@@ -150,6 +150,20 @@
   border-bottom-width: 1px;
 }
 
+.sum-docicon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fde8e8;
+  color: #d33131;
+  border: 2px solid #f3c1c2;
+}
+
+/* REVERSIBLE 2026-09-30: red badge removed on request — uncomment to restore, delete .sum-docicon above
 .sum-badge {
   flex: none;
   background: linear-gradient(180deg, #e5484d, #d33131);
@@ -161,6 +175,7 @@
   padding: 8px 7px;
   box-shadow: 0 3px 0 #a11f24;
 }
+*/
 
 .sum-pdfinfo {
   min-width: 0;
@@ -177,6 +192,7 @@
   text-overflow: ellipsis;
 }
 
+/* REVERSIBLE 2026-09-30: thumbnail removed on request — uncomment to restore
 .sum-thumb {
   flex: none;
   width: 44px;
@@ -199,6 +215,7 @@
 .sum-thumb span.hl {
   background: var(--blue-light-border);
 }
+*/
 
 .sum-openbtn {
   flex: none;
