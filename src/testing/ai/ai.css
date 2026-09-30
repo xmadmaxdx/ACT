@@ -311,12 +311,40 @@
 .ai-composer {
   position: relative;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 8px;
   background: #f0f2f5;
   border: 2px solid var(--card-border);
   border-radius: 28px;
   padding: 6px 6px 6px 18px;
+}
+
+/* Multi-line mode: text takes the full top row, buttons dock below */
+.ai-composer.tall {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  grid-template-areas:
+    "field field field field"
+    "plus gap mic send";
+  row-gap: 2px;
+  border-radius: 24px;
+  padding: 10px 10px 8px 14px;
+}
+
+.ai-composer.tall .ai-input {
+  grid-area: field;
+}
+
+.ai-composer.tall .ai-plus {
+  grid-area: plus;
+}
+
+.ai-composer.tall .ai-mic {
+  grid-area: mic;
+}
+
+.ai-composer.tall .ai-send {
+  grid-area: send;
 }
 
 .ai-composer:focus-within {
@@ -358,6 +386,11 @@
 
 .ai-composer:has(.ai-plus) .ai-ph {
   left: 64px;
+}
+
+.ai-composer.tall:has(.ai-plus) .ai-ph {
+  left: 16px;
+  top: 12px;
 }
 
 .ai-mic {
@@ -443,6 +476,8 @@
   .ai-drawer,
   .ai-caret,
   .ai-think i,
+  .ai-thinkpulse,
+  .ai-thinksen,
   .ai-menu,
   .ai-sheet-scrim,
   .ai-sheet,
@@ -853,8 +888,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(140deg, var(--blue-light-border), var(--blue));
-  color: #fff;
+  background: #e5e5e5;
+  color: var(--muted);
 }
 
 /* Chat-state attach button + preview */
@@ -899,8 +934,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(140deg, var(--blue-light-border), var(--blue));
-  color: #fff;
+  background: #e5e5e5;
+  color: var(--muted);
 }
 
 .ai-attachname {
@@ -1446,6 +1481,18 @@ button.ai-opt:hover {
   font-weight: 800;
   color: #fff;
   background: var(--blue);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-favi img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #fff;
 }
 
 .ai-result-body {
@@ -1468,6 +1515,9 @@ button.ai-opt:hover {
   font-weight: 800;
   color: var(--blue-dark);
   line-height: 1.45;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
 }
 
 .ai-result-snip {
@@ -1488,6 +1538,59 @@ button.ai-opt:hover {
 @keyframes ai-sweep {
   from { background-position: 120% 0; }
   to { background-position: -120% 0; }
+}
+
+/* Thinking panel — sentence-wise reveal */
+.ai-thinkbox {
+  background: #f4f5f7;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-thinkhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue-dark);
+}
+
+.ai-thinkpulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--blue);
+  animation: ai-pulse 1.2s ease-in-out infinite;
+}
+
+.ai-thinkpara {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.ai-thinksen {
+  animation: ai-sen-in 0.4s ease-out;
+}
+
+@keyframes ai-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+@keyframes ai-sen-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ---------- AI dark theme (phone.dark only) ---------- */
@@ -1772,6 +1875,18 @@ button.ai-opt:hover {
 .tst-phone.dark .ai-result-snip {
   color: #d8dae2;
 }
+
+.tst-phone.dark .ai-thinkbox {
+  background: #20212c;
+}
+
+.tst-phone.dark .ai-thinkhead {
+  color: #8fb8ff;
+}
+
+.tst-phone.dark .ai-thinkpara {
+  color: #8a8ea3;
+}
 .tst-phone.dark .ai-hl.g { background: linear-gradient(transparent 40%, rgba(88, 204, 2, 0.35) 40%); }
 .tst-phone.dark .ai-hl.b { background: linear-gradient(transparent 40%, rgba(47, 157, 240, 0.4) 40%); }
 
@@ -1872,6 +1987,12 @@ button.ai-opt:hover {
 
 .tst-phone.dark .ai-attachx:hover {
   background: #33353f;
+}
+
+.tst-phone.dark .ai-photo,
+.tst-phone.dark .ai-attachthumb {
+  background: #33353f;
+  color: #dfe1ea;
 }
 
 .tst-phone.dark .ai-sheet {

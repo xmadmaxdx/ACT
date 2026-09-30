@@ -101,10 +101,15 @@ const AI_QUIZ = {
 const AI_INTRO2 = "Pop quiz time — two quick taps, no pressure. Wrong answers teach just as much:";
 const AI_OUTRO2 = "Finished both? Then the idea is yours — functions take in, hand back, never fuss.";
 const AI_INTRO3 = "Dug through fresh tutorials for you — here's what the web says about loops:";
+const AI_INTRO4 = "Thought it through — here's the clean answer:";
+const AI_THOUGHT =
+  "Okay, so they want the cleanest possible answer. " +
+  "The return keyword is the hinge — everything before it is just setup. " +
+  "I'll lead with the smallest example so it lands instantly.";
 const AI_SEARCH_Q = "python loops tutorial";
 const AI_RESULTS = [
-  { site: "realpython.com", title: "Python for Loops, Demystified", snip: "Iterate anything — skip with continue, bail with break." },
-  { site: "docs.python.org", title: "More Control Flow Tools", snip: "The official tour of if, for, while and friends." },
+  { site: "realpython.com", url: "https://realpython.com/python-for-loop/", title: "Python for Loops, Demystified", snip: "Iterate anything — skip with continue, bail with break." },
+  { site: "docs.python.org", url: "https://docs.python.org/3/tutorial/controlflow.html", title: "More Control Flow Tools", snip: "The official tour of if, for, while and friends." },
 ];
 const AI_OUTRO3 = "Start with the first link, then come back and I'll quiz you on it.";
 const AI_QUIZ_B = {
@@ -456,20 +461,65 @@ function AiQuiz({ data, qkey }) {
   );
 }
 
+function AiFavi({ site }) {
+  const [dead, setDead] = useState(false);
+  return (
+    <span className="ai-favi" aria-hidden="true">
+      {site.charAt(0).toUpperCase()}
+      {!dead && (
+        <img
+          src={`https://www.google.com/s2/favicons?domain=${site}&sz=128`}
+          alt=""
+          loading="lazy"
+          onError={() => setDead(true)}
+        />
+      )}
+    </span>
+  );
+}
+
 function AiResults({ query, items }) {
   return (
     <div className="ai-results">
       {items.map((r) => (
         <div className="ai-result" key={r.site}>
-          <span className="ai-favi" aria-hidden="true">{r.site.charAt(0).toUpperCase()}</span>
+          <AiFavi site={r.site} />
           <div className="ai-result-body">
             <p className="ai-result-site">{r.site}</p>
-            <p className="ai-result-title">{r.title}</p>
+            <a className="ai-result-title" href={r.url} target="_blank" rel="noreferrer">
+              {r.title}
+            </a>
             <p className="ai-result-snip">{r.snip}</p>
           </div>
         </div>
       ))}
       <p className="ai-result-via">via Zynq · “{query}”</p>
+    </div>
+  );
+}
+
+function AiThinkBlock({ text }) {
+  const sentences = (text || "").split(/(?<=[.!?])\s+/).filter(Boolean);
+  const [shown, setShown] = useState(() =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ? sentences.length : 1
+  );
+  useEffect(() => {
+    if (shown >= sentences.length) return;
+    const t = window.setTimeout(() => setShown((s) => s + 1), 750);
+    return () => window.clearTimeout(t);
+  }, [shown, sentences.length]);
+  return (
+    <div className="ai-thinkbox">
+      <p className="ai-thinkhead">
+        <span className="ai-thinkpulse" aria-hidden="true" />
+        Thinking
+      </p>
+      <p className="ai-thinkpara">
+        {sentences.slice(0, shown).map((s, i) => (
+          <span className="ai-thinksen" key={i}>{s} </span>
+        ))}
+        {shown < sentences.length && <span className="ai-caret" aria-hidden="true" />}
+      </p>
     </div>
   );
 }
@@ -485,6 +535,7 @@ export default function Ai() {
   const [sheet, setSheet] = useState(false);
   const [webOn, setWebOn] = useState(false);
   const [attach, setAttach] = useState(null);
+  const [tall, setTall] = useState(false);
   const [vote, setVote] = useState({});
   const [codeCopied, setCodeCopied] = useState(false);
   const [snipCopied, setSnipCopied] = useState(false);
@@ -505,6 +556,7 @@ export default function Ai() {
     if (!el) return;
     el.style.height = "auto";
     el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+    setTall(el.scrollHeight > 48);
   };
 
   useEffect(() => {
@@ -557,10 +609,10 @@ export default function Ai() {
     const aiId = `a${stamp}`;
     const follow = flipRef.current ? "chips" : "inline";
     flipRef.current = !flipRef.current;
-    const slot = countRef.current % 3;
-    const variant = slot === 1 ? "quiz" : slot === 2 ? "web" : "standard";
+    const slot = countRef.current % 4;
+    const variant = slot === 1 ? "quiz" : slot === 2 ? "web" : slot === 3 ? "think" : "standard";
     countRef.current += 1;
-    const intro = variant === "quiz" ? AI_INTRO2 : variant === "web" ? AI_INTRO3 : AI_INTRO;
+    const intro = variant === "quiz" ? AI_INTRO2 : variant === "web" ? AI_INTRO3 : variant === "think" ? AI_INTRO4 : AI_INTRO;
     if (echo) setMsgs((m) => [...m, { id: `u${stamp}`, role: "user", text: userText, photo: hasPhoto }]);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: intro, follow, variant }]);
@@ -572,6 +624,11 @@ export default function Ai() {
       if (variant === "web") {
         setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, stage: "searching" } : x)));
         later(() => startStream(), 1800);
+        return;
+      }
+      if (variant === "think") {
+        setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, stage: "pondering" } : x)));
+        later(() => startStream(), 2600);
         return;
       }
       startStream();
@@ -629,6 +686,7 @@ export default function Ai() {
     runReply(text.trim() || "What's in this photo?", true, !!attach);
     setText("");
     setAttach(null);
+    setTall(false);
     inputRef.current?.focus();
   };
 
@@ -780,16 +838,18 @@ export default function Ai() {
                 <p className="ai-shimmer" role="status" aria-label="Searching the web">
                   Web search via Zynq “{AI_SEARCH_Q}”
                 </p>
+              ) : m.stage === "pondering" ? (
+                <AiThinkBlock text={AI_THOUGHT} />
               ) : (
                 <>
                   <p className="ai-text">
                     {m.text}
                     {m.stage === "streaming" && <span className="ai-caret" aria-hidden="true" />}
                   </p>
-                  {(m.stage === "code" || m.stage === "done") && m.variant !== "quiz" && m.variant !== "web" && (
+                  {(m.stage === "code" || m.stage === "done") && (m.variant === "standard" || m.variant === "think") && (
                     <AiCode copied={codeCopied} onCopy={onCopyCode} />
                   )}
-                  {m.stage === "done" && m.variant !== "quiz" && (
+                  {m.stage === "done" && (m.variant === "standard" || m.variant === "think") && (
                     <>
                       <AiSnippet text={AI_SNIPPET} copied={snipCopied} onCopy={onCopySnip} />
                       <p className="ai-text">
@@ -940,7 +1000,7 @@ export default function Ai() {
             </button>
           </div>
         )}
-        <div className="ai-composer">
+        <div className={tall ? "ai-composer tall" : "ai-composer"}>
           {chatting && (
             <button type="button" className="ai-plus" onClick={() => setSheet(true)} aria-label="Attach">
               <PlusIcon />
