@@ -120,20 +120,48 @@ function EditIcon() {
   );
 }
 
+const RECENTS = [
+  { id: "r1", title: "Loops explained simply", tone: "t-blue" },
+  { id: "r2", title: "String slicing help", tone: "t-purple" },
+  { id: "r3", title: "Fix: index out of range", tone: "t-amber" },
+  { id: "r4", title: "Recursion quiz night", tone: "t-green" },
+  { id: "r5", title: "Challenge #12 attempt", tone: "t-blue" },
+  { id: "r6", title: "f-strings practice", tone: "t-purple" },
+  { id: "r7", title: "Variables 101 recap", tone: "t-green" },
+];
+
+function CodinoMark({ size }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 200 200" role="img" aria-label="Codino mark">
+      <circle cx="100" cy="90" r="72" fill="#38A8FF" stroke="#1463AC" strokeWidth="8" />
+      <ellipse cx="80" cy="80" rx="20" ry="24" fill="#fff" />
+      <ellipse cx="122" cy="80" rx="20" ry="24" fill="#fff" />
+      <circle cx="83" cy="85" r="10" fill="#0C2340" />
+      <circle cx="119" cy="85" r="10" fill="#0C2340" />
+      <path d="M 88 114 Q 101 124, 117 113" fill="none" stroke="#0C2340" strokeWidth="9" strokeLinecap="round" />
+    </svg>
+  );
+}
+function XIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  );
+}
+
 export default function Ai() {
   const [text, setText] = useState("");
   const [phIdx, setPhIdx] = useState(0);
   const [listening, setListening] = useState(false);
+  const [drawer, setDrawer] = useState(false);
   const inputRef = useRef(null);
-  const listenT = useRef(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const t = window.setInterval(() => setPhIdx((i) => (i + 1) % PLACEHOLDERS.length), 2800);
     return () => window.clearInterval(t);
   }, []);
-
-  useEffect(() => () => window.clearTimeout(listenT.current), []);
 
   const canSend = text.trim().length > 0;
 
@@ -142,14 +170,14 @@ export default function Ai() {
     inputRef.current?.focus();
   };
 
-  const toggleListen = () => {
-    if (listening) {
-      window.clearTimeout(listenT.current);
-      setListening(false);
-      return;
-    }
-    setListening(true);
-    listenT.current = window.setTimeout(() => setListening(false), 2600);
+  const startListen = () => setListening(true);
+
+  const cancelListen = () => setListening(false);
+
+  const stopListen = () => {
+    setListening(false);
+    setText("Explain for loops like I'm five");
+    inputRef.current?.focus();
   };
 
   const send = () => {
@@ -161,7 +189,7 @@ export default function Ai() {
   return (
     <div className="ai-wrap">
       <div className="ai-topbar rise">
-        <button type="button" className="ai-burger" aria-label="Menu">
+        <button type="button" className="ai-burger" aria-label="Menu" aria-expanded={drawer} onClick={() => setDrawer(true)}>
           <BurgerIcon />
         </button>
         <button type="button" className="ai-model" aria-label="Model: Auto">
@@ -207,7 +235,24 @@ export default function Ai() {
       </div>
 
       <div className="ai-dock rise d4">
-        {listening && <p className="ai-listening">Listening… speak now</p>}
+        {listening ? (
+          <div className="ai-dictate">
+            <button type="button" className="ai-dict-x" onClick={cancelListen} aria-label="Cancel dictation">
+              <XIcon />
+            </button>
+            <div className="ai-dict-track" aria-hidden="true">
+              <span className="ai-dots" />
+              <span className="ai-bars">
+                {Array.from({ length: 30 }).map((_, i) => (
+                  <i key={i} style={{ height: `${6 + ((i * 37) % 18)}px`, animationDelay: `${(i % 8) * 0.09}s` }} />
+                ))}
+              </span>
+            </div>
+            <button type="button" className="ai-dict-stop" onClick={stopListen} aria-label="Stop and dictate">
+              <span className="ai-stop-sq" aria-hidden="true" />
+            </button>
+          </div>
+        ) : (
         <div className="ai-composer">
           <input
             ref={inputRef}
@@ -223,13 +268,11 @@ export default function Ai() {
           )}
           <button
             type="button"
-            className={listening ? "ai-mic on" : "ai-mic"}
-            onClick={toggleListen}
-            aria-label={listening ? "Stop listening" : "Voice input"}
-            aria-pressed={listening}
+            className="ai-mic"
+            onClick={startListen}
+            aria-label="Voice input"
           >
             <MicIcon />
-            {listening && <span className="ai-waves" aria-hidden="true"><i /><i /><i /></span>}
           </button>
           <button
             type="button"
@@ -241,7 +284,34 @@ export default function Ai() {
             <SendIcon />
           </button>
         </div>
+        )}
       </div>
+
+      {drawer && (
+        <div className="ai-scrim" onClick={() => setDrawer(false)}>
+          <div
+            className="ai-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Recent chats"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="ai-brand">
+              <span className="ai-brand-name">Codino</span>
+              <CodinoMark size={40} />
+            </div>
+            <p className="ai-recents">Recents</p>
+            <div className="ai-chatlist">
+              {RECENTS.map((c) => (
+                <button key={c.id} type="button" className="ai-chat" onClick={() => setDrawer(false)}>
+                  <span className={`ai-circle ${c.tone}`} aria-hidden="true">{c.title.charAt(0)}</span>
+                  <span className="ai-chat-title">{c.title}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
