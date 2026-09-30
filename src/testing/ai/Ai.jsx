@@ -68,7 +68,7 @@ const SUGGESTIONS = [
 const AI_INTRO = "Here's a tiny function you can try:";
 const AI_CODE = 'def greet(name):\n    return f"Hello, {name}!"';
 const AI_OUTRO = 'Call greet("Ada") and it hands back "Hello, Ada!". The f-string pastes the name right into the sentence — no plus signs, no gaps to forget.';
-const FOLLOWUPS = ["Explain each line", "Give me a challenge", "Quiz me on this"];
+const FOLLOWUPS = ["Explain each line", "Give me a challenge"];
 const MENU_TIME = "Today, 11:01 AM";
 
 function BurgerIcon() {
@@ -230,6 +230,43 @@ function IdeIcon() {
   );
 }
 
+function PlusIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" strokeDasharray="3.5 3" />
+      <path d="M12 8.5v7M8.5 12h7" />
+    </svg>
+  );
+}
+
+function CameraIcon() {
+  return (
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
+      <circle cx="12" cy="13.5" r="3.4" />
+    </svg>
+  );
+}
+
+function ImageIcon() {
+  return (
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3.5" y="4.5" width="17" height="15" rx="3" />
+      <circle cx="9" cy="10" r="1.6" />
+      <path d="M4.5 17.5l4.5-4.5 3 3 3.5-3.5 4 4" />
+    </svg>
+  );
+}
+
+function GlobeIcon() {
+  return (
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M3.5 12h17M12 3.5c-4.8 4.9-4.8 12.1 0 17M12 3.5c4.8 4.9 4.8 12.1 0 17" />
+    </svg>
+  );
+}
+
 const RECENTS = [
   { id: "r1", title: "Loops explained simply" },
   { id: "r2", title: "String slicing help" },
@@ -290,6 +327,9 @@ export default function Ai() {
   const [levels, setLevels] = useState([]);
   const [msgs, setMsgs] = useState([]);
   const [menuFor, setMenuFor] = useState(null);
+  const [sheet, setSheet] = useState(false);
+  const [webOn, setWebOn] = useState(false);
+  const [attach, setAttach] = useState(null);
   const [vote, setVote] = useState({});
   const [codeCopied, setCodeCopied] = useState(false);
   const [msgCopied, setMsgCopied] = useState(null);
@@ -338,13 +378,13 @@ export default function Ai() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [msgs]);
 
-  const canSend = text.trim().length > 0;
+  const canSend = text.trim().length > 0 || !!attach;
 
-  const runReply = (userText, echo = true) => {
+  const runReply = (userText, echo = true, hasPhoto = false) => {
     const gen = ++genRef.current;
     const stamp = Date.now();
     const aiId = `a${stamp}`;
-    if (echo) setMsgs((m) => [...m, { id: `u${stamp}`, role: "user", text: userText }]);
+    if (echo) setMsgs((m) => [...m, { id: `u${stamp}`, role: "user", text: userText, photo: hasPhoto }]);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: AI_INTRO }]);
       return;
@@ -399,8 +439,15 @@ export default function Ai() {
 
   const send = () => {
     if (!canSend) return;
-    runReply(text.trim());
+    runReply(text.trim() || "What's in this photo?", true, !!attach);
     setText("");
+    setAttach(null);
+    inputRef.current?.focus();
+  };
+
+  const addPhoto = (kind) => {
+    setAttach(kind);
+    setSheet(false);
     inputRef.current?.focus();
   };
 
@@ -481,8 +528,8 @@ export default function Ai() {
           <span>Auto</span>
           <ChevIcon />
         </button>
-        <button type="button" className="ai-new" aria-label="New chat" onClick={newChat}>
-          <EditIcon />
+        <button type="button" className="ai-new" aria-label={chatting ? "Close chat" : "New chat"} onClick={newChat}>
+          {chatting ? <XIcon /> : <EditIcon />}
         </button>
       </div>
 
@@ -515,7 +562,12 @@ export default function Ai() {
         <div className="ai-thread" ref={threadRef}>
           {msgs.map((m) => m.role === "user" ? (
             <div className="ai-urow" key={m.id}>
-              <p className="ai-ububble">{m.text}</p>
+              {m.photo && (
+                <span className="ai-photo" aria-label="Attached photo">
+                  <ImageIcon />
+                </span>
+              )}
+              {!!m.text && <p className="ai-ububble">{m.text}</p>}
             </div>
           ) : (
             <div className="ai-msg" key={m.id}>
@@ -650,7 +702,24 @@ export default function Ai() {
             </button>
           </div>
         ) : (
+        <>
+        {attach && (
+          <div className="ai-attachprev">
+            <span className="ai-attachthumb" aria-hidden="true">
+              <ImageIcon />
+            </span>
+            <span className="ai-attachname">{attach === "camera" ? "camera-photo.jpg" : "upload-photo.jpg"}</span>
+            <button type="button" className="ai-attachx" onClick={() => setAttach(null)} aria-label="Remove photo">
+              <XIcon />
+            </button>
+          </div>
+        )}
         <div className="ai-composer">
+          {chatting && (
+            <button type="button" className="ai-plus" onClick={() => setSheet(true)} aria-label="Attach">
+              <PlusIcon />
+            </button>
+          )}
           <input
             ref={inputRef}
             className="ai-input"
@@ -681,10 +750,47 @@ export default function Ai() {
             <SendIcon />
           </button>
         </div>
+        </>
         )}
       </div>
 
       {menuFor && <div className="ai-catch" onClick={() => setMenuFor(null)} />}
+
+      {sheet && (
+        <div className="ai-sheet-scrim" onClick={() => setSheet(false)}>
+          <div
+            className="ai-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Attachments"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="ai-grab" aria-hidden="true" />
+            <button type="button" className="ai-sheetrow" onClick={() => addPhoto("camera")}>
+              <span className="ai-sheeticon b" aria-hidden="true"><CameraIcon /></span>
+              <span className="ai-sheetlabel">Take picture</span>
+            </button>
+            <button type="button" className="ai-sheetrow" onClick={() => addPhoto("upload")}>
+              <span className="ai-sheeticon g" aria-hidden="true"><ImageIcon /></span>
+              <span className="ai-sheetlabel">Upload picture</span>
+            </button>
+            <div className="ai-sheetrow static">
+              <span className="ai-sheeticon p" aria-hidden="true"><GlobeIcon /></span>
+              <span className="ai-sheetlabel">Web search</span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={webOn}
+                aria-label="Web search"
+                className={webOn ? "ai-switch on" : "ai-switch"}
+                onClick={() => setWebOn((w) => !w)}
+              >
+                <span className="ai-knob" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {drawer && (
         <div className="ai-scrim" onClick={() => setDrawer(false)}>
