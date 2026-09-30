@@ -65,6 +65,12 @@ const SUGGESTIONS = [
   },
 ];
 
+const AI_INTRO = "Here's a tiny function you can try:";
+const AI_CODE = 'def greet(name):\n    return f"Hello, {name}!"';
+const AI_OUTRO = 'Call greet("Ada") and it hands back "Hello, Ada!". The f-string pastes the name right into the sentence — no plus signs, no gaps to forget.';
+const FOLLOWUPS = ["Explain each line", "Give me a challenge", "Quiz me on this"];
+const MENU_TIME = "Today, 11:01 AM";
+
 function BurgerIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true">
@@ -120,6 +126,110 @@ function EditIcon() {
   );
 }
 
+function CopyIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="9" y="9" width="11.5" height="11.5" rx="2.5" />
+      <path d="M5.5 15h-1a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4.5 12.5l5 5L19.5 7" />
+    </svg>
+  );
+}
+
+function SpeakerIcon({ on }) {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M11 5L6.5 9H3v6h3.5L11 19z" fill={on ? "currentColor" : "none"} />
+      <path d="M15 9a4.2 4.2 0 0 1 0 6M17.8 6.8a7.4 7.4 0 0 1 0 10.4" />
+    </svg>
+  );
+}
+
+function LikeIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7 10.5V21M7 10.5l4.2-7.3c.9 0 1.7.7 1.7 1.7v4.3h5.5a2 2 0 0 1 2 2.4l-1.3 6.4a2 2 0 0 1-2 1.5H7" />
+    </svg>
+  );
+}
+
+function DislikeIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 13.5V3M17 13.5l-4.2 7.3c-.9 0-1.7-.7-1.7-1.7v-4.3H5.6a2 2 0 0 1-2-2.4l1.3-6.4a2 2 0 0 1 2-1.5H17" />
+    </svg>
+  );
+}
+
+function ShareIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="6" cy="12" r="2.6" />
+      <circle cx="17.5" cy="5.5" r="2.6" />
+      <circle cx="17.5" cy="18.5" r="2.6" />
+      <path d="M8.3 10.8l6.9-4M8.3 13.2l6.9 4" />
+    </svg>
+  );
+}
+
+function DotsIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <circle cx="5" cy="12" r="1.8" />
+      <circle cx="12" cy="12" r="1.8" />
+      <circle cx="19" cy="12" r="1.8" />
+    </svg>
+  );
+}
+
+function BranchIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="6" cy="6" r="2.4" />
+      <circle cx="6" cy="18" r="2.4" />
+      <circle cx="18" cy="12" r="2.4" />
+      <path d="M6 8.4v7.2M8 7c4 0 3 3.4 7.6 3.9" />
+    </svg>
+  );
+}
+
+function RetryIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M3.5 8a9 9 0 0 1 15.9-1.5L21 8" />
+      <path d="M21 3.5V8h-4.5" />
+      <path d="M20.5 16a9 9 0 0 1-15.9 1.5L3 16" />
+      <path d="M3 20.5V16h4.5" />
+    </svg>
+  );
+}
+
+function FlagIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 21V4" />
+      <path d="M5 4.5h12.5l-2.5 4 2.5 4H5" />
+    </svg>
+  );
+}
+
+function IdeIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14 4h6v6" />
+      <path d="M20 4L11 13" />
+      <path d="M19 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5.5" />
+    </svg>
+  );
+}
+
 const RECENTS = [
   { id: "r1", title: "Loops explained simply" },
   { id: "r2", title: "String slicing help" },
@@ -150,13 +260,57 @@ function XIcon() {
   );
 }
 
+function AiCode({ copied, onCopy }) {
+  return (
+    <div className="ai-code">
+      <div className="ai-code-head">
+        <span className="ai-lang">PYTHON</span>
+        <button type="button" className="ai-iconbtn" onClick={onCopy} aria-label={copied ? "Copied" : "Copy code"}>
+          {copied ? <CheckIcon /> : <CopyIcon />}
+        </button>
+      </div>
+      <pre className="ai-pre">
+        <code>
+          <span className="tk-k">def </span><span className="tk-f">greet</span><span className="tk-p">(name):</span>{'\n'}
+          <span className="tk-p">    </span><span className="tk-k">return </span><span className="tk-k">f</span><span className="tk-s">"Hello, {'{name}'}!"</span>
+        </code>
+      </pre>
+      <button type="button" className="ai-ide">
+        <IdeIcon /> Open in IDE
+      </button>
+    </div>
+  );
+}
+
 export default function Ai() {
   const [text, setText] = useState("");
   const [phIdx, setPhIdx] = useState(0);
   const [listening, setListening] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [levels, setLevels] = useState([]);
+  const [msgs, setMsgs] = useState([]);
+  const [menuFor, setMenuFor] = useState(null);
+  const [vote, setVote] = useState({});
+  const [codeCopied, setCodeCopied] = useState(false);
+  const [msgCopied, setMsgCopied] = useState(null);
+  const [speaking, setSpeaking] = useState(null);
+  const [shared, setShared] = useState(null);
+  const [reported, setReported] = useState({});
   const inputRef = useRef(null);
+  const threadRef = useRef(null);
+  const genRef = useRef(0);
+  const timers = useRef([]);
+  const ivs = useRef([]);
+
+  const later = (fn, ms) => {
+    const t = window.setTimeout(fn, ms);
+    timers.current.push(t);
+  };
+
+  useEffect(() => {
+    timers.current.forEach((t) => window.clearTimeout(t));
+    ivs.current.forEach((i) => window.clearInterval(i));
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -172,14 +326,54 @@ export default function Ai() {
     }
     const tick = window.setInterval(() => {
       const sec = Date.now() / 1000;
-      const speaking = sec % 3 < 2;
-      const h = speaking ? 6 + Math.round(Math.random() * 22) : 2 + Math.round(Math.random() * 3);
+      const speakingNow = sec % 3 < 2;
+      const h = speakingNow ? 6 + Math.round(Math.random() * 22) : 2 + Math.round(Math.random() * 3);
       setLevels((prev) => [...prev.slice(-27), h]);
     }, 130);
     return () => window.clearInterval(tick);
   }, [listening]);
 
+  useEffect(() => {
+    const el = threadRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [msgs]);
+
   const canSend = text.trim().length > 0;
+
+  const runReply = (userText, echo = true) => {
+    const gen = ++genRef.current;
+    const stamp = Date.now();
+    const aiId = `a${stamp}`;
+    if (echo) setMsgs((m) => [...m, { id: `u${stamp}`, role: "user", text: userText }]);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: AI_INTRO }]);
+      return;
+    }
+    setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "thinking", text: "" }]);
+    later(() => {
+      if (genRef.current !== gen) return;
+      setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, stage: "streaming" } : x)));
+      let i = 0;
+      const iv = window.setInterval(() => {
+        if (genRef.current !== gen) {
+          window.clearInterval(iv);
+          return;
+        }
+        i += 2;
+        const done = i >= AI_INTRO.length;
+        const slice = AI_INTRO.slice(0, i);
+        setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, text: slice, stage: done ? "code" : "streaming" } : x)));
+        if (done) {
+          window.clearInterval(iv);
+          later(() => {
+            if (genRef.current !== gen) return;
+            setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, stage: "done" } : x)));
+          }, 450);
+        }
+      }, 24);
+      ivs.current.push(iv);
+    }, 900);
+  };
 
   const pickSuggestion = (s) => {
     setText(s.text);
@@ -205,9 +399,76 @@ export default function Ai() {
 
   const send = () => {
     if (!canSend) return;
+    runReply(text.trim());
     setText("");
     inputRef.current?.focus();
   };
+
+  const newChat = () => {
+    genRef.current += 1;
+    setMsgs([]);
+    setMenuFor(null);
+  };
+
+  const copyText = async (s) => {
+    try {
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(s);
+      else throw new Error("no clipboard");
+      return true;
+    } catch (err) {
+      window.console.debug("ai copy skipped", err);
+      return false;
+    }
+  };
+
+  const replyFull = (m) => `${m.text}\n${AI_CODE}\n${AI_OUTRO}`;
+
+  const onCopyMsg = async (m) => {
+    if (await copyText(replyFull(m))) {
+      setMsgCopied(m.id);
+      later(() => setMsgCopied((c) => (c === m.id ? null : c)), 1500);
+    }
+  };
+
+  const onCopyCode = async () => {
+    if (await copyText(AI_CODE)) {
+      setCodeCopied(true);
+      later(() => setCodeCopied(false), 1500);
+    }
+  };
+
+  const onShare = async (m) => {
+    if (await copyText(replyFull(m))) {
+      setShared(m.id);
+      later(() => setShared((s) => (s === m.id ? null : s)), 1500);
+    }
+  };
+
+  const toggleVote = (id, v) => {
+    setVote((prev) => ({ ...prev, [id]: prev[id] === v ? null : v }));
+  };
+
+  const prevUserText = (aiId) => {
+    const idx = msgs.findIndex((m) => m.id === aiId);
+    const prev = [...msgs.slice(0, idx)].reverse().find((m) => m.role === "user");
+    return prev ? prev.text : "Go on";
+  };
+
+  const onRetry = (aiId) => {
+    const q = prevUserText(aiId);
+    setMenuFor(null);
+    setMsgs((m) => m.filter((x) => x.id !== aiId));
+    later(() => runReply(q, false), 150);
+  };
+
+  const onBranch = (aiId) => {
+    const q = prevUserText(aiId);
+    setMenuFor(null);
+    newChat();
+    later(() => runReply(q), 150);
+  };
+
+  const chatting = msgs.length > 0;
 
   return (
     <div className="ai-wrap">
@@ -220,22 +481,15 @@ export default function Ai() {
           <span>Auto</span>
           <ChevIcon />
         </button>
-        <button type="button" className="ai-new" aria-label="New chat">
+        <button type="button" className="ai-new" aria-label="New chat" onClick={newChat}>
           <EditIcon />
         </button>
       </div>
 
+      {!chatting ? (
       <div className="ai-main">
         <div className="ai-logo rise d1" aria-hidden="true">
-          <svg width="76" height="76" viewBox="0 0 200 200" role="img" aria-label="Codino mark">
-            <circle cx="100" cy="90" r="72" fill="#38A8FF" stroke="#1463AC" strokeWidth="8" />
-            <ellipse cx="80" cy="80" rx="20" ry="24" fill="#fff" />
-            <ellipse cx="122" cy="80" rx="20" ry="24" fill="#fff" />
-            <circle cx="83" cy="85" r="10" fill="#0C2340" />
-            <circle cx="119" cy="85" r="10" fill="#0C2340" />
-            <path d="M 88 114 Q 101 124, 117 113" fill="none" stroke="#0C2340"
-                  strokeWidth="9" strokeLinecap="round" />
-          </svg>
+          <CodinoMark size={76} />
         </div>
         <h2 className="ai-hello rise d2">Hey, let's learn <span>Python</span></h2>
         <p className="ai-sub rise d2">Ask anything — loops, errors, ideas, quizzes.</p>
@@ -256,6 +510,125 @@ export default function Ai() {
           ))}
         </div>
       </div>
+      ) : (
+      <div className="ai-main chatting">
+        <div className="ai-thread" ref={threadRef}>
+          {msgs.map((m) => m.role === "user" ? (
+            <div className="ai-urow" key={m.id}>
+              <p className="ai-ububble">{m.text}</p>
+            </div>
+          ) : (
+            <div className="ai-msg" key={m.id}>
+              {m.stage === "thinking" ? (
+                <span className="ai-think" role="status" aria-label="Thinking">
+                  <i /><i /><i />
+                </span>
+              ) : (
+                <>
+                  <p className="ai-text">
+                    {m.text}
+                    {m.stage === "streaming" && <span className="ai-caret" aria-hidden="true" />}
+                  </p>
+                  {(m.stage === "code" || m.stage === "done") && (
+                    <AiCode copied={codeCopied} onCopy={onCopyCode} />
+                  )}
+                  {m.stage === "done" && (
+                    <>
+                      <p className="ai-text">{AI_OUTRO}</p>
+                      <div className="ai-actions">
+                        <button
+                          type="button"
+                          className="ai-act"
+                          onClick={() => onCopyMsg(m)}
+                          aria-label={msgCopied === m.id ? "Copied" : "Copy response"}
+                        >
+                          {msgCopied === m.id ? <CheckIcon /> : <CopyIcon />}
+                        </button>
+                        <button
+                          type="button"
+                          className={speaking === m.id ? "ai-act on" : "ai-act"}
+                          onClick={() => setSpeaking((s) => (s === m.id ? null : m.id))}
+                          aria-label={speaking === m.id ? "Stop reading" : "Read aloud"}
+                          aria-pressed={speaking === m.id}
+                        >
+                          <SpeakerIcon on={speaking === m.id} />
+                        </button>
+                        <button
+                          type="button"
+                          className={vote[m.id] === "up" ? "ai-act on" : "ai-act"}
+                          onClick={() => toggleVote(m.id, "up")}
+                          aria-label="Good response"
+                          aria-pressed={vote[m.id] === "up"}
+                        >
+                          <LikeIcon />
+                        </button>
+                        <button
+                          type="button"
+                          className={vote[m.id] === "down" ? "ai-act on" : "ai-act"}
+                          onClick={() => toggleVote(m.id, "down")}
+                          aria-label="Bad response"
+                          aria-pressed={vote[m.id] === "down"}
+                        >
+                          <DislikeIcon />
+                        </button>
+                        <button
+                          type="button"
+                          className="ai-act"
+                          onClick={() => onShare(m)}
+                          aria-label={shared === m.id ? "Link copied" : "Share response"}
+                        >
+                          {shared === m.id ? <CheckIcon /> : <ShareIcon />}
+                        </button>
+                        <button
+                          type="button"
+                          className="ai-act"
+                          onClick={() => setMenuFor((f) => (f === m.id ? null : m.id))}
+                          aria-label="More options"
+                          aria-expanded={menuFor === m.id}
+                        >
+                          <DotsIcon />
+                        </button>
+                        {menuFor === m.id && (
+                          <div className="ai-menu" role="menu" aria-label="Response options">
+                            <p className="ai-menu-time">{MENU_TIME}</p>
+                            <button type="button" className="ai-mi" onClick={() => onBranch(m.id)}>
+                              <BranchIcon /> Branch in new chat
+                            </button>
+                            <hr />
+                            <button type="button" className="ai-mi" onClick={() => onRetry(m.id)}>
+                              <RetryIcon /> Retry
+                            </button>
+                            <button
+                              type="button"
+                              className="ai-mi"
+                              disabled={!!reported[m.id]}
+                              onClick={() => {
+                                setReported((r) => ({ ...r, [m.id]: true }));
+                                setMenuFor(null);
+                              }}
+                            >
+                              {reported[m.id] ? <CheckIcon /> : <FlagIcon />}
+                              {reported[m.id] ? "Reported ✓" : "Report response"}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      <div className="ai-follow">
+                        {FOLLOWUPS.map((f) => (
+                          <button key={f} type="button" className="ai-chip" onClick={() => runReply(f)}>
+                            {f}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      )}
 
       <div className="ai-dock rise d4">
         {listening ? (
@@ -287,7 +660,7 @@ export default function Ai() {
             aria-label="Ask the AI"
             maxLength={500}
           />
-          {text.length === 0 && (
+          {text.length === 0 && !chatting && (
             <span className="ai-ph" aria-hidden="true" key={phIdx}>{PLACEHOLDERS[phIdx]}</span>
           )}
           <button
@@ -310,6 +683,8 @@ export default function Ai() {
         </div>
         )}
       </div>
+
+      {menuFor && <div className="ai-catch" onClick={() => setMenuFor(null)} />}
 
       {drawer && (
         <div className="ai-scrim" onClick={() => setDrawer(false)}>
