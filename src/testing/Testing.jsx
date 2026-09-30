@@ -44,7 +44,7 @@ const FOLDERS = [
     desc: "Python tutor root state",
     icon: "✦",
     screens: [
-      { id: "ai-root", title: "AI · Root State", desc: "Hamburger, Auto model, voice+send, suggestions.", Comp: Ai, files: AI_FILES },
+      { id: "ai-root", title: "AI · Root State", desc: "Hamburger, Auto model, voice+send, suggestions.", dark: true, Comp: Ai, files: AI_FILES },
     ],
   },
   {
