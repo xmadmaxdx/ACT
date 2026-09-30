@@ -101,7 +101,7 @@ function ChevIcon() {
 
 function MicIcon() {
   return (
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="9" y="2.5" width="6" height="11" rx="3" />
       <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5" />
     </svg>
@@ -110,7 +110,7 @@ function MicIcon() {
 
 function SendIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M21 3.5L10.2 14.3" />
       <path d="M21 3.5L14.4 21l-4.2-6.7L3.5 10z" />
     </svg>
@@ -232,7 +232,7 @@ function IdeIcon() {
 
 function PlusIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
       <circle cx="12" cy="12" r="8.5" strokeDasharray="3.5 3" />
       <path d="M12 8.5v7M8.5 12h7" />
     </svg>
@@ -528,7 +528,7 @@ export default function Ai() {
           <span>Auto</span>
           <ChevIcon />
         </button>
-        <button type="button" className="ai-new" aria-label={chatting ? "Close chat" : "New chat"} onClick={newChat}>
+        <button type="button" className={chatting ? "ai-new plain" : "ai-new"} aria-label={chatting ? "Close chat" : "New chat"} onClick={newChat}>
           {chatting ? <XIcon /> : <EditIcon />}
         </button>
       </div>

@@ -90,6 +90,11 @@
   border-bottom-width: 1px;
 }
 
+.ai-new.plain {
+  color: var(--ink);
+  border-color: var(--card-border);
+}
+
 /* Hero */
 .ai-main {
   flex: 1;
@@ -1060,6 +1065,11 @@ button.ai-sheetrow:hover {
   background: #262833;
   border-color: #3a5a7a;
   color: #8fb8ff;
+}
+
+.tst-phone.dark .ai-new.plain {
+  border-color: #33353f;
+  color: #f0f1f6;
 }
 
 .tst-phone.dark .ai-hello {
