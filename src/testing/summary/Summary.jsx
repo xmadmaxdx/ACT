@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import "./summary.css";
 
-const FILE_NAME = "strings-lesson.pdf";
-const FILE_META = "12 pages · PDF · 2.4 MB";
+const FILE_NAME = "Strings.pdf";
 const WORD = ["s", "t", "r", "i", "n", "g"];
 
 function BackIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M15 5l-7 7 7 7" />
     </svg>
   );
@@ -150,7 +149,6 @@ f"{name} is {age}"     # "Ada is 36"`;
           <BackIcon />
         </button>
         <div className="sum-titlebox">
-          <p className="sum-eyebrow">PYTHON KICKSTART · LESSON 4</p>
           <h2 className="sum-title">Strings</h2>
         </div>
       </div>
@@ -159,7 +157,6 @@ f"{name} is {age}"     # "Ada is 36"`;
         <span className="sum-badge" aria-hidden="true">PDF</span>
         <span className="sum-pdfinfo">
           <span className="sum-filename">{FILE_NAME}</span>
-          <span className="sum-filemeta">{FILE_META}</span>
         </span>
         <span className="sum-thumb" aria-hidden="true">
           <span style={{ width: "88%" }} /><span style={{ width: "96%" }} />
@@ -168,7 +165,7 @@ f"{name} is {age}"     # "Ada is 36"`;
         <span className="sum-openbtn"><DocIcon /> OPEN</span>
       </button>
 
-      <section className="sum-sec rise d2">
+      <section className="sum-flow rise d2">
         <h3 className="sum-h"><span className="sum-ghost" aria-hidden="true">Aa</span>What is a string?</h3>
         <p className="sum-p">A string is a <b>sequence of characters</b> wrapped in quotes. Words, sentences, even emojis — all strings.</p>
         <ul className="sum-ul">
@@ -178,7 +175,7 @@ f"{name} is {age}"     # "Ada is 36"`;
         </ul>
       </section>
 
-      <section className="sum-sec rise d3">
+      <section className="sum-flow rise d3">
         <h3 className="sum-h">Three ways to quote</h3>
         <CodeBlock label="quotes.py" code={quoteCode} copied={copied === "q"} onCopy={() => copyCode("q", quoteCode)}>
           <span className="c-k">name  </span>= <span className="c-s">"Ada"</span>{'\n'}
@@ -191,7 +188,7 @@ f"{name} is {age}"     # "Ada is 36"`;
         </ul>
       </section>
 
-      <section className="sum-sec rise d4">
+      <section className="sum-flow rise d4">
         <h3 className="sum-h">Indexing — every letter has a seat</h3>
         <div className="sum-idx" aria-hidden="true">
           {WORD.map((ch, i) => (
@@ -207,7 +204,7 @@ f"{name} is {age}"     # "Ada is 36"`;
         </ul>
       </section>
 
-      <section className="sum-sec rise d4">
+      <section className="sum-flow rise d4">
         <h3 className="sum-h">Slicing — grab a chunk</h3>
         <CodeBlock label="slice.py" code={sliceCode} copied={copied === "s"} onCopy={() => copyCode("s", sliceCode)}>
           <span className="c-k">word </span>= <span className="c-s">"string"</span>{'\n'}
@@ -221,7 +218,7 @@ f"{name} is {age}"     # "Ada is 36"`;
         </ul>
       </section>
 
-      <section className="sum-sec rise d4">
+      <section className="sum-flow rise d4">
         <h3 className="sum-h">Handy methods</h3>
         <CodeBlock label="methods.py" code={methodCode} copied={copied === "m"} onCopy={() => copyCode("m", methodCode)}>
           <span className="c-k">msg </span>= <span className="c-s">"  hello there  "</span>{'\n'}
@@ -236,7 +233,7 @@ f"{name} is {age}"     # "Ada is 36"`;
         </ul>
       </section>
 
-      <section className="sum-sec rise d4">
+      <section className="sum-flow rise d4">
         <h3 className="sum-h">f-strings — plug values in</h3>
         <CodeBlock label="fstring.py" code={fstrCode} copied={copied === "f"} onCopy={() => copyCode("f", fstrCode)}>
           <span className="c-k">name </span>= <span className="c-s">"Ada"</span>{'\n'}
@@ -262,7 +259,6 @@ f"{name} is {age}"     # "Ada is 36"`;
       <section className="sum-sec goal rise d4">
         <h3 className="sum-h">Your turn</h3>
         <p className="sum-p">Make <span className="sum-ic">shout</span> hold <span className="sum-ic">"HELLO!"</span> starting from <span className="sum-ic">greeting = "hello"</span>.</p>
-        <p className="sum-answer">Answer · <span className="sum-ic">shout = greeting.upper() + "!"</span></p>
       </section>
     </div>
   );

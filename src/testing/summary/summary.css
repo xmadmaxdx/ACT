@@ -56,8 +56,8 @@
 
 .sum-back {
   flex: none;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -97,7 +97,7 @@
 }
 
 .sum-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--ink);
   margin: 0;
@@ -177,14 +177,6 @@
   text-overflow: ellipsis;
 }
 
-.sum-filemeta {
-  display: block;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--faint);
-  margin-top: 2px;
-}
-
 .sum-thumb {
   flex: none;
   width: 44px;
@@ -242,6 +234,13 @@
 .sum-sec.goal {
   border-color: var(--blue-light-border);
   background: var(--blue-light-bg);
+}
+
+/* Plain lesson flow: no card, content breathes on the background */
+.sum-flow {
+  position: relative;
+  z-index: 1;
+  padding: 2px 2px 0;
 }
 
 .sum-h {
@@ -531,17 +530,6 @@
   color: var(--faint);
   text-align: center;
   margin: 0;
-}
-
-.sum-answer {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--green-dark);
-  background: #f0f9df;
-  border-radius: 8px;
-  padding: 8px 10px;
-  margin: 8px 0 0;
-  line-height: 1.6;
 }
 
 @keyframes sum-float {
