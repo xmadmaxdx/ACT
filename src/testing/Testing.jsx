@@ -8,6 +8,9 @@ import lbCss from "./leaderboard/leaderboard.css?raw";
 import Recap from "./recap/Recap.jsx";
 import rcJsx from "./recap/Recap.jsx?raw";
 import rcCss from "./recap/recap.css?raw";
+import Summary from "./summary/Summary.jsx";
+import sumJsx from "./summary/Summary.jsx?raw";
+import sumCss from "./summary/summary.css?raw";
 import { makeZip } from "./zip.js";
 
 const VIEWPORTS = [
@@ -19,6 +22,11 @@ const VIEWPORTS = [
 const LB_FILES = [
   { name: "Leaderboard.jsx", content: lbJsx },
   { name: "leaderboard.css", content: lbCss },
+];
+
+const SUM_FILES = [
+  { name: "Summary.jsx", content: sumJsx },
+  { name: "summary.css", content: sumCss },
 ];
 
 const FOLDERS = [
@@ -39,6 +47,15 @@ const FOLDERS = [
     icon: "≡",
     screens: [
       { id: "rc-main", title: "Recap lists", desc: "Units, inline lessons, PDF viewer.", dark: true, Comp: Recap, files: [{ name: "Recap.jsx", content: rcJsx }, { name: "recap.css", content: rcCss }] },
+    ],
+  },
+  {
+    id: "summary",
+    title: "Summary",
+    desc: "Lesson notes with PDF reader",
+    icon: "✎",
+    screens: [
+      { id: "sum-strings", title: "Summary · Strings", desc: "Fade header, PDF block, full reader, notes.", Comp: Summary, files: SUM_FILES },
     ],
   },
   {
