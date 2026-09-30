@@ -121,13 +121,13 @@ function EditIcon() {
 }
 
 const RECENTS = [
-  { id: "r1", title: "Loops explained simply", tone: "t-blue" },
-  { id: "r2", title: "String slicing help", tone: "t-purple" },
-  { id: "r3", title: "Fix: index out of range", tone: "t-amber" },
-  { id: "r4", title: "Recursion quiz night", tone: "t-green" },
-  { id: "r5", title: "Challenge #12 attempt", tone: "t-blue" },
-  { id: "r6", title: "f-strings practice", tone: "t-purple" },
-  { id: "r7", title: "Variables 101 recap", tone: "t-green" },
+  { id: "r1", title: "Loops explained simply" },
+  { id: "r2", title: "String slicing help" },
+  { id: "r3", title: "Fix: index out of range" },
+  { id: "r4", title: "Recursion quiz night" },
+  { id: "r5", title: "Challenge #12 attempt" },
+  { id: "r6", title: "f-strings practice" },
+  { id: "r7", title: "Variables 101 recap" },
 ];
 
 function CodinoMark({ size }) {
@@ -155,6 +155,7 @@ export default function Ai() {
   const [phIdx, setPhIdx] = useState(0);
   const [listening, setListening] = useState(false);
   const [drawer, setDrawer] = useState(false);
+  const [levels, setLevels] = useState([]);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -163,6 +164,21 @@ export default function Ai() {
     return () => window.clearInterval(t);
   }, []);
 
+  useEffect(() => {
+    if (!listening) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLevels([8, 14, 20, 12, 22, 16, 10, 18, 24, 14, 8, 20]);
+      return;
+    }
+    const tick = window.setInterval(() => {
+      const sec = Date.now() / 1000;
+      const speaking = sec % 3 < 2;
+      const h = speaking ? 6 + Math.round(Math.random() * 22) : 2 + Math.round(Math.random() * 3);
+      setLevels((prev) => [...prev.slice(-27), h]);
+    }, 130);
+    return () => window.clearInterval(tick);
+  }, [listening]);
+
   const canSend = text.trim().length > 0;
 
   const pickSuggestion = (s) => {
@@ -170,12 +186,19 @@ export default function Ai() {
     inputRef.current?.focus();
   };
 
-  const startListen = () => setListening(true);
+  const startListen = () => {
+    setLevels([]);
+    setListening(true);
+  };
 
-  const cancelListen = () => setListening(false);
+  const cancelListen = () => {
+    setListening(false);
+    setLevels([]);
+  };
 
   const stopListen = () => {
     setListening(false);
+    setLevels([]);
     setText("Explain for loops like I'm five");
     inputRef.current?.focus();
   };
@@ -243,10 +266,11 @@ export default function Ai() {
             <div className="ai-dict-track" aria-hidden="true">
               <span className="ai-dots" />
               <span className="ai-bars">
-                {Array.from({ length: 30 }).map((_, i) => (
-                  <i key={i} style={{ height: `${6 + ((i * 37) % 18)}px`, animationDelay: `${(i % 8) * 0.09}s` }} />
+                {levels.map((h, i) => (
+                  <i key={i} style={{ height: `${h}px` }} />
                 ))}
               </span>
+              <span className="ai-dots end" />
             </div>
             <button type="button" className="ai-dict-stop" onClick={stopListen} aria-label="Stop and dictate">
               <span className="ai-stop-sq" aria-hidden="true" />
@@ -304,7 +328,7 @@ export default function Ai() {
             <div className="ai-chatlist">
               {RECENTS.map((c) => (
                 <button key={c.id} type="button" className="ai-chat" onClick={() => setDrawer(false)}>
-                  <span className={`ai-circle ${c.tone}`} aria-hidden="true">{c.title.charAt(0)}</span>
+                  <span className="ai-dot" aria-hidden="true" />
                   <span className="ai-chat-title">{c.title}</span>
                 </button>
               ))}

@@ -281,19 +281,26 @@
   background-position: center;
 }
 
+.ai-dots.end {
+  flex: none;
+  width: 26px;
+  min-width: 0;
+}
+
 .ai-bars {
   flex: none;
   display: flex;
   align-items: center;
   gap: 3px;
+  min-height: 28px;
+  margin-left: auto;
 }
 
 .ai-bars i {
   width: 3px;
   border-radius: 2px;
   background: #dfe1ea;
-  transform-origin: center;
-  animation: ai-bar 0.8s ease-in-out infinite;
+  transition: height 0.12s linear;
 }
 
 .ai-composer {
@@ -379,23 +386,16 @@
 
 .ai-send.on {
   background: var(--blue);
-  box-shadow: 0 3px 0 var(--blue-dark);
   cursor: pointer;
 }
 
 .ai-send.on:active {
-  transform: translateY(3px) scale(0.96);
-  box-shadow: none;
+  transform: scale(0.94);
 }
 
 @keyframes ai-ph-in {
   from { opacity: 0; transform: translateY(calc(-50% + 5px)); }
   to { opacity: 1; transform: translateY(-50%); }
-}
-
-@keyframes ai-bar {
-  0%, 100% { transform: scaleY(0.35); }
-  50% { transform: scaleY(1); }
 }
 
 .ai-burger:focus-visible,
@@ -413,7 +413,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ai-ph,
-  .ai-bars i,
   .ai-scrim,
   .ai-drawer,
   .ai-wrap .rise {
@@ -457,10 +456,7 @@
   font-weight: 800;
   font-style: italic;
   letter-spacing: 0.02em;
-  background: linear-gradient(120deg, var(--blue) 20%, var(--purple) 80%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--ink);
 }
 
 .ai-recents {
@@ -500,23 +496,13 @@
   background: var(--blue-light-bg);
 }
 
-.ai-circle {
+.ai-dot {
   flex: none;
-  width: 36px;
-  height: 36px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  font-weight: 800;
-  color: #fff;
+  background: var(--blue);
 }
-
-.ai-circle.t-blue { background: var(--blue); box-shadow: 0 3px 0 var(--blue-dark); }
-.ai-circle.t-purple { background: var(--purple); box-shadow: 0 3px 0 #5a48a0; }
-.ai-circle.t-green { background: var(--green); box-shadow: 0 3px 0 var(--green-shadow); }
-.ai-circle.t-amber { background: #f5c044; box-shadow: 0 3px 0 #b25e09; }
 
 .ai-chat-title {
   font-size: 13.5px;
