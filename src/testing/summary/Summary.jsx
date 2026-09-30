@@ -31,24 +31,23 @@ function BulbIcon() {
   );
 }
 
-function CodeBlock({ label, code, children, copied, onCopy }) {
+/* Code placeholder — own design: dashed terminal window marking where a snippet lands. */
+function CodeSoon({ label }) {
   return (
-    <div className="sum-code">
-      <div className="sum-code-bar">
-        <span className="sum-code-label">{label}</span>
-        <button
-          type="button"
-          className={copied ? "sum-copy ok" : "sum-copy"}
-          onClick={onCopy}
-          aria-label={copied ? "Copied" : `Copy ${label} code`}
-        >
-          {copied ? "✓ COPIED" : "COPY"}
-        </button>
+    <div className="sum-codesoon" role="img" aria-label={`${label} code snippet coming soon`}>
+      <div className="sum-codesoon-bar" aria-hidden="true">
+        <span className="sum-codesoon-dot" />
+        <span className="sum-codesoon-dot" />
+        <span className="sum-codesoon-dot" />
+        <span className="sum-codesoon-tag">{label}</span>
+        <span className="sum-codesoon-live">SOON</span>
       </div>
-      <pre className="sum-pre">
-        <code>{children}</code>
-      </pre>
-      <span className="sum-code-hidden" aria-hidden="true">{code}</span>
+      <div className="sum-codesoon-body" aria-hidden="true">
+        <span style={{ width: "72%" }} />
+        <span style={{ width: "54%" }} />
+        <span style={{ width: "64%" }} />
+      </div>
+      <p className="sum-codesoon-note" aria-hidden="true">&lt;/&gt; code snippet lands here</p>
     </div>
   );
 }
@@ -125,14 +124,18 @@ function SwapStay({ source, op, result, note }) {
 }
 
 function ChainPipe({ start, steps }) {
+  const showSpaces = (s) =>
+    (s || "").split("").map((ch, i) =>
+      ch === " " ? <span className="sum-sp" key={i}>_</span> : ch
+    );
   return (
     <div className="sum-pipe">
-      <span className="sum-pipe-pill">{start}</span>
+      <span className="sum-pipe-pill">{showSpaces(start)}</span>
       {(steps || []).map((s, i) => (
         <span className="sum-pipe-link" key={`${s.op}-${i}`}>
           <span className="sum-pipe-op">{s.op}</span>
           <span className="sum-pipe-chev" aria-hidden="true" />
-          <span className="sum-pipe-pill">{s.out}</span>
+          <span className="sum-pipe-pill">{showSpaces(s.out)}</span>
         </span>
       ))}
     </div>
@@ -141,40 +144,12 @@ function ChainPipe({ start, steps }) {
 
 export default function Summary() {
   const [view, setView] = useState("lesson");
-  const [copied, setCopied] = useState(null);
   const topRef = useRef(null);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     topRef.current?.scrollIntoView({ block: "start", behavior: reduced ? "auto" : "smooth" });
   }, [view]);
-
-  const copyCode = async (id, text) => {
-    try {
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
-      else throw new Error("no clipboard");
-      setCopied(id);
-      window.setTimeout(() => setCopied((c) => (c === id ? null : c)), 1500);
-    } catch (err) {
-      window.console.debug("summary copy skipped", err);
-    }
-  };
-
-  const quoteCode = `name  = "Ada"
-shout = 'It\\'s fun!'
-notes = """line one
-line two"""`;
-  const sliceCode = `word = "string"
-word[0:3]   # "str"
-word[3:]    # "ing"
-word[-1]    # "g"`;
-  const methodCode = `msg = "  hello there  "
-msg.strip()            # "hello there"
-msg.upper()            # "  HELLO THERE  "
-"a,b,c".split(",")     # ["a", "b", "c"]`;
-  const fstrCode = `name = "Ada"
-age = 36
-f"{name} is {age}"     # "Ada is 36"`;
 
   if (view === "pdf") {
     return (
@@ -276,11 +251,7 @@ f"{name} is {age}"     # "Ada is 36"`;
 
       <section className="sum-flow rise d3">
         <h3 className="sum-h">Three ways to quote</h3>
-        <CodeBlock label="quotes.py" code={quoteCode} copied={copied === "q"} onCopy={() => copyCode("q", quoteCode)}>
-          <span className="c-k">name  </span>= <span className="c-s">"Ada"</span>{'\n'}
-          <span className="c-k">shout </span>= <span className="c-s">'It\'s fun!'</span>{'\n'}
-          <span className="c-k">notes </span>= <span className="c-s">"""line one{'\n'}line two"""</span>
-        </CodeBlock>
+        <CodeSoon label="quotes.py" />
         <QuoteTrio
           items={[
             { shape: "circle", mark: '"', sample: '"hi"', note: "everyday text" },
@@ -313,12 +284,7 @@ f"{name} is {age}"     # "Ada is 36"`;
       <section className="sum-flow rise d4">
         <h3 className="sum-h">Slicing — grab a chunk</h3>
         <SliceRuler word="string" lo={0} hi={3} label="[0:3]" result='"str"' />
-        <CodeBlock label="slice.py" code={sliceCode} copied={copied === "s"} onCopy={() => copyCode("s", sliceCode)}>
-          <span className="c-k">word </span>= <span className="c-s">"string"</span>{'\n'}
-          <span className="c-k">word</span>[0:3]   <span className="c-c"># "str"</span>{'\n'}
-          <span className="c-k">word</span>[3:]    <span className="c-c"># "ing"</span>{'\n'}
-          <span className="c-k">word</span>[-1]    <span className="c-c"># "g"</span>
-        </CodeBlock>
+        <CodeSoon label="slice.py" />
         <ul className="sum-ul">
           <li><span className="sum-ic">[start:end]</span> includes start, <b>excludes</b> end</li>
           <li>Leave a side blank to run to that edge</li>
@@ -327,12 +293,7 @@ f"{name} is {age}"     # "Ada is 36"`;
 
       <section className="sum-flow rise d4">
         <h3 className="sum-h">Handy methods</h3>
-        <CodeBlock label="methods.py" code={methodCode} copied={copied === "m"} onCopy={() => copyCode("m", methodCode)}>
-          <span className="c-k">msg </span>= <span className="c-s">"  hello there  "</span>{'\n'}
-          <span className="c-k">msg</span>.strip()            <span className="c-c"># "hello there"</span>{'\n'}
-          <span className="c-k">msg</span>.upper()            <span className="c-c"># "  HELLO THERE  "</span>{'\n'}
-          <span className="c-s">"a,b,c"</span>.<span className="c-k">split</span>(<span className="c-s">","</span>)     <span className="c-c"># ["a", "b", "c"]</span>
-        </CodeBlock>
+        <CodeSoon label="methods.py" />
         <ul className="sum-ul">
           <li><span className="sum-ic">.strip()</span> trims edge spaces</li>
           <li><span className="sum-ic">.replace(a, b)</span> swaps every <span className="sum-ic">a</span> for <span className="sum-ic">b</span></li>
@@ -343,11 +304,7 @@ f"{name} is {age}"     # "Ada is 36"`;
 
       <section className="sum-flow rise d4">
         <h3 className="sum-h">f-strings — plug values in</h3>
-        <CodeBlock label="fstring.py" code={fstrCode} copied={copied === "f"} onCopy={() => copyCode("f", fstrCode)}>
-          <span className="c-k">name </span>= <span className="c-s">"Ada"</span>{'\n'}
-          <span className="c-k">age </span>= <span className="c-n">36</span>{'\n'}
-          <span className="c-s">f"{'{name}'} is {'{age}'}"</span>     <span className="c-c"># "Ada is 36"</span>
-        </CodeBlock>
+        <CodeSoon label="fstring.py" />
       </section>
 
       <div className="sum-flow rise d4">

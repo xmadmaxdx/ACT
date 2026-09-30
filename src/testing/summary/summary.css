@@ -378,69 +378,82 @@
   color: var(--ink);
 }
 
-/* Code blocks */
-.sum-code {
-  background: #20212c;
-  border-radius: 12px;
-  border-bottom: 4px solid #101218;
+/* Code placeholder: dashed terminal window marking where a snippet lands */
+.sum-codesoon {
+  position: relative;
+  z-index: 1;
+  background: #f7f7f9;
+  border: 2px dashed var(--line);
+  border-radius: 14px;
   overflow: hidden;
   margin: 4px 0 6px;
 }
 
-.sum-code-bar {
+.sum-codesoon-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-bottom: 1px solid #33353f;
+  gap: 5px;
+  padding: 9px 12px;
+  border-bottom: 2px dashed var(--line);
 }
 
-.sum-code-label {
+.sum-codesoon-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d7dce3;
+}
+
+.sum-codesoon-dot:nth-child(2) {
+  background: var(--blue-light-border);
+}
+
+.sum-codesoon-dot:nth-child(3) {
+  background: #bfe37a;
+}
+
+.sum-codesoon-tag {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11px;
   font-weight: 700;
-  color: #8fb8ff;
+  color: var(--muted);
+  margin-left: 4px;
   margin-right: auto;
 }
 
-.sum-copy {
-  flex: none;
-  min-height: 40px;
-  background: #33353f;
-  color: #dfe1ea;
-  border: none;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 11px;
+.sum-codesoon-live {
+  font-size: 9px;
   font-weight: 800;
-  letter-spacing: 0.4px;
-  padding: 8px 12px;
-  cursor: pointer;
+  letter-spacing: 0.08em;
+  color: var(--blue-dark);
+  background: var(--blue-light-bg);
+  border-radius: 8px;
+  padding: 3px 8px;
 }
 
-.sum-copy.ok {
-  background: var(--green);
-  color: #fff;
+.sum-codesoon-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 12px 6px;
 }
 
-.sum-pre {
-  margin: 0;
-  padding: 12px;
-  overflow-x: auto;
+.sum-codesoon-body span {
+  display: block;
+  height: 9px;
+  border-radius: 5px;
+  background: #e4e8ee;
+}
+
+.sum-codesoon-note {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12.5px;
-  line-height: 1.7;
-  color: #f0f1f6;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--faint);
+  text-align: center;
+  margin: 0;
+  padding: 8px 0 12px;
 }
-
-.sum-code-hidden {
-  display: none;
-}
-
-.c-s { color: #bfe37a; }
-.c-k { color: #c9b8f0; }
-.c-c { color: #6b6e86; }
-.c-n { color: #f5c044; }
 
 /* ---------- Reusable visual blocks (generic, any topic) ---------- */
 .sum-bone {
@@ -800,6 +813,10 @@
   border-left: 10px solid var(--green);
 }
 
+.sum-pipe-pill .sum-sp {
+  color: #b25e09;
+}
+
 /* Tip callout */
 .sum-tip {
   position: relative;
@@ -915,7 +932,6 @@
 
 .sum-back:focus-visible,
 .sum-pdf:focus-visible,
-.sum-copy:focus-visible,
 .sum-open:focus-visible,
 .sum-openbtn:focus-visible {
   outline: 3px solid var(--blue-light-border);
@@ -1042,18 +1058,30 @@
   color: #f0f1f6;
 }
 
-.tst-phone.dark .sum-code {
-  background: #101218;
-  border-bottom-color: #000;
+.tst-phone.dark .sum-codesoon {
+  background: #20212c;
+  border-color: #33353f;
 }
 
-.tst-phone.dark .sum-code-bar {
-  border-bottom-color: #26282f;
+.tst-phone.dark .sum-codesoon-bar {
+  border-bottom-color: #33353f;
 }
 
-.tst-phone.dark .sum-copy {
+.tst-phone.dark .sum-codesoon-tag {
+  color: #b9bcc9;
+}
+
+.tst-phone.dark .sum-codesoon-live {
+  color: #8fb8ff;
   background: #33353f;
-  color: #dfe1ea;
+}
+
+.tst-phone.dark .sum-codesoon-body span {
+  background: #33353f;
+}
+
+.tst-phone.dark .sum-codesoon-note {
+  color: #6b6e86;
 }
 
 .tst-phone.dark .sum-tip {
@@ -1162,4 +1190,8 @@
 .tst-phone.dark .sum-pipe-op {
   color: #dfe1ea;
   background: #101218;
+}
+
+.tst-phone.dark .sum-pipe-pill .sum-sp {
+  color: #f5c044;
 }
