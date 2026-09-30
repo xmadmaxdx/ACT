@@ -364,6 +364,7 @@ export default function Ai() {
   const inputRef = useRef(null);
   const threadRef = useRef(null);
   const genRef = useRef(0);
+  const flipRef = useRef(false);
   const timers = useRef([]);
   const ivs = useRef([]);
 
@@ -409,12 +410,14 @@ export default function Ai() {
     const gen = ++genRef.current;
     const stamp = Date.now();
     const aiId = `a${stamp}`;
+    const follow = flipRef.current ? "chips" : "inline";
+    flipRef.current = !flipRef.current;
     if (echo) setMsgs((m) => [...m, { id: `u${stamp}`, role: "user", text: userText, photo: hasPhoto }]);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: AI_INTRO }]);
+      setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: AI_INTRO, follow }]);
       return;
     }
-    setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "thinking", text: "" }]);
+    setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "thinking", text: "", follow }]);
     later(() => {
       if (genRef.current !== gen) return;
       setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, stage: "streaming" } : x)));
@@ -620,13 +623,23 @@ export default function Ai() {
                     <>
                       <AiSnippet text={AI_SNIPPET} copied={snipCopied} onCopy={onCopySnip} />
                       <p className="ai-text">{AI_OUTRO}</p>
-                      <p className="ai-text">
-                        If you want, I can{" "}
-                        <button type="button" className="ai-inline" onClick={() => runReply(INLINE_FOLLOW.send)}>
-                          ↳ {INLINE_FOLLOW.label}
-                        </button>{" "}
-                        — just tap it.
-                      </p>
+                      {m.follow === "inline" ? (
+                        <p className="ai-text">
+                          If you want, I can{" "}
+                          <button type="button" className="ai-inline" onClick={() => runReply(INLINE_FOLLOW.send)}>
+                            ↳ {INLINE_FOLLOW.label}
+                          </button>{" "}
+                          — just tap it.
+                        </p>
+                      ) : (
+                        <div className="ai-follow">
+                          {FOLLOWUPS.map((f) => (
+                            <button key={f} type="button" className="ai-chip" onClick={() => runReply(f)}>
+                              {f}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                       <div className="ai-actions">
                         <button
                           type="button"
@@ -704,13 +717,6 @@ export default function Ai() {
                             </button>
                           </div>
                         )}
-                      </div>
-                      <div className="ai-follow">
-                        {FOLLOWUPS.map((f) => (
-                          <button key={f} type="button" className="ai-chip" onClick={() => runReply(f)}>
-                            {f}
-                          </button>
-                        ))}
                       </div>
                     </>
                   )}
