@@ -43,7 +43,7 @@
   align-items: center;
   gap: 10px;
   margin: 0 -10px;
-  padding: 20px 10px 22px;
+  padding: 20px 10px 8px;
   background: linear-gradient(
     to bottom,
     #f0f2f5 0%,
@@ -130,6 +130,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
+  margin-top: -6px;
   background: #fff;
   border: 2px solid var(--card-border);
   border-bottom-width: 4px;
@@ -929,12 +930,8 @@
 }
 
 /* ---------- Summary dark theme (phone.dark only) ---------- */
-.tst-phone.dark .sum-blob.b1 {
-  background: radial-gradient(circle, rgba(28, 176, 246, 0.22) 0%, rgba(28, 176, 246, 0) 70%);
-}
-
-.tst-phone.dark .sum-blob.b2 {
-  background: radial-gradient(circle, rgba(123, 97, 184, 0.28) 0%, rgba(123, 97, 184, 0) 70%);
+.tst-phone.dark .sum-blob {
+  display: none;
 }
 
 .tst-phone.dark .sum-top {
