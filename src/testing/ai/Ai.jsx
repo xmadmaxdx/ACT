@@ -100,6 +100,13 @@ const AI_QUIZ = {
 };
 const AI_INTRO2 = "Pop quiz time — two quick taps, no pressure. Wrong answers teach just as much:";
 const AI_OUTRO2 = "Finished both? Then the idea is yours — functions take in, hand back, never fuss.";
+const AI_INTRO3 = "Dug through fresh tutorials for you — here's what the web says about loops:";
+const AI_SEARCH_Q = "python loops tutorial";
+const AI_RESULTS = [
+  { site: "realpython.com", title: "Python for Loops, Demystified", snip: "Iterate anything — skip with continue, bail with break." },
+  { site: "docs.python.org", title: "More Control Flow Tools", snip: "The official tour of if, for, while and friends." },
+];
+const AI_OUTRO3 = "Start with the first link, then come back and I'll quiz you on it.";
 const AI_QUIZ_B = {
   q: "Which line actually runs the function?",
   options: ['def greet(name):', 'greet("Ada")', 'return f"..."'],
@@ -108,6 +115,12 @@ const AI_QUIZ_B = {
 };
 const FOLLOWUPS = ["Explain each line", "Give me a challenge"];
 const MENU_TIME = "Today, 11:01 AM";
+const REPORT_REASONS = [
+  "Incorrect information",
+  "Unsafe or harmful content",
+  "Spam or low quality",
+  "Other",
+];
 
 function BurgerIcon() {
   return (
@@ -443,6 +456,24 @@ function AiQuiz({ data, qkey }) {
   );
 }
 
+function AiResults({ query, items }) {
+  return (
+    <div className="ai-results">
+      {items.map((r) => (
+        <div className="ai-result" key={r.site}>
+          <span className="ai-favi" aria-hidden="true">{r.site.charAt(0).toUpperCase()}</span>
+          <div className="ai-result-body">
+            <p className="ai-result-site">{r.site}</p>
+            <p className="ai-result-title">{r.title}</p>
+            <p className="ai-result-snip">{r.snip}</p>
+          </div>
+        </div>
+      ))}
+      <p className="ai-result-via">via Zynq · “{query}”</p>
+    </div>
+  );
+}
+
 export default function Ai() {
   const [text, setText] = useState("");
   const [phIdx, setPhIdx] = useState(0);
@@ -461,11 +492,24 @@ export default function Ai() {
   const [speaking, setSpeaking] = useState(null);
   const [shared, setShared] = useState(null);
   const [reported, setReported] = useState({});
+  const [reportFor, setReportFor] = useState(null);
+  const [reason, setReason] = useState(null);
   const inputRef = useRef(null);
   const threadRef = useRef(null);
   const genRef = useRef(0);
   const flipRef = useRef(false);
   const countRef = useRef(0);
+
+  const grow = () => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+  };
+
+  useEffect(() => {
+    grow();
+  }, [text]);
   const timers = useRef([]);
   const ivs = useRef([]);
 
@@ -513,9 +557,10 @@ export default function Ai() {
     const aiId = `a${stamp}`;
     const follow = flipRef.current ? "chips" : "inline";
     flipRef.current = !flipRef.current;
-    const variant = countRef.current % 2 === 1 ? "quiz" : "standard";
+    const slot = countRef.current % 3;
+    const variant = slot === 1 ? "quiz" : slot === 2 ? "web" : "standard";
     countRef.current += 1;
-    const intro = variant === "quiz" ? AI_INTRO2 : AI_INTRO;
+    const intro = variant === "quiz" ? AI_INTRO2 : variant === "web" ? AI_INTRO3 : AI_INTRO;
     if (echo) setMsgs((m) => [...m, { id: `u${stamp}`, role: "user", text: userText, photo: hasPhoto }]);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "done", text: intro, follow, variant }]);
@@ -523,6 +568,16 @@ export default function Ai() {
     }
     setMsgs((m) => [...m, { id: aiId, role: "ai", stage: "thinking", text: "", follow, variant }]);
     later(() => {
+      if (genRef.current !== gen) return;
+      if (variant === "web") {
+        setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, stage: "searching" } : x)));
+        later(() => startStream(), 1800);
+        return;
+      }
+      startStream();
+    }, 900);
+
+    function startStream() {
       if (genRef.current !== gen) return;
       setMsgs((m) => m.map((x) => (x.id === aiId ? { ...x, stage: "streaming" } : x)));
       let i = 0;
@@ -544,7 +599,7 @@ export default function Ai() {
         }
       }, 24);
       ivs.current.push(iv);
-    }, 900);
+    }
   };
 
   const pickSuggestion = (s) => {
@@ -605,7 +660,9 @@ export default function Ai() {
   const replyFull = (m) =>
     m.variant === "quiz"
       ? `${m.text}\n${AI_QUIZ.q}\n${AI_QUIZ_B.q}`
-      : `${m.text}\n${AI_CODE}\n${AI_SNIPPET}\n${AI_OUTRO}`;
+      : m.variant === "web"
+        ? `${m.text}\n${AI_RESULTS.map((r) => `${r.site} — ${r.title}`).join("\n")}`
+        : `${m.text}\n${AI_CODE}\n${AI_SNIPPET}\n${AI_OUTRO}`;
 
   const onCopyMsg = async (m) => {
     if (await copyText(replyFull(m))) {
@@ -719,13 +776,17 @@ export default function Ai() {
                 <span className="ai-think" role="status" aria-label="Thinking">
                   <i /><i /><i />
                 </span>
+              ) : m.stage === "searching" ? (
+                <p className="ai-shimmer" role="status" aria-label="Searching the web">
+                  Web search via Zynq “{AI_SEARCH_Q}”
+                </p>
               ) : (
                 <>
                   <p className="ai-text">
                     {m.text}
                     {m.stage === "streaming" && <span className="ai-caret" aria-hidden="true" />}
                   </p>
-                  {(m.stage === "code" || m.stage === "done") && m.variant !== "quiz" && (
+                  {(m.stage === "code" || m.stage === "done") && m.variant !== "quiz" && m.variant !== "web" && (
                     <AiCode copied={codeCopied} onCopy={onCopyCode} />
                   )}
                   {m.stage === "done" && m.variant !== "quiz" && (
@@ -748,6 +809,13 @@ export default function Ai() {
                       <AiQuiz data={AI_QUIZ} qkey={`${m.id}-a`} />
                       <AiQuiz data={AI_QUIZ_B} qkey={`${m.id}-b`} />
                       <p className="ai-text">{AI_OUTRO2}</p>
+                      <AiFollow mode={m.follow} onInline={() => runReply(INLINE_FOLLOW.send)} onChip={(f) => runReply(f)} />
+                    </>
+                  )}
+                  {m.stage === "done" && m.variant === "web" && (
+                    <>
+                      <AiResults query={AI_SEARCH_Q} items={AI_RESULTS} />
+                      <p className="ai-text">{AI_OUTRO3}</p>
                       <AiFollow mode={m.follow} onInline={() => runReply(INLINE_FOLLOW.send)} onChip={(f) => runReply(f)} />
                     </>
                   )}
@@ -820,8 +888,9 @@ export default function Ai() {
                               className="ai-mi"
                               disabled={!!reported[m.id]}
                               onClick={() => {
-                                setReported((r) => ({ ...r, [m.id]: true }));
                                 setMenuFor(null);
+                                setReportFor(m.id);
+                                setReason(null);
                               }}
                             >
                               {reported[m.id] ? <CheckIcon /> : <FlagIcon />}
@@ -877,12 +946,13 @@ export default function Ai() {
               <PlusIcon />
             </button>
           )}
-          <input
+          <textarea
             ref={inputRef}
             className="ai-input"
             value={text}
+            rows={1}
             onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") send(); }}
+            onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
             aria-label="Ask the AI"
             maxLength={500}
           />
@@ -945,6 +1015,45 @@ export default function Ai() {
                 <span className="ai-knob" aria-hidden="true" />
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {reportFor && (
+        <div className="ai-sheet-scrim" onClick={() => setReportFor(null)}>
+          <div
+            className="ai-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Report response"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="ai-grab" aria-hidden="true" />
+            <p className="ai-report-title">Report response</p>
+            <p className="ai-report-sub">Tell us what went wrong — it helps Codino improve.</p>
+            {REPORT_REASONS.map((r) => (
+              <button
+                key={r}
+                type="button"
+                className={reason === r ? "ai-reason on" : "ai-reason"}
+                onClick={() => setReason(r)}
+                aria-pressed={reason === r}
+              >
+                <span className="ai-radio" aria-hidden="true" />
+                {r}
+              </button>
+            ))}
+            <button
+              type="button"
+              className="ai-report-submit"
+              disabled={!reason}
+              onClick={() => {
+                setReported((prev) => ({ ...prev, [reportFor]: true }));
+                setReportFor(null);
+              }}
+            >
+              SUBMIT REPORT
+            </button>
           </div>
         </div>
       )}
