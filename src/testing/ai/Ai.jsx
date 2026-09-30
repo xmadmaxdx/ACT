@@ -176,17 +176,26 @@ export default function Ai() {
 
       <div className="ai-main">
         <div className="ai-logo rise d1" aria-hidden="true">
-          <svg width="76" height="76" viewBox="0 0 34 34" aria-hidden="true">
-            <circle cx="17" cy="17" r="14.5" fill="#58cc02" />
-            <circle cx="17" cy="17" r="14.5" fill="none" stroke="#46a302" strokeWidth="2" />
-            <circle cx="12.2" cy="14.5" r="4.6" fill="#fff" />
-            <circle cx="21.8" cy="14.5" r="4.6" fill="#fff" />
-            <circle cx="12.6" cy="14.8" r="2.1" fill="#3c3c3c" />
-            <circle cx="21.4" cy="14.8" r="2.1" fill="#3c3c3c" />
-            <circle cx="13.3" cy="14.1" r="0.7" fill="#fff" />
-            <circle cx="22.1" cy="14.1" r="0.7" fill="#fff" />
-            <path d="M14.5 20.5h5l-2.5 3.2z" fill="#ff9600" />
-            <path d="M17 8.5l1.6 2.2 2.7.3-2 1.9.5 2.7-2.8-1.5-2.8 1.5.5-2.7-2-1.9 2.7-.3z" fill="#ffc800" />
+          <svg width="76" height="76" viewBox="0 0 200 200" role="img" aria-label="Codino mark">
+            <path d="M 100 20
+                     C 92 30, 80 35, 66 30
+                     C 44 24, 29 41, 33 65
+                     C 36 83, 29 99, 25 115
+                     C 21 135, 37 150, 59 152
+                     C 72 154, 86 155, 100 155
+                     C 114 155, 128 154, 141 151
+                     C 161 145, 169 127, 163 108
+                     C 158 92, 158 76, 167 62
+                     C 175 48, 168 31, 153 31
+                     C 140 31, 131 40, 122 29
+                     C 116 22, 106 14, 100 20 Z"
+                  fill="#38A8FF" stroke="#1463AC" strokeWidth="8" strokeLinejoin="round" />
+            <ellipse cx="80" cy="80" rx="20" ry="24" fill="#fff" />
+            <ellipse cx="122" cy="80" rx="20" ry="24" fill="#fff" />
+            <circle cx="83" cy="85" r="10" fill="#0C2340" />
+            <circle cx="119" cy="85" r="10" fill="#0C2340" />
+            <path d="M 88 114 Q 101 124, 117 113" fill="none" stroke="#0C2340"
+                  strokeWidth="9" strokeLinecap="round" />
           </svg>
         </div>
         <h2 className="ai-hello rise d2">Hey, let's learn <span>Python</span></h2>
