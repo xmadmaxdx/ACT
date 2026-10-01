@@ -172,11 +172,38 @@ function SendIcon() {
   );
 }
 
-function EditIcon() {
+function InfoIcon() {
   return (
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 20h9" />
-      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <ellipse cx="12" cy="12" rx="9" ry="5.5" transform="rotate(-24 12 12)" strokeDasharray="3 3" opacity="0.55" />
+      <path d="M12 11v5" strokeWidth="2.6" />
+      <circle cx="12" cy="7.6" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function FlameIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 2.5c.8 3.5-1.5 5-1.5 7.5a4 4 0 0 0 8 .5c0-1.2-.5-2.2-1.1-3.1.1 1.4-.6 2-1.2 2.6.4-2.7-1-5.9-4.2-7.5z" />
+    </svg>
+  );
+}
+
+function CoinIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5v9M9.2 9.5c0-1 1.2-1.8 2.8-1.8 1.7 0 2.9.8 2.9 1.9 0 2.6-5.8 1.7-5.8 4.3 0 1.1 1.2 1.9 2.9 1.9 1.6 0 2.8-.8 2.8-1.8" />
+    </svg>
+  );
+}
+
+function CalIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="5.5" width="16" height="15" rx="3" />
+      <path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" />
     </svg>
   );
 }
@@ -545,6 +572,8 @@ export default function Ai() {
   const [reported, setReported] = useState({});
   const [reportFor, setReportFor] = useState(null);
   const [reason, setReason] = useState(null);
+  const [credits, setCredits] = useState(false);
+  const [credN, setCredN] = useState(0);
   const inputRef = useRef(null);
   const threadRef = useRef(null);
   const genRef = useRef(0);
@@ -595,6 +624,21 @@ export default function Ai() {
     }, 130);
     return () => window.clearInterval(tick);
   }, [listening]);
+
+  useEffect(() => {
+    if (!credits) return;
+    setCredN(0);
+    const t = window.setInterval(() => {
+      setCredN((n) => {
+        if (n >= 14) {
+          window.clearInterval(t);
+          return n;
+        }
+        return n + 1;
+      });
+    }, 45);
+    return () => window.clearInterval(t);
+  }, [credits]);
 
   useEffect(() => {
     const el = threadRef.current;
@@ -787,9 +831,15 @@ export default function Ai() {
           <span>Auto</span>
           <ChevIcon />
         </button>
-        <button type="button" className={chatting ? "ai-new plain" : "ai-new"} aria-label={chatting ? "Close chat" : "New chat"} onClick={newChat}>
-          {chatting ? <XIcon /> : <EditIcon />}
-        </button>
+        {chatting ? (
+          <button type="button" className="ai-new plain" aria-label="Close chat" onClick={newChat}>
+            <XIcon />
+          </button>
+        ) : (
+          <button type="button" className="ai-info" aria-label="AI credits" onClick={() => setCredits(true)}>
+            <InfoIcon />
+          </button>
+        )}
       </div>
 
       {!chatting ? (
@@ -1113,6 +1163,61 @@ export default function Ai() {
             >
               SUBMIT REPORT
             </button>
+          </div>
+        </div>
+      )}
+
+      {credits && (
+        <div className="ai-sheet-scrim" onClick={() => setCredits(false)}>
+          <div
+            className="ai-sheet cred"
+            role="dialog"
+            aria-modal="true"
+            aria-label="AI credits"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="ai-grab" aria-hidden="true" />
+            <p className="ai-cred-kicker">AI CREDITS</p>
+            <div className="ai-gauge">
+              <svg viewBox="0 0 130 130" width="148" height="148" aria-hidden="true">
+                <defs>
+                  <linearGradient id="aiCredGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stopColor="#1cb0f6" />
+                    <stop offset="1" stopColor="#7b61b8" />
+                  </linearGradient>
+                </defs>
+                <circle cx="65" cy="65" r="54" className="ai-gauge-track" />
+                <circle
+                  cx="65"
+                  cy="65"
+                  r="54"
+                  className="ai-gauge-arc"
+                  style={{ "--off": 339.292 * (1 - 14 / 200) }}
+                />
+              </svg>
+              <div className="ai-gauge-num">
+                <b>{credN}</b>
+                <span>/ 200</span>
+              </div>
+            </div>
+            <div className="ai-cred-line">
+              <CoinIcon />
+              <span>1 reply = 1 credit · any model</span>
+            </div>
+            <div className="ai-cred-line hot">
+              <FlameIcon />
+              <span>Streak 4 → +10 tomorrow</span>
+            </div>
+            <div className="ai-ladder">
+              <div className="ai-rung"><b>+10</b><span>days 1–6</span></div>
+              <div className="ai-rung"><b>+20</b><span>day 7+</span></div>
+              <div className="ai-rung"><b>10</b><span>streak lost</span></div>
+              <div className="ai-rung"><b>200</b><span>max cap</span></div>
+            </div>
+            <div className="ai-cred-line faint">
+              <CalIcon />
+              <span>Refills daily · at 0, send opens this card</span>
+            </div>
           </div>
         </div>
       )}

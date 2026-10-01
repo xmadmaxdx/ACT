@@ -99,6 +99,145 @@
   border-color: var(--card-border);
 }
 
+/* Bare info mark — no rectangle, just the glyph */
+.ai-info {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--blue-dark);
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.12s ease;
+}
+
+.ai-info:active {
+  transform: scale(0.85) rotate(-8deg);
+}
+
+/* Credits sheet */
+.ai-sheet.cred {
+  align-items: center;
+  text-align: center;
+}
+
+.ai-cred-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--blue-dark);
+}
+
+.ai-gauge {
+  position: relative;
+  width: 148px;
+  height: 148px;
+  margin: 6px 0 2px;
+}
+
+.ai-gauge-track {
+  fill: none;
+  stroke: #edf0f4;
+  stroke-width: 11;
+}
+
+.ai-gauge-arc {
+  fill: none;
+  stroke: url(#aiCredGrad);
+  stroke-width: 11;
+  stroke-linecap: round;
+  stroke-dasharray: 339.292;
+  stroke-dashoffset: 339.292;
+  transform: rotate(-90deg);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ai-gauge-in 1.1s cubic-bezier(0.3, 0.7, 0.3, 1) 0.15s forwards;
+}
+
+.ai-gauge-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-gauge-num b {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ai-gauge-num span {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--faint);
+}
+
+.ai-cred-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 4px 0 0;
+}
+
+.ai-cred-line.hot {
+  color: #b25e09;
+}
+
+.ai-cred-line.faint {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--faint);
+}
+
+.ai-ladder {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 12px 0 8px;
+}
+
+.ai-rung {
+  background: #f0f2f5;
+  border-radius: 14px;
+  padding: 10px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ai-rung b {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--blue-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.ai-rung span {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+@keyframes ai-gauge-in {
+  from { stroke-dashoffset: 339.292; }
+  to { stroke-dashoffset: var(--off); }
+}
+
 /* Hero */
 .ai-main {
   flex: 1;
@@ -449,6 +588,7 @@
 .ai-burger:focus-visible,
 .ai-model:focus-visible,
 .ai-new:focus-visible,
+.ai-info:focus-visible,
 .ai-card:focus-visible,
 .ai-mic:focus-visible,
 .ai-dict-x:focus-visible,
@@ -485,8 +625,13 @@
   .ai-sheet-scrim,
   .ai-sheet,
   .ai-shimmer,
+  .ai-gauge-arc,
   .ai-wrap .rise {
     animation: none;
+  }
+
+  .ai-gauge-arc {
+    stroke-dashoffset: var(--off);
   }
 }
 
@@ -2028,6 +2173,50 @@ button.ai-opt:hover {
 
 .tst-phone.dark .ai-switch {
   background: #33353f;
+}
+
+.tst-phone.dark .ai-info {
+  color: #8fb8ff;
+}
+
+.tst-phone.dark .ai-cred-kicker {
+  color: #8fb8ff;
+}
+
+.tst-phone.dark .ai-gauge-track {
+  stroke: #33353f;
+}
+
+.tst-phone.dark .ai-gauge-num b {
+  color: #f0f1f6;
+}
+
+.tst-phone.dark .ai-gauge-num span {
+  color: #6b6e86;
+}
+
+.tst-phone.dark .ai-cred-line {
+  color: #f0f1f6;
+}
+
+.tst-phone.dark .ai-cred-line.hot {
+  color: #f5c044;
+}
+
+.tst-phone.dark .ai-cred-line.faint {
+  color: #6b6e86;
+}
+
+.tst-phone.dark .ai-rung {
+  background: #262833;
+}
+
+.tst-phone.dark .ai-rung b {
+  color: #8fb8ff;
+}
+
+.tst-phone.dark .ai-rung span {
+  color: #8a8ea3;
 }
 
 .tst-phone.dark .ai-report-title {
