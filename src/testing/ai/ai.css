@@ -125,6 +125,14 @@
   text-align: center;
 }
 
+.ai-cred-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+  text-align: center;
+}
+
 .ai-cred-refill {
   display: flex;
   align-items: center;
@@ -2155,6 +2163,10 @@ button.ai-opt:hover {
 
 .tst-phone.dark .ai-cred-refill {
   color: #8a8ea3;
+}
+
+.tst-phone.dark .ai-cred-title {
+  color: #f0f1f6;
 }
 
 .tst-phone.dark .ai-report-title {

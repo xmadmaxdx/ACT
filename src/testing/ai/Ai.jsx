@@ -1160,6 +1160,7 @@ export default function Ai() {
             onClick={(e) => e.stopPropagation()}
           >
             <span className="ai-grab" aria-hidden="true" />
+            <p className="ai-cred-title">Your AI Quota</p>
             <div className="ai-gauge small">
               <svg viewBox="0 0 130 130" width="110" height="110" aria-hidden="true">
                 <defs>
