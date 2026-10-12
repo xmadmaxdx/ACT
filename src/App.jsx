@@ -48,7 +48,7 @@ function parseShareSlug(path) {
 
 function routeFromPath(path) {
   const clean = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
-  if (clean === "/testing-for-developer") return "testing";
+  if (clean === "/testing-for-developer" || clean.startsWith("/testing-for-developer/")) return "testing";
   if (parseShareSlug(path)) return "share";
   if (clean.endsWith("/results")) return "results";
   if (clean === "/practice") return "practice";

@@ -1675,6 +1675,22 @@ button {
   }
 }
 
+/* Full-screen mobile view: a community link opened on a phone renders only
+   the app itself — no overlay, phone frame, deck or testing chrome. */
+.tst-mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: #fff;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.tst-mobile .cm-app {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
 /* ---------- Math figures ---------- */
 .mathfig {
   display: block;

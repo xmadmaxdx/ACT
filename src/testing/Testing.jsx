@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SupportersWall from "./supporter_wall/SupportersWall.jsx";
 import swJsx from "./supporter_wall/SupportersWall.jsx?raw";
 import swCss from "./supporter_wall/supporters-wall.css?raw";
@@ -14,7 +14,36 @@ import sumCss from "./summary/summary.css?raw";
 import Ai from "./ai/Ai.jsx";
 import aiJsx from "./ai/Ai.jsx?raw";
 import aiCss from "./ai/ai.css?raw";
+import Community from "./community/Community.jsx";
+import cmAppJsx from "./community/Community.jsx?raw";
+import cmFeedJsx from "./community/FeedPages.jsx?raw";
+import cmChatJsx from "./community/ChatPages.jsx?raw";
+import cmUiJsx from "./community/ui.jsx?raw";
+import cmDataJsx from "./community/data.js?raw";
+import cmIconsJsx from "./community/icons.jsx?raw";
+import cmCss from "./community/community.css?raw";
+import { titleForSub } from "./community/data.js";
 import { makeZip } from "./zip.js";
+
+const TFD = "/testing-for-developer";
+
+function stripSlash(p) {
+  return p.length > 1 && p.endsWith("/") ? p.slice(0, -1) : p;
+}
+
+// Maps a testing-ground URL to a folder (and, for the community app, a page).
+// Returns null for paths outside the testing ground.
+function parseTfd(pathname) {
+  const clean = stripSlash(String(pathname || "/"));
+  if (clean === TFD) return { folderId: null, sub: null };
+  if (!clean.startsWith(`${TFD}/`)) return null;
+  const rest = clean.slice(TFD.length + 1);
+  const cut = rest.indexOf("/");
+  const seg = cut === -1 ? rest : rest.slice(0, cut);
+  const tail = cut === -1 ? "" : rest.slice(cut + 1);
+  if (seg === "community") return { folderId: "community", sub: tail || "feed" };
+  return { folderId: seg || null, sub: null };
+}
 
 const VIEWPORTS = [
   { id: "standard", label: "Standard", w: 390, h: 800 },
@@ -37,6 +66,16 @@ const AI_FILES = [
   { name: "ai.css", content: aiCss },
 ];
 
+const CM_FILES = [
+  { name: "community/Community.jsx", content: cmAppJsx },
+  { name: "community/FeedPages.jsx", content: cmFeedJsx },
+  { name: "community/ChatPages.jsx", content: cmChatJsx },
+  { name: "community/ui.jsx", content: cmUiJsx },
+  { name: "community/data.js", content: cmDataJsx },
+  { name: "community/icons.jsx", content: cmIconsJsx },
+  { name: "community/community.css", content: cmCss },
+];
+
 const FOLDERS = [
   {
     id: "ai",
@@ -45,6 +84,19 @@ const FOLDERS = [
     icon: "✦",
     screens: [
       { id: "ai-root", title: "AI · Root State", desc: "Hamburger, Auto model, voice+send, suggestions.", dark: true, Comp: Ai, files: AI_FILES },
+    ],
+  },
+  {
+    id: "community",
+    title: "Community",
+    desc: "Multi-page app with real routes",
+    icon: "◉",
+    screens: [
+      { id: "cm-feed", title: "Activity feed", desc: "Streaks, lessons, badges.", routed: true, entrySub: "feed", Comp: Community, files: CM_FILES },
+      { id: "cm-chats", title: "Chats", desc: "Threads with per-chat state.", routed: true, entrySub: "chats", Comp: Community, files: CM_FILES },
+      { id: "cm-global", title: "Global chat", desc: "Public room, pinned post.", routed: true, entrySub: "global", Comp: Community, files: CM_FILES },
+      { id: "cm-badges", title: "Badges", desc: "Earned and locked medals.", routed: true, entrySub: "badges", Comp: Community, files: CM_FILES },
+      { id: "cm-people", title: "People", desc: "Learners with follow.", routed: true, entrySub: "people", Comp: Community, files: CM_FILES },
     ],
   },
   {
@@ -95,24 +147,93 @@ function FolderIcon({ glyph }) {
 }
 
 export default function Testing() {
+  const [path, setPath] = useState(() => window.location.pathname);
   const [folderId, setFolderId] = useState(null);
-  const [screenId, setScreenId] = useState(null);
+  const [localScreenId, setLocalScreenId] = useState(null);
   const [viewport, setViewport] = useState("standard");
   const [theme, setTheme] = useState("light");
   const [zipping, setZipping] = useState(false);
-  const folder = FOLDERS.find((f) => f.id === folderId) || null;
-  const screen = folder
-    ? folder.screens.find((s) => s.id === screenId) || null
-    : null;
+  // Wind-down stack for the routed community app: how many entries we pushed
+  // on top of the testing home, and whether the home is actually below us.
+  const depthRef = useRef(0);
+  const baseRef = useRef(false);
+
+  useEffect(() => {
+    const onPop = () => {
+      const st = window.history.state || {};
+      depthRef.current = Number(st.depth) || 0;
+      baseRef.current = st.base === true;
+      setPath(window.location.pathname);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 700px)").matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 700px)");
+    const onChange = (e) => setIsMobile(e.matches);
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
+    else mq.addListener(onChange);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", onChange);
+      else mq.removeListener(onChange);
+    };
+  }, []);
+
+  const parsed = parseTfd(path) || { folderId: null, sub: null };
+  const routedSub = parsed.folderId === "community" ? parsed.sub : null;
+  const folder = routedSub !== null
+    ? FOLDERS.find((f) => f.id === "community") || null
+    : (folderId ? FOLDERS.find((f) => f.id === folderId) || null : null);
+  const screen = !folder
+    ? null
+    : routedSub !== null
+      ? folder.screens.find((s) => s.entrySub === routedSub.split("/")[0]) || folder.screens[0]
+      : folder.screens.find((s) => s.id === localScreenId) || null;
   const vp = VIEWPORTS.find((v) => v.id === viewport) || VIEWPORTS[0];
 
   const openScreen = (s) => {
-    setScreenId(s.id);
     setViewport("standard");
     setTheme("light");
     window.scrollTo(0, 0);
+    if (s.routed && s.entrySub) {
+      const url = `${TFD}/community/${s.entrySub}`;
+      depthRef.current = 1;
+      baseRef.current = true;
+      window.history.pushState({ tfd: "child", depth: 1, base: true }, "", url);
+      setPath(url);
+      return;
+    }
+    setLocalScreenId(s.id);
   };
-  const closeScreen = () => setScreenId(null);
+
+  const navCommunity = useCallback((nextSub) => {
+    const clean = String(nextSub || "feed").replace(/^\/+|\/+$/g, "") || "feed";
+    const url = `${TFD}/community/${clean}`;
+    const d = depthRef.current > 0 ? depthRef.current + 1 : 1;
+    depthRef.current = d;
+    window.history.pushState({ tfd: "sub", depth: d, base: baseRef.current }, "", url);
+    setPath(url);
+  }, []);
+
+  const closeScreen = () => {
+    if (routedSub !== null) {
+      if (baseRef.current && depthRef.current > 0) {
+        window.history.go(-depthRef.current);
+      } else {
+        depthRef.current = 0;
+        baseRef.current = false;
+        window.history.replaceState({}, "", TFD);
+        setPath(TFD);
+      }
+      return;
+    }
+    setLocalScreenId(null);
+  };
 
   const downloadZip = () => {
     if (!screen || !screen.files || zipping) return;
@@ -131,6 +252,16 @@ export default function Testing() {
     }
     setZipping(false);
   };
+
+  // On phones a community link opens as the app itself: no testing chrome,
+  // no overlay, no deck — just the full-screen mobile view.
+  if (routedSub !== null && isMobile) {
+    return (
+      <div className="tst-mobile">
+        <Community sub={routedSub} onNav={navCommunity} />
+      </div>
+    );
+  }
 
   return (
     <div className="tst-page">
@@ -221,9 +352,13 @@ export default function Testing() {
             >
               ✕
             </button>
-            <p className="tst-phone-title">{screen.title}</p>
+            <p className="tst-phone-title">{screen.routed ? titleForSub(routedSub) : screen.title}</p>
             <div className="tst-phone-screen">
-              <screen.Comp tab={screen.tab} />
+              {screen.routed ? (
+                <screen.Comp sub={routedSub} onNav={navCommunity} />
+              ) : (
+                <screen.Comp tab={screen.tab} />
+              )}
             </div>
           </div>
           <div className="tst-deck" onClick={(e) => e.stopPropagation()}>
