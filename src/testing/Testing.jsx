@@ -15,14 +15,27 @@ import Ai from "./ai/Ai.jsx";
 import aiJsx from "./ai/Ai.jsx?raw";
 import aiCss from "./ai/ai.css?raw";
 import Community from "./community/Community.jsx";
-import cmAppJsx from "./community/Community.jsx?raw";
-import cmFeedJsx from "./community/FeedPages.jsx?raw";
+import cmAppJsx from "./community/Community.jsx?raw";import cmFeedJsx from "./community/FeedPages.jsx?raw";
 import cmChatJsx from "./community/ChatPages.jsx?raw";
 import cmUiJsx from "./community/ui.jsx?raw";
 import cmDataJsx from "./community/data.js?raw";
 import cmIconsJsx from "./community/icons.jsx?raw";
 import cmCss from "./community/community.css?raw";
 import { titleForSub } from "./community/data.js";
+import Agent from "./agent/Agent.jsx";
+import agAppJsx from "./agent/Agent.jsx?raw";
+import agRootJsx from "./agent/RootView.jsx?raw";
+import agThreadJsx from "./agent/ThreadView.jsx?raw";
+import agComposerJsx from "./agent/Composer.jsx?raw";
+import agDrawerJsx from "./agent/AgentDrawer.jsx?raw";
+import agSettingsJsx from "./agent/SettingsView.jsx?raw";
+import agBitsJsx from "./agent/bits.jsx?raw";
+import agDataJsx from "./agent/data.js?raw";
+import agIconsJsx from "./agent/icons.jsx?raw";
+import agCss from "./agent/agent.css?raw";
+import agWelcomeJsx from "./agent/WelcomeView.jsx?raw";
+import agFilesJsx from "./agent/FilesView.jsx?raw";
+import { agentTitleForSub } from "./agent/data.js";
 import { makeZip } from "./zip.js";
 
 const TFD = "/testing-for-developer";
@@ -31,7 +44,7 @@ function stripSlash(p) {
   return p.length > 1 && p.endsWith("/") ? p.slice(0, -1) : p;
 }
 
-// Maps a testing-ground URL to a folder (and, for the community app, a page).
+// Maps a testing-ground URL to a folder (and, for routed apps, a page).
 // Returns null for paths outside the testing ground.
 function parseTfd(pathname) {
   const clean = stripSlash(String(pathname || "/"));
@@ -41,6 +54,8 @@ function parseTfd(pathname) {
   const cut = rest.indexOf("/");
   const seg = cut === -1 ? rest : rest.slice(0, cut);
   const tail = cut === -1 ? "" : rest.slice(cut + 1);
+  const hit = FOLDERS.find((fl) => fl.id === seg);
+  if (hit && hit.routed) return { folderId: seg, sub: tail };
   if (seg === "community") return { folderId: "community", sub: tail || "feed" };
   return { folderId: seg || null, sub: null };
 }
@@ -76,6 +91,21 @@ const CM_FILES = [
   { name: "community/community.css", content: cmCss },
 ];
 
+const AG_FILES = [
+  { name: "agent/Agent.jsx", content: agAppJsx },
+  { name: "agent/RootView.jsx", content: agRootJsx },
+  { name: "agent/ThreadView.jsx", content: agThreadJsx },
+  { name: "agent/Composer.jsx", content: agComposerJsx },
+  { name: "agent/AgentDrawer.jsx", content: agDrawerJsx },
+  { name: "agent/SettingsView.jsx", content: agSettingsJsx },
+  { name: "agent/bits.jsx", content: agBitsJsx },
+  { name: "agent/data.js", content: agDataJsx },
+  { name: "agent/icons.jsx", content: agIconsJsx },
+  { name: "agent/agent.css", content: agCss },
+  { name: "agent/WelcomeView.jsx", content: agWelcomeJsx },
+  { name: "agent/FilesView.jsx", content: agFilesJsx },
+];
+
 const FOLDERS = [
   {
     id: "ai",
@@ -91,12 +121,27 @@ const FOLDERS = [
     title: "Community",
     desc: "Multi-page app with real routes",
     icon: "◉",
+    routed: true,
     screens: [
-      { id: "cm-feed", title: "Activity feed", desc: "Streaks, lessons, badges.", routed: true, entrySub: "feed", Comp: Community, files: CM_FILES },
-      { id: "cm-chats", title: "Chats", desc: "Threads with per-chat state.", routed: true, entrySub: "chats", Comp: Community, files: CM_FILES },
-      { id: "cm-global", title: "Global chat", desc: "Public room, pinned post.", routed: true, entrySub: "global", Comp: Community, files: CM_FILES },
-      { id: "cm-badges", title: "Badges", desc: "Earned and locked medals.", routed: true, entrySub: "badges", Comp: Community, files: CM_FILES },
-      { id: "cm-people", title: "People", desc: "Learners with follow.", routed: true, entrySub: "people", Comp: Community, files: CM_FILES },
+      { id: "cm-feed", title: "Activity feed", desc: "Streaks, lessons, badges.", routed: true, base: "community", entrySub: "feed", Comp: Community, files: CM_FILES },
+      { id: "cm-chats", title: "Chats", desc: "Threads with per-chat state.", routed: true, base: "community", entrySub: "chats", Comp: Community, files: CM_FILES },
+      { id: "cm-global", title: "Global chat", desc: "Public room, pinned post.", routed: true, base: "community", entrySub: "global", Comp: Community, files: CM_FILES },
+      { id: "cm-badges", title: "Badges", desc: "Earned and locked medals.", routed: true, base: "community", entrySub: "badges", Comp: Community, files: CM_FILES },
+      { id: "cm-people", title: "People", desc: "Learners with follow.", routed: true, base: "community", entrySub: "people", Comp: Community, files: CM_FILES },
+    ],
+  },
+  {
+    id: "agent",
+    title: "Codino Agent",
+    desc: "ChatGPT-like coding agent",
+    icon: "◈",
+    routed: true,
+    screens: [
+      { id: "ag-root", title: "Agent chat", desc: "Root state with composer.", routed: true, base: "agent", entrySub: "", Comp: Agent, files: AG_FILES },
+      { id: "ag-thread", title: "Working session", desc: "Tools, diffs, streaming.", routed: true, base: "agent", entrySub: "s/s1", Comp: Agent, files: AG_FILES },
+      { id: "ag-files", title: "Workspace files", desc: "Browser, viewer, editor.", routed: true, base: "agent", entrySub: "files", Comp: Agent, files: AG_FILES },
+      { id: "ag-settings", title: "Agent settings", desc: "Server, model, data.", routed: true, base: "agent", entrySub: "settings", Comp: Agent, files: AG_FILES },
+      { id: "ag-welcome", title: "Onboarding", desc: "Connect flow, 3 steps.", routed: true, base: "agent", entrySub: "welcome", Comp: Agent, files: AG_FILES },
     ],
   },
   {
@@ -185,10 +230,12 @@ export default function Testing() {
   }, []);
 
   const parsed = parseTfd(path) || { folderId: null, sub: null };
-  const routedSub = parsed.folderId === "community" ? parsed.sub : null;
-  const folder = routedSub !== null
-    ? FOLDERS.find((f) => f.id === "community") || null
-    : (folderId ? FOLDERS.find((f) => f.id === folderId) || null : null);
+  const routedFolder = parsed.folderId
+    ? FOLDERS.find((f) => f.id === parsed.folderId && f.routed) || null
+    : null;
+  const routedSub = routedFolder ? parsed.sub || "" : null;
+  const folder = routedFolder
+    || (folderId ? FOLDERS.find((f) => f.id === folderId) || null : null);
   const screen = !folder
     ? null
     : routedSub !== null
@@ -200,8 +247,8 @@ export default function Testing() {
     setViewport("standard");
     setTheme("light");
     window.scrollTo(0, 0);
-    if (s.routed && s.entrySub) {
-      const url = `${TFD}/community/${s.entrySub}`;
+    if (s.routed) {
+      const url = s.entrySub ? `${TFD}/${s.base}/${s.entrySub}` : `${TFD}/${s.base}`;
       depthRef.current = 1;
       baseRef.current = true;
       window.history.pushState({ tfd: "child", depth: 1, base: true }, "", url);
@@ -211,9 +258,9 @@ export default function Testing() {
     setLocalScreenId(s.id);
   };
 
-  const navCommunity = useCallback((nextSub) => {
-    const clean = String(nextSub || "feed").replace(/^\/+|\/+$/g, "") || "feed";
-    const url = `${TFD}/community/${clean}`;
+  const navRouted = useCallback((base, nextSub) => {
+    const clean = String(nextSub ?? "").replace(/^\/+|\/+$/g, "");
+    const url = clean ? `${TFD}/${base}/${clean}` : `${TFD}/${base}`;
     const d = depthRef.current > 0 ? depthRef.current + 1 : 1;
     depthRef.current = d;
     window.history.pushState({ tfd: "sub", depth: d, base: baseRef.current }, "", url);
@@ -253,12 +300,12 @@ export default function Testing() {
     setZipping(false);
   };
 
-  // On phones a community link opens as the app itself: no testing chrome,
+  // On phones a routed link opens as the app itself: no testing chrome,
   // no overlay, no deck — just the full-screen mobile view.
   if (routedSub !== null && isMobile) {
     return (
       <div className="tst-mobile">
-        <Community sub={routedSub} onNav={navCommunity} />
+        <screen.Comp sub={routedSub} onNav={(s) => navRouted(screen.base, s)} />
       </div>
     );
   }
@@ -352,10 +399,16 @@ export default function Testing() {
             >
               ✕
             </button>
-            <p className="tst-phone-title">{screen.routed ? titleForSub(routedSub) : screen.title}</p>
+            <p className="tst-phone-title">
+              {screen.routed
+                ? screen.base === "agent"
+                  ? agentTitleForSub(routedSub)
+                  : titleForSub(routedSub)
+                : screen.title}
+            </p>
             <div className="tst-phone-screen">
               {screen.routed ? (
-                <screen.Comp sub={routedSub} onNav={navCommunity} />
+                <screen.Comp sub={routedSub} onNav={(s) => navRouted(screen.base, s)} />
               ) : (
                 <screen.Comp tab={screen.tab} />
               )}
