@@ -76,6 +76,16 @@ export default function Agent({ sub, onNav }) {
   const queuedRef = useRef({});
   queuedRef.current = queued;
 
+  const toast = useCallback((msg, action) => {
+    setToastMsg(msg);
+    setToastAct(action || null);
+    if (toastTimer.current) window.clearTimeout(toastTimer.current);
+    toastTimer.current = window.setTimeout(() => {
+      setToastMsg(null);
+      setToastAct(null);
+    }, action ? 5000 : 1800);
+  }, []);
+
   const goOnline = useCallback(() => {
     setOnline(true);
     const ids = Object.keys(queuedRef.current);
@@ -108,16 +118,6 @@ export default function Agent({ sub, onNav }) {
       window.removeEventListener("offline", goOffline);
     };
   }, [goOnline, goOffline]);
-
-  const toast = useCallback((msg, action) => {
-    setToastMsg(msg);
-    setToastAct(action || null);
-    if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    toastTimer.current = window.setTimeout(() => {
-      setToastMsg(null);
-      setToastAct(null);
-    }, action ? 5000 : 1800);
-  }, []);
 
   const isThread = segs[0] === "s" && !!segs[1];
   const isSettings = segs[0] === "settings";
